@@ -2,11 +2,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.advancements.critereon.FilledBucketTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -14,7 +18,6 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -24,19 +27,20 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 class AMRecipeProvider extends RecipeProvider {
-    public AMRecipeProvider(PackOutput output) {
-        super(output);
+    public AMRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
     }
 
     @Override
@@ -77,7 +81,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern(" S ")
                            .pattern("CTC")
                            .define('S', Items.STONE_BRICKS)
-                           .define('G', Tags.Items.GLASS)
+                           .define('G', Tags.Items.GLASS_BLOCKS)
                            .define('C', ItemTags.COALS)
                            .define('T', AMTags.Items.GEMS_TOPAZ)
                            .unlockedBy("has_topaz", has(AMTags.Items.GEMS_TOPAZ))
@@ -97,7 +101,7 @@ class AMRecipeProvider extends RecipeProvider {
                               .requires(Items.BOOK)
                               .requires(Tags.Items.DYES_BLACK)
                               .requires(Tags.Items.FEATHERS)
-                              .requires(Tags.Items.STRING)
+                              .requires(Tags.Items.STRINGS)
                               .unlockedBy("has_book", has(Items.BOOK))
                               .save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.get())
@@ -114,34 +118,18 @@ class AMRecipeProvider extends RecipeProvider {
                               .requires(Items.GLASS_BOTTLE)
                               .unlockedBy("has_book", has(Items.BOOK))
                               .save(consumer);
-        CompoundTag oldTag = new CompoundTag();
-        CompoundTag newTag = new CompoundTag();
-        CompoundTag oldBlockStateTag = new CompoundTag();
-        CompoundTag newBlockStateTag = new CompoundTag();
-        oldBlockStateTag.putString("tier", "0");
-        oldTag.put("BlockStateTag", oldBlockStateTag);
-        newBlockStateTag.putString("tier", "1");
-        newTag.put("BlockStateTag", newBlockStateTag);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE.get(), 1, Optional.of(newTag.copy())))
-                              .requires(AMItems.INSCRIPTION_TABLE.get())
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE, 1, DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 1)).build()))
+                              .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 0), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
                               .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_1"));
-        oldBlockStateTag.putString("tier", "1");
-        oldTag.put("BlockStateTag", oldBlockStateTag);
-        newBlockStateTag.putString("tier", "2");
-        newTag.put("BlockStateTag", newBlockStateTag);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE.get(), 1, Optional.of(newTag.copy())))
-                              .requires(NBTIngredient.of(false, oldTag, AMItems.INSCRIPTION_TABLE.get()))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE, 1, DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 2)).build()))
+                              .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 1), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
                               .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_2"));
-        oldBlockStateTag.putString("tier", "2");
-        oldTag.put("BlockStateTag", oldBlockStateTag);
-        newBlockStateTag.putString("tier", "3");
-        newTag.put("BlockStateTag", newBlockStateTag);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE.get(), 1, Optional.of(newTag.copy())))
-                              .requires(NBTIngredient.of(false, oldTag, AMItems.INSCRIPTION_TABLE.get()))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE, 1, DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 3)).build()))
+                              .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 2), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
                               .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_3"));
@@ -149,13 +137,13 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("V")
                            .pattern("S")
                            .define('V', AMTags.Items.DUSTS_VINTEUM)
-                           .define('S', Tags.Items.STONE)
+                           .define('S', Tags.Items.STONES)
                            .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                            .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AMItems.MAGIC_WALL.get(), 16)
                            .pattern("VSV")
                            .define('V', AMTags.Items.DUSTS_VINTEUM)
-                           .define('S', Tags.Items.STONE)
+                           .define('S', Tags.Items.STONES)
                            .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                            .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AMItems.OBELISK.get())
@@ -163,7 +151,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("SBS")
                            .pattern("VSV")
                            .define('V', AMTags.Items.DUSTS_VINTEUM)
-                           .define('S', Tags.Items.STONE)
+                           .define('S', Tags.Items.STONES)
                            .define('B', ItemTags.STONE_BRICKS)
                            .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                            .save(consumer);
@@ -197,8 +185,8 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern(" # ")
                            .pattern("###")
                            .pattern("## ")
-                           .define('#', Tags.Items.COBBLESTONE)
-                           .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+                           .define('#', Tags.Items.COBBLESTONES)
+                           .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONES))
                            .save(consumer);
         for (DyeColor color : DyeColor.values()) {
             ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AMItems.COLORED_RUNE.get(color))
@@ -211,7 +199,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("SHS")
                            .pattern("HRH")
                            .pattern("HHH")
-                           .define('S', Tags.Items.STRING)
+                           .define('S', Tags.Items.STRINGS)
                            .define('H', Items.RABBIT_HIDE)
                            .define('R', AMTags.Items.RUNES)
                            .unlockedBy("has_rabbit_hide", has(Items.RABBIT_HIDE))
@@ -226,10 +214,10 @@ class AMRecipeProvider extends RecipeProvider {
                               .requires(Tags.Items.DUSTS_GLOWSTONE)
                               .requires(Tags.Items.DUSTS_REDSTONE)
                               .requires(Tags.Items.DUSTS_REDSTONE)
-                              .requires(Tags.Items.NETHERRACK)
-                              .requires(Tags.Items.NETHERRACK)
-                              .requires(Tags.Items.STONE)
-                              .requires(Tags.Items.STONE)
+                              .requires(Tags.Items.NETHERRACKS)
+                              .requires(Tags.Items.NETHERRACKS)
+                              .requires(Tags.Items.STONES)
+                              .requires(Tags.Items.STONES)
                               .unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))
                               .save(consumer);
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(AMItems.ARCANE_COMPOUND.get()), RecipeCategory.MISC, AMItems.ARCANE_ASH.get(), 0.2F, 200)
@@ -278,7 +266,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.WATER)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.WATER)))
                            .define('I', AMItems.WAKEBLOOM.get())
                            .define('J', Items.WATER_BUCKET)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -288,7 +276,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.FIRE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.FIRE)))
                            .define('I', ItemTags.COALS)
                            .define('J', Items.BLAZE_POWDER)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -298,9 +286,9 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.EARTH)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.EARTH)))
                            .define('I', ItemTags.DIRT)
-                           .define('J', Tags.Items.STONE)
+                           .define('J', Tags.Items.STONES)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                            .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_earth");
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, helper.getEssenceForAffinity(AMAffinities.AIR).copyWithCount(2))
@@ -308,7 +296,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.AIR)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.AIR)))
                            .define('I', Items.FEATHER)
                            .define('J', AMItems.TARMA_ROOT.get())
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -318,7 +306,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ICE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ICE)))
                            .define('I', Items.SNOW_BLOCK)
                            .define('J', Items.ICE)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -328,7 +316,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.LIGHTNING)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.LIGHTNING)))
                            .define('I', Tags.Items.DUSTS_REDSTONE)
                            .define('J', Tags.Items.DUSTS_GLOWSTONE)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -338,7 +326,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEK")
                            .pattern("ALA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.NATURE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.NATURE)))
                            .define('I', ItemTags.LEAVES)
                            .define('J', Items.LILY_PAD)
                            .define('K', Items.CACTUS)
@@ -350,7 +338,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.LIFE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.LIFE)))
                            .define('I', Tags.Items.EGGS)
                            .define('J', Items.GOLDEN_APPLE)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -360,7 +348,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("AEA")
                            .pattern("AAA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ARCANE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ARCANE)))
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                            .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane");
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, helper.getEssenceForAffinity(AMAffinities.ENDER).copyWithCount(2))
@@ -368,7 +356,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("JEJ")
                            .pattern("AIA")
                            .define('A', AMItems.ARCANE_ASH.get())
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ENDER)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.ENDER)))
                            .define('I', Tags.Items.ENDER_PEARLS)
                            .define('J', Items.ENDER_EYE)
                            .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
@@ -385,8 +373,8 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("SLL")
                            .pattern("SPP")
                            .pattern("SLL")
-                           .define('S', Tags.Items.STRING)
-                           .define('L', Tags.Items.LEATHER)
+                           .define('S', Tags.Items.STRINGS)
+                           .define('L', Tags.Items.LEATHERS)
                            .define('P', Items.PAPER)
                            .unlockedBy("has_paper", has(Items.PAPER))
                            .save(consumer);
@@ -402,7 +390,7 @@ class AMRecipeProvider extends RecipeProvider {
                               .requires(Tags.Items.CROPS_POTATO)
                               .requires(Items.ICE)
                               .requires(Items.SUGAR)
-                              .requires(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
+                              .requires(DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER), Items.POTION))
                               .unlockedBy("has_ice", has(Items.ICE))
                               .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AMItems.MAGE_HELMET.get())
@@ -445,7 +433,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern(" E ")
                            .define('O', Items.OBSIDIAN)
                            .define('G', Tags.Items.INGOTS_GOLD)
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.AIR)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.AIR)))
                            .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                            .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                            .save(consumer);
@@ -455,7 +443,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("OOO")
                            .define('O', Items.OBSIDIAN)
                            .define('G', Tags.Items.INGOTS_GOLD)
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.EARTH)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.EARTH)))
                            .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                            .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                            .save(consumer);
@@ -465,7 +453,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("O O")
                            .define('O', Items.OBSIDIAN)
                            .define('G', Tags.Items.INGOTS_GOLD)
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.FIRE)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.FIRE)))
                            .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                            .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                            .save(consumer);
@@ -474,7 +462,7 @@ class AMRecipeProvider extends RecipeProvider {
                            .pattern("GRG")
                            .define('O', Items.OBSIDIAN)
                            .define('G', Tags.Items.INGOTS_GOLD)
-                           .define('E', NBTIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.WATER)))
+                           .define('E', DataComponentIngredient.of(false, helper.getEssenceForAffinity(AMAffinities.WATER)))
                            .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                            .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                            .save(consumer);

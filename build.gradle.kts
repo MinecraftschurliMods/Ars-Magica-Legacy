@@ -15,14 +15,6 @@ helper.withApiSourceSet()
 helper.withDataGenSourceSet()
 helper.withTestSourceSet()
 
-val include: Configuration by configurations.creating {
-    isTransitive = false
-}
-sourceSets.configureEach {
-    configurations.getByName(implementationConfigurationName).extendsFrom(include)
-}
-configurations.jarJar.get().extendsFrom(include)
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -76,7 +68,7 @@ repositories {
     }
 }
 
-val jei = helper.dependencies.jei()
+//val jei = helper.dependencies.jei()
 val jade = helper.dependencies.jade()
 val theoneprobe = helper.dependencies.theoneprobe()
 val curios = helper.dependencies.curios()
@@ -102,9 +94,9 @@ dependencies {
     testImplementation(helper.testframework())
 
     // jei for integration
-    val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
-    val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
-    compileOnly(jeiApiDep)
+    //val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
+    //val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
+    //compileOnly(jeiApiDep)
 
     // curios for additional inventory slots
     val curiosApiDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}:api" }
@@ -139,9 +131,9 @@ dependencies {
     if (!helper.runningInCI.getOrElse(false)) {
         val potionbundlesDep = potionbundles.version.map { "com.github.minecraftschurlimods:potionbundles:${it}" }
         runtimeOnly(potionbundlesDep)
-        runtimeOnly(theoneprobeDep) { (this as ModuleDependency).isTransitive = false }
-        runtimeOnly(jeiDep)
-        runtimeOnly(jadeDep)
+        runtimeOnly(theoneprobeDep)
+        //runtimeOnly(jeiDep)
+        //runtimeOnly(jadeDep)
         runtimeOnly(curiosDep)
     }
 
@@ -151,14 +143,19 @@ dependencies {
     "apiCompileOnly"(codeclib)
     implementation(codeclib)
     testImplementation(codeclib)
+    "dataImplementation"(codeclib)
 
     val betterkeybindlib = project.localGradleProperty("dependency.betterkeybindlib.version").map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
     jarJar(betterkeybindlib)
     implementation(betterkeybindlib)
+    testImplementation(betterkeybindlib)
+    "dataImplementation"(betterkeybindlib)
 
     val betterhudlib = project.localGradleProperty("dependency.betterhudlib.version").map { "com.github.minecraftschurlimods:betterhudlib:$it" }
     jarJar(betterhudlib)
     implementation(betterhudlib)
+    testImplementation(betterhudlib)
+    "dataImplementation"(betterhudlib)
 
     val easyDatagenLibVersion = project.localGradleProperty("dependency.easydatagenlib.version")
     val easyDatagenLibApiDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}:api" }

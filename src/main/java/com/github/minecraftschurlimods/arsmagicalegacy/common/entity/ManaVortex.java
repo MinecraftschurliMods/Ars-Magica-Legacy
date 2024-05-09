@@ -4,12 +4,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,9 +25,9 @@ public class ManaVortex extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(DURATION, 50 + level().getRandom().nextInt(250));
-        entityData.define(MANA, 0f);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DURATION, 50 + level().getRandom().nextInt(250))
+               .define(MANA, 0f);
     }
 
     @Override
@@ -52,11 +50,6 @@ public class ManaVortex extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
-    }
-
-    @Override
     public void tick() {
         super.tick();
         tickCount++;
@@ -65,7 +58,7 @@ public class ManaVortex extends Entity {
         int duration = getDuration();
         if (duration - tickCount > 30) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
-                if (e.getAttribute(AMAttributes.MAX_MANA.value()) == null) continue;
+                if (e.getAttribute(AMAttributes.MAX_MANA) == null) continue;
                 var helper = ArsMagicaAPI.get().getManaHelper();
                 float stolen = Math.min(helper.getMana(e), helper.getMaxMana(e) / 100f);
                 entityData.set(MANA, entityData.get(MANA) + stolen);
@@ -74,7 +67,7 @@ public class ManaVortex extends Entity {
                 setDeltaMovement(movement.x * 0.075f, movement.y * 0.075f, movement.z * 0.075f);
             }
             moveTo(position().add(getDeltaMovement()));
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
         }
         if (duration - tickCount <= 20) {
             this.setBoundingBox(getBoundingBox().inflate(-0.05f));
@@ -84,7 +77,7 @@ public class ManaVortex extends Entity {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
                 e.hurt(damageSources().magic(), damage);
             }
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
             setRemoved(RemovalReason.KILLED);
         }
     }

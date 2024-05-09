@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,16 +41,16 @@ public class Wave extends AbstractSpellEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(TARGET_NON_SOLID, false);
-        entityData.define(COLOR, -1);
-        entityData.define(DURATION, 200);
-        entityData.define(INDEX, 0);
-        entityData.define(OWNER, 0);
-        entityData.define(GRAVITY, 0f);
-        entityData.define(RADIUS, 1f);
-        entityData.define(SPEED, 1f);
-        entityData.define(SPELL, ISpell.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(TARGET_NON_SOLID, false)
+               .define(COLOR, -1)
+               .define(DURATION, 200)
+               .define(INDEX, 0)
+               .define(OWNER, 0)
+               .define(GRAVITY, 0f)
+               .define(RADIUS, 1f)
+               .define(SPEED, 1f)
+               .define(SPELL, ISpell.EMPTY);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Wave extends AbstractSpellEntity {
         entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
         entityData.set(SPEED, tag.getFloat("Speed"));
-        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
+        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow().getFirst());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Wave extends AbstractSpellEntity {
         tag.putFloat("Gravity", entityData.get(GRAVITY));
         tag.putFloat("Radius", entityData.get(RADIUS));
         tag.putFloat("Speed", entityData.get(SPEED));
-        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
+        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow());
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Wave extends AbstractSpellEntity {
             ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
         }
         if (tickCount > 0) {
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
         }
     }
 
@@ -156,7 +156,8 @@ public class Wave extends AbstractSpellEntity {
         entityData.set(OWNER, owner.getId());
     }
 
-    public float getGravity() {
+    @Override
+    public double getDefaultGravity() {
         return entityData.get(GRAVITY);
     }
 

@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,13 +35,13 @@ public class Wall extends AbstractSpellEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(COLOR, -1);
-        entityData.define(DURATION, 200);
-        entityData.define(INDEX, 0);
-        entityData.define(OWNER, 0);
-        entityData.define(RADIUS, 1f);
-        entityData.define(SPELL, ISpell.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(COLOR, -1)
+               .define(DURATION, 200)
+               .define(INDEX, 0)
+               .define(OWNER, 0)
+               .define(RADIUS, 1f)
+               .define(SPELL, ISpell.EMPTY);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Wall extends AbstractSpellEntity {
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
-        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
+        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow().getFirst());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Wall extends AbstractSpellEntity {
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Radius", entityData.get(RADIUS));
-        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
+        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Wall extends AbstractSpellEntity {
             }
         }
         if (tickCount > 0) {
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
         }
     }
 

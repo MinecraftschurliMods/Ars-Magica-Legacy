@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,9 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import java.util.Map;
 
 public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTrigger {
-    public static final Codec<EntityDeathTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(EntityPredicate.CODEC.fieldOf("entity").forGetter(EntityDeathTrigger::predicate)).apply(inst, EntityDeathTrigger::new));
+    public static final MapCodec<EntityDeathTrigger> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            EntityPredicate.CODEC.fieldOf("entity").forGetter(EntityDeathTrigger::predicate)
+    ).apply(inst, EntityDeathTrigger::new));
 
     @Override
     public void register(Ritual ritual) {
@@ -42,7 +44,7 @@ public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTri
     }
 
     @Override
-    public Codec<? extends RitualTrigger> codec() {
+    public MapCodec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

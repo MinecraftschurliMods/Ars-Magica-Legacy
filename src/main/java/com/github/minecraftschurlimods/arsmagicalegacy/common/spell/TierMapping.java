@@ -1,10 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.codeclib.RegistryAccessGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -13,8 +15,9 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
-import net.neoforged.neoforge.common.TierSortingRegistry;
+import net.minecraft.world.item.component.Tool;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.registries.holdersets.AnyHolderSet;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -68,16 +71,17 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
      * @return The harvest tier for the given number.
      */
     @Nullable
-    public Tier getTierForPower(int tier) {
-        if (tiers.size() == 0) {
-            return switch (tier) {
+    public Tool getTierForPower(int tier) {
+        //if (tiers.size() == 0) {
+            Tier tool = switch (tier) {
                 case 1 -> Tiers.STONE;
                 case 2 -> Tiers.IRON;
                 case 3 -> Tiers.DIAMOND;
                 case 4 -> Tiers.NETHERITE;
                 default -> Tiers.WOOD;
             };
-        }
-        return TierSortingRegistry.byName(tiers.get(Math.min(tier, tiers.size() - 1)));
+            return new Tool(List.of(Tool.Rule.deniesDrops(tool.getIncorrectBlocksForDrops()), new Tool.Rule(new AnyHolderSet<>(RegistryAccessGetter.getRegistryAccess().lookupOrThrow(Registries.BLOCK)), Optional.of(tool.getSpeed()), Optional.of(true))), 1.0F, 1);
+        //}
+        //return tiers.get(Math.min(tier, tiers.size() - 1));
     }
 }

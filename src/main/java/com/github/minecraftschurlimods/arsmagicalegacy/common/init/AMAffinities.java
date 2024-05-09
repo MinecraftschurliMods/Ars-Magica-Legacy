@@ -7,6 +7,7 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.AFFINITIES;
 
+@SuppressWarnings("unchecked")
 @NonExtendable
 public interface AMAffinities {
     Holder<Affinity> NONE      = AFFINITIES.register("none",      () -> Affinity.builder().setColor(0)       .setDirectOpposite(Affinity.NONE)     .setCastSound(AMSounds.CAST_NONE)     .setParticle(AMParticleTypes.NONE_HAND).build());

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     "V": {
       "item": "arsmagicalegacy:purified_vinteum_dust"
@@ -15,6 +15,7 @@
     "###"
   ],
   "result": {
-    "item": "arsmagicalegacy:redstone_inlay"
+    "count": 1,
+    "id": "arsmagicalegacy:redstone_inlay"
   }
 }

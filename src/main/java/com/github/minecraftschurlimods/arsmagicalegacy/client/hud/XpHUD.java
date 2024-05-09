@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public final class XpHUD extends AbstractHUD {
     public XpHUD() {
@@ -14,7 +13,7 @@ public final class XpHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ExtendedGui forgeGui, GuiGraphics graphics, float v) {
+    public void draw(GuiGraphics graphics, float v) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;

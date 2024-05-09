@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -42,23 +42,23 @@ public class AltarViewBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return super.getUpdateTag(provider).merge(saveWithoutMetadata(provider));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
-    }
-
-    @Override
-    public void load(CompoundTag nbt) {
-        if (nbt.contains("altar")) {
-            setAltarPos(BlockPos.CODEC.decode(NbtOps.INSTANCE, nbt.get("altar"))
-                    .map(Pair::getFirst)
-                    .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        if (tag.contains("altar")) {
+            setAltarPos(BlockPos.CODEC.decode(NbtOps.INSTANCE, tag.get("altar"))
+                                      .map(Pair::getFirst)
+                                      .getOrThrow());
         }
-        super.load(nbt);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow()));
     }
 }

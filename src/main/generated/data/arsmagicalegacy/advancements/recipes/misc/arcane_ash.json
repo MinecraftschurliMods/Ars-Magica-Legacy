@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:arcane_compound"
-            ]
+            "items": "arsmagicalegacy:arcane_compound"
           }
         ]
       },

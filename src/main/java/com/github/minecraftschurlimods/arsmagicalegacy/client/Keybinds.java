@@ -26,14 +26,14 @@ public final class Keybinds {
             .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
             .withContext(KeyConflictContext.IN_GAME)
             .withCallback(ctx -> {
-                PacketDistributor.SERVER.noArg().send(new NextShapeGroupPacket(ctx.get("hand"), false));
+                PacketDistributor.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), false));
                 return true;
             }).build();
     public static final Keybind PREV_SHAPE_GROUP = KEYBIND_MANAGER.keybind("prev_shape_group", InputConstants.KEY_COMMA)
             .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
             .withContext(KeyConflictContext.IN_GAME)
             .withCallback(ctx -> {
-                PacketDistributor.SERVER.noArg().send(new NextShapeGroupPacket(ctx.get("hand"), true));
+                PacketDistributor.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), true));
                 return true;
             }).build();
 

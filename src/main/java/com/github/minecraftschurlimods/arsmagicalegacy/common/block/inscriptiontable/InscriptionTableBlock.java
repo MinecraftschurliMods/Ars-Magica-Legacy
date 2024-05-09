@@ -1,13 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,8 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class InscriptionTableBlock extends Block implements EntityBlock {
@@ -84,8 +82,10 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        if (pStack.hasTag() && Objects.requireNonNull(pStack.getTag()).contains(TIER_KEY)) {
-            pState = pState.setValue(TIER, pStack.getTag().getInt(TIER_KEY));
+        if (pStack.has(AMDataComponents.TIER)) {
+            Integer tier = pStack.get(AMDataComponents.TIER);
+            assert tier != null;
+            pState = pState.setValue(TIER, tier);
         }
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
@@ -113,7 +113,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
         var api = ArsMagicaAPI.get();

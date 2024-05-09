@@ -9,9 +9,10 @@ public class FrostEffect extends AMMobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if (pLivingEntity.canFreeze()) {
             pLivingEntity.setIsInPowderSnow(true);
         }
+        return super.applyEffectTick(pLivingEntity, pAmplifier);
     }
 }

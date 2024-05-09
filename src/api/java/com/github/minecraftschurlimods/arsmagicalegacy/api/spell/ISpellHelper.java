@@ -1,8 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -14,9 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface ISpellHelper {
+
+    /**
+     * {@return A spell item stack built from this prefab spell}
+     * @param prefabSpell the prefab to create the spell from
+     */
+    ItemStack makeSpellFromPrefab(PrefabSpell prefabSpell);
+
     /**
      * @param stack The stack to get the spell for.
      * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
@@ -30,6 +34,19 @@ public interface ISpellHelper {
      * @param spell The spell to set.
      */
     void setSpell(ItemStack stack, ISpell spell);
+
+    /**
+     * Casts the spell.
+     *
+     * @param spell        The spell to cast.
+     * @param caster       The player that casts the spell.
+     * @param level        The level that the caster is in.
+     * @param castingTicks The amount of ticks this spell has been cast already.
+     * @param consume      Whether to consume the spell result or not.
+     * @param awardXp      Whether to grant the player magic xp or not.
+     * @return A SpellCastResult that represents the spell casting outcome.
+     */
+    SpellCastResult cast(ISpell spell, LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp);
 
     /**
      * Returns the item stack containing the spell the given entity is currently using, taking spell books into consideration.
@@ -50,42 +67,6 @@ public interface ISpellHelper {
      * @return The spell item stack the given entity is currently holding in the given hand.
      */
     ItemStack getSpellItemStackInHand(LivingEntity entity, InteractionHand hand);
-
-    /**
-     * @param stack The stack to get the spell name for.
-     * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
-     */
-    Optional<Component> getSpellName(ItemStack stack);
-
-    /**
-     * Sets the given name to the given stack.
-     *
-     * @param stack The stack to set the name on.
-     * @param name  The name to set.
-     */
-    void setSpellName(ItemStack stack, String name);
-
-    /**
-     * Sets the given name to the given stack.
-     *
-     * @param stack The stack to set the name on.
-     * @param name  The name to set.
-     */
-    void setSpellName(ItemStack stack, Component name);
-
-    /**
-     * @param stack The stack to get the spell icon for.
-     * @return An optional containing the spell icon id, or an empty optional if the given stack does not have a spell icon.
-     */
-    Optional<ResourceLocation> getSpellIcon(ItemStack stack);
-
-    /**
-     * Sets the given icon to the given stack.
-     *
-     * @param stack The stack to set the icon on.
-     * @param icon  The icon to set.
-     */
-    void setSpellIcon(ItemStack stack, ResourceLocation icon);
 
     /**
      * @param entity   The entity to check on.

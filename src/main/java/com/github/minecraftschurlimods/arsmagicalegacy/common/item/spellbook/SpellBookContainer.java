@@ -1,13 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record SpellBookContainer(ItemStack stack, SimpleContainer active, SimpleContainer back) implements Container {
@@ -19,20 +19,26 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
         this.stack = stack;
         this.active = active;
         this.back = back;
-        deserializeTag(stack.getOrCreateTag());
+        deserializeTag(stack);
     }
 
-    private void deserializeTag(CompoundTag tag) {
-        if (!tag.contains(SpellBookItem.SPELLS_KEY)) return;
-        ListTag spells = tag.getList(SpellBookItem.SPELLS_KEY, Tag.TAG_COMPOUND);
-        if (spells.size() != active.getContainerSize() + back.getContainerSize()) return;
-        List<Tag> active = spells.subList(0, this.active.getContainerSize());
+    private void deserializeTag(ItemStack stack) {
+        if (!stack.has(AMDataComponents.SPELLS)) return;
+        ItemContainerContents spells = stack.getOrDefault(AMDataComponents.SPELLS, ItemContainerContents.EMPTY);
+        List<ItemStack> list = spells.stream().toList();
+        if (list.isEmpty()) return;
+        int loadedSize = list.size();
+        int activeSize = this.active.getContainerSize();
+        List<ItemStack> active = list.subList(0, Math.min(activeSize, loadedSize));
         for (int i = 0; i < active.size(); i++) {
-            this.active.setItem(i, ItemStack.of((CompoundTag) active.get(i)));
+            this.active.setItem(i, active.get(i));
         }
-        List<Tag> back = spells.subList(this.active.getContainerSize(), this.active.getContainerSize() + this.back.getContainerSize());
-        for (int i = 0; i < back.size(); i++) {
-            this.back.setItem(i, ItemStack.of((CompoundTag) back.get(i)));
+        if (activeSize < loadedSize) {
+            int backSize = this.back.getContainerSize();
+            List<ItemStack> back = list.subList(activeSize, Math.min(activeSize + backSize, loadedSize));
+            for (int i = 0; i < back.size(); i++) {
+                this.back.setItem(i, back.get(i));
+            }
         }
     }
 
@@ -72,7 +78,7 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
 
     @Override
     public void setChanged() {
-        stack.getOrCreateTag().put(SpellBookItem.SPELLS_KEY, createTag());
+        stack.set(AMDataComponents.SPELLS, createTag());
     }
 
     @Override
@@ -86,16 +92,11 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
         back.clearContent();
     }
 
-    public ListTag createTag() {
-        ListTag listtag = new ListTag();
-        for (int i = 0; i < this.getContainerSize(); ++i) {
-            ItemStack itemstack = this.getItem(i);
-            if (!itemstack.isEmpty()) {
-                listtag.add(itemstack.save(new CompoundTag()));
-            } else {
-                listtag.add(new CompoundTag());
-            }
+    public ItemContainerContents createTag() {
+        List<ItemStack> list = new ArrayList<>();
+        for (int i = 0; i < this.getContainerSize(); i++) {
+            list.add(this.getItem(i));
         }
-        return listtag;
+        return ItemContainerContents.fromItems(list);
     }
 }

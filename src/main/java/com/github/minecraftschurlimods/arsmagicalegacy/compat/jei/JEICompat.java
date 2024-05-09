@@ -1,10 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jei;
+/*
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -74,7 +75,7 @@ public class JEICompat implements IModPlugin {
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
                 .stream()
                 .sorted(Comparator.comparing(e -> e.name().toString()))
-                .map(IPrefabSpell::makeSpell)
+                .map(new ISpellHelper()::makeSpellFromPrefab)
                 .toList());
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
@@ -115,3 +116,4 @@ public class JEICompat implements IModPlugin {
         }
     }
 }
+*/

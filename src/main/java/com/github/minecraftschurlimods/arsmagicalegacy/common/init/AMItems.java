@@ -122,16 +122,16 @@ public interface AMItems {
     DeferredItem<SpellRecipeItem>                SPELL_RECIPE                     = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     DeferredItem<SpellItem>                      SPELL                            = ITEMS.register("spell", SpellItem::new);
     DeferredItem<SpellBookItem>                  SPELL_BOOK                       = ITEMS.register("spell_book", SpellBookItem::new);
-    DeferredItem<Item>                           MANA_CAKE                        = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(() -> new MobEffectInstance(AMMobEffects.MANA_REGEN.value(), 600), 1f).build())));
+    DeferredItem<Item>                           MANA_CAKE                        = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6f).alwaysEdible().effect(() -> new MobEffectInstance(AMMobEffects.MANA_REGEN, 600), 1f).build())));
     DeferredItem<ManaMartiniItem>                MANA_MARTINI                     = ITEMS.registerItem("mana_martini", ManaMartiniItem::new);
-    DeferredItem<MageArmorItem>                  MAGE_HELMET                      = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 5));
-    DeferredItem<MageArmorItem>                  MAGE_CHESTPLATE                  = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 5));
-    DeferredItem<MageArmorItem>                  MAGE_LEGGINGS                    = ITEMS.register("mage_leggings", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 5));
-    DeferredItem<MageArmorItem>                  MAGE_BOOTS                       = ITEMS.register("mage_boots", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 5));
-    DeferredItem<MageArmorItem>                  BATTLEMAGE_HELMET                = ITEMS.register("battlemage_helmet", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 10));
-    DeferredItem<MageArmorItem>                  BATTLEMAGE_CHESTPLATE            = ITEMS.register("battlemage_chestplate", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 10));
-    DeferredItem<MageArmorItem>                  BATTLEMAGE_LEGGINGS              = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 10));
-    DeferredItem<MageArmorItem>                  BATTLEMAGE_BOOTS                 = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 10));
+    DeferredItem<MageArmorItem>                  MAGE_HELMET                      = ITEMS.register("mage_helmet", () -> new MageArmorItem(AMArmorMaterials.MAGE, ArmorItem.Type.HELMET, 5));
+    DeferredItem<MageArmorItem>                  MAGE_CHESTPLATE                  = ITEMS.register("mage_chestplate", () -> new MageArmorItem(AMArmorMaterials.MAGE, ArmorItem.Type.CHESTPLATE, 5));
+    DeferredItem<MageArmorItem>                  MAGE_LEGGINGS                    = ITEMS.register("mage_leggings", () -> new MageArmorItem(AMArmorMaterials.MAGE, ArmorItem.Type.LEGGINGS, 5));
+    DeferredItem<MageArmorItem>                  MAGE_BOOTS                       = ITEMS.register("mage_boots", () -> new MageArmorItem(AMArmorMaterials.MAGE, ArmorItem.Type.BOOTS, 5));
+    DeferredItem<MageArmorItem>                  BATTLEMAGE_HELMET                = ITEMS.register("battlemage_helmet", () -> new MageArmorItem(AMArmorMaterials.BATTLEMAGE, ArmorItem.Type.HELMET, 10));
+    DeferredItem<MageArmorItem>                  BATTLEMAGE_CHESTPLATE            = ITEMS.register("battlemage_chestplate", () -> new MageArmorItem(AMArmorMaterials.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, 10));
+    DeferredItem<MageArmorItem>                  BATTLEMAGE_LEGGINGS              = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(AMArmorMaterials.BATTLEMAGE, ArmorItem.Type.LEGGINGS, 10));
+    DeferredItem<MageArmorItem>                  BATTLEMAGE_BOOTS                 = ITEMS.register("battlemage_boots", () -> new MageArmorItem(AMArmorMaterials.BATTLEMAGE, ArmorItem.Type.BOOTS, 10));
     DeferredItem<DeferredSpawnEggItem>           WATER_GUARDIAN_SPAWN_EGG         = ITEMS.register("water_guardian_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.WATER_GUARDIAN, 0x324fac, 0xc9bc2f, ITEM_64));
     DeferredItem<DeferredSpawnEggItem>           FIRE_GUARDIAN_SPAWN_EGG          = ITEMS.register("fire_guardian_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.FIRE_GUARDIAN, 0xcb5420, 0xc9bc2f, ITEM_64));
     DeferredItem<DeferredSpawnEggItem>           EARTH_GUARDIAN_SPAWN_EGG         = ITEMS.register("earth_guardian_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.EARTH_GUARDIAN, 0x999999, 0xc9bc2f, ITEM_64));
@@ -145,7 +145,7 @@ public interface AMItems {
     DeferredItem<DeferredSpawnEggItem>           DRYAD_SPAWN_EGG                  = ITEMS.register("dryad_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
     DeferredItem<DeferredSpawnEggItem>           MAGE_SPAWN_EGG                   = ITEMS.register("mage_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
     DeferredItem<DeferredSpawnEggItem>           MANA_CREEPER_SPAWN_EGG           = ITEMS.register("mana_creeper_spawn_egg", () -> new DeferredSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
-    DeferredItem<BucketItem>                     LIQUID_ESSENCE_BUCKET            = ITEMS.register("liquid_essence_bucket", () -> new BucketItem(AMFluids.LIQUID_ESSENCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    DeferredItem<BucketItem>                     LIQUID_ESSENCE_BUCKET            = ITEMS.register("liquid_essence_bucket", () -> new BucketItem(AMFluids.LIQUID_ESSENCE.value(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     //TODO
 //    DeferredItem<NatureScytheItem>             NATURE_SCYTHE                = ITEMS.register("nature_scythe", NatureScytheItem::new);
 //    DeferredItem<WintersGraspItem>             WINTERS_GRASP                = ITEMS.register("winters_grasp", WintersGraspItem::new);

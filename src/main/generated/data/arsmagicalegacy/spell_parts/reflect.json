@@ -16,14 +16,14 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:rods/blaze"
+        "tag": "c:rods/blaze"
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:glass"
+        "tag": "c:glass_blocks"
       }
     },
     {

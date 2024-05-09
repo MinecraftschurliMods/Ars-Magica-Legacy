@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "arsmagicalegacy:arcane_compound"
   },
-  "result": "arsmagicalegacy:arcane_ash"
+  "result": {
+    "count": 1,
+    "id": "arsmagicalegacy:arcane_ash"
+  }
 }

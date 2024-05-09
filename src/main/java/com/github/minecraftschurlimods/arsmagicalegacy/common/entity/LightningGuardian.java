@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public class LightningGuardian extends AbstractBoss {
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
@@ -25,7 +25,11 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 4000).add(AMAttributes.MAX_BURNOUT.value(), 4000);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 250)
+                .add(Attributes.ARMOR, 20)
+                .add(AMAttributes.MAX_MANA, 4000)
+                .add(AMAttributes.MAX_BURNOUT, 4000);
     }
 
     @Override

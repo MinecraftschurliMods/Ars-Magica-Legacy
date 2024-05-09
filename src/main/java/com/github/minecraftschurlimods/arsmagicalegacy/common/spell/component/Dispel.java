@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +18,7 @@ public class Dispel extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {
-            List<MobEffect> effects = new ArrayList<>();
+            List<Holder<MobEffect>> effects = new ArrayList<>();
             int left = 6;
             for (MobEffectInstance effect : living.getActiveEffects()) {
                 int amplifier = effect.getAmplifier() + 1;
@@ -26,10 +27,10 @@ public class Dispel extends AbstractComponent {
                     effects.add(effect.getEffect());
                 }
             }
-            for (MobEffect effect : effects) {
+            for (Holder<MobEffect> effect : effects) {
                 living.removeEffect(effect);
             }
-            return effects.size() == 0 ? SpellCastResult.EFFECT_FAILED : SpellCastResult.SUCCESS;
+            return effects.isEmpty() ? SpellCastResult.EFFECT_FAILED : SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
     }

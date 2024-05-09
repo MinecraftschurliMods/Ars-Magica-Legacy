@@ -2,10 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.mojang.serialization.Codec;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,9 +14,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.function.Supplier;
 
@@ -23,10 +23,9 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
-    private static final Supplier<AttachmentType<Float>> MANA = ATTACHMENT_TYPES.register("mana", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((owner, inst) -> inst).build());
+    private static final Supplier<AttachmentType<Float>> MANA = ATTACHMENT_TYPES.register("mana", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((inst, owner, provider) -> inst).build());
 
-    private ManaHelper() {
-    }
+    private ManaHelper() {}
 
     /**
      * @return The only instance of this class.
@@ -55,7 +54,7 @@ public final class ManaHelper implements IManaHelper {
 
     @Override
     public float getMaxMana(LivingEntity entity) {
-        return entity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.value()) ? (float) entity.getAttributeValue(AMAttributes.MAX_MANA.value()) : 0f;
+        return entity.getAttributes().hasAttribute(AMAttributes.MAX_MANA) ? (float) entity.getAttributeValue(AMAttributes.MAX_MANA) : 0f;
     }
 
     @Override
@@ -96,32 +95,24 @@ public final class ManaHelper implements IManaHelper {
      */
     public void syncToPlayer(LivingEntity entity) {
         if (!(entity instanceof ServerPlayer serverPlayer)) return;
-        PacketDistributor.PLAYER.with(serverPlayer).send(new ManaSyncPacket(entity.getData(MANA)));
+        serverPlayer.connection.send(new ManaSyncPacket(entity.getData(MANA)));
     }
 
-    public static void registerSyncPacket(IPayloadRegistrar registrar) {
-        registrar.play(ManaSyncPacket.ID, ManaSyncPacket::new, builder -> builder.client(ManaSyncPacket::handle));
+    public static void registerSyncPacket(PayloadRegistrar registrar) {
+        registrar.playToClient(ManaSyncPacket.TYPE, ManaSyncPacket.STREAM_CODEC, ManaSyncPacket::handle);
     }
 
     private record ManaSyncPacket(float mana) implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_sync");
+        public static final Type<ManaSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_sync"));
+        public static final StreamCodec<ByteBuf, ManaSyncPacket> STREAM_CODEC = ByteBufCodecs.FLOAT.map(ManaSyncPacket::new, ManaSyncPacket::mana);
 
-        public ManaSyncPacket(FriendlyByteBuf buf) {
-            this(buf.readFloat());
+        public void handle(IPayloadContext context) {
+            context.player().setData(MANA, this.mana());
         }
 
         @Override
-        public void write(FriendlyByteBuf buf) {
-            buf.writeFloat(this.mana());
-        }
-
-        @Override
-        public ResourceLocation id() {
-            return ID;
-        }
-
-        public void handle(PlayPayloadContext context) {
-            context.workHandler().execute(() -> context.player().orElseGet(ClientHelper::getLocalPlayer).setData(MANA, this.mana()));
+        public Type<ManaSyncPacket> type() {
+            return TYPE;
         }
     }
 }

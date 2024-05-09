@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ],
+  "type": "ars_nouveau:crush",
+  "input": {
+    "item": "arsmagicalegacy:cerublossom"
+  },
+  "output": [
+    {
+      "chance": 1.0,
+      "count": 2,
+      "item": "minecraft:blue_dye",
+      "maxRange": 1
+    }
+  ],
+  "skip_block_place": false
+}

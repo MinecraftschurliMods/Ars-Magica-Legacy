@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.neoforge.common.TierSortingRegistry;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Dig extends AbstractComponent {
         if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
         var api = ArsMagicaAPI.get();
         var helper = api.getSpellHelper();
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int) helper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target, index)), state))
+        if (!state.requiresCorrectToolForDrops() && !TierMapping.instance().getTierForPower((int) helper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target, index)).isCorrectForDrops(state))
             return SpellCastResult.EFFECT_FAILED;
         if (!(caster instanceof Player player && player.isCreative()) && !api.getManaHelper().decreaseMana(caster, hardness * 1.28f))
             return SpellCastResult.NOT_ENOUGH_MANA;

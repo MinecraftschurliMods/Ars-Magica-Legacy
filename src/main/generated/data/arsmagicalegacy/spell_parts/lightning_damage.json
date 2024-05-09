@@ -23,7 +23,7 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:gems/chimerite"
+        "tag": "c:gems/chimerite"
       }
     },
     {

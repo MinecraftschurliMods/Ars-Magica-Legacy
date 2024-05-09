@@ -184,7 +184,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         var registryAccess = getMinecraft().getConnection().registryAccess();
         if (player != null && hoverItem != null && !helper.knows(player, hoverItem, registryAccess)) {
             if (helper.canLearn(player, hoverItem) || player.isCreative()) {
-                PacketDistributor.SERVER.noArg().send(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
+                PacketDistributor.sendToServer(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
             }
         } else {
             setDragging(true);

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:deepslate_moonstone_ore"
-            ]
+            "items": "arsmagicalegacy:deepslate_moonstone_ore"
           }
         ]
       },

@@ -2,18 +2,23 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.loot.AddPoolToTableModifier;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AMGlobalLootModifierProvider extends GlobalLootModifierProvider {
-    public AMGlobalLootModifierProvider(PackOutput output) {
-        super(output, ArsMagicaAPI.MOD_ID);
+    public AMGlobalLootModifierProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, ArsMagicaAPI.MOD_ID);
     }
 
     @Override
@@ -42,11 +47,11 @@ public class AMGlobalLootModifierProvider extends GlobalLootModifierProvider {
         addTomeModifier(BuiltInLootTables.END_CITY_TREASURE);
     }
 
-    private void addTomeModifier(ResourceLocation table) {
-        String path = table.getPath();
+    private void addTomeModifier(ResourceKey<LootTable> table) {
+        String path = table.location().getPath();
         add(path.replace("chests/", ""), new AddPoolToTableModifier(
-                new LootItemCondition[]{LootTableIdCondition.builder(table).build()},
-                new ResourceLocation(ArsMagicaAPI.MOD_ID, path.replace("chests/", "chests/modify/")),
-                List.of(table)));
+                new LootItemCondition[]{LootTableIdCondition.builder(table.location()).build()},
+                ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(ArsMagicaAPI.MOD_ID, path.replace("chests/", "chests/modify/"))),
+                List.of(table.location())));
     }
 }

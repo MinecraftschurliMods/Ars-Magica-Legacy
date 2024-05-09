@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
@@ -10,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
@@ -66,7 +68,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -74,10 +76,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
@@ -92,9 +92,8 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -103,7 +102,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
@@ -148,12 +146,12 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::modifyStats);
         forgeBus.addListener(EventHandler::playerLevelUp);
         forgeBus.addListener(EventPriority.LOW, EventHandler::afterPlayerClone);
+        forgeBus.addListener(EventHandler::registerBrewingRecipes);
     }
 
     private static void setup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             WoodType.register(AMWoodTypes.WITCHWOOD);
-            registerBrewingRecipes();
         });
         CompatManager.init(event);
     }
@@ -176,24 +174,26 @@ public final class EventHandler {
                     var api = ArsMagicaAPI.get();
                     for (DeferredHolder<Item, ? extends Item> o : AMRegistries.ITEMS.getEntries()) {
                         if (!o.isBound()) continue;
-                        Item item = o.get();
-                        if (item instanceof ISkillPointItem skillPointItem) {
-                        for (SkillPoint point : api.getSkillPointRegistry()) {
-                            if (point != AMSkillPoints.NONE.value()) {
-                                   list.add(skillPointItem.setSkillPoint(new ItemStack(item), point));
-                               }
-                        }
-                        continue;
-                        }
-                        if (item instanceof IAffinityItem affinityItem) {
-                            for (Affinity affinity : api.getAffinityRegistry()) {
-                                if (Affinity.NONE.equals(affinity.getId())) continue;
-                                list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
+                        switch (o.get()) {
+                            case ISkillPointItem skillPointItem -> {
+                                ISkillHelper skillHelper = api.getSkillHelper();
+                                for (SkillPoint point : api.getSkillPointRegistry()) {
+                                    if (point == AMSkillPoints.NONE.value()) continue;
+                                    list.add(skillHelper.getStackForSkillPoint((Item & ISkillPointItem) skillPointItem, point));
+                                }
                             }
-                            continue;
-                        }
-                        if (!AMItems.HIDDEN_ITEMS.contains(o)) {
-                            list.add(new ItemStack(item));
+                            case IAffinityItem affinityItem -> {
+                                IAffinityHelper affinityHelper = api.getAffinityHelper();
+                                for (Affinity affinity : api.getAffinityRegistry()) {
+                                    if (Affinity.NONE.equals(affinity.getId())) continue;
+                                    list.add(affinityHelper.getStackForAffinity((Item & IAffinityItem) affinityItem, affinity));
+                                }
+                            }
+                            case Item item -> {
+                                if (!AMItems.HIDDEN_ITEMS.contains(o)) {
+                                    list.add(new ItemStack(item));
+                                }
+                            }
                         }
                     }
                    output.acceptAll(list);
@@ -206,34 +206,23 @@ public final class EventHandler {
                 .withTabsBefore(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .icon(() -> AMItems.SPELL_PARCHMENT.asOptional().map(ItemStack::new).orElse(ItemStack.EMPTY))
                 .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
-                .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept))
+                .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(ArsMagicaAPI.get().getSpellHelper()::makeSpellFromPrefab).forEach(output::accept))
                 .build();
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
-        evt.register(AMEntities.DRYAD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        evt.register(AMEntities.DRYAD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
     }
 
-    private static void registerBrewingRecipes() {
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LESSER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.STANDARD_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.GREATER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.EPIC_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LEGENDARY_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.INFUSED_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.LESSER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.STANDARD_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.GREATER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.EPIC_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.LEGENDARY_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), AMMobEffects.INFUSED_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.LESSER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.STANDARD_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.GREATER_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.EPIC_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.LEGENDARY_MANA.value()));
-        BrewingRecipeRegistry.addRecipe(NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.INFUSED_MANA.value()));
+    private static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        PotionBrewing.Builder builder = event.getBuilder();
+        builder.addMix(Potions.AWKWARD, AMItems.CHIMERITE.get(), AMMobEffects.LESSER_MANA);
+        builder.addMix(Potions.AWKWARD, AMItems.WAKEBLOOM.get(), AMMobEffects.STANDARD_MANA);
+        builder.addMix(Potions.AWKWARD, AMItems.VINTEUM_DUST.get(), AMMobEffects.GREATER_MANA);
+        builder.addMix(Potions.AWKWARD, AMItems.ARCANE_ASH.get(), AMMobEffects.EPIC_MANA);
+        builder.addMix(Potions.AWKWARD, AMItems.PURIFIED_VINTEUM_DUST.get(), AMMobEffects.LEGENDARY_MANA);
+        builder.addMix(Potions.AWKWARD, AMItems.TARMA_ROOT.get(), AMMobEffects.INFUSED_MANA);
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -263,13 +252,10 @@ public final class EventHandler {
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, AMAttributes.MAX_MANA.value());
-        event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.value());
-        event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.value());
-        event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.value());
-        for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
-            event.add(entity, AMAttributes.SCALE.value());
-        }
+        event.add(EntityType.PLAYER, AMAttributes.MAX_MANA);
+        event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT);
+        event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN);
+        event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN);
     }
 
     private static void afterPlayerClone(PlayerEvent.Clone event) {
@@ -303,12 +289,12 @@ public final class EventHandler {
         var api = ArsMagicaAPI.get();
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getEntity())) return;
-        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
+        if (!ItemStack.isSameItemSameComponents(api.getBookStack(), event.getCrafting())) return;
         helper.awardXp(event.getEntity(), 0);
     }
 
     private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        AttributeInstance maxManaAttr = event.getEntity().getAttribute(AMAttributes.MAX_MANA.value());
+        AttributeInstance maxManaAttr = event.getEntity().getAttribute(AMAttributes.MAX_MANA);
         if (maxManaAttr != null) {
             ArsMagicaAPI.get().getManaHelper().increaseMana(event.getEntity(), (float) (maxManaAttr.getBaseValue() / 2));
         }
@@ -342,7 +328,7 @@ public final class EventHandler {
         } else {
             lectern.pageCount = SpellRecipeItem.getPageCount(stack);
             if (player instanceof ServerPlayer sp) {
-                PacketDistributor.PLAYER.with(sp).send(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()));
+                sp.connection.send(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()));
             }
             player.awardStat(Stats.INTERACT_WITH_LECTERN);
             event.setCanceled(true);
@@ -404,24 +390,24 @@ public final class EventHandler {
             }
         }
         float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (magicLevel - 1);
-        AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.value());
+        AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA);
         if (maxManaAttr != null) {
             IManaHelper manaHelper = api.getManaHelper();
             maxManaAttr.setBaseValue(newMaxMana);
             manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
-        AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN.value());
+        AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN);
         if (manaRegenAttr != null) {
             manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get() );
         }
         float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (magicLevel - 1);
-        AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.value());
+        AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT);
         if (maxBurnoutAttr != null) {
             IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
-        AttributeInstance burnoutRegenAttr = player.getAttribute(AMAttributes.BURNOUT_REGEN.value());
+        AttributeInstance burnoutRegenAttr = player.getAttribute(AMAttributes.BURNOUT_REGEN);
         if (burnoutRegenAttr != null) {
             burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get() );
         }

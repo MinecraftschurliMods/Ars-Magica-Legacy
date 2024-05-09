@@ -8,7 +8,6 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -34,8 +33,8 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ResourceLocation> skill) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<PlayerLearnedSkillTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(TriggerInstance::player),
-                ExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "skill").forGetter(TriggerInstance::skill)
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+                ResourceLocation.CODEC.optionalFieldOf("skill").forGetter(TriggerInstance::skill)
         ).apply(inst, TriggerInstance::new));
 
         /**

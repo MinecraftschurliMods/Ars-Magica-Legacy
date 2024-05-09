@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:crops/wheat"
+      "tag": "c:crops/wheat"
     },
     {
       "item": "minecraft:sugar"
@@ -17,6 +17,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "arsmagicalegacy:mana_cake"
+    "id": "arsmagicalegacy:mana_cake"
   }
 }

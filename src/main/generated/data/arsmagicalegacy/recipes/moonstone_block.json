@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:gems/moonstone"
+      "tag": "c:gems/moonstone"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "arsmagicalegacy:moonstone_block"
+    "count": 1,
+    "id": "arsmagicalegacy:moonstone_block"
   }
 }

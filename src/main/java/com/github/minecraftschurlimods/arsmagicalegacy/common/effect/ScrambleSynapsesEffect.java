@@ -10,10 +10,11 @@ public class ScrambleSynapsesEffect extends AMMobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if (pLivingEntity.level().getRandom().nextInt(80) < 10) {
             Direction direction = Direction.from2DDataValue(pLivingEntity.level().getRandom().nextInt(4));
             pLivingEntity.setDeltaMovement(pLivingEntity.getDeltaMovement().add(direction.getStepX() / 2f, direction.getStepY() / 2f, direction.getStepZ() / 2f));
         }
+        return super.applyEffectTick(pLivingEntity, pAmplifier);
     }
 }

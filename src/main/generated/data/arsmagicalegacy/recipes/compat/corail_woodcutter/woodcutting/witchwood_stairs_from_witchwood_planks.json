@@ -1,0 +1,14 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "corail_woodcutter"
+    }
+  ],
+  "type": "corail_woodcutter:woodcutting",
+  "count": 1,
+  "ingredient": {
+    "item": "arsmagicalegacy:witchwood_planks"
+  },
+  "result": "arsmagicalegacy:witchwood_stairs"
+}

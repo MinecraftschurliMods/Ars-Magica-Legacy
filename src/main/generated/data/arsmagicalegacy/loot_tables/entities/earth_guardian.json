@@ -8,8 +8,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:earth"
+              },
+              "function": "minecraft:set_components"
             }
           ],
           "name": "arsmagicalegacy:affinity_essence"

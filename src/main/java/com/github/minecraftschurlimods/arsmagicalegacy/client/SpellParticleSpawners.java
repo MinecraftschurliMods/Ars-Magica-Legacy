@@ -26,10 +26,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitPoin
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -492,7 +492,7 @@ public final class SpellParticleSpawners {
     private static void heal(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         Entity target = ehr.getEntity();
-        if (target instanceof LivingEntity living && living.getMobType() == MobType.UNDEAD) {
+        if (target instanceof LivingEntity living && living.getType().is(EntityTypeTags.UNDEAD)) {
             particles(25, hit, AMParticleTypes.SYMBOLS.random(random), color == -1 ? 0xff3333 : color, null, particle -> {
                 particle.setY(particle.getY() - 1);
                 particle.scale(0.1f);
@@ -683,25 +683,17 @@ public final class SpellParticleSpawners {
 
     //region non-component
     public static void handleReceivedPacket(int i) {
-        Entity entity = Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i);
-        if (entity == null) {
-            ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
-        } else if (entity instanceof Blizzard blizzard) {
-            blizzard(blizzard);
-        } else if (entity instanceof FallingStar fallingStar) {
-            fallingStar(fallingStar);
-        } else if (entity instanceof FireRain fireRain) {
-            fireRain(fireRain);
-        } else if (entity instanceof ManaVortex manaVortex) {
-            manaVortex(manaVortex);
-        } else if (entity instanceof Projectile projectile) {
-            projectile(projectile);
-        } else if (entity instanceof Wall wall) {
-            wall(wall);
-        } else if (entity instanceof Wave wave) {
-            wave(wave);
-        } else if (entity instanceof Zone zone) {
-            zone(zone);
+        switch (Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i)) {
+            case null -> ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
+            case Blizzard blizzard -> blizzard(blizzard);
+            case FallingStar fallingStar -> fallingStar(fallingStar);
+            case FireRain fireRain -> fireRain(fireRain);
+            case ManaVortex manaVortex -> manaVortex(manaVortex);
+            case Projectile projectile -> projectile(projectile);
+            case Wall wall -> wall(wall);
+            case Wave wave -> wave(wave);
+            case Zone zone -> zone(zone);
+            default -> {}
         }
     }
 

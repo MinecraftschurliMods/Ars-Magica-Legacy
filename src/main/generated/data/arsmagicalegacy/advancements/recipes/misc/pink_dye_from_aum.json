@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:aum"
-            ]
+            "items": "arsmagicalegacy:aum"
           }
         ]
       },

@@ -13,7 +13,6 @@ import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
@@ -28,7 +27,7 @@ public record Ability(Affinity affinity, MinMaxBounds.Doubles bounds) implements
     public static final ResourceKey<Registry<Ability>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, ABILITY));
 
     public static final Codec<Ability> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getAffinityRegistry().byNameCodec()).fieldOf("affinity").forGetter(Ability::affinity),
+            Codec.lazyInitialized(() -> ArsMagicaAPI.get().getAffinityRegistry().byNameCodec()).fieldOf("affinity").forGetter(Ability::affinity),
             MinMaxBounds.Doubles.CODEC.fieldOf("bounds").forGetter(Ability::bounds)
     ).apply(inst, Ability::new));
 

@@ -1,6 +1,6 @@
 {
   "category": "arsmagicalegacy:items",
-  "icon": "arsmagicalegacy:mage_helmet{\"Damage\":0}",
+  "icon": "arsmagicalegacy:mage_helmet",
   "name": "item.arsmagicalegacy.arcane_compendium.items.mage_armor.name",
   "pages": [
     {

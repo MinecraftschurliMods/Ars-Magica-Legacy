@@ -9,24 +9,36 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "neoforge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
-        "strict": true,
-        "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
+        "type": "neoforge:components",
+        "components": {
+          "arsmagicalegacy:affinity": "arsmagicalegacy:arcane",
+          "minecraft:attribute_modifiers": {
+            "modifiers": []
+          },
+          "minecraft:enchantments": {
+            "levels": {}
+          },
+          "minecraft:lore": [],
+          "minecraft:max_stack_size": 64,
+          "minecraft:rarity": "common",
+          "minecraft:repair_cost": 0
+        },
+        "items": "arsmagicalegacy:affinity_essence",
+        "strict": true
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:dusts/arcane_ash"
+        "tag": "c:dusts/arcane_ash"
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:end_stones"
+        "tag": "c:end_stones"
       }
     },
     {

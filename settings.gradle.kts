@@ -1,7 +1,7 @@
 pluginManagement {
     plugins {
-        id("net.neoforged.gradle.userdev") version "7.0.106"
-        id("com.github.minecraftschurlimods.helperplugin") version "1.11"
+        id("net.neoforged.gradle.userdev") version "7.0.107"
+        id("com.github.minecraftschurlimods.helperplugin") version "1.12"
     }
     repositories {
         mavenLocal()
@@ -12,7 +12,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
 }
 
 rootProject.name = "Ars-Magica-Legacy"

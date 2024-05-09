@@ -16,20 +16,28 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "neoforge:nbt",
-        "item": "minecraft:potion",
-        "strict": true,
-        "tag": "{Potion:\"minecraft:night_vision\"}"
+        "type": "neoforge:components",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:night_vision"
+          }
+        },
+        "items": "minecraft:potion",
+        "strict": true
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "neoforge:nbt",
-        "item": "minecraft:potion",
-        "strict": true,
-        "tag": "{Potion:\"minecraft:weakness\"}"
+        "type": "neoforge:components",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:weakness"
+          }
+        },
+        "items": "minecraft:potion",
+        "strict": true
       }
     }
   ]

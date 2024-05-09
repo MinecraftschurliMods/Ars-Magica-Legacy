@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -23,6 +24,7 @@ import net.neoforged.fml.util.thread.EffectiveSide;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class SpellRecipeItem extends Item {
     public SpellRecipeItem() {
@@ -66,7 +68,7 @@ public class SpellRecipeItem extends Item {
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
         if (!spell.isValid()) return Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID);
-        return helper.getSpellName(pStack).orElse(super.getName(pStack));
+        return Optional.ofNullable(pStack.get(AMDataComponents.SPELL_NAME)).orElse(super.getName(pStack));
     }
 
     @Override

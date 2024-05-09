@@ -11,7 +11,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.ExtraCodecs;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
                 Codec.unboundedMap(ArsMagicaAPI.get().getAffinityRegistry().byNameCodec(), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 ItemFilter.CODEC.listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
-                ExtraCodecs.strictOptionalField(Codec.FLOAT, "burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.getBurnout()))
+                Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.getBurnout()))
         ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.<Supplier<Float>>map(v -> (() -> v)).orElse(() -> (float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
 
         @Override

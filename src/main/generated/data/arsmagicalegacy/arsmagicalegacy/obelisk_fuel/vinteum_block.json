@@ -2,6 +2,6 @@
   "burn_time": 900,
   "etherium_per_tick": 2,
   "input": {
-    "tag": "forge:storage_blocks/vinteum"
+    "tag": "c:storage_blocks/vinteum"
   }
 }

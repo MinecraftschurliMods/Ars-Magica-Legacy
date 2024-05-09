@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "V": {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     }
   },
   "pattern": [
@@ -14,6 +14,7 @@
     "S"
   ],
   "result": {
-    "item": "arsmagicalegacy:vinteum_torch"
+    "count": 1,
+    "id": "arsmagicalegacy:vinteum_torch"
   }
 }

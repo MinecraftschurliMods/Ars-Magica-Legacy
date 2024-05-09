@@ -1,8 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
@@ -12,18 +15,21 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellParticleSpawner;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentParticlesPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.DataResult;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -42,23 +48,20 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.items.wrapper.PlayerMainInvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
-    private static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
-    private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
-    private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+    private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
     private final Map<ISpellComponent, ISpellParticleSpawner> particleSpawners = new HashMap<>();
 
-    private SpellHelper() {
-    }
+    private SpellHelper() {}
 
     /**
      * @return The only instance of this class.
@@ -68,14 +71,74 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
+    public SpellCastResult cast(ISpell spell, LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
+        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
+            return SpellCastResult.NO_PERMISSION;
+        if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, spell)).isCanceled()) return SpellCastResult.CANCELLED;
+        if (caster.hasEffect(AMMobEffects.SILENCE)) return SpellCastResult.SILENCED;
+        float mana = spell.mana(caster);
+        float burnout = spell.burnout(caster);
+        Collection<ItemFilter> reagents = spell.reagents(caster);
+        var api = ArsMagicaAPI.get();
+        var manaHelper = api.getManaHelper();
+        var burnoutHelper = api.getBurnoutHelper();
+        var spellHelper = api.getSpellHelper();
+        if (consume && !(caster instanceof Player p && p.isCreative())) {
+            if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
+            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
+            if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
+        }
+        SpellCastResult result = spellHelper.invoke(spell, caster, level, null, castingTicks, 0, awardXp);
+        if (level.isClientSide()) {
+            NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, spell));
+            return result;
+        }
+        if (caster instanceof Player p && p.isCreative()) return result;
+        if (consume && result.isConsume()) {
+            manaHelper.decreaseMana(caster, mana, true);
+            burnoutHelper.increaseBurnout(caster, burnout);
+            spellHelper.consumeReagents(caster, reagents);
+        }
+        NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, spell));
+        if (awardXp && result.isSuccess() && caster instanceof Player player) {
+            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).containsKey(AFFINITY_GAINS);
+            boolean continuous = spell.isContinuous();
+            Map<Affinity, Double> affinityShifts = spell.affinityShifts();
+            for (Map.Entry<Affinity, Double> entry : affinityShifts.entrySet()) {
+                Affinity affinity = entry.getKey();
+                Double shift = entry.getValue();
+                if (continuous) {
+                    shift /= 4;
+                }
+                if (affinityGains) {
+                    shift *= 1.1;
+                }
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
+                if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
+                    var helper = ArsMagicaAPI.get().getAffinityHelper();
+                    helper.applyAffinityShift(player, event.affinity, event.shift);
+                    helper.updateLock(player);
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, event.affinity, (float) helper.getAffinityDepth(player, event.affinity), false));
+                }
+            }
+            float xp = 0.05f * affinityShifts.size();
+            if (continuous) xp /= 4;
+            if (affinityGains) xp *= 0.9f;
+            api.getMagicHelper().awardXp(player, xp);
+        }
+        return result;
+    }
+
+    @Override
     public ISpell getSpell(ItemStack stack) {
         if (stack.isEmpty()) return ISpell.EMPTY;
-        return ISpell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(ArsMagicaLegacy.LOGGER::warn).left().orElse(ISpell.EMPTY);
+        return stack.getOrDefault(AMDataComponents.SPELL, ISpell.EMPTY);
     }
 
     @Override
     public void setSpell(ItemStack stack, ISpell spell) {
-        stack.getOrCreateTag().put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(ArsMagicaLegacy.LOGGER::warn).left().orElse(new CompoundTag()));
+        stack.set(AMDataComponents.SPELL, spell);
     }
 
     @Override
@@ -94,37 +157,6 @@ public final class SpellHelper implements ISpellHelper {
             stack = SpellBookItem.getSelectedSpell(stack);
         }
         return stack;
-    }
-
-    @Override
-    public Optional<Component> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty()).map(s -> {
-            try {
-                return Component.Serializer.fromJson(s);
-            } catch (Exception e) {
-                return null;
-            }
-        });
-    }
-
-    @Override
-    public void setSpellName(ItemStack stack, String name) {
-        setSpellName(stack, Component.nullToEmpty(name));
-    }
-
-    @Override
-    public void setSpellName(ItemStack stack, Component name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, Component.Serializer.toJson(name));
-    }
-
-    @Override
-    public Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
-    }
-
-    @Override
-    public void setSpellIcon(ItemStack stack, ResourceLocation icon) {
-        stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
     }
 
     @Override
@@ -203,21 +235,22 @@ public final class SpellHelper implements ISpellHelper {
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, modifiers, target)).isCanceled())
                     return SpellCastResult.CANCELLED;
-                if (target instanceof EntityHitResult entityHitResult) {
-                    result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
-                    if (result.isSuccess()) {
-                        Vec3 location = target.getLocation();
-                        PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
-                        PacketDistributor.NEAR.with(targetPoint).send(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
+                switch (target) {
+                    case EntityHitResult entityHitResult -> {
+                        result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
+                        if (result.isSuccess()) {
+                            Vec3 location = target.getLocation();
+                            PacketDistributor.sendToPlayersNear((ServerLevel) level, null, location.x, location.y, location.z, 64, new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
+                        }
                     }
-                }
-                if (target instanceof BlockHitResult blockHitResult) {
-                    result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
-                    if (result.isSuccess()) {
-                        Vec3 location = target.getLocation();
-                        PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
-                        PacketDistributor.NEAR.with(targetPoint).send(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
+                    case BlockHitResult blockHitResult -> {
+                        result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
+                        if (result.isSuccess()) {
+                            Vec3 location = target.getLocation();
+                            PacketDistributor.sendToPlayersNear((ServerLevel) level, null, location.x, location.y, location.z, 64, new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
+                        }
                     }
+                    case null, default -> {}
                 }
                 return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
             }
@@ -235,12 +268,12 @@ public final class SpellHelper implements ISpellHelper {
     public void nextShapeGroup(ItemStack stack) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
-        byte index = (byte) (spell.currentShapeGroupIndex() + 1);
+        long index = (spell.currentShapeGroupIndex() + 1);
         long count = spell.shapeGroups().stream().filter(e -> !e.isEmpty()).count();
         if (index >= count) {
             index -= count;
         }
-        spell.currentShapeGroupIndex(index);
+        spell.currentShapeGroupIndex((byte) index);
         helper.setSpell(stack, spell);
     }
 
@@ -248,17 +281,27 @@ public final class SpellHelper implements ISpellHelper {
     public void prevShapeGroup(ItemStack stack) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
-        byte index = (byte) (spell.currentShapeGroupIndex() - 1);
+        long index = (spell.currentShapeGroupIndex() - 1);
         long count = spell.shapeGroups().stream().filter(e -> !e.isEmpty()).count();
         if (index < 0) {
             index += count;
         }
-        spell.currentShapeGroupIndex(index);
+        spell.currentShapeGroupIndex((byte) index);
         helper.setSpell(stack, spell);
     }
 
     @Override
     public int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor) {
         return (int) getModifiedStat(defaultColor, SpellPartStats.COLOR, modifiers, spell, caster, null, index);
+    }
+
+    @Override
+    public ItemStack makeSpellFromPrefab(PrefabSpell prefabSpell) {
+        ItemStack stack = new ItemStack(AMItems.SPELL.value());
+        stack.set(AMDataComponents.SPELL, prefabSpell.spell());
+        stack.set(AMDataComponents.SPELL_NAME, prefabSpell.name());
+        stack.set(DataComponents.ITEM_NAME, prefabSpell.name());
+        stack.set(AMDataComponents.SPELL_ICON, prefabSpell.icon());
+        return stack;
     }
 }

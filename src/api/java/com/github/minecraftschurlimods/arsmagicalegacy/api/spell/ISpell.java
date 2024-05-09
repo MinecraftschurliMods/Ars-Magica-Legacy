@@ -7,8 +7,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -34,6 +36,15 @@ public interface ISpell {
             SpellStack.CODEC.fieldOf(SPELL_STACK_KEY).forGetter(ISpell::spellStack),
             CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(ISpell::additionalData)
     ).apply(inst, (shapeGroups, spellStack, compoundTag) -> ArsMagicaAPI.get().makeSpell(shapeGroups, spellStack, compoundTag)));
+    StreamCodec<RegistryFriendlyByteBuf, ISpell> STREAM_CODEC = StreamCodec.composite(
+            ShapeGroup.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            ISpell::shapeGroups,
+            SpellStack.STREAM_CODEC,
+            ISpell::spellStack,
+            ByteBufCodecs.COMPOUND_TAG,
+            ISpell::additionalData,
+            (shapeGroups, spellStack, compoundTag) -> ArsMagicaAPI.get().makeSpell(shapeGroups, spellStack, compoundTag)
+    );
     //@formatter:on
     ISpell EMPTY = ArsMagicaAPI.get().makeSpell(SpellStack.EMPTY);
 
@@ -87,18 +98,6 @@ public interface ISpell {
      * @param shapeGroup The shape group index to set.
      */
     void currentShapeGroupIndex(byte shapeGroup);
-
-    /**
-     * Casts the spell.
-     *
-     * @param caster       The player that casts the spell.
-     * @param level        The level that the caster is in.
-     * @param castingTicks The amount of ticks this spell has been cast already.
-     * @param consume      Whether to consume the spell result or not.
-     * @param awardXp      Whether to grant the player magic xp or not.
-     * @return A SpellCastResult that represents the spell casting outcome.
-     */
-    SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp);
 
     /**
      * @return An unmodifiable list that represents a part list with their corresponding modifiers.

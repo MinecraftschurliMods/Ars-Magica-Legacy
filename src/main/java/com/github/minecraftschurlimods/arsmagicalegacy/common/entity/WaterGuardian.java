@@ -25,9 +25,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public class WaterGuardian extends AbstractBoss {
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
@@ -37,11 +37,15 @@ public class WaterGuardian extends AbstractBoss {
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
-        setPathfindingMalus(BlockPathTypes.WATER, 0);
+        setPathfindingMalus(PathType.WATER, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 80).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 500).add(AMAttributes.MAX_BURNOUT.value(), 500);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 80)
+                .add(Attributes.ARMOR, 10)
+                .add(AMAttributes.MAX_MANA, 500)
+                .add(AMAttributes.MAX_BURNOUT, 500);
     }
 
     @Override
@@ -77,9 +81,9 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(IS_CLONE, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(IS_CLONE, false);
     }
 
     @Override

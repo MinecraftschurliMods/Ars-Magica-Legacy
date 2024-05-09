@@ -1,16 +1,20 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -20,16 +24,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
@@ -63,7 +64,12 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public ItemStack getEssenceForAffinity(Holder<Affinity> affinity) {
-        return getEssenceForAffinity(affinity.unwrapKey().get().location());
+        return getEssenceForAffinity(affinity.unwrapKey().orElseThrow());
+    }
+
+    @Override
+    public ItemStack getEssenceForAffinity(ResourceKey<Affinity> affinity) {
+        return getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), affinity);
     }
 
     @Override
@@ -82,26 +88,36 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public ItemStack getTomeForAffinity(ResourceKey<Affinity> affinity) {
+        return getStackForAffinity(AMItems.AFFINITY_TOME.get(), affinity);
+    }
+
+    @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation aff) {
-        ItemStack stack = new ItemStack(item);
-        Optional.ofNullable(ArsMagicaAPI.get().getAffinityRegistry().get(aff)).ifPresent(affinity -> item.setAffinity(stack, affinity));
-        return stack;
+        
+        return getStackForAffinity(item, ArsMagicaAPI.get().getAffinityRegistry().get(aff));
     }
 
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity) {
-        return getStackForAffinity(item, affinity.getId());
+        ItemStack stack = new ItemStack(item);
+        stack.set(AMDataComponents.AFFINITY, affinity);
+        return stack;
     }
 
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Holder<Affinity> affinity) {
-        return getStackForAffinity(item, affinity.unwrapKey().get().location());
+        return getStackForAffinity(item, affinity.unwrapKey().orElseThrow());
+    }
+
+    @Override
+    public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceKey<Affinity> affinity) {
+        return getStackForAffinity(item, ArsMagicaAPI.get().getAffinityRegistry().get(affinity));
     }
 
     @Override
     public Affinity getAffinityForStack(ItemStack stack) {
-        if (stack.getItem() instanceof IAffinityItem item) return item.getAffinity(stack);
-        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().get(Affinity.NONE));
+        return stack.getOrDefault(AMDataComponents.AFFINITY, ArsMagicaAPI.get().getAffinityRegistry().get(Affinity.NONE.location()));
     }
 
     @Override
@@ -192,7 +208,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void applyAffinityShift(Player player, Affinity affinity, float shift) {
-        if (affinity.getId() == Affinity.NONE) return;
+        if (ArsMagicaAPI.get().getAffinityRegistry().getResourceKey(affinity).map(it -> it == Affinity.NONE).orElse(false)) return;
         AffinityHolder holder = player.getData(AFFINITY);
         if (holder.locked()) return;
         float adjacentDecrement = shift * ADJACENT_FACTOR;
@@ -202,17 +218,17 @@ public final class AffinityHelper implements IAffinityHelper {
         if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
             holder.setLocked(true);
         }
-        for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
-            holder.subtractFromAffinity(adjacent, adjacentDecrement);
+        for (Holder<Affinity> adjacent : affinity.getAdjacentAffinities()) {
+            adjacent.unwrapKey().ifPresent(key -> holder.subtractFromAffinity(key.location(), adjacentDecrement));
         }
-        for (ResourceLocation minorOpposite : affinity.minorOpposites()) {
-            holder.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
+        for (Holder<Affinity> minorOpposite : affinity.minorOpposites()) {
+            minorOpposite.unwrapKey().ifPresent(key -> holder.subtractFromAffinity(key.location(), minorOppositeDecrement));
         }
-        for (ResourceLocation majorOpposite : affinity.majorOpposites()) {
-            holder.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
+        for (Holder<Affinity> majorOpposite : affinity.majorOpposites()) {
+            majorOpposite.unwrapKey().ifPresent(key -> holder.subtractFromAffinity(key.location(), majorOppositeDecrement));
         }
-        ResourceLocation directOpposite = affinity.directOpposite();
-        holder.subtractFromAffinity(directOpposite, shift);
+        Holder<Affinity> directOpposite = affinity.directOpposite();
+        directOpposite.unwrapKey().ifPresent(key -> holder.subtractFromAffinity(key.location(), shift));
         syncToPlayer(player);
     }
 
@@ -254,49 +270,44 @@ public final class AffinityHelper implements IAffinityHelper {
      */
     public void syncToPlayer(Player player) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
-        PacketDistributor.PLAYER.with(serverPlayer).send(new AffinitySyncPacket(player.getData(AFFINITY)));
+        serverPlayer.connection.send(new AffinitySyncPacket(player.getData(AFFINITY)));
     }
 
-    public static void registerSyncPacket(IPayloadRegistrar registrar) {
-        registrar.play(AffinitySyncPacket.ID, AffinitySyncPacket::new, builder -> builder.client(AffinitySyncPacket::handle));
+    public static void registerSyncPacket(PayloadRegistrar registrar) {
+        registrar.playToClient(AffinitySyncPacket.TYPE, AffinitySyncPacket.STREAM_CODEC, AffinitySyncPacket::handle);
     }
 
-    private static final class AffinitySyncPacket extends CodecPacket<AffinityHolder> {
-        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_sync");
+    private record AffinitySyncPacket(AffinityHolder data) implements CustomPacketPayload {
+        public static final Type<AffinitySyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_sync"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, AffinitySyncPacket> STREAM_CODEC = AffinityHolder.STREAM_CODEC.map(AffinitySyncPacket::new, AffinitySyncPacket::data);
 
-        public AffinitySyncPacket(AffinityHolder data) {
-            super(data);
-        }
-
-        public AffinitySyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+        private void handle(IPayloadContext context) {
+            context.player().setData(AFFINITY, this.data);
         }
 
         @Override
-        protected Codec<AffinityHolder> codec() {
-            return AffinityHolder.CODEC;
-        }
-
-        @Override
-        public ResourceLocation id() {
-            return ID;
-        }
-
-        private void handle(PlayPayloadContext context) {
-            context.workHandler().execute(() -> context.player().orElseGet(ClientHelper::getLocalPlayer).setData(AFFINITY, this.data));
+        public Type<AffinitySyncPacket> type() {
+            return TYPE;
         }
     }
 
     public static final class AffinityHolder {
         public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE).<Map<ResourceLocation, Double>>xmap(HashMap::new, Function.identity()).fieldOf("depths").forGetter(AffinityHolder::depths),
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, AffinityHolder> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.map(HashMap::new, ResourceLocation.STREAM_CODEC, ByteBufCodecs.DOUBLE),
+                AffinityHolder::depths,
+                ByteBufCodecs.BOOL,
+                AffinityHolder::locked,
+                AffinityHolder::new
+        );
         private final Map<ResourceLocation, Double> depths;
         private boolean locked;
 
         public AffinityHolder(Map<ResourceLocation, Double> depths, boolean locked) {
-            this.depths = depths;
+            this.depths = new HashMap<>(depths);
             this.locked = locked;
         }
 
@@ -389,7 +400,7 @@ public final class AffinityHelper implements IAffinityHelper {
             return "AffinityHolder[" + "depths=" + depths + ",locked=" + locked + ']';
         }
 
-        public static AffinityHolder copy(IAttachmentHolder owner, AffinityHolder affinityHolder) {
+        public static AffinityHolder copy(AffinityHolder affinityHolder, IAttachmentHolder owner, HolderLookup.Provider affinityHolder2) {
             return new AffinityHolder(new HashMap<>(affinityHolder.depths()), affinityHolder.locked());
         }
     }

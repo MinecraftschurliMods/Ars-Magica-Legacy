@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/topaz"
+      "tag": "c:storage_blocks/topaz"
     }
   ],
   "result": {
     "count": 9,
-    "item": "arsmagicalegacy:topaz"
+    "id": "arsmagicalegacy:topaz"
   }
 }

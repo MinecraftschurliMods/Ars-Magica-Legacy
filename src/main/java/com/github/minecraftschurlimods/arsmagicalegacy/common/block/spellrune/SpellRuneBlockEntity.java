@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
@@ -8,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntiti
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
@@ -39,35 +39,35 @@ public class SpellRuneBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        pTag.put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        if (index != null) {
-            pTag.putInt(INDEX_KEY, index);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        if (tag.contains(SPELL_KEY)) {
+            spell = ISpell.CODEC.decode(NbtOps.INSTANCE, tag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow();
         }
-        if (casterId != null) {
-            pTag.putUUID(CASTER_KEY, casterId);
+        if (tag.contains(INDEX_KEY)) {
+            index = tag.getInt(INDEX_KEY);
         }
-        if (awardXp != null) {
-            pTag.putBoolean(AWARD_XP_KEY, awardXp);
+        if (tag.contains(CASTER_KEY)) {
+            casterId = tag.getUUID(CASTER_KEY);
         }
-        super.saveAdditional(pTag);
+        if (tag.contains(AWARD_XP_KEY)) {
+            awardXp = tag.getBoolean(AWARD_XP_KEY);
+        }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        if (pTag.contains(SPELL_KEY)) {
-            spell = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).getOrThrow());
+        if (index != null) {
+            tag.putInt(INDEX_KEY, index);
         }
-        if (pTag.contains(INDEX_KEY)) {
-            index = pTag.getInt(INDEX_KEY);
+        if (casterId != null) {
+            tag.putUUID(CASTER_KEY, casterId);
         }
-        if (pTag.contains(CASTER_KEY)) {
-            casterId = pTag.getUUID(CASTER_KEY);
+        if (awardXp != null) {
+            tag.putBoolean(AWARD_XP_KEY, awardXp);
         }
-        if (pTag.contains(AWARD_XP_KEY)) {
-            awardXp = pTag.getBoolean(AWARD_XP_KEY);
-        }
-        super.load(pTag);
     }
 
     /**

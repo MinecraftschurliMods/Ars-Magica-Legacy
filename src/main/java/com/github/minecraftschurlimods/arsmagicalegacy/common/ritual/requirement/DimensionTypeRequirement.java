@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.dimension.DimensionType;
 
 public record DimensionTypeRequirement(HolderSet<DimensionType> dimensionType) implements RitualRequirement {
-    public static final Codec<DimensionTypeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<DimensionTypeRequirement> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registries.DIMENSION_TYPE).fieldOf("dimension_type").forGetter(DimensionTypeRequirement::dimensionType)
     ).apply(inst, DimensionTypeRequirement::new));
 
@@ -39,7 +39,7 @@ public record DimensionTypeRequirement(HolderSet<DimensionType> dimensionType) i
     }
 
     @Override
-    public Codec<? extends RitualRequirement> codec() {
+    public MapCodec<? extends RitualRequirement> codec() {
         return CODEC;
     }
 }

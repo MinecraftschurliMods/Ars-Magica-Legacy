@@ -16,14 +16,14 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:gems/chimerite"
+        "tag": "c:gems/chimerite"
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:glass"
+        "tag": "c:glass_blocks"
       }
     }
   ]

@@ -1,24 +1,27 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
-import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,15 +31,14 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -229,20 +231,19 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceLocation skillPoint) {
-        ItemStack stack = new ItemStack(item);
-        Optional.ofNullable(ArsMagicaAPI.get().getSkillPointRegistry().get(skillPoint)).ifPresent(skill -> item.setSkillPoint(stack, skill));
-        return stack;
+        return getStackForSkillPoint(item, Objects.requireNonNull(ArsMagicaAPI.get().getSkillPointRegistry().get(skillPoint)));
     }
 
     @Override
     public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, SkillPoint skillPoint) {
-        return getStackForSkillPoint(item, skillPoint.getId());
+        ItemStack stack = new ItemStack(item);
+        stack.set(AMDataComponents.SKILL_POINT, skillPoint);
+        return stack;
     }
 
     @Override
     public SkillPoint getSkillPointForStack(ItemStack stack) {
-        if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
-        return AMSkillPoints.NONE.value();
+        return stack.getOrDefault(AMDataComponents.SKILL_POINT, AMSkillPoints.NONE.value());
     }
 
     @Override
@@ -257,42 +258,28 @@ public final class SkillHelper implements ISkillHelper {
      */
     public void syncToPlayer(Player player) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
-        PacketDistributor.PLAYER.with(serverPlayer).send(new SkillSyncPacket(player.getData(KNOWLEDGE)));
+        serverPlayer.connection.send(new SkillSyncPacket(player.getData(KNOWLEDGE)));
     }
 
-    public static void registerSyncPacket(IPayloadRegistrar registrar) {
-        registrar.play(SkillSyncPacket.ID, SkillSyncPacket::new, builder -> builder.client(SkillSyncPacket::handle));
+    public static void registerSyncPacket(PayloadRegistrar registrar) {
+        registrar.playToClient(SkillSyncPacket.TYPE, SkillSyncPacket.STREAM_CODEC, SkillSyncPacket::handle);
     }
 
-    private static class SkillSyncPacket extends CodecPacket<KnowledgeHolder> {
-        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge_sync");
+    private record SkillSyncPacket(KnowledgeHolder knowledge) implements CustomPacketPayload {
+        public static final Type<SkillSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge_sync"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, SkillSyncPacket> STREAM_CODEC = KnowledgeHolder.STREAM_CODEC.map(SkillSyncPacket::new, SkillSyncPacket::knowledge);
 
-        public SkillSyncPacket(KnowledgeHolder knowledge) {
-            super(knowledge);
-        }
-
-        public SkillSyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+        private void handle(IPayloadContext context) {
+            Player player = context.player();
+            if (Minecraft.getInstance().screen instanceof OcculusScreen occulusScreen) {
+                occulusScreen.skillPointPanel.updateContent(player);
+            }
+            player.setData(KNOWLEDGE, this.knowledge());
         }
 
         @Override
-        protected Codec<KnowledgeHolder> codec() {
-            return KnowledgeHolder.CODEC;
-        }
-
-        @Override
-        public ResourceLocation id() {
-            return ID;
-        }
-
-        private void handle(PlayPayloadContext context) {
-            context.workHandler().execute(() -> {
-                Player player = context.player().orElseGet(ClientHelper::getLocalPlayer);
-                if (Minecraft.getInstance().screen instanceof OcculusScreen occulusScreen) {
-                    occulusScreen.skillPointPanel.updateContent(player);
-                }
-                player.setData(KNOWLEDGE, this.data);
-            });
+        public Type<SkillSyncPacket> type() {
+            return TYPE;
         }
     }
 
@@ -310,6 +297,13 @@ public final class SkillHelper implements ISkillHelper {
                 SKILLS_CODEC.forGetter(KnowledgeHolder::skills),
                 SKILL_POINTS_CODEC.forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, KnowledgeHolder> STREAM_CODEC = StreamCodec.composite(
+                ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs.collection(HashSet::new)),
+                KnowledgeHolder::skills,
+                ByteBufCodecs.map(HashMap::new, ResourceLocation.STREAM_CODEC, ByteBufCodecs.INT),
+                KnowledgeHolder::skillPoints,
+                KnowledgeHolder::new
+        );
         //@formatter:on
 
         public static KnowledgeHolder empty() {
@@ -379,9 +373,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param amount     The amount to add.
          */
         public synchronized void addSkillPoint(ResourceLocation skillPoint, int amount) {
-            skillPoints.putIfAbsent(skillPoint, 0);
-            int amt = skillPoints.get(skillPoint);
-            skillPoints.put(skillPoint, amt + amount);
+            skillPoints.compute(skillPoint, (k, amt) -> (amt == null ? 0 : amt) + amount);
         }
 
         /**
@@ -407,7 +399,7 @@ public final class SkillHelper implements ISkillHelper {
             return skillPoints.getOrDefault(skillPoint, 0);
         }
 
-        public static KnowledgeHolder copy(IAttachmentHolder owner, KnowledgeHolder knowledgeHolder) {
+        public static KnowledgeHolder copy(KnowledgeHolder knowledgeHolder, IAttachmentHolder owner, HolderLookup.Provider provider) {
             return new KnowledgeHolder(new HashSet<>(knowledgeHolder.skills()), new HashMap<>(knowledgeHolder.skillPoints()));
         }
     }

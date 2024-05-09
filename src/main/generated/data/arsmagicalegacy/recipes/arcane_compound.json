@@ -3,31 +3,32 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:dusts/glowstone"
+      "tag": "c:dusts/glowstone"
     },
     {
-      "tag": "forge:dusts/glowstone"
+      "tag": "c:dusts/glowstone"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
-      "tag": "forge:netherrack"
+      "tag": "c:netherrack"
     },
     {
-      "tag": "forge:netherrack"
+      "tag": "c:netherrack"
     },
     {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     },
     {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:arcane_compound"
+    "count": 1,
+    "id": "arsmagicalegacy:arcane_compound"
   }
 }

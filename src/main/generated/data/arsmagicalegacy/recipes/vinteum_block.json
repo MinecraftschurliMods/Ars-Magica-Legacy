@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "arsmagicalegacy:vinteum_block"
+    "count": 1,
+    "id": "arsmagicalegacy:vinteum_block"
   }
 }

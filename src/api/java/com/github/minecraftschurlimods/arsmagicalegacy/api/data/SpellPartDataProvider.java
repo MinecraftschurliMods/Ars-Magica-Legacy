@@ -7,11 +7,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDataBuilder;
 import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDataProvider;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -28,8 +31,8 @@ import java.util.function.Supplier;
 
 //This can't be an AbstractRegistryDataProvider because SpellPartData isn't accessible from here
 public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPartDataProvider.Builder> {
-    protected SpellPartDataProvider(String namespace, PackOutput output) {
-        super(namespace, "spell_parts", PackOutput.Target.DATA_PACK, output);
+    protected SpellPartDataProvider(String namespace, PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(namespace, "spell_parts", PackOutput.Target.DATA_PACK, output, registries);
     }
 
     @Override
@@ -208,19 +211,20 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
         }
 
         @Override
-        protected void toJson(JsonObject jsonObject) {
+        protected void toJson(JsonObject jsonObject, HolderLookup.Provider registries) {
             jsonObject.addProperty("manaCost", manaCost);
             if (burnout != null) {
                 jsonObject.addProperty("burnout", burnout);
             }
             JsonArray reagentsJson = new JsonArray();
-            reagents.forEach(e -> reagentsJson.add(ItemFilter.CODEC.encodeStart(JsonOps.INSTANCE, e).getOrThrow(false, LOGGER::error)));
+            RegistryOps<JsonElement> ops = registries.createSerializationContext(JsonOps.INSTANCE);
+            reagents.forEach(e -> reagentsJson.add(ItemFilter.CODEC.encodeStart(ops, e).getOrThrow()));
             jsonObject.add("reagents", reagentsJson);
             JsonObject affinitiesJson = new JsonObject();
             affinities.forEach((id, shift) -> affinitiesJson.addProperty(id.toString(), shift));
             jsonObject.add("affinities", affinitiesJson);
             JsonArray recipeJson = new JsonArray();
-            recipe.forEach(e -> recipeJson.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, e).getOrThrow(false, s -> {})));
+            recipe.forEach(e -> recipeJson.add(ISpellIngredient.CODEC.encodeStart(ops, e).getOrThrow()));
             jsonObject.add("recipe", recipeJson);
         }
     }

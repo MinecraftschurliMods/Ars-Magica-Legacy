@@ -12,6 +12,7 @@ import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.ui.IElementHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ class AltarComponentProvider implements IBlockComponentProvider, IServerDataProv
         }
         if (tag.contains(POSITIONS)) {
             List<BlockPos> list = Arrays.stream(tag.getLongArray(POSITIONS)).mapToObj(BlockPos::of).toList();
-            list.forEach(pos -> iTooltip.append(iTooltip.getElementHelper().item(blockAccessor.getLevel().getBlockState(pos).getCloneItemStack(blockAccessor.getHitResult(), blockAccessor.getLevel(), pos, blockAccessor.getPlayer())).message(null)));
+            list.forEach(pos -> iTooltip.append(IElementHelper.get().item(blockAccessor.getLevel().getBlockState(pos).getCloneItemStack(blockAccessor.getHitResult(), blockAccessor.getLevel(), pos, blockAccessor.getPlayer())).message(null)));
             if (!list.isEmpty()) {
                 iTooltip.add(Component.empty());
             }
