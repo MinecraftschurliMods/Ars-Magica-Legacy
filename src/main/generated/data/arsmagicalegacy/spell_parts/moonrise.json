@@ -7,7 +7,7 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:gems/moonstone"
+        "tag": "c:gems/moonstone"
       }
     },
     {

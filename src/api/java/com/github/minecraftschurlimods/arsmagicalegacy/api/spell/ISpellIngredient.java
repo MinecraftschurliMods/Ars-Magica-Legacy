@@ -14,7 +14,7 @@ import java.util.List;
  * Interface representing an ingredient for spell crafting.
  */
 public interface ISpellIngredient {
-    Codec<ISpellIngredient> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getSpellIngredientTypeRegistry().byNameCodec()).dispatch(ISpellIngredient::getType, SpellIngredientType::codec);
+    Codec<ISpellIngredient> CODEC = Codec.lazyInitialized(() -> ArsMagicaAPI.get().getSpellIngredientTypeRegistry().byNameCodec()).dispatch(ISpellIngredient::getType, SpellIngredientType::codec);
 
     /**
      * @return The id of this type.

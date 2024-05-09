@@ -43,18 +43,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Spell implements ISpell {
-    private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
     private final List<ShapeGroup> shapeGroups;
     private final SpellStack spellStack;
     private final CompoundTag additionalData;
-    private final Lazy<Boolean> continuous;
-    private final Lazy<Boolean> empty;
-    private final Lazy<Boolean> nonNull;
-    private final Lazy<Boolean> valid;
+    private final Supplier<Boolean> continuous;
+    private final Supplier<Boolean> empty;
+    private final Supplier<Boolean> nonNull;
+    private final Supplier<Boolean> valid;
 
     public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         this.shapeGroups = shapeGroups;
@@ -95,7 +95,7 @@ public final class Spell implements ISpell {
     @Override
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
-            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts).filter(parts -> !parts.isEmpty()).orElse(spellStack().parts()).get(0))
+            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts).filter(parts -> !parts.isEmpty()).orElse(spellStack().parts()).getFirst())
                     .filter(ISpellShape.class::isInstance)
                     .map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
@@ -127,65 +127,6 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
-        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
-            return SpellCastResult.NO_PERMISSION;
-        if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, this)).isCanceled()) return SpellCastResult.CANCELLED;
-        if (caster.hasEffect(AMMobEffects.SILENCE.value())) return SpellCastResult.SILENCED;
-        float mana = mana(caster);
-        float burnout = burnout(caster);
-        Collection<ItemFilter> reagents = reagents(caster);
-        var api = ArsMagicaAPI.get();
-        var manaHelper = api.getManaHelper();
-        var burnoutHelper = api.getBurnoutHelper();
-        var spellHelper = api.getSpellHelper();
-        if (consume && !(caster instanceof Player p && p.isCreative())) {
-            if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
-                return SpellCastResult.BURNED_OUT;
-            if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
-        }
-        SpellCastResult result = spellHelper.invoke(this, caster, null, level, null, castingTicks, 0, awardXp);
-        if (level.isClientSide()) {
-            NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
-            return result;
-        }
-        if (caster instanceof Player p && p.isCreative()) return result;
-        if (consume && result.isConsume()) {
-            manaHelper.decreaseMana(caster, mana, true);
-            burnoutHelper.increaseBurnout(caster, burnout);
-            spellHelper.consumeReagents(caster, reagents);
-        }
-        NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
-        if (awardXp && result.isSuccess() && caster instanceof Player player) {
-            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).containsKey(AFFINITY_GAINS);
-            boolean continuous = isContinuous();
-            Map<Affinity, Double> affinityShifts = affinityShifts();
-            for (Map.Entry<Affinity, Double> entry : affinityShifts.entrySet()) {
-                Affinity affinity = entry.getKey();
-                Double shift = entry.getValue();
-                if (continuous) {
-                    shift /= 4;
-                }
-                if (affinityGains) {
-                    shift *= 1.1;
-                }
-                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
-                if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
-                    var helper = ArsMagicaAPI.get().getAffinityHelper();
-                    helper.applyAffinityShift(player, event.affinity, event.shift);
-                    helper.updateLock(player);
-                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, event.affinity, (float) helper.getAffinityDepth(player, event.affinity), false));
-                }
-            }
-            float xp = (float) affinityShifts().values().stream().mapToDouble(e -> e).sum() * affinityShifts.size() * 100;
-            if (continuous) xp /= 4;
-            api.getMagicHelper().awardXp(player, xp);
-        }
-        return result;
-    }
-
-    @Override
     @UnmodifiableView
     public List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers() {
         Optional<ShapeGroup> shapeGroup = shapeGroup(currentShapeGroupIndex());
@@ -197,8 +138,8 @@ public final class Spell implements ISpell {
             ArrayList<ISpellModifier> tmp = new ArrayList<>();
             shapesWithModifiers.set(shapesWithModifiers.size() - 1, Pair.of(last.getFirst(), Collections.unmodifiableList(tmp)));
             tmp.addAll(last.getSecond());
-            tmp.addAll(pwm.remove(0).getSecond());
-        }, () -> pwm.remove(0));
+            tmp.addAll(pwm.removeFirst().getSecond());
+        }, pwm::removeFirst);
         shapesWithModifiers.addAll(pwm);
         return Collections.unmodifiableList(shapesWithModifiers);
     }
@@ -348,7 +289,7 @@ public final class Spell implements ISpell {
         if (isEmpty() || !isNonNull()) return false;
         //check spell stack
         if (spellStack().isEmpty()) return false;
-        if (spellStack().parts().get(0).getType() != ISpellPart.SpellPartType.COMPONENT) return false;
+        if (spellStack().parts().getFirst().getType() != ISpellPart.SpellPartType.COMPONENT) return false;
         //find last non-empty shape group
         List<ShapeGroup> groups = shapeGroups();
         if (groups.stream().allMatch(ShapeGroup::isEmpty)) return false;
@@ -364,7 +305,7 @@ public final class Spell implements ISpell {
         if (last != groups.size() - 1) return false;
         //check shape groups themselves
         for (ShapeGroup group : groups) {
-            if (group.parts().get(0).getType() != ISpellPart.SpellPartType.SHAPE) return false;
+            if (group.parts().getFirst().getType() != ISpellPart.SpellPartType.SHAPE) return false;
         }
         return true;
     }

@@ -4,32 +4,34 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync");
+    static final Type<InscriptionTableSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync"));
+    static final StreamCodec<RegistryFriendlyByteBuf, InscriptionTableSyncPacket> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC,
+            InscriptionTableSyncPacket::blockPos,
+            ComponentSerialization.STREAM_CODEC,
+            InscriptionTableSyncPacket::name,
+            ISpell.STREAM_CODEC,
+            InscriptionTableSyncPacket::spell,
+            InscriptionTableSyncPacket::new
+    );
 
-    InscriptionTableSyncPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readComponent(), buf.readJsonWithCodec(ISpell.CODEC));
+    void handle(IPayloadContext context) {
+        if (!(context.player().level().getBlockEntity(blockPos()) instanceof InscriptionTableBlockEntity inscriptionTable))
+            return;
+        inscriptionTable.onSync(name().getString().isEmpty() ? null : name(), spell());
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-        buf.writeComponent(name != null ? name : Component.empty());
-        buf.writeJsonWithCodec(ISpell.CODEC, spell);
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return ID;
-    }
-
-    void handle(PlayPayloadContext context) {
-        context.workHandler().execute(() -> ((InscriptionTableBlockEntity) context.player().orElseThrow().level().getBlockEntity(blockPos())).onSync(name() == null || name().getString().isEmpty() ? null : name(), spell()));
+    public Type<InscriptionTableSyncPacket> type() {
+        return TYPE;
     }
 }

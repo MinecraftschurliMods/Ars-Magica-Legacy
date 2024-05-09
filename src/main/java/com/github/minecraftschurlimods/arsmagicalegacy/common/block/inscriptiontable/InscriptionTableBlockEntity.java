@@ -1,12 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -46,22 +47,33 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @return A written book with the spell written onto it.
      */
     public static ItemStack makeRecipe(Component name, ISpell spell) {
-        var helper = ArsMagicaAPI.get().getSpellHelper();
         ItemStack stack = new ItemStack(AMItems.SPELL_RECIPE.get());
-        helper.setSpell(stack, spell);
-        helper.setSpellName(stack, name);
+        stack.set(AMDataComponents.SPELL_RECIPE, spell);
+        stack.set(AMDataComponents.SPELL_NAME, name);
         return stack;
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
-        if (pTag.contains(SPELL_RECIPE_KEY)) {
-            spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        stack = ItemStack.parseOptional(provider, tag.getCompound(INVENTORY_KEY));
+        if (tag.contains(SPELL_RECIPE_KEY)) {
+            spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, tag.get(SPELL_RECIPE_KEY)).getOrThrow().getFirst();
         }
-        if (pTag.contains(SPELL_NAME_KEY)) {
-            spellName = Component.Serializer.fromJson(pTag.getString(SPELL_NAME_KEY));
+        if (tag.contains(SPELL_NAME_KEY)) {
+            spellName = Component.Serializer.fromJson(tag.getString(SPELL_NAME_KEY), provider);
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(INVENTORY_KEY, stack.save(provider));
+        if (spellRecipe != null) {
+            tag.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow());
+        }
+        if (spellName != null) {
+            tag.putString(SPELL_NAME_KEY, Component.Serializer.toJson(spellName, provider));
         }
     }
 
@@ -97,21 +109,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     public void createSpell(ServerPlayer player) {
         ItemStack spell = new ItemStack(AMItems.SPELL.get());
-        ArsMagicaAPI.get().getSpellHelper().setSpell(spell, Objects.requireNonNull(getSpellRecipe()));
-        ArsMagicaAPI.get().getSpellHelper().setSpellName(spell, spellName != null ? spellName : Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME));
+        spell.set(AMDataComponents.SPELL, Objects.requireNonNull(getSpellRecipe()));
+        spell.set(AMDataComponents.SPELL_NAME, spellName != null ? spellName : Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME));
         player.addItem(spell);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pCompound) {
-        super.saveAdditional(pCompound);
-        pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
-        if (spellRecipe != null) {
-            pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        }
-        if (spellName != null) {
-            pCompound.putString(SPELL_NAME_KEY, Component.Serializer.toJson(spellName));
-        }
     }
 
     @Override
@@ -120,8 +120,8 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return super.getUpdateTag(provider).merge(saveWithoutMetadata(provider));
     }
 
     @Override

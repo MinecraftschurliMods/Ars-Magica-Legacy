@@ -31,6 +31,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -140,7 +141,7 @@ public class SpellRecipeScreen extends Screen {
         addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, e -> minecraft.setScreen(null)).pos(width / 2 - 100, 196).size(lecternPos == null ? 200 : 98, 20).build());
         if (lecternPos != null) {
             addRenderableWidget(Button.builder(Component.translatable("lectern.take_book"), e -> {
-                PacketDistributor.SERVER.noArg().send(new TakeSpellRecipeFromLecternPacket(lecternPos));
+                PacketDistributor.sendToServer(new TakeSpellRecipeFromLecternPacket(lecternPos));
                 minecraft.setScreen(null);
             }).pos(this.width / 2 + 2, 196).size(98, 20).build());
         }
@@ -162,7 +163,7 @@ public class SpellRecipeScreen extends Screen {
         forwardButton.visible = currentPage < pages.size() - 1;
         backButton.visible = currentPage > 0;
         if (lecternPos != null) {
-            PacketDistributor.SERVER.noArg().send(new SetLecternPagePacket(lecternPos, currentPage));
+            PacketDistributor.sendToServer(new SetLecternPagePacket(lecternPos, currentPage));
         }
         return true;
     }
@@ -329,7 +330,7 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected List<Component> getTooltip(int mouseX, int mouseY) {
             int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, reagents.size());
-            return i == -1 ? List.of() : AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy().getTooltipLines(ClientHelper.getLocalPlayer(), TooltipFlag.Default.NORMAL);
+            return i == -1 ? List.of() : AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy().getTooltipLines(Item.TooltipContext.of(ClientHelper.getLocalLevel()), ClientHelper.getLocalPlayer(), TooltipFlag.Default.NORMAL);
         }
     }
 

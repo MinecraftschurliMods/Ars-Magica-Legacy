@@ -1,0 +1,14 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "corail_woodcutter"
+    }
+  ],
+  "type": "corail_woodcutter:woodcutting",
+  "count": 4,
+  "ingredient": {
+    "tag": "arsmagicalegacy:witchwood_logs"
+  },
+  "result": "arsmagicalegacy:witchwood_door"
+}

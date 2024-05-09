@@ -18,7 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -218,7 +217,7 @@ public interface ItemFilter extends Predicate<ItemStack> {
             final net.minecraft.world.item.ItemStack itemStack;
 
             private ItemStack(AmountMatchMode mode, int amount, net.minecraft.world.item.ItemStack itemStack) {
-                super(mode, amount, s -> ItemHandlerHelper.canItemStacksStack(itemStack, s));
+                super(mode, amount, s -> net.minecraft.world.item.ItemStack.isSameItemSameComponents(itemStack, s));
                 this.itemStack = itemStack;
             }
 
@@ -273,8 +272,8 @@ public interface ItemFilter extends Predicate<ItemStack> {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     final class Combined implements ItemFilter {
-        public static final Codec<Combined> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ItemFilter.CODEC.listOf().xmap(f -> (Combined) anyOf(f), combined -> combined.filters instanceof List filters ? filters : new ArrayList<>(combined.filters)));
-        public static final Codec<Combined> NETWORK_CODEC = ExtraCodecs.lazyInitializedCodec(() -> ItemFilter.NETWORK_CODEC.listOf().xmap(f -> (Combined) anyOf(f), combined -> combined.filters instanceof List filters ? filters : new ArrayList<>(combined.filters)));
+        public static final Codec<Combined> CODEC = Codec.lazyInitialized(() -> ItemFilter.CODEC.listOf().xmap(f -> (Combined) anyOf(f), combined -> combined.filters instanceof List filters ? filters : new ArrayList<>(combined.filters)));
+        public static final Codec<Combined> NETWORK_CODEC = Codec.lazyInitialized(() -> ItemFilter.NETWORK_CODEC.listOf().xmap(f -> (Combined) anyOf(f), combined -> combined.filters instanceof List filters ? filters : new ArrayList<>(combined.filters)));
         private final Collection<Simple> filters;
 
         private Combined(Collection<Simple> filters) {

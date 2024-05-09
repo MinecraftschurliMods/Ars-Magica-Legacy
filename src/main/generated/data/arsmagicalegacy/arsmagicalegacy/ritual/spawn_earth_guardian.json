@@ -13,13 +13,13 @@
     "type": "arsmagicalegacy:item_drop",
     "ingredients": [
       {
-        "tag": "forge:gems/emerald"
+        "tag": "c:gems/emerald"
       },
       {
-        "tag": "forge:gems/chimerite"
+        "tag": "c:gems/chimerite"
       },
       {
-        "tag": "forge:gems/topaz"
+        "tag": "c:gems/topaz"
       }
     ]
   }

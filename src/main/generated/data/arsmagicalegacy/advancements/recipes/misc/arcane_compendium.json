@@ -4,9 +4,7 @@
     "filled_liquid_essence_bucket": {
       "conditions": {
         "item": {
-          "items": [
-            "arsmagicalegacy:liquid_essence_bucket"
-          ]
+          "items": "arsmagicalegacy:liquid_essence_bucket"
         }
       },
       "trigger": "minecraft:filled_bucket"
@@ -15,9 +13,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:liquid_essence_bucket"
-            ]
+            "items": "arsmagicalegacy:liquid_essence_bucket"
           }
         ]
       },

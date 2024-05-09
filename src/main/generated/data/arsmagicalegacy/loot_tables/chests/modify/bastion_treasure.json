@@ -8,8 +8,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:fire"
+              },
+              "function": "minecraft:set_components"
             }
           ],
           "name": "arsmagicalegacy:affinity_tome",
@@ -19,8 +21,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:life"
+              },
+              "function": "minecraft:set_components"
             }
           ],
           "name": "arsmagicalegacy:affinity_tome"

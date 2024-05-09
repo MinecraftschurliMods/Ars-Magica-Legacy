@@ -6,16 +6,17 @@
       "item": "minecraft:book"
     },
     {
-      "tag": "forge:dyes/black"
+      "tag": "c:dyes/black"
     },
     {
-      "tag": "forge:feathers"
+      "tag": "c:feathers"
     },
     {
-      "tag": "forge:string"
+      "tag": "c:strings"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:inscription_table_upgrade_tier_1"
+    "count": 1,
+    "id": "arsmagicalegacy:inscription_table_upgrade_tier_1"
   }
 }

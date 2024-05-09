@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "F": {
-      "tag": "forge:feathers"
+      "tag": "c:feathers"
     },
     "P": {
       "item": "arsmagicalegacy:spell_parchment"
@@ -24,6 +24,7 @@
     "W W"
   ],
   "result": {
-    "item": "arsmagicalegacy:inscription_table"
+    "count": 1,
+    "id": "arsmagicalegacy:inscription_table"
   }
 }

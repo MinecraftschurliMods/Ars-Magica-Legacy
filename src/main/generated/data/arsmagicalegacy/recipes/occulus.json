@@ -6,13 +6,13 @@
       "tag": "minecraft:coals"
     },
     "G": {
-      "tag": "forge:glass"
+      "tag": "c:glass_blocks"
     },
     "S": {
       "item": "minecraft:stone_bricks"
     },
     "T": {
-      "tag": "forge:gems/topaz"
+      "tag": "c:gems/topaz"
     }
   },
   "pattern": [
@@ -21,6 +21,7 @@
     "CTC"
   ],
   "result": {
-    "item": "arsmagicalegacy:occulus"
+    "count": 1,
+    "id": "arsmagicalegacy:occulus"
   }
 }

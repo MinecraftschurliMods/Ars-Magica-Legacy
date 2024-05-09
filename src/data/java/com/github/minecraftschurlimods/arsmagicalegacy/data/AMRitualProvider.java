@@ -70,7 +70,7 @@ public class AMRitualProvider extends RitualProvider {
                 .with(new BiomeRequirement(tag(Tags.Biomes.IS_COLD)))
                 .build());
         add("spawn_lightning_guardian", builder(EntitySpawnRitualEffect.simple(AMEntities.LIGHTNING_GUARDIAN.get()),
-                GameEventRitualTrigger.simple(GameEvent.LIGHTNING_STRIKE))
+                GameEventRitualTrigger.any(GameEvent.LIGHTNING_STRIKE))
                 .with(new RitualStructureRequirement(PatchouliCompat.LIGHTNING_GUARDIAN_SPAWN_RITUAL))
                 .with(new BlockPos(0, -2, 0))
                 .build());

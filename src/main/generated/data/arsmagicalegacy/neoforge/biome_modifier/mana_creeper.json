@@ -15,7 +15,7 @@
           "type": "neoforge:or",
           "values": [
             "minecraft:deep_dark",
-            "#forge:is_mushroom"
+            "#c:is_mushroom"
           ]
         }
       }

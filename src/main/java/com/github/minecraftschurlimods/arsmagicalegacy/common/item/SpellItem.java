@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
@@ -15,6 +16,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -32,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +47,7 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         Player player = null;
         if (EffectiveSide.get().isClient()) {
             player = ClientHelper.getLocalPlayer();
@@ -89,7 +90,7 @@ public class SpellItem extends Item implements ISpellItem {
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
         if (!spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
-        return helper.getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
+        return Optional.ofNullable(pStack.get(AMDataComponents.SPELL_NAME)).orElseGet(() -> pStack.has(DataComponents.ITEM_NAME) || pStack.has(DataComponents.CUSTOM_NAME) ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -112,7 +113,7 @@ public class SpellItem extends Item implements ISpellItem {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         if (!spell.isContinuous()) return;
-        SpellCastResult result = spell.cast(entity, level, remainingUseDuration - 1, true, true);
+        SpellCastResult result = helper.cast(spell, entity, level, remainingUseDuration - 1, true, true);
         Holder<SoundEvent> sound = spell.primaryAffinity().loopSound();
         if (sound != null) {
             level.playSeededSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f, level.random.nextLong());
@@ -133,7 +134,8 @@ public class SpellItem extends Item implements ISpellItem {
         var api = ArsMagicaAPI.get();
         if (pLivingEntity instanceof Player player) {
             if (!api.getMagicHelper().knowsMagic(player)) return;
-            Optional<ResourceLocation> spellIcon = api.getSpellHelper().getSpellIcon(pStack);
+            api.getSpellHelper();
+            Optional<ResourceLocation> spellIcon = Optional.ofNullable(pStack.get(AMDataComponents.SPELL_ICON));
             if (spellIcon.isPresent()) {
                 castSpell(pLevel, player, player.getUsedItemHand(), pStack);
             } else {
@@ -155,7 +157,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (heldItem.getItem() instanceof SpellBookItem) {
             heldItem = SpellBookItem.getSelectedSpell(heldItem);
         }
-        if (heldItem.hasTag() && api.getSpellHelper().getSpellIcon(heldItem).isPresent()) {
+        if (heldItem.has(AMDataComponents.SPELL_ICON)) {
             castSpell(level, player, hand, heldItem);
             return InteractionResultHolder.success(heldItem);
         }
@@ -173,7 +175,8 @@ public class SpellItem extends Item implements ISpellItem {
         if (item.getItem() instanceof SpellBookItem) {
             item = SpellBookItem.getSelectedSpell(item);
         }
-        Optional<ResourceLocation> spellIcon = api.getSpellHelper().getSpellIcon(item);
+        api.getSpellHelper();
+        Optional<ResourceLocation> spellIcon = Optional.ofNullable(item.get(AMDataComponents.SPELL_ICON));
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
         } else {
@@ -185,13 +188,14 @@ public class SpellItem extends Item implements ISpellItem {
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
-        String name = ArsMagicaLegacy.LOGGER.isTraceEnabled() ? helper.getSpellName(stack).map(Component::getString).orElse("") : "";
+        String name;
+        name = ArsMagicaLegacy.LOGGER.isTraceEnabled() ? Optional.ofNullable(stack.get(AMDataComponents.SPELL_NAME)).map(Component::getString).orElse("") : "";
         if (spell.isContinuous()) {
             ArsMagicaLegacy.LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
         } else {
             ArsMagicaLegacy.LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
-            SpellCastResult result = spell.cast(entity, level, 0, true, true);
+            SpellCastResult result = helper.cast(spell, entity, level, 0, true, true);
             ArsMagicaLegacy.LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             Holder<SoundEvent> sound = spell.primaryAffinity().castSound();
             if (sound != null) {

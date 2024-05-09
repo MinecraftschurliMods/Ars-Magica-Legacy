@@ -7,5 +7,6 @@ jobs:
   build:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
     with:
+      java-version: 21
       upload-artifacts: true
       release-type: dev

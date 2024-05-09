@@ -16,7 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
@@ -26,7 +26,11 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 2000).add(AMAttributes.MAX_BURNOUT.value(), 2000);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 120)
+                .add(Attributes.ARMOR, 10)
+                .add(AMAttributes.MAX_MANA, 2000)
+                .add(AMAttributes.MAX_BURNOUT, 2000);
     }
 
     @Override

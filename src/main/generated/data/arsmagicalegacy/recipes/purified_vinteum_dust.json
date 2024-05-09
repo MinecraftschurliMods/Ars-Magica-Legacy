@@ -12,10 +12,11 @@
       "item": "arsmagicalegacy:desert_nova"
     },
     {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:purified_vinteum_dust"
+    "count": 1,
+    "id": "arsmagicalegacy:purified_vinteum_dust"
   }
 }

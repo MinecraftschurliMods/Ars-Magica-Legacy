@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:deepslate_vinteum_ore"
-            ]
+            "items": "arsmagicalegacy:deepslate_vinteum_ore"
           }
         ]
       },

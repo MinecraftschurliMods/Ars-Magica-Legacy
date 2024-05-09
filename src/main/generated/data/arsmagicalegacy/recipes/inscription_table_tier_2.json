@@ -3,16 +3,25 @@
   "category": "misc",
   "ingredients": [
     {
-      "type": "neoforge:nbt",
-      "item": "arsmagicalegacy:inscription_table",
-      "tag": "{BlockStateTag:{tier:\"1\"}}"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:block_state": {
+          "tier": "1"
+        }
+      },
+      "items": "arsmagicalegacy:inscription_table"
     },
     {
       "item": "arsmagicalegacy:inscription_table_upgrade_tier_2"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:inscription_table",
-    "nbt": "{BlockStateTag:{tier:\"2\"}}"
+    "components": {
+      "minecraft:block_state": {
+        "tier": "2"
+      }
+    },
+    "count": 1,
+    "id": "arsmagicalegacy:inscription_table"
   }
 }

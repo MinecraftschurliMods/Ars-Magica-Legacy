@@ -18,6 +18,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
@@ -27,10 +29,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashSet;
@@ -57,6 +59,11 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 bossEvent.addPlayer(player);
             }
         }
+    }
+
+    protected static AttributeSupplier.Builder createBossAttributes() {
+        return createMonsterAttributes()
+                .add(Attributes.STEP_HEIGHT, 1.02);
     }
 
     /**
@@ -125,11 +132,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     public boolean isPersistenceRequired() {
         return true;
-    }
-
-    @Override
-    public float getStepHeight() {
-        return 1.02f;
     }
 
     @Override
@@ -277,7 +279,13 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     public enum Action {
-        IDLE(-1), CAST(-2), LONG_CAST(-3), SMASH(-4), SPIN(-5), STRIKE(-6), THROW(-7);
+        IDLE(-1),
+        CAST(-2),
+        LONG_CAST(-3),
+        SMASH(-4),
+        SPIN(-5),
+        STRIKE(-6),
+        THROW(-7);
 
         public final byte id;
 

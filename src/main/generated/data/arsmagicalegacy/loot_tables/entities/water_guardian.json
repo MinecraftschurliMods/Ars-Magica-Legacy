@@ -8,8 +8,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}"
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:water"
+              },
+              "function": "minecraft:set_components"
             }
           ],
           "name": "arsmagicalegacy:affinity_essence"

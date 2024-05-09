@@ -71,7 +71,7 @@ public class ItemHandlerExtractionQuery {
                 stack = items[i].copy();
                 min = simple.minAmount;
                 max = simple.maxAmount;
-            } else if (!ItemHandlerHelper.canItemStacksStack(stack, getStack(i))) continue;
+            } else if (!ItemStack.isSameItemSameComponents(stack, getStack(i))) continue;
             amount += Math.min(getStack(i).getCount(), max - amount);
             if (amount == max) break;
         }
@@ -94,7 +94,7 @@ public class ItemHandlerExtractionQuery {
                 stack = items[i].copy();
                 min = simple.minAmount;
                 max = simple.maxAmount;
-            } else if (!ItemHandlerHelper.canItemStacksStack(stack, getStack(i))) continue;
+            } else if (!ItemStack.isSameItemSameComponents(stack, getStack(i))) continue;
             int extracted = Math.min(getStack(i).getCount(), max - amount);
             amounts[i] = extracted;
             amount += extracted;

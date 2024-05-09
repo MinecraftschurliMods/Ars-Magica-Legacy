@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "S": {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     },
     "V": {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     }
   },
   "pattern": [
@@ -14,6 +14,6 @@
   ],
   "result": {
     "count": 16,
-    "item": "arsmagicalegacy:magic_wall"
+    "id": "arsmagicalegacy:magic_wall"
   }
 }

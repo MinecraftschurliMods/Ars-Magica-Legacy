@@ -1,6 +1,6 @@
 {
   "category": "arsmagicalegacy:affinities",
-  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}",
+  "icon": "arsmagicalegacy:affinity_essence[arsmagicalegacy:affinity=\"arsmagicalegacy:nature\"]",
   "name": "affinity.arsmagicalegacy.nature",
   "pages": [
     {

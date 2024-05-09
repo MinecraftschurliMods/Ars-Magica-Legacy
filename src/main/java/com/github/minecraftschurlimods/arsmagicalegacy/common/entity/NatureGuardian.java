@@ -13,7 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public class NatureGuardian extends AbstractBoss {
     private boolean hasScythe = true;
@@ -23,7 +23,11 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 3500).add(AMAttributes.MAX_BURNOUT.value(), 3500);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 500)
+                .add(Attributes.ARMOR, 20)
+                .add(AMAttributes.MAX_MANA, 3500)
+                .add(AMAttributes.MAX_BURNOUT, 3500);
     }
 
     @Override

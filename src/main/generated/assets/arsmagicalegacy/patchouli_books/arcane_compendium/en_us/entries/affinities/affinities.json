@@ -1,6 +1,6 @@
 {
   "category": "arsmagicalegacy:affinities",
-  "icon": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:none\"}",
+  "icon": "arsmagicalegacy:affinity_tome[arsmagicalegacy:affinity=\"arsmagicalegacy:none\"]",
   "name": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.name",
   "pages": [
     {

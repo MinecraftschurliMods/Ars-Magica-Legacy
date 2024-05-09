@@ -4,12 +4,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelChangeEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
-import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -17,9 +19,8 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.function.Supplier;
 
@@ -120,36 +121,24 @@ public final class MagicHelper implements IMagicHelper {
      */
     public void syncToPlayer(Player player) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
-        PacketDistributor.PLAYER.with(serverPlayer).send(new MagicSyncPacket(player.getData(MAGIC)));
+        serverPlayer.connection.send(new MagicSyncPacket(player.getData(MAGIC)));
     }
 
-    public static void registerSyncPacket(IPayloadRegistrar registrar) {
-        registrar.play(MagicSyncPacket.ID, MagicSyncPacket::new, builder -> builder.client(MagicSyncPacket::handle));
+    public static void registerSyncPacket(PayloadRegistrar registrar) {
+        registrar.playToClient(MagicSyncPacket.TYPE, MagicSyncPacket.STREAM_CODEC, MagicSyncPacket::handle);
     }
 
-    private static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
-        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_sync");
+    private record MagicSyncPacket(MagicHolder data) implements CustomPacketPayload {
+        public static final Type<MagicSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_sync"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, MagicSyncPacket> STREAM_CODEC = MagicHolder.STREAM_CODEC.map(MagicSyncPacket::new, MagicSyncPacket::data);
 
-        public MagicSyncPacket(MagicHolder data) {
-            super(data);
-        }
-
-        public MagicSyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+        private void handle(IPayloadContext context) {
+            context.player().setData(MAGIC, this.data);
         }
 
         @Override
-        protected Codec<MagicHolder> codec() {
-            return MagicHolder.CODEC;
-        }
-
-        @Override
-        public ResourceLocation id() {
-            return ID;
-        }
-
-        private void handle(PlayPayloadContext context) {
-            context.workHandler().execute(() -> context.player().orElseGet(ClientHelper::getLocalPlayer).setData(MAGIC, this.data));
+        public Type<MagicSyncPacket> type() {
+            return TYPE;
         }
     }
 
@@ -158,6 +147,13 @@ public final class MagicHelper implements IMagicHelper {
                 Codec.FLOAT.fieldOf("xp").forGetter(MagicHolder::getXp),
                 Codec.INT.fieldOf("level").forGetter(MagicHolder::getLevel)
         ).apply(inst, MagicHolder::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, MagicHolder> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.FLOAT,
+                MagicHolder::getXp,
+                ByteBufCodecs.VAR_INT,
+                MagicHolder::getLevel,
+                MagicHolder::new
+        );
         private float xp;
         private int level;
 
@@ -184,7 +180,7 @@ public final class MagicHelper implements IMagicHelper {
             this.level = level;
         }
 
-        public static MagicHolder copy(IAttachmentHolder owner, MagicHolder magicHolder) {
+        public static MagicHolder copy(MagicHolder magicHolder, IAttachmentHolder owner, HolderLookup.Provider provider) {
             MagicHolder newInst = new MagicHolder();
             newInst.setXp(magicHolder.getXp());
             newInst.setLevel(magicHolder.getLevel());

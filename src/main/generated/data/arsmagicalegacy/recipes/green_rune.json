@@ -6,10 +6,11 @@
       "item": "arsmagicalegacy:blank_rune"
     },
     {
-      "tag": "forge:dyes/green"
+      "tag": "c:dyes/green"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:green_rune"
+    "count": 1,
+    "id": "arsmagicalegacy:green_rune"
   }
 }

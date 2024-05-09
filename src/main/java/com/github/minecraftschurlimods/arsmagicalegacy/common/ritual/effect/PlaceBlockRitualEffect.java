@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record PlaceBlockRitualEffect(BlockState state, BlockPos offset) implements RitualEffect {
-    public static final Codec<PlaceBlockRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<PlaceBlockRitualEffect> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             BlockState.CODEC.fieldOf("state").forGetter(PlaceBlockRitualEffect::state),
             BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(PlaceBlockRitualEffect::offset)
     ).apply(inst, PlaceBlockRitualEffect::new));
@@ -25,7 +25,7 @@ public record PlaceBlockRitualEffect(BlockState state, BlockPos offset) implemen
     }
 
     @Override
-    public Codec<? extends RitualEffect> codec() {
+    public MapCodec<? extends RitualEffect> codec() {
         return CODEC;
     }
 }

@@ -7,5 +7,8 @@
   "ingredient": {
     "item": "arsmagicalegacy:deepslate_chimerite_ore"
   },
-  "result": "arsmagicalegacy:chimerite"
+  "result": {
+    "count": 1,
+    "id": "arsmagicalegacy:chimerite"
+  }
 }

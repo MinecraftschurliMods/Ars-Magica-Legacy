@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:gems/chimerite"
+      "tag": "c:gems/chimerite"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "arsmagicalegacy:chimerite_block"
+    "count": 1,
+    "id": "arsmagicalegacy:chimerite_block"
   }
 }

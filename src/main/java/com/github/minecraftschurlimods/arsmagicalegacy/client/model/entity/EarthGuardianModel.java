@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
 
 public class EarthGuardianModel extends AMGeckolibHeadModel<EarthGuardian> {
     public EarthGuardianModel() {
@@ -12,7 +12,7 @@ public class EarthGuardianModel extends AMGeckolibHeadModel<EarthGuardian> {
     @Override
     public void setCustomAnimations(EarthGuardian animatable, long instanceId, AnimationState<EarthGuardian> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        CoreGeoBone rock = getAnimationProcessor().getBone("rock");
+        GeoBone rock = getAnimationProcessor().getBone("rock");
         rock.setHidden(!animatable.shouldRenderRock);
     }
 }

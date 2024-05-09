@@ -32,7 +32,7 @@ public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
         if (level == null) return;
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
-        if (!player.isCreative() && !player.hasEffect(AMMobEffects.TRUE_SIGHT.value())) return;
+        if (!player.isCreative() && !player.hasEffect(AMMobEffects.TRUE_SIGHT)) return;
         BlockState blockState = blockEntity.getBlockState();
         BlockPos blockPos = blockEntity.getBlockPos();
         ModelData modelData = blockEntity.getModelData();

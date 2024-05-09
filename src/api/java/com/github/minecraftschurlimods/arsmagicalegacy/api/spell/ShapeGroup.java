@@ -3,7 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -15,8 +17,9 @@ import java.util.List;
  * A shape group is a part of a spell, which can be exchanged to change the casting, but not the effect of a spell.
  */
 public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers) {
-    public static final Codec<ShapeGroup> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getSpellPartRegistry().byNameCodec()).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
+    public static final Codec<ShapeGroup> CODEC = Codec.lazyInitialized(() -> ArsMagicaAPI.get().getSpellPartRegistry().byNameCodec()).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
     public static final ShapeGroup EMPTY = of(List.of());
+    public static final StreamCodec<RegistryFriendlyByteBuf, ShapeGroup> STREAM_CODEC = ByteBufCodecs.registry(ISpellPart.REGISTRY_KEY).apply(ByteBufCodecs.list()).map(ShapeGroup::of, ShapeGroup::parts);
 
     /**
      * Creates a shape group from a list of parts.

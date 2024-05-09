@@ -1,41 +1,39 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SpellIconSelectPacket(String name, ResourceLocation icon) implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_icon_select");
+    static final Type<SpellIconSelectPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_icon_select"));
+    static final StreamCodec<ByteBuf, SpellIconSelectPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8,
+            SpellIconSelectPacket::name,
+            ResourceLocation.STREAM_CODEC,
+            SpellIconSelectPacket::icon,
+            SpellIconSelectPacket::new
+    );
 
-    SpellIconSelectPacket(FriendlyByteBuf buf) {
-        this(buf.readUtf(), buf.readResourceLocation());
+    void handle(IPayloadContext context) {
+        Player sender = context.player();
+        ItemStack item = sender.getMainHandItem();
+        if (item.isEmpty()) {
+            item = sender.getOffhandItem();
+        }
+        item.set(AMDataComponents.SPELL_ICON, icon());
+        item.set(AMDataComponents.SPELL_NAME, Component.nullToEmpty(name()));
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
-    }
-
-    @Override
-    public void write(FriendlyByteBuf buf) {
-        buf.writeUtf(name());
-        buf.writeResourceLocation(icon());
-    }
-
-    void handle(PlayPayloadContext context) {
-        context.workHandler().execute(() -> {
-            Player sender = context.player().orElseThrow();
-            ItemStack item = sender.getMainHandItem();
-            if (item.isEmpty()) {
-                item = sender.getOffhandItem();
-            }
-            var helper = ArsMagicaAPI.get().getSpellHelper();
-            helper.setSpellIcon(item, icon());
-            helper.setSpellName(item, name());
-        });
+    public Type<SpellIconSelectPacket> type() {
+        return TYPE;
     }
 }

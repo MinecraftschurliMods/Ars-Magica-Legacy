@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SpellCustomizationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
@@ -39,8 +41,8 @@ public class SpellCustomizationScreen extends Screen {
         editBox = new EditBox(font, 0, 0, 0, 0, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        helper.getSpellName(stack).ifPresent(pText -> editBox.setValue(pText.getString()));
-        helper.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
+        Optional.ofNullable(stack.get(AMDataComponents.SPELL_NAME)).ifPresent(pText -> editBox.setValue(pText.getString()));
+        Optional.ofNullable(stack.get(AMDataComponents.SPELL_ICON)).ifPresent(spellIconSelector::setSelected);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class SpellCustomizationScreen extends Screen {
         String name = editBox.getValue();
         ResourceLocation icon = spellIconSelector.getSelected();
         if (!name.isBlank() && icon != null) {
-            PacketDistributor.SERVER.noArg().send(new SpellIconSelectPacket(name, icon));
+            PacketDistributor.sendToServer(new SpellIconSelectPacket(name, icon));
         }
     }
 

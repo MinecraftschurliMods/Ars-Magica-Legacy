@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
 import net.minecraft.sounds.SoundEvent;
@@ -68,7 +69,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
                 if (sound != null) {
                     caster.level().playSound(null, caster, sound, SoundSource.HOSTILE, 1f, 0.5f + caster.level().getRandom().nextFloat());
                 }
-                Objects.requireNonNull(getSpell(caster)).cast(caster, caster.level(), 0, false, false);
+                ArsMagicaAPI.get().getSpellHelper().cast(Objects.requireNonNull(getSpell(caster)), caster, caster.level(), 0, false, false);
                 ticks = 0;
                 stop();
             }

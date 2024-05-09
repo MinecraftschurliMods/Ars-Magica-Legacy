@@ -105,7 +105,7 @@ public final class AMUtil {
      */
     public static ItemStack createDummyStack(int fortune, int silkTouch) {
         ItemStack stack = new ItemStack(Items.NETHERITE_PICKAXE);
-        stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
+        stack.enchant(Enchantments.FORTUNE, fortune);
         stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;
     }

@@ -2,26 +2,17 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.ShapeGroupArea;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.SpellPartDraggable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-
-import java.util.List;
 
 public final class ShapeGroupHUD extends HUDElement {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
@@ -31,7 +22,7 @@ public final class ShapeGroupHUD extends HUDElement {
     }
 
     @Override
-    public void draw(ExtendedGui gui, GuiGraphics graphics, float partialTicks) {
+    public void draw(GuiGraphics graphics, float partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);

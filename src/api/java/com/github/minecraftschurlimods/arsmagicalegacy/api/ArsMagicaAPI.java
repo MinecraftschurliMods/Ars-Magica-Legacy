@@ -21,7 +21,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +68,7 @@ public interface ArsMagicaAPI {
     /**
      * @return The registry for affinities.
      */
-    Registry<Affinity> getAffinityRegistry();
+    DefaultedRegistry<Affinity> getAffinityRegistry();
 
     /**
      * @return The registry for spell parts.
@@ -80,13 +81,13 @@ public interface ArsMagicaAPI {
     Registry<ContingencyType> getContingencyTypeRegistry();
 
     @Experimental
-    Registry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
+    Registry<MapCodec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
 
     @Experimental
-    Registry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry();
+    Registry<MapCodec<? extends RitualRequirement>> getRitualRequirementTypeRegistry();
 
     @Experimental
-    Registry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
+    Registry<MapCodec<? extends RitualEffect>> getRitualEffectTypeRegistry();
 
     Registry<SpellIngredientType<?>> getSpellIngredientTypeRegistry();
 

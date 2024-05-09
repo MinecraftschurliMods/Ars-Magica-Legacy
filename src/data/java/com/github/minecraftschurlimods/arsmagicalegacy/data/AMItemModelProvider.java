@@ -212,7 +212,7 @@ class AMItemModelProvider extends ItemModelProvider {
     private void affinityItem(DeferredHolder<Item, ? extends Item> item, boolean skipNone) {
         getBuilder(item.getId().toString());
         for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(Affinity.NONE) && skipNone) continue;
+            if (affinity.getId().equals(Affinity.NONE.location()) && skipNone) continue;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }

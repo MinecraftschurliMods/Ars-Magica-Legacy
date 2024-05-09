@@ -93,9 +93,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -107,7 +107,8 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -138,39 +139,37 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerRenderers);
         modEventBus.addListener(ClientInit::itemColors);
         modEventBus.addListener(ClientInit::registerHUDs);
+        modEventBus.addListener(ClientInit::registerMenuScreens);
         modEventBus.addListener(AMShaders::init);
         IEventBus forgeBus = NeoForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::movementInputUpdate);
         forgeBus.addListener(ClientInit::mouseScroll);
-        forgeBus.addListener(ClientInit::entityRenderPre);
-        forgeBus.addListener(ClientInit::entityRenderPost);
         forgeBus.addListener(ClientInit::renderHand);
         forgeBus.addListener(ClientInit::renderLevelStage);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> Sheets.addWoodType(AMWoodTypes.WITCHWOOD));
-        registerMenuScreens();
         CompatManager.clientInit(event);
         ItemBlockRenderTypes.setRenderLayer(AMFluids.LIQUID_ESSENCE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMFluids.FLOWING_LIQUID_ESSENCE.get(), RenderType.translucent());
         SpellParticleSpawners.init();
     }
 
-    private static void registerMenuScreens() {
-        MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
-        MenuScreens.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
-        MenuScreens.register(AMMenuTypes.SPELL_BOOK.get(), SpellBookScreen::new);
+    private static void registerMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
+        event.register(AMMenuTypes.RIFT.get(), RiftScreen::new);
+        event.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
+        event.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
+        event.register(AMMenuTypes.SPELL_BOOK.get(), SpellBookScreen::new);
     }
 
-    private static void registerHUDs(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("mana_hud", new ManaHUD());
-        event.registerBelowAll("burnout_hud", new BurnoutHUD());
-        event.registerBelowAll("xp_hud", new XpHUD());
-        event.registerBelowAll("shape_group_hud", new ShapeGroupHUD());
-        event.registerBelowAll("spell_book_hud", new SpellBookHUD());
+    private static void registerHUDs(RegisterGuiLayersEvent event) {
+        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_hud"), new ManaHUD());
+        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_hud"), new BurnoutHUD());
+        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "xp_hud"), new XpHUD());
+        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shape_group_hud"), new ShapeGroupHUD());
+        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_book_hud"), new SpellBookHUD());
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -296,20 +295,8 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.WITCHWOOD_HANGING_SIGN.get(), HangingSignRenderer::new);
     }
 
-    private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
-        pre.getPoseStack().pushPose();
-        if (pre.getEntity().getAttribute(AMAttributes.SCALE.value()) == null) return;
-        float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.value());
-        if (factor == 1) return;
-        pre.getPoseStack().scale(factor, factor, factor);
-    }
-
-    private static void entityRenderPost(RenderLivingEvent.Post<?, ?> post) {
-        post.getPoseStack().popPose();
-    }
-
     private static void itemColors(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, tintIndex) -> tintIndex == 0 && stack.getItem() instanceof DyeableLeatherItem dyeable ? dyeable.getColor(stack) : -1, AMItems.SPELL_BOOK.get());
+        event.register((stack, tintIndex) -> tintIndex == 0 ? DyedItemColor.getOrDefault(stack, -1) : -1, AMItems.SPELL_BOOK.get());
         event.register((stack, tintIndex) -> {
             EtheriumType type = ArsMagicaAPI.get().getEtheriumHelper().getEtheriumType(stack);
             return ColorUtil.argbToRgb(tintIndex == 0 && type != null ? type.getColor() : EtheriumType.NEUTRAL.getColor());
@@ -334,7 +321,7 @@ public final class ClientInit {
         if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) return;
         double delta = event.getScrollDeltaY();
         if (delta == 0) return;
-        PacketDistributor.SERVER.noArg().send(new SpellBookNextSpellPacket(delta > 0));
+        PacketDistributor.sendToServer(new SpellBookNextSpellPacket(delta > 0));
         event.setCanceled(true);
     }
 

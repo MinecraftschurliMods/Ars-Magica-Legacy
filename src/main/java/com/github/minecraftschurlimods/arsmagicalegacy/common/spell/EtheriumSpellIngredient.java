@@ -15,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -36,7 +37,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));

@@ -3,7 +3,7 @@
   "category": "equipment",
   "ingredients": [
     {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     },
     {
       "item": "minecraft:bone_meal"
@@ -19,6 +19,7 @@
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:wizards_chalk"
+    "count": 1,
+    "id": "arsmagicalegacy:wizards_chalk"
   }
 }

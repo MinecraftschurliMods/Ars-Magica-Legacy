@@ -3,7 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -13,8 +15,9 @@ import java.util.List;
 import java.util.Objects;
 
 public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers) {
-    public static final Codec<SpellStack> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getSpellPartRegistry().byNameCodec()).listOf().xmap(SpellStack::of, SpellStack::parts);
+    public static final Codec<SpellStack> CODEC = Codec.lazyInitialized(() -> ArsMagicaAPI.get().getSpellPartRegistry().byNameCodec()).listOf().xmap(SpellStack::of, SpellStack::parts);
     public static final SpellStack EMPTY = of(List.of());
+    public static final StreamCodec<RegistryFriendlyByteBuf, SpellStack> STREAM_CODEC = ByteBufCodecs.registry(ISpellPart.REGISTRY_KEY).apply(ByteBufCodecs.list()).map(SpellStack::of, SpellStack::parts);
 
     /**
      * Creates a spell stack from a list of parts.

@@ -31,8 +31,8 @@ public class ThrownRock extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(OWNER, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, 0);
     }
 
     @Override
@@ -50,11 +50,6 @@ public class ThrownRock extends Entity {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         return false;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
     }
 
     @Override

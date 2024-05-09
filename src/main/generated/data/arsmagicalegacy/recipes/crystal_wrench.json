@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "T": {
-      "tag": "forge:gems/topaz"
+      "tag": "c:gems/topaz"
     }
   },
   "pattern": [
@@ -15,6 +15,7 @@
     " G "
   ],
   "result": {
-    "item": "arsmagicalegacy:crystal_wrench"
+    "count": 1,
+    "id": "arsmagicalegacy:crystal_wrench"
   }
 }

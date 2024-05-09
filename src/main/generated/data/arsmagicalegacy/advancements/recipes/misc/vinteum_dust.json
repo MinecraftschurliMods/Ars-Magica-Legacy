@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:vinteum_block"
-            ]
+            "items": "arsmagicalegacy:vinteum_block"
           }
         ]
       },

@@ -6,10 +6,11 @@
       "item": "arsmagicalegacy:blank_rune"
     },
     {
-      "tag": "forge:dyes/pink"
+      "tag": "c:dyes/pink"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:pink_rune"
+    "count": 1,
+    "id": "arsmagicalegacy:pink_rune"
   }
 }
