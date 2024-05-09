@@ -139,19 +139,19 @@ public final class Config {
             SHAPE_GROUP_X = builder
                     .comment("Horizontal position of the shape group hud.")
                     .translation(TranslationConstants.CONFIG + "shape_group_x")
-                    .defineInRange("shape_group_x", -129, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("shape_group_x", 0, Short.MIN_VALUE, Short.MAX_VALUE);
             SHAPE_GROUP_Y = builder
                     .comment("Vertical position of the shape group hud.")
                     .translation(TranslationConstants.CONFIG + "shape_group_y")
-                    .defineInRange("shape_group_y", 18, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("shape_group_y", 0, Short.MIN_VALUE, Short.MAX_VALUE);
             SHAPE_GROUP_ANCHOR_X = builder
                     .comment("Horizontal anchor of the shape group hud.")
                     .translation(TranslationConstants.CONFIG + "shape_group_anchor_x")
-                    .defineEnum("shape_group_anchor_x", HUDElement.AnchorX.CENTER);
+                    .defineEnum("shape_group_anchor_x", HUDElement.AnchorX.LEFT);
             SHAPE_GROUP_ANCHOR_Y = builder
                     .comment("Horizontal anchor of the shape group hud.")
                     .translation(TranslationConstants.CONFIG + "shape_group_anchor_y")
-                    .defineEnum("shape_group_anchor_y", HUDElement.AnchorY.BOTTOM);
+                    .defineEnum("shape_group_anchor_y", HUDElement.AnchorY.TOP);
             builder.pop();
             builder.pop();
         }
