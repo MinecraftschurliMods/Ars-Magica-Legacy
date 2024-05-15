@@ -29,7 +29,9 @@ public interface ISpellComponent extends ISpellPart {
      */
     @Deprecated(forRemoval = true)
     @OverrideOnly
-    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed);
+    default SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+        return invoke(spell, caster, null, level, modifiers, target, index, ticksUsed);
+    }
 
     /**
      * Invoke this spell component for a block. Called only on the server. Deprecated, use variant with directEntity parameter below instead.
@@ -45,7 +47,9 @@ public interface ISpellComponent extends ISpellPart {
      */
     @Deprecated(forRemoval = true)
     @OverrideOnly
-    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed);
+    default SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
+        return invoke(spell, caster, null, level, modifiers, target, index, ticksUsed);
+    }
 
     /**
      * @return The stats used by this spell part.
@@ -71,9 +75,7 @@ public interface ISpellComponent extends ISpellPart {
      * @return The spell cast result (success if anything was affected).
      */
     @OverrideOnly
-    default SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return invoke(spell, caster, level, modifiers, target, index, ticksUsed);
-    }
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed);
 
     /**
      * Invoke this spell component for a block. Called only on the server.
@@ -89,7 +91,5 @@ public interface ISpellComponent extends ISpellPart {
      * @return The spell cast result (success if anything was affected).
      */
     @OverrideOnly
-    default SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return invoke(spell, caster, level, modifiers, target, index, ticksUsed);
-    }
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed);
 }
