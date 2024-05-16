@@ -36,7 +36,7 @@ public class SkillLearnRitualTest {
 
     @GameTest(template = "empty", batch = BATCH)
     public static void testUnlockBlizzard(GameTestHelper helper) {
-        test(helper, AMSpellParts.BLIZZARD.getId(), AMSpellParts.SELF.get(), AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get());
+        test(helper, AMSpellParts.BLIZZARD.getId(), AMSpellParts.SELF.get(), AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get());
     }
 
     @GameTest(template = "empty", batch = BATCH)
@@ -46,7 +46,7 @@ public class SkillLearnRitualTest {
 
     @GameTest(template = "empty", batch = BATCH)
     public static void testUnlockDismembering(GameTestHelper helper) {
-        test(helper, AMSpellParts.DISMEMBERING.getId(), AMSpellParts.SELF.get(), AMSpellParts.PHYSICAL_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.PIERCING.get());
+        test(helper, AMSpellParts.DISMEMBERING.getId(), AMSpellParts.SELF.get(), AMSpellParts.PHYSICAL_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.HEALING.get(), AMSpellParts.PIERCING.get());
     }
 
     @GameTest(template = "empty", batch = BATCH)
@@ -56,7 +56,7 @@ public class SkillLearnRitualTest {
 
     @GameTest(template = "empty", batch = BATCH)
     public static void testUnlockFallingStar(GameTestHelper helper) {
-        test(helper, AMSpellParts.FALLING_STAR.getId(), AMSpellParts.SELF.get(), AMSpellParts.ASTRAL_DISTORTION.get(), AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.SOLAR.get());
+        test(helper, AMSpellParts.FALLING_STAR.getId(), AMSpellParts.SELF.get(), AMSpellParts.ASTRAL_DISTORTION.get(), AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.GRAVITY.get());
     }
 
     @GameTest(template = "empty", batch = BATCH)
