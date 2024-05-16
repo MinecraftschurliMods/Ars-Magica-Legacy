@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LightningRodBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -122,10 +121,9 @@ public class PatchouliCompat implements ICompatHandler {
         return (level, pos) -> PatchouliAPI.get().getMultiblock(location).validate(level, pos) != null;
     }
 
-    private IMultiblock makePillarsMultiblock(PatchouliAPI.IPatchouliAPI api, IStateMatcher air, IStateMatcher pillar, IStateMatcher cap, IStateMatcher lower, IStateMatcher middle, IStateMatcher upper, IStateMatcher chalk) {
+    private IMultiblock makePillarsMultiblock(PatchouliAPI.IPatchouliAPI api, IStateMatcher pillar, IStateMatcher cap, IStateMatcher lower, IStateMatcher middle, IStateMatcher upper, IStateMatcher chalk) {
         return api.makeMultiblock(
                 PILLARS_STRUCTURE,
-                ' ', air,
                 '0', lower,
                 'M', middle,
                 'U', upper,
@@ -139,7 +137,7 @@ public class PatchouliCompat implements ICompatHandler {
     public void init(FMLCommonSetupEvent event) {
         PatchouliAPI.IPatchouliAPI api = PatchouliAPI.get();
         IStateMatcher capStateMatcher = new CapStateMatcher();
-        IStateMatcher air = api.predicateMatcher(Blocks.AIR.defaultBlockState(), BlockBehaviour.BlockStateBase::isAir);
+        IStateMatcher air = api.airMatcher();
         IStateMatcher chalk = api.looseBlockMatcher(AMBlocks.WIZARDS_CHALK.get());
         IStateMatcher obeliskLower = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState(), ObeliskBlock.PART);
         IStateMatcher obeliskMiddle = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE), ObeliskBlock.PART);
@@ -166,7 +164,6 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher candle = api.stateMatcher(Blocks.CANDLE.defaultBlockState().setValue(BlockStateProperties.CANDLES, 4).setValue(BlockStateProperties.LIT, true));
         api.registerMultiblock(CRAFTING_ALTAR, api.makeMultiblock(
                 CRAFTING_ALTAR_STRUCTURE,
-                ' ', air,
                 'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH),
                 'I', api.predicateMatcher(Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LEVER) && state.getValue(LeverBlock.FACE) == AttachFace.WALL && state.getValue(LeverBlock.FACING) == Direction.SOUTH),
                 'O', api.looseBlockMatcher(AMBlocks.ALTAR_CORE.get()),
@@ -183,7 +180,6 @@ public class PatchouliCompat implements ICompatHandler {
         ));
         api.registerMultiblock(OBELISK_CHALK, api.makeMultiblock(
                 OBELISK_CHALK_STRUCTURE,
-                ' ', air,
                 '0', obeliskLower,
                 'M', obeliskMiddle,
                 'U', obeliskUpper,
@@ -191,29 +187,26 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(CELESTIAL_PRISM_CHALK, api.makeMultiblock(
                 CELESTIAL_PRISM_CHALK_STRUCTURE,
-                ' ', air,
                 'P', celestialPrismUpper,
                 '0', celestialPrismLower,
                 'C', chalk
         ).setSymmetrical(true));
         api.registerMultiblock(BLACK_AUREM_CHALK, api.makeMultiblock(
                 BLACK_AUREM_CHALK_STRUCTURE,
-                ' ', air,
                 'B', blackAurem,
                 'C', chalk
         ).setSymmetrical(true));
-        api.registerMultiblock(OBELISK_PILLARS, makePillarsMultiblock(api, air, api.strictBlockMatcher(Blocks.STONE_BRICKS), api.strictBlockMatcher(Blocks.CHISELED_STONE_BRICKS), obeliskLower, obeliskMiddle, obeliskUpper, chalk));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLAR1, makePillarsMultiblock(api, air, quartzPillar, api.strictBlockMatcher(Blocks.GLASS), celestialPrismLower, celestialPrismUpper, air, chalk));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLAR2, makePillarsMultiblock(api, air, quartzPillar, goldBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLAR3, makePillarsMultiblock(api, air, quartzPillar, diamondBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLAR4, makePillarsMultiblock(api, air, quartzPillar, api.strictBlockMatcher(AMBlocks.MOONSTONE_BLOCK.get()), celestialPrismLower, celestialPrismUpper, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR1, makePillarsMultiblock(api, air, netherBricks, api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get()), air, blackAurem, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR2, makePillarsMultiblock(api, air, netherBricks, goldBlock, air, blackAurem, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, air, netherBricks, diamondBlock, air, blackAurem, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR4, makePillarsMultiblock(api, air, netherBricks, api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get()), air, blackAurem, air, chalk));
+        api.registerMultiblock(OBELISK_PILLARS, makePillarsMultiblock(api, api.strictBlockMatcher(Blocks.STONE_BRICKS), api.strictBlockMatcher(Blocks.CHISELED_STONE_BRICKS), obeliskLower, obeliskMiddle, obeliskUpper, chalk));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLAR1, makePillarsMultiblock(api, quartzPillar, api.strictBlockMatcher(Blocks.GLASS), celestialPrismLower, celestialPrismUpper, air, chalk));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLAR2, makePillarsMultiblock(api, quartzPillar, goldBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLAR3, makePillarsMultiblock(api, quartzPillar, diamondBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLAR4, makePillarsMultiblock(api, quartzPillar, api.strictBlockMatcher(AMBlocks.MOONSTONE_BLOCK.get()), celestialPrismLower, celestialPrismUpper, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR1, makePillarsMultiblock(api, netherBricks, api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get()), air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR2, makePillarsMultiblock(api, netherBricks, goldBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, netherBricks, diamondBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR4, makePillarsMultiblock(api, netherBricks, api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get()), air, blackAurem, air, chalk));
         api.registerMultiblock(WATER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 INLAY_RING,
-                ' ', air,
                 'E', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.EAST_WEST)),
                 'N', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_SOUTH)),
                 '1', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_EAST)),
@@ -223,7 +216,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(FIRE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 FIRE_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
@@ -234,7 +226,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(EARTH_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 EARTH_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'E', ironInlayEastWest,
                 'N', ironInlayNorthSouth,
                 '1', ironInlaySouthEast,
@@ -248,7 +239,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(AIR_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 INLAY_RING,
-                ' ', air,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
@@ -258,7 +248,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(ICE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 INLAY_RING,
-                ' ', air,
                 'E', ironInlayEastWest,
                 'N', ironInlayNorthSouth,
                 '1', ironInlaySouthEast,
@@ -268,7 +257,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(LIGHTNING_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 LIGHTNING_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
@@ -281,13 +269,11 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(LIFE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 LIFE_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'W', chalk,
                 'C', api.stateMatcher(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true))
         ).setSymmetrical(true));
         api.registerMultiblock(ARCANE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 ARCANE_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'E', ironInlayEastWest,
                 'N', ironInlayNorthSouth,
                 '1', ironInlaySouthEast,
@@ -299,7 +285,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(ENDER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 ENDER_GUARDIAN_SPAWN_STRUCTURE,
-                ' ', air,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
@@ -312,7 +297,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(PURIFICATION_RITUAL, api.makeMultiblock(
                 PURIFICATION_STRUCTURE,
-                ' ', air,
                 '0', obeliskLower,
                 'O', obeliskMiddle,
                 'T', obeliskUpper,
@@ -321,7 +305,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(CORRUPTION_RITUAL, api.makeMultiblock(
                 CORRUPTION_STRUCTURE,
-                ' ', air,
                 '0', obeliskLower,
                 'O', obeliskMiddle,
                 'T', obeliskUpper,
