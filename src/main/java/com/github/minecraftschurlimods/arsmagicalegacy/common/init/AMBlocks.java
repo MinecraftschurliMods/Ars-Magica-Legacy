@@ -28,6 +28,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -79,6 +80,7 @@ public interface AMBlocks {
     DeferredBlock<BlackAuremBlock>         BLACK_AUREM                 = BLOCKS.register("black_aurem",                        BlackAuremBlock::new);
     DeferredBlock<WizardsChalkBlock>       WIZARDS_CHALK               = BLOCKS.register("wizards_chalk",                      WizardsChalkBlock::new);
     DeferredBlock<SpellRuneBlock>          SPELL_RUNE                  = BLOCKS.register("spell_rune",                         SpellRuneBlock::new);
+    DeferredBlock<AirBlock>                SPELL_LIGHT                 = BLOCKS.register("spell_light",                        () -> new AirBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AIR).lightLevel($ -> 15)));
     DeferredBlock<Block>                   CHIMERITE_ORE               = BLOCKS.registerSimpleBlock("chimerite_ore",           BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3F, 3F));
     DeferredBlock<Block>                   DEEPSLATE_CHIMERITE_ORE     = BLOCKS.registerSimpleBlock("deepslate_chimerite_ore", BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3F).sound(SoundType.DEEPSLATE));
     DeferredBlock<Block>                   CHIMERITE_BLOCK             = BLOCKS.registerSimpleBlock("chimerite_block",         BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(3F, 3F));

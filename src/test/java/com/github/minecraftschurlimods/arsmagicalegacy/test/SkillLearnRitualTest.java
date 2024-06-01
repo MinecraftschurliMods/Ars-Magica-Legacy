@@ -30,7 +30,7 @@ public class SkillLearnRitualTest {
     @EmptyTemplate
     @TestHolder(description = "Test that blizzard unlocks when casting the required unlock spell")
     public static void testUnlockBlizzard(ExtendedGameTestHelper helper) {
-        test(helper, AMSpellParts.BLIZZARD.getId(), AMSpellParts.SELF.get(), AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get());
+        test(helper, AMSpellParts.BLIZZARD.getId(), AMSpellParts.SELF.get(), AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get());
     }
 
     @GameTest
@@ -44,7 +44,7 @@ public class SkillLearnRitualTest {
     @EmptyTemplate
     @TestHolder(description = "Test that dismembering unlocks when casting the required unlock spell")
     public static void testUnlockDismembering(ExtendedGameTestHelper helper) {
-        test(helper, AMSpellParts.DISMEMBERING.getId(), AMSpellParts.SELF.get(), AMSpellParts.PHYSICAL_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.PIERCING.get());
+        test(helper, AMSpellParts.DISMEMBERING.getId(), AMSpellParts.SELF.get(), AMSpellParts.PHYSICAL_DAMAGE.get(), AMSpellParts.DAMAGE.get(), AMSpellParts.HEALING.get(), AMSpellParts.PIERCING.get());
     }
 
     @GameTest
@@ -58,7 +58,7 @@ public class SkillLearnRitualTest {
     @EmptyTemplate
     @TestHolder(description = "Test that falling star unlocks when casting the required unlock spell")
     public static void testUnlockFallingStar(ExtendedGameTestHelper helper) {
-        test(helper, AMSpellParts.FALLING_STAR.getId(), AMSpellParts.SELF.get(), AMSpellParts.ASTRAL_DISTORTION.get(), AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.SOLAR.get());
+        test(helper, AMSpellParts.FALLING_STAR.getId(), AMSpellParts.SELF.get(), AMSpellParts.ASTRAL_DISTORTION.get(), AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.GRAVITY.get());
     }
 
     @GameTest
