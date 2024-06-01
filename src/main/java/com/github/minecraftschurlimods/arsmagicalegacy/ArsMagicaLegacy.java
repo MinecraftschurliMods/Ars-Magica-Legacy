@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientInit;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
@@ -50,7 +50,7 @@ public final class ArsMagicaLegacy {
         EventHandler.register(bus);
         ServerInit.init();
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            DistProxy.init(bus);
+            ClientInit.init(bus);
         }
         Config.init();
         NetworkInit.init(bus);

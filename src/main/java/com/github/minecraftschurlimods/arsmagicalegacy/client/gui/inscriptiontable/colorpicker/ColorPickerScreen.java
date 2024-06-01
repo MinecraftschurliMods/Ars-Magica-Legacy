@@ -1,6 +1,7 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
+package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.colorpicker;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.databinding.Listenable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.google.common.collect.ImmutableList;
