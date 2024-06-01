@@ -188,7 +188,19 @@ final class AMTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider lookup) {
+            tag(AMTags.DamageTypes.SPELL).add(AMDamageSources.SPELL_DROWNING, AMDamageSources.SPELL_FIRE, AMDamageSources.SPELL_FROST, AMDamageSources.SPELL_LIGHTNING, AMDamageSources.SPELL_MAGIC, AMDamageSources.SPELL_PHYSICAL, AMDamageSources.SPELL_PHYSICAL_PLAYER);
+            tag(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH).add(AMDamageSources.SPELL_MAGIC);
+            tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(AMDamageSources.SPELL_MAGIC);
+            tag(DamageTypeTags.BYPASSES_ARMOR).add(AMDamageSources.SPELL_DROWNING, AMDamageSources.SPELL_FROST, AMDamageSources.SPELL_MAGIC);
+            tag(DamageTypeTags.BYPASSES_INVULNERABILITY).addTag(AMTags.DamageTypes.SPELL);
+            tag(DamageTypeTags.IGNITES_ARMOR_STANDS).add(AMDamageSources.SPELL_FIRE);
+            tag(DamageTypeTags.IS_DROWNING).add(AMDamageSources.SPELL_DROWNING);
+            tag(DamageTypeTags.IS_FIRE).add(AMDamageSources.SPELL_FIRE);
+            tag(DamageTypeTags.IS_FREEZING).add(AMDamageSources.SPELL_FROST);
+            tag(DamageTypeTags.IS_LIGHTNING).add(AMDamageSources.SPELL_LIGHTNING);
             tag(DamageTypeTags.IS_PROJECTILE).add(AMDamageSources.NATURE_SCYTHE, AMDamageSources.THROWN_ROCK);
+            tag(DamageTypeTags.WITHER_IMMUNE_TO).add(AMDamageSources.SPELL_DROWNING);
+            tag(DamageTypeTags.WITCH_RESISTANT_TO).add(AMDamageSources.SPELL_MAGIC);
         }
     }
 }

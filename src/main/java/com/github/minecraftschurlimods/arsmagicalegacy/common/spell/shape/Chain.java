@@ -28,12 +28,12 @@ public class Chain extends AbstractShape {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         HitResult hitResult = helper.trace(caster, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0);
         if (hitResult instanceof BlockHitResult bhr)
-            return helper.invoke(spell, caster, level, bhr, ticksUsed, index, awardXp);
+            return helper.invoke(spell, caster, null, level, bhr, ticksUsed, index, awardXp);
         SpellCastResult result = SpellCastResult.EFFECT_FAILED;
         if (hitResult instanceof EntityHitResult ehr) {
-            result = helper.invoke(spell, caster, level, ehr, ticksUsed, index, awardXp);
+            result = helper.invoke(spell, caster, null, level, ehr, ticksUsed, index, awardXp);
             for (Entity e : getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, caster, hit, index), caster)) {
-                SpellCastResult currentResult = helper.invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp);
+                SpellCastResult currentResult = helper.invoke(spell, caster, null, level, new EntityHitResult(e), ticksUsed, index, awardXp);
                 result = result == SpellCastResult.SUCCESS ? SpellCastResult.SUCCESS : currentResult;
             }
         }
