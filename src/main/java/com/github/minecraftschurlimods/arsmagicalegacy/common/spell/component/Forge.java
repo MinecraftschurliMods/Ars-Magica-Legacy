@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Villager;
@@ -20,13 +21,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
 public class Forge extends AbstractComponent {
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof Villager villager) {
             if (!level.isClientSide()) {
                 level.addFreshEntity(new ItemEntity(level, villager.position().x(), villager.position().y(), villager.position().z(), new ItemStack(Items.EMERALD)));
@@ -38,7 +40,7 @@ public class Forge extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         if (!(caster instanceof Player)) return SpellCastResult.EFFECT_FAILED;
         BlockPos pos = target.getBlockPos();
         Block block = level.getBlockState(pos).getBlock();

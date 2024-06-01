@@ -78,7 +78,7 @@ public final class ContingencyHelper implements IContingencyHelper {
         }
 
         private void execute(Level level, LivingEntity target) {
-            ArsMagicaAPI.get().getSpellHelper().invoke(spell, target, level, new EntityHitResult(target), 0, index, true);
+            ArsMagicaAPI.get().getSpellHelper().invoke(spell, target, null, level, new EntityHitResult(target), 0, index, true);
         }
     }
 }

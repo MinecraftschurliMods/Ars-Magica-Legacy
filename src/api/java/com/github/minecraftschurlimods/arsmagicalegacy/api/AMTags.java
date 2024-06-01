@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
@@ -135,6 +136,21 @@ public final class AMTags {
 
         private static TagKey<Biome> tag(String name) {
             return TagKey.create(Registries.BIOME, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        }
+    }
+
+    /**
+     * Holds the mod's damage type tags.
+     */
+    public static final class DamageTypes {
+        public static final TagKey<DamageType> SPELL = tag("spell");
+
+        private static TagKey<DamageType> forgeTag(String name) {
+            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FORGE, name));
+        }
+
+        private static TagKey<DamageType> tag(String name) {
+            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 }

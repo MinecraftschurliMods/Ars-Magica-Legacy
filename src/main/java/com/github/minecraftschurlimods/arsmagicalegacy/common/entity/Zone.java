@@ -89,7 +89,7 @@ public class Zone extends AbstractSpellEntity {
         int index = getIndex();
         float radius = getRadius();
         ISpell spell = getSpell();
-        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
+        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, this, level, new EntityHitResult(e), tickCount, index, true));
         List<Vec3> list = new ArrayList<>();
         for (int x = (int) Math.rint(-radius); x <= (int) Math.rint(radius); x++) {
             for (int y = (int) Math.rint(-getBbHeight()); y <= (int) Math.rint(getBbHeight()); y++) {
@@ -100,7 +100,7 @@ public class Zone extends AbstractSpellEntity {
         }
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+            ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, this, level, result, tickCount, index, true);
         }
         if (tickCount > 0) {
             PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));

@@ -145,7 +145,7 @@ public final class Spell implements ISpell {
                 return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
-        SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
+        SpellCastResult result = spellHelper.invoke(this, caster, null, level, null, castingTicks, 0, awardXp);
         if (level.isClientSide()) {
             NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
             return result;

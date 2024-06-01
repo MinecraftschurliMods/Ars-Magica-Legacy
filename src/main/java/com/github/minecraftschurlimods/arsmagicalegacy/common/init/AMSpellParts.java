@@ -95,13 +95,12 @@ public interface AMSpellParts {
     DeferredHolder<ISpellPart, Contingency>        CONTINGENCY_FIRE    = SPELL_PARTS.register("contingency_fire",    () -> new Contingency(ContingencyType.FIRE));
     DeferredHolder<ISpellPart, Contingency>        CONTINGENCY_FALL    = SPELL_PARTS.register("contingency_fall",    () -> new Contingency(ContingencyType.FALL));
 
-    DeferredHolder<ISpellPart, Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> e.damageSources().drown(), Config.SERVER.DAMAGE, e -> !e.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value())));
-    DeferredHolder<ISpellPart, Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> e.damageSources().inFire(), Config.SERVER.DAMAGE, Entity::fireImmune));
-    DeferredHolder<ISpellPart, Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> e.damageSources().freeze(), Config.SERVER.DAMAGE, e -> !e.canFreeze()));
-    DeferredHolder<ISpellPart, Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> e.damageSources().lightningBolt(), Config.SERVER.DAMAGE));
-    DeferredHolder<ISpellPart, Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> e.damageSources().indirectMagic(e, null), Config.SERVER.DAMAGE));
-    DeferredHolder<ISpellPart, Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? p.damageSources().playerAttack(p) : e.damageSources().mobAttack(e), Config.SERVER.DAMAGE));
-    DeferredHolder<ISpellPart, Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
+    DeferredHolder<ISpellPart, Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(AMDamageSources::spellDrowning, Config.SERVER.DAMAGE));
+    DeferredHolder<ISpellPart, Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(AMDamageSources::spellFire, Config.SERVER.DAMAGE));
+    DeferredHolder<ISpellPart, Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(AMDamageSources::spellFrost, Config.SERVER.DAMAGE));
+    DeferredHolder<ISpellPart, Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(AMDamageSources::spellLightning, Config.SERVER.DAMAGE));
+    DeferredHolder<ISpellPart, Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(AMDamageSources::spellMagic, Config.SERVER.DAMAGE));
+    DeferredHolder<ISpellPart, Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage((e, d) -> e instanceof Player p ? AMDamageSources.spellPhysicalPlayer(p, d) : AMDamageSources.spellPhysical(e, d), Config.SERVER.DAMAGE));    DeferredHolder<ISpellPart, Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     DeferredHolder<ISpellPart, Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     DeferredHolder<ISpellPart, Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));
     DeferredHolder<ISpellPart, Effect>             HEALTH_BOOST        = SPELL_PARTS.register("health_boost",        () -> new Effect(MobEffects.HEALTH_BOOST));
