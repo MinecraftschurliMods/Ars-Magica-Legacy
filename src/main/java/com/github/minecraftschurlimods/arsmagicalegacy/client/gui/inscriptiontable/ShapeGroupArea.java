@@ -16,12 +16,13 @@ import java.util.function.BiConsumer;
 
 public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
-    private static final int ROWS = 2;
-    private static final int COLUMNS = 2;
-    private static final int X_PADDING = 2;
-    private static final int Y_PADDING = 1;
-    static final int WIDTH = 36;
-    static final int HEIGHT = 34;
+    public static final int ROWS = 2;
+    public static final int COLUMNS = 2;
+    public static final int X_PADDING = 2;
+    public static final int Y_PADDING = 1;
+    public static final int WIDTH = 36;
+    public static final int HEIGHT = 34;
+    public static final int DISABLED_OVERLAY_COLOR = 0x7f000000;
     private final BiConsumer<SpellPartDraggable, Integer> onDrop;
     private LockState lockState = LockState.NONE;
 
@@ -72,7 +73,7 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
         if (lockState == LockState.ALL) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0, 0, 10);
-            guiGraphics.fill(x, y, x + WIDTH, y + HEIGHT, 0x7f000000);
+            guiGraphics.fill(x, y, x + WIDTH, y + HEIGHT, DISABLED_OVERLAY_COLOR);
             guiGraphics.pose().popPose();
         }
         for (int i = 0; i < ROWS; i++) {

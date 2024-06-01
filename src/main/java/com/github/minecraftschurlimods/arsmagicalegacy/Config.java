@@ -56,6 +56,10 @@ public final class Config {
         public final ModConfigSpec.IntValue SPELL_BOOK_Y;
         public final ModConfigSpec.EnumValue<HUDElement.AnchorX> SPELL_BOOK_ANCHOR_X;
         public final ModConfigSpec.EnumValue<HUDElement.AnchorY> SPELL_BOOK_ANCHOR_Y;
+        public final ModConfigSpec.IntValue SHAPE_GROUP_X;
+        public final ModConfigSpec.IntValue SHAPE_GROUP_Y;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorX> SHAPE_GROUP_ANCHOR_X;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorY> SHAPE_GROUP_ANCHOR_Y;
 
         private Client(ModConfigSpec.Builder builder) {
             builder.comment("HUD Elements").push("hud_elements");
@@ -130,6 +134,24 @@ public final class Config {
                     .comment("Horizontal anchor of the spell book hud.")
                     .translation(TranslationConstants.CONFIG + "spell_book_anchor_y")
                     .defineEnum("spell_book_anchor_y", HUDElement.AnchorY.BOTTOM);
+            builder.pop();
+            builder.push("shape_group");
+            SHAPE_GROUP_X = builder
+                    .comment("Horizontal position of the shape group hud.")
+                    .translation(TranslationConstants.CONFIG + "shape_group_x")
+                    .defineInRange("shape_group_x", 0, Short.MIN_VALUE, Short.MAX_VALUE);
+            SHAPE_GROUP_Y = builder
+                    .comment("Vertical position of the shape group hud.")
+                    .translation(TranslationConstants.CONFIG + "shape_group_y")
+                    .defineInRange("shape_group_y", 0, Short.MIN_VALUE, Short.MAX_VALUE);
+            SHAPE_GROUP_ANCHOR_X = builder
+                    .comment("Horizontal anchor of the shape group hud.")
+                    .translation(TranslationConstants.CONFIG + "shape_group_anchor_x")
+                    .defineEnum("shape_group_anchor_x", HUDElement.AnchorX.LEFT);
+            SHAPE_GROUP_ANCHOR_Y = builder
+                    .comment("Horizontal anchor of the shape group hud.")
+                    .translation(TranslationConstants.CONFIG + "shape_group_anchor_y")
+                    .defineEnum("shape_group_anchor_y", HUDElement.AnchorY.TOP);
             builder.pop();
             builder.pop();
         }
