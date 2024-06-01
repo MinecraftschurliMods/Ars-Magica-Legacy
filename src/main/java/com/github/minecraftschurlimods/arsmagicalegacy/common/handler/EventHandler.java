@@ -171,33 +171,36 @@ public final class EventHandler {
                 .withTabsAfter(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB)
                 .icon(() -> ArsMagicaAPI.get().getBookStack())
                 .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
-                .displayItems((params, output) -> {
-                    List<ItemStack> list = new ArrayList<>();
-                    var api = ArsMagicaAPI.get();
-                    for (DeferredHolder<Item, ? extends Item> o : AMRegistries.ITEMS.getEntries()) {
-                        if (!o.isBound()) continue;
-                        Item item = o.get();
-                        if (item instanceof ISkillPointItem skillPointItem) {
-                        for (SkillPoint point : api.getSkillPointRegistry()) {
-                            if (point != AMSkillPoints.NONE.value()) {
-                                   list.add(skillPointItem.setSkillPoint(new ItemStack(item), point));
-                               }
-                        }
-                        continue;
-                        }
-                        if (item instanceof IAffinityItem affinityItem) {
-                            for (Affinity affinity : api.getAffinityRegistry()) {
-                                if (Affinity.NONE.equals(affinity.getId())) continue;
-                                list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
-                            }
-                            continue;
-                        }
-                        if (!AMItems.HIDDEN_ITEMS.contains(o)) {
-                            list.add(new ItemStack(item));
-                        }
+                .displayItems(EventHandler::fillMainCreativeTab)
+                .build();
+    }
+
+    private static void fillMainCreativeTab(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
+        List<ItemStack> list = new ArrayList<>();
+        var api = ArsMagicaAPI.get();
+        for (DeferredHolder<Item, ? extends Item> o : AMRegistries.ITEMS.getEntries()) {
+            if (!o.isBound()) continue;
+            Item item = o.get();
+            if (item instanceof ISkillPointItem skillPointItem) {
+                for (SkillPoint point : api.getSkillPointRegistry()) {
+                    if (point != AMSkillPoints.NONE.value()) {
+                        list.add(skillPointItem.setSkillPoint(new ItemStack(item), point));
                     }
-                   output.acceptAll(list);
-                }).build();
+                }
+                continue;
+            }
+            if (item instanceof IAffinityItem affinityItem) {
+                for (Affinity affinity : api.getAffinityRegistry()) {
+                    if (Affinity.NONE.equals(affinity.getId())) continue;
+                    list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
+                }
+                continue;
+            }
+            if (!AMItems.HIDDEN_ITEMS.contains(o)) {
+                list.add(new ItemStack(item));
+            }
+        }
+        output.acceptAll(list);
     }
 
     private static CreativeModeTab buildPrefabSpellsCreativeTab() {
@@ -206,8 +209,12 @@ public final class EventHandler {
                 .withTabsBefore(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .icon(() -> AMItems.SPELL_PARCHMENT.asOptional().map(ItemStack::new).orElse(ItemStack.EMPTY))
                 .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
-                .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept))
+                .displayItems(EventHandler::fillPrefabSpellsCreativeTab)
                 .build();
+    }
+
+    private static void fillPrefabSpellsCreativeTab(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
+        AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept);
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
@@ -308,9 +315,26 @@ public final class EventHandler {
     }
 
     private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        AttributeInstance maxManaAttr = event.getEntity().getAttribute(AMAttributes.MAX_MANA.value());
+        var api = ArsMagicaAPI.get();
+        Player player = event.getEntity();
+        int magicLevel = api.getMagicHelper().getLevel(player);
+        float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (magicLevel - 1);
+        AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.value());
         if (maxManaAttr != null) {
-            ArsMagicaAPI.get().getManaHelper().increaseMana(event.getEntity(), (float) (maxManaAttr.getBaseValue() / 2));
+            maxManaAttr.setBaseValue(newMaxMana);
+            api.getManaHelper().increaseMana(player, (float) (maxManaAttr.getBaseValue() / 2));
+        }
+        AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN.value());
+        if (manaRegenAttr != null) {
+            manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get());
+        }
+        AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.value());
+        if (maxBurnoutAttr != null) {
+            maxBurnoutAttr.setBaseValue(Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (magicLevel - 1));
+        }
+        AttributeInstance burnoutRegenAttr = player.getAttribute(AMAttributes.BURNOUT_REGEN.value());
+        if (burnoutRegenAttr != null) {
+            burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get());
         }
     }
 
@@ -339,14 +363,14 @@ public final class EventHandler {
         if (!(stack.getItem() instanceof SpellRecipeItem)) return;
         if (player.isSecondaryUseActive()) {
             SpellRecipeItem.takeFromLectern(player, level, pos, state);
-        } else {
-            lectern.pageCount = SpellRecipeItem.getPageCount(stack);
-            if (player instanceof ServerPlayer sp) {
-                PacketDistributor.PLAYER.with(sp).send(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()));
-            }
-            player.awardStat(Stats.INTERACT_WITH_LECTERN);
-            event.setCanceled(true);
+            return;
         }
+        lectern.pageCount = SpellRecipeItem.getPageCount(stack);
+        if (player instanceof ServerPlayer sp) {
+            PacketDistributor.PLAYER.with(sp).send(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()));
+        }
+        player.awardStat(Stats.INTERACT_WITH_LECTERN);
+        event.setCanceled(true);
     }
 
     private static void affinityChangingPre(AffinityChangingEvent.Pre event) {
