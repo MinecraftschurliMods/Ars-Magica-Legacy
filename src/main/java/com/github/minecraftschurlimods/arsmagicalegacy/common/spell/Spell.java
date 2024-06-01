@@ -145,7 +145,7 @@ public final class Spell implements ISpell {
                 return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
-        SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
+        SpellCastResult result = spellHelper.invoke(this, caster, null, level, null, castingTicks, 0, awardXp);
         if (level.isClientSide()) {
             MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
             return result;
@@ -178,9 +178,8 @@ public final class Spell implements ISpell {
                     MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, shift.floatValue(), false));
                 }
             }
-            float xp = 0.05f * affinityShifts.size();
+            float xp = (float) affinityShifts().values().stream().mapToDouble(e -> e).sum() * affinityShifts.size() * 100;
             if (continuous) xp /= 4;
-            if (affinityGains) xp *= 0.9f;
             api.getMagicHelper().awardXp(player, xp);
         }
         return result;

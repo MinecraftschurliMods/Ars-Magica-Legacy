@@ -94,12 +94,12 @@ public interface AMSpellParts {
     RegistryObject<Contingency>        CONTINGENCY_FIRE    = SPELL_PARTS.register("contingency_fire",    () -> new Contingency(ContingencyType.FIRE));
     RegistryObject<Contingency>        CONTINGENCY_FALL    = SPELL_PARTS.register("contingency_fall",    () -> new Contingency(ContingencyType.FALL));
 
-    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> e.damageSources().drown(), Config.SERVER.DAMAGE, e -> !e.canDrownInFluidType(ForgeMod.WATER_TYPE.get())));
-    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> e.damageSources().inFire(), Config.SERVER.DAMAGE, Entity::fireImmune));
-    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> e.damageSources().freeze(), Config.SERVER.DAMAGE, e -> !e.canFreeze()));
-    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> e.damageSources().lightningBolt(), Config.SERVER.DAMAGE));
-    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> e.damageSources().indirectMagic(e, null), Config.SERVER.DAMAGE));
-    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? p.damageSources().playerAttack(p) : e.damageSources().mobAttack(e), Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(AMDamageSources::spellDrowning, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(AMDamageSources::spellFire, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(AMDamageSources::spellFrost, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(AMDamageSources::spellLightning, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(AMDamageSources::spellMagic, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage((e, d) -> e instanceof Player p ? AMDamageSources.spellPhysicalPlayer(p, d) : AMDamageSources.spellPhysical(e, d), Config.SERVER.DAMAGE));
     RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));

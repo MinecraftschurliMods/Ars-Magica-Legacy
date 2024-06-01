@@ -84,8 +84,8 @@ public class SpellRuneBlockEntity extends BlockEntity {
             caster = living;
         }
         if (spell == null || caster == null) return;
-        SpellCastResult r1 = helper.invoke(spell, caster, level, new EntityHitResult(entity), 0, index, awardXp);
-        SpellCastResult r2 = helper.invoke(spell, caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
+        SpellCastResult r1 = helper.invoke(spell, caster, null, level, new EntityHitResult(entity), 0, index, awardXp);
+        SpellCastResult r2 = helper.invoke(spell, caster, null, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }

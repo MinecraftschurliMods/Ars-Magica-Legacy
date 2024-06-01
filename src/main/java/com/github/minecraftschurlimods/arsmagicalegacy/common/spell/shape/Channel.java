@@ -15,7 +15,7 @@ import java.util.List;
 public class Channel extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
-        return ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new EntityHitResult(caster), ticksUsed, index, awardXp);
+        return ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, null, level, new EntityHitResult(caster), ticksUsed, index, awardXp);
     }
 
     @Override

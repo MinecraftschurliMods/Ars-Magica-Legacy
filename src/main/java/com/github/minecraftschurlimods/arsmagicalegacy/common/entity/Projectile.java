@@ -109,7 +109,7 @@ public class Projectile extends AbstractSpellEntity {
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
             } else if (!level.isClientSide()) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, this, level, result, tickCount, index, true);
                 decreaseBounces();
             }
         } else if (result.getType().equals(HitResult.Type.ENTITY) && !level.isClientSide()) {
@@ -118,7 +118,7 @@ public class Projectile extends AbstractSpellEntity {
                 e = part.getParent();
             }
             if (e != owner && tryReflect(e)) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, this, level, result, tickCount, index, true);
                 decreaseBounces();
             }
         }
