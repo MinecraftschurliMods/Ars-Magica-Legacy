@@ -178,9 +178,8 @@ public final class Spell implements ISpell {
                     NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, event.affinity, (float) helper.getAffinityDepth(player, event.affinity), false));
                 }
             }
-            float xp = 0.05f * affinityShifts.size();
+            float xp = (float) affinityShifts().values().stream().mapToDouble(e -> e).sum() * affinityShifts.size() * 100;
             if (continuous) xp /= 4;
-            if (affinityGains) xp *= 0.9f;
             api.getMagicHelper().awardXp(player, xp);
         }
         return result;
