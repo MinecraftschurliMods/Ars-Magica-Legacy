@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +26,7 @@ public class Light extends Effect {
         Direction direction = target.getDirection();
         BlockPos pos = target.getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
         if (level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, Blocks.LIGHT.defaultBlockState(), Block.UPDATE_ALL);
+            level.setBlock(pos, AMBlocks.SPELL_LIGHT.get().defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;

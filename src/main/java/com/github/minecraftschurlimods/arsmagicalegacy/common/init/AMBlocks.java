@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -73,6 +74,7 @@ public interface AMBlocks {
     RegistryObject<BlackAuremBlock>         BLACK_AUREM                 = BLOCKS.register("black_aurem",                 BlackAuremBlock::new);
     RegistryObject<WizardsChalkBlock>       WIZARDS_CHALK               = BLOCKS.register("wizards_chalk",               WizardsChalkBlock::new);
     RegistryObject<SpellRuneBlock>          SPELL_RUNE                  = BLOCKS.register("spell_rune",                  SpellRuneBlock::new);
+    RegistryObject<AirBlock>                SPELL_LIGHT                 = BLOCKS.register("spell_light",                 () -> new AirBlock(BlockBehaviour.Properties.copy(Blocks.AIR).noLootTable().lightLevel($ -> 15)));
     RegistryObject<Block>                   CHIMERITE_ORE               = BLOCKS.register("chimerite_ore",               () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block>                   DEEPSLATE_CHIMERITE_ORE     = BLOCKS.register("deepslate_chimerite_ore",     () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3F).sound(SoundType.DEEPSLATE)));
     RegistryObject<Block>                   CHIMERITE_BLOCK             = BLOCKS.register("chimerite_block",             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(3F, 3F)));

@@ -11,6 +11,7 @@
     ],
     "modifiers": [
       "arsmagicalegacy:damage",
+      "arsmagicalegacy:healing",
       "arsmagicalegacy:piercing"
     ]
   }
