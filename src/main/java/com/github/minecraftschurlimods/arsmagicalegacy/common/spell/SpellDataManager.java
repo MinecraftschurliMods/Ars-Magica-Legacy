@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
-    private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
+    private static final Lazy<SpellDataManager> INSTANCE = Lazy.of(SpellDataManager::new);
 
     private SpellDataManager() {
         super(ArsMagicaAPI.MOD_ID, "spell_parts", SpellPartData.CODEC, LoggerFactory.getLogger(SpellDataManager.class));

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "L": {
-      "tag": "c:leather"
+      "tag": "c:leathers"
     },
     "P": {
       "item": "minecraft:paper"

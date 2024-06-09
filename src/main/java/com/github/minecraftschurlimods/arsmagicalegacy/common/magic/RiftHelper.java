@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class RiftHelper implements IRiftHelper {
-    private static final Lazy<RiftHelper> INSTANCE = Lazy.concurrentOf(RiftHelper::new);
+    private static final Lazy<RiftHelper> INSTANCE = Lazy.of(RiftHelper::new);
     private static final Supplier<AttachmentType<RiftHolder>> RIFT_CAPABILITY = ATTACHMENT_TYPES.register("rift", () -> AttachmentType.serializable(RiftHolder::new).copyOnDeath().build());
 
     private RiftHelper() {}

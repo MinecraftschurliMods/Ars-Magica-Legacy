@@ -37,7 +37,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
-    private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
+    private static final Lazy<AffinityHelper> INSTANCE = Lazy.of(AffinityHelper::new);
     private static final Supplier<AttachmentType<AffinityHolder>> AFFINITY = ATTACHMENT_TYPES.register("affinity", () -> AttachmentType.builder(AffinityHolder::empty).serialize(AffinityHolder.CODEC).copyOnDeath().copyHandler(AffinityHolder::copy).build());
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;

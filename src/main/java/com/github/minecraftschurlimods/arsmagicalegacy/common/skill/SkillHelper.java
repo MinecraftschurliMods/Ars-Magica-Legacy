@@ -46,7 +46,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class SkillHelper implements ISkillHelper {
-    private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
+    private static final Lazy<SkillHelper> INSTANCE = Lazy.of(SkillHelper::new);
     private static final Supplier<AttachmentType<KnowledgeHolder>> KNOWLEDGE = ATTACHMENT_TYPES.register("knowledge", () -> AttachmentType.builder(KnowledgeHolder::empty).serialize(KnowledgeHolder.CODEC).copyOnDeath().copyHandler(KnowledgeHolder::copy).build());
 
     private SkillHelper() {}
