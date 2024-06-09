@@ -19,7 +19,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -147,7 +146,7 @@ final class AbilityHandler {
     private static void potionApplicable(MobEffectEvent.Applicable event) {
         Ability ability = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.POISON_RESISTANCE);
         if (ability != null && event.getEntity() instanceof Player player && event.getEffectInstance().is(MobEffects.POISON) && ability.test(player)) {
-            event.setResult(Event.Result.DENY);
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
     }
 

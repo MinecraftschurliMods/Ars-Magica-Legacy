@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class SpellHelper implements ISpellHelper {
-    private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
+    private static final Lazy<SpellHelper> INSTANCE = Lazy.of(SpellHelper::new);
     private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
     private final Map<ISpellComponent, ISpellParticleSpawner> particleSpawners = new HashMap<>();
 

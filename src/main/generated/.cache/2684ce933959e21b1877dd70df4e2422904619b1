@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-05T22:59:03.627916	vanilla/Recipes
+// 1.20.6	2024-06-08T11:30:13.3373031	vanilla/Recipes
 6279e01386699f0af119f0b2b7107be085919ace data/arsmagicalegacy/advancements/recipes/building_blocks/stripped_witchwood.json
 b67df2b3b244672dbee9fc20c9f2b0e3a6d792ea data/arsmagicalegacy/advancements/recipes/building_blocks/witchwood.json
 93c9f5aa62f30aff1df72e966cd213d6efd1a3ab data/arsmagicalegacy/advancements/recipes/building_blocks/witchwood_planks.json
@@ -118,7 +118,7 @@ a500452984773a8bdf9e504a49cb7ce49a7ffff2 data/arsmagicalegacy/recipes/affinity_e
 407746d36023f75b583769cd693e08b125609945 data/arsmagicalegacy/recipes/altar_core.json
 c69bb7a8c1d7e2d4f668f31adb27154248d7b10c data/arsmagicalegacy/recipes/arcane_ash.json
 a776fde278a5a9d7fb12eb1fe19fba66995344b9 data/arsmagicalegacy/recipes/arcane_compendium.json
-72b73409ac199fe2bd94aecdf98b8217b18d6871 data/arsmagicalegacy/recipes/arcane_compound.json
+2ec9436d181c40a29188c4895c564ef21e915bf5 data/arsmagicalegacy/recipes/arcane_compound.json
 d65bcadeedb5a2bb1a6d4f5ea8da0289257867bd data/arsmagicalegacy/recipes/battlemage_boots.json
 01077c779f668b5108e63d0a4c9278d45dc2bf18 data/arsmagicalegacy/recipes/battlemage_chestplate.json
 8bd091a3a12c8e89ceca87583026801344f44097 data/arsmagicalegacy/recipes/battlemage_helmet.json
@@ -178,7 +178,7 @@ d8243e5f36ebf8964fa7e4b4bd9b5e639daf5d7d data/arsmagicalegacy/recipes/pink_rune.
 407f2d2a5430319da2e5a0a8ad872c32c562be98 data/arsmagicalegacy/recipes/red_dye_from_desert_nova.json
 cc3f592ef808d4cdddb80470f6f259ef9adfda4d data/arsmagicalegacy/recipes/red_rune.json
 7c106c3fb658fe223cb7b0db4660ad6abf0a01be data/arsmagicalegacy/recipes/rune_bag.json
-0dfb0258f612126e5958e7f381aacdc73abca7e9 data/arsmagicalegacy/recipes/spell_book.json
+399390a87b59ec99bf59ffd2416c162b590bee3c data/arsmagicalegacy/recipes/spell_book.json
 8f3e9a7ec4de10797126e071fbd10168902936a3 data/arsmagicalegacy/recipes/spell_parchment.json
 6797605626293c45d7d62f2d9a638915621f6445 data/arsmagicalegacy/recipes/stripped_witchwood.json
 3e3b4ee1175ef7942cefeb5a6ab45ade51e845b1 data/arsmagicalegacy/recipes/sunstone.json

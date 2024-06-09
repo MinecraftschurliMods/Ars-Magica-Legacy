@@ -85,7 +85,7 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     }
 
     private static OcculusTab create(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon, Integer width, Integer height, Integer startX, Integer startY, Integer index) {
-        return new OcculusTab(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index, Lazy.concurrentOf(OcculusTabRendererFactory.of(rendererClass)));
+        return new OcculusTab(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index, Lazy.of(OcculusTabRendererFactory.of(rendererClass)));
     }
 
     /**

@@ -50,12 +50,12 @@ public final class Spell implements ISpell {
         this.shapeGroups = shapeGroups;
         this.spellStack = spellStack;
         this.additionalData = additionalData;
-        continuous = Lazy.concurrentOf(() -> firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
-        empty = Lazy.concurrentOf(() -> (shapeGroups().isEmpty() || shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
-        nonNull = Lazy.concurrentOf(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
+        continuous = Lazy.of(() -> firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
+        empty = Lazy.of(() -> (shapeGroups().isEmpty() || shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
+        nonNull = Lazy.of(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
-        valid = Lazy.concurrentOf(this::validate);
+        valid = Lazy.of(this::validate);
     }
 
     public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {

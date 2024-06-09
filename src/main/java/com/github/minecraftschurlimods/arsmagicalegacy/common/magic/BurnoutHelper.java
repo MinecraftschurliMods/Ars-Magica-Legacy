@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class BurnoutHelper implements IBurnoutHelper {
-    private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
+    private static final Lazy<BurnoutHelper> INSTANCE = Lazy.of(BurnoutHelper::new);
     private static final Supplier<AttachmentType<Float>> BURNOUT = ATTACHMENT_TYPES.register("burnout", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((inst, owner, provider) -> inst).build());
 
     private BurnoutHelper() {

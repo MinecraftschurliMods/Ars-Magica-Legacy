@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class ContingencyHelper implements IContingencyHelper {
-    private static final Lazy<ContingencyHelper> INSTANCE = Lazy.concurrentOf(ContingencyHelper::new);
+    private static final Lazy<ContingencyHelper> INSTANCE = Lazy.of(ContingencyHelper::new);
     private static final Supplier<AttachmentType<Contingency>> CONTINGENCY = ATTACHMENT_TYPES.register("contingency", () -> AttachmentType.builder(Contingency::new).serialize(Contingency.CODEC).build());
 
     private ContingencyHelper() {

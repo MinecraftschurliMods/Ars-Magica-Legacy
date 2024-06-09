@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "type": "botanypots:crop",
+  "categories": [
+    "dirt"
+  ],
+  "display": {
+    "block": "arsmagicalegacy:desert_nova"
+  },
+  "drops": [
+    {
+      "chance": 1.0,
+      "output": {
+        "item": "arsmagicalegacy:desert_nova"
+      }
+    }
+  ],
+  "growthTicks": 1200,
+  "seed": {
+    "item": "arsmagicalegacy:desert_nova"
+  }
+}
