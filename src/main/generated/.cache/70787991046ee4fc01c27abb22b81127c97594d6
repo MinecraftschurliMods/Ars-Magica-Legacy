@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-05T22:59:03.6159052	vanilla/Spell Part Data[arsmagicalegacy]
+// 1.20.6	2024-06-08T11:30:13.3232452	vanilla/Spell Part Data[arsmagicalegacy]
 1026fae6eb7a4dc4deca92ff478fbd0a4f3ed9e4 data/arsmagicalegacy/spell_parts/absorption.json
 4961117b2eddf811cc5af61220c584fa7e2d0cf0 data/arsmagicalegacy/spell_parts/agility.json
 5ffc3ea9a65c738348f0d9f377323be9f7efe0db data/arsmagicalegacy/spell_parts/aoe.json
@@ -30,13 +30,13 @@ f916d5b03f1898a8acc3465797041c934565b82f data/arsmagicalegacy/spell_parts/dispel
 75cb698f35ad3fe2cec1e0f0aa5384416563ee68 data/arsmagicalegacy/spell_parts/drought.json
 9a81844a2c9847c79e50a4c1e2e174157d9de2a1 data/arsmagicalegacy/spell_parts/drowning_damage.json
 470eb39e4fcd5825131506900ea66496204cf780 data/arsmagicalegacy/spell_parts/duration.json
-f2b3dbf84d733abfbb11d644d383088f730d5bf9 data/arsmagicalegacy/spell_parts/effect_power.json
+99ed7a067c7dd10c868a9a4719aca426e7c860f6 data/arsmagicalegacy/spell_parts/effect_power.json
 9c5df920b71b9aa1f568bd441d461cb8bb089b70 data/arsmagicalegacy/spell_parts/ender_intervention.json
 6ccf156a1721f428566e2a6f07c0e8b9e6644aa5 data/arsmagicalegacy/spell_parts/entangle.json
 4f50d0f0ee80534ac3373e7a53ab43ba99fcc7dd data/arsmagicalegacy/spell_parts/explosion.json
 d5b55e22838dc8354f9a38f3a2cc8bd99e8d95b6 data/arsmagicalegacy/spell_parts/falling_star.json
 7f4293fa408910219c3e8b2d16fc5ea4a70622ad data/arsmagicalegacy/spell_parts/fire_damage.json
-0fc62276c8f67805730e8993f9fc1bbd68c2fee9 data/arsmagicalegacy/spell_parts/fire_rain.json
+c6a0cf6479cf6b4b7835e6470a56b658ad0d4481 data/arsmagicalegacy/spell_parts/fire_rain.json
 a2d6b5e267090af5da1969aea9db1d97d421bfcd data/arsmagicalegacy/spell_parts/flight.json
 780991bd9ad34efc4ccfe17ec2f745300ecd8c74 data/arsmagicalegacy/spell_parts/fling.json
 4e571ca845c71e0ea1f77909775951c0fb0661fc data/arsmagicalegacy/spell_parts/forge.json

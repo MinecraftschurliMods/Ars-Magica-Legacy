@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public final class EtheriumHelper implements IEtheriumHelper {
     public static final BlockCapability<IEtheriumProvider, Void> ETHERIUM_PROVIDER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_provider"), IEtheriumProvider.class);
     public static final BlockCapability<IEtheriumConsumer, Void> ETHERIUM_CONSUMER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_consumer"), IEtheriumConsumer.class);
-    private static final Lazy<EtheriumHelper> INSTANCE = Lazy.concurrentOf(EtheriumHelper::new);
+    private static final Lazy<EtheriumHelper> INSTANCE = Lazy.of(EtheriumHelper::new);
 
     private EtheriumHelper() {}
 

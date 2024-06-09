@@ -197,7 +197,7 @@ public interface ArsMagicaAPI {
     final class InstanceHolder {
         private InstanceHolder() {}
 
-        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
+        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.of(() -> {
             Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
             if (!FMLEnvironment.production) {
                 return impl.orElseThrow(() -> {

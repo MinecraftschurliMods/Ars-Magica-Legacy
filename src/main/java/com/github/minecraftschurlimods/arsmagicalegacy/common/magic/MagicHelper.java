@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class MagicHelper implements IMagicHelper {
-    private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
+    private static final Lazy<MagicHelper> INSTANCE = Lazy.of(MagicHelper::new);
     private static final Supplier<AttachmentType<MagicHolder>> MAGIC = ATTACHMENT_TYPES.register("magic", () -> AttachmentType.builder(MagicHolder::new).serialize(MagicHolder.CODEC).copyOnDeath().copyHandler(MagicHolder::copy).build());
 
     private MagicHelper() {

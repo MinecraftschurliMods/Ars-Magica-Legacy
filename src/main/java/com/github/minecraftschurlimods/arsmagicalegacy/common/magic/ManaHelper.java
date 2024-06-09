@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class ManaHelper implements IManaHelper {
-    private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
+    private static final Lazy<ManaHelper> INSTANCE = Lazy.of(ManaHelper::new);
     private static final Supplier<AttachmentType<Float>> MANA = ATTACHMENT_TYPES.register("mana", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((inst, owner, provider) -> inst).build());
 
     private ManaHelper() {}
