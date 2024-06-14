@@ -1,11 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jei;
-/*
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -69,13 +67,14 @@ public class JEICompat implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
-        var registry = ArsMagicaAPI.get().getSpellPartRegistry();
+        var api = ArsMagicaAPI.get();
+        var registry = api.getSpellPartRegistry();
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get()), new ItemStack(AMItems.INFINITY_ORB.get())));
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, registryAccess
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
                 .stream()
                 .sorted(Comparator.comparing(e -> e.name().toString()))
-                .map(new ISpellHelper()::makeSpellFromPrefab)
+                .map(api.getSpellHelper()::makeSpellFromPrefab)
                 .toList());
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
@@ -116,4 +115,3 @@ public class JEICompat implements IModPlugin {
         }
     }
 }
-*/

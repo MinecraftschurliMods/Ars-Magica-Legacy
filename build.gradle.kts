@@ -69,7 +69,7 @@ repositories {
     }
 }
 
-//val jei = helper.dependencies.jei()
+val jei = helper.dependencies.jei()
 val jade = helper.dependencies.jade()
 val theoneprobe = helper.dependencies.theoneprobe()
 val curios = helper.dependencies.curios()
@@ -95,9 +95,9 @@ dependencies {
     testImplementation(helper.testframework())
 
     // jei for integration
-    //val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
-    //val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
-    //compileOnly(jeiApiDep)
+    val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
+    val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
+    compileOnly(jeiApiDep)
 
     // curios for additional inventory slots
     val curiosApiDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}:api" }
@@ -115,7 +115,7 @@ dependencies {
     "dataRuntimeOnly"(patchouliDep)
 
     // geckolib for animations
-    val geckolibDep = helper.minecraftVersion.zip(geckolib.version) { mc, version -> "software.bernie.geckolib:geckolib-neoforge-${mc}:${version}" }
+    val geckolibDep = geckolib.version.map { "software.bernie.geckolib:geckolib-neoforge-1.20.6:${it}" }
     implementation(geckolibDep)
     testRuntimeOnly(geckolibDep)
     "dataRuntimeOnly"(geckolibDep)
@@ -133,8 +133,8 @@ dependencies {
         val potionbundlesDep = potionbundles.version.map { "com.github.minecraftschurlimods:potionbundles:${it}" }
         runtimeOnly(potionbundlesDep)
         runtimeOnly(theoneprobeDep)
-        //runtimeOnly(jeiDep)
-        //runtimeOnly(jadeDep)
+        runtimeOnly(jeiDep)
+        runtimeOnly(jadeDep)
         runtimeOnly(curiosDep)
     }
 
