@@ -1,5 +1,4 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jei;
-/*
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -66,4 +65,3 @@ public class SkillIngredient {
         }
     }
 }
-*/
