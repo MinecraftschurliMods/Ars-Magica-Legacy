@@ -11,8 +11,6 @@
       "arsmagicalegacy:frost",
       "arsmagicalegacy:storm"
     ],
-    "modifiers": [
-      "arsmagicalegacy:damage"
-    ]
+    "modifiers": []
   }
 }
