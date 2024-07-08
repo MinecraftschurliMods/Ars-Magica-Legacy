@@ -150,15 +150,20 @@ dependencies {
     jarJar(codeclib)
     "apiCompileOnly"(codeclib)
     implementation(codeclib)
+    "dataImplementation"(codeclib)
     testImplementation(codeclib)
 
     val betterkeybindlib = project.localGradleProperty("dependency.betterkeybindlib.version").map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
     jarJar(betterkeybindlib)
     implementation(betterkeybindlib)
+    "dataImplementation"(betterkeybindlib)
+    testImplementation(betterkeybindlib)
 
     val betterhudlib = project.localGradleProperty("dependency.betterhudlib.version").map { "com.github.minecraftschurlimods:betterhudlib:$it" }
     jarJar(betterhudlib)
     implementation(betterhudlib)
+    "dataImplementation"(betterhudlib)
+    testImplementation(betterhudlib)
 
     val easyDatagenLibVersion = project.localGradleProperty("dependency.easydatagenlib.version")
     val easyDatagenLibApiDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}:api" }
