@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelChangeEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
@@ -68,15 +68,16 @@ public final class MagicHelper implements IMagicHelper {
         while (xp >= xpForNextLevel) {
             xp -= xpForNextLevel;
             level++;
-            NeoForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
-            if (player instanceof ServerPlayer serverPlayer) {
-                AMCriteriaTriggers.PLAYER_LEVEL_UP.get().trigger(serverPlayer, level);
-            }
             xpForNextLevel = getXpForNextLevel(level);
         }
         holder.setXp(xp);
-        holder.setLevel(level);
-        syncToPlayer(player);
+        if (level != holder.getLevel()) {
+            // fire events and other extra functionality
+            setLevel(player, level);
+        } else {
+            // basic syncing
+            syncToPlayer(player);
+        }
     }
 
     @Override
@@ -89,11 +90,11 @@ public final class MagicHelper implements IMagicHelper {
         MagicHolder holder = player.getData(MAGIC);
         int oldLevel = holder.getLevel();
         holder.setLevel(level);
+        NeoForge.EVENT_BUS.post(new PlayerLevelChangeEvent(player, level, oldLevel));
         if (level > oldLevel && level > 0) {
             for (int i = oldLevel + 1; i <= level; i++) {
-                NeoForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, i));
                 if (player instanceof ServerPlayer serverPlayer) {
-                    AMCriteriaTriggers.PLAYER_LEVEL_UP.get().trigger(serverPlayer, level);
+                    AMCriteriaTriggers.PLAYER_LEVEL_UP.get().trigger(serverPlayer, i);
                 }
             }
         }
@@ -103,6 +104,13 @@ public final class MagicHelper implements IMagicHelper {
     @Override
     public boolean knowsMagic(Player player) {
         return !Config.SERVER.REQUIRE_COMPENDIUM_CRAFTING.get() || player.isCreative() || player.isSpectator() || getLevel(player) > 0;
+    }
+
+    @Override
+    public void initiateLeveling(Player player) {
+        if (getLevel(player) <= 0) {
+            setLevel(player, 1);
+        }
     }
 
     /**

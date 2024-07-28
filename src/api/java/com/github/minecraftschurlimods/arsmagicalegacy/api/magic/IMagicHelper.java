@@ -63,6 +63,13 @@ public interface IMagicHelper {
     boolean knowsMagic(Player player);
 
     /**
+     * Initiate leveling (set level 1) for the given player.
+     *
+     * @param player The player to initiate leveling for.
+     */
+    void initiateLeveling(Player player);
+
+    /**
      * @param player The player to check.
      * @return True if the player has magic vision, false otherwise.
      */

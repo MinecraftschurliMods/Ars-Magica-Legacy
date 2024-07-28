@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelChangeEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
@@ -307,11 +307,11 @@ public final class EventHandler {
     }
 
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide()) return;
         var api = ArsMagicaAPI.get();
-        var helper = api.getMagicHelper();
-        if (helper.knowsMagic(event.getEntity())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
-        helper.awardXp(event.getEntity(), 0);
+        api.getMagicHelper().initiateLeveling(player);
     }
 
     private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
@@ -410,7 +410,7 @@ public final class EventHandler {
         }
     }
 
-    private static void playerLevelUp(PlayerLevelUpEvent event) {
+    private static void playerLevelUp(PlayerLevelChangeEvent event) {
         Player player = event.getEntity();
         Level level = player.level();
         int magicLevel = event.getLevel();
@@ -418,13 +418,15 @@ public final class EventHandler {
         if (magicLevel == 1) {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE, Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
         }
-        for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
-            int minEarnLevel = skillPoint.minEarnLevel();
-            int levelsForPoint = skillPoint.levelsForPoint();
-            if (minEarnLevel < 0 || levelsForPoint < 0) continue;
-            if (magicLevel >= minEarnLevel && (magicLevel - minEarnLevel) % levelsForPoint == 0) {
-                api.getSkillHelper().addSkillPoint(player, skillPoint);
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), AMSounds.GET_KNOWLEDGE_POINT.value(), SoundSource.PLAYERS, 1f, 1f);
+        for (int i = event.getOldLevel() + 1; i <= magicLevel; i++) {
+            for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
+                int minEarnLevel = skillPoint.minEarnLevel();
+                int levelsForPoint = skillPoint.levelsForPoint();
+                if (minEarnLevel < 0 || levelsForPoint < 0) continue;
+                if (i >= minEarnLevel && (i - minEarnLevel) % levelsForPoint == 0) {
+                    api.getSkillHelper().addSkillPoint(player, skillPoint);
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(), AMSounds.GET_KNOWLEDGE_POINT.value(), SoundSource.PLAYERS, 1f, 1f);
+                }
             }
         }
         float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (magicLevel - 1);
@@ -436,7 +438,7 @@ public final class EventHandler {
         }
         AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN.value());
         if (manaRegenAttr != null) {
-            manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get() );
+            manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get());
         }
         float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (magicLevel - 1);
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.value());
