@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.helperplugin.sourceSets
 
 plugins {
     idea
+    id("net.neoforged.gradle.userdev")
     id ("com.github.minecraftschurlimods.helperplugin")
 }
 
