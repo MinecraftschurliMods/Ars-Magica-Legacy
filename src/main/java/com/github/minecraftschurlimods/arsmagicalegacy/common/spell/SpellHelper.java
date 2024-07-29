@@ -191,7 +191,7 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp) {
         List<Pair<? extends ISpellPart, List<ISpellModifier>>> pwm = spell.partsWithModifiers();
         Pair<? extends ISpellPart, List<ISpellModifier>> pair = pwm.get(index);
         ISpellPart part = pair.getFirst();
@@ -204,7 +204,7 @@ public final class SpellHelper implements ISpellHelper {
                 if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, modifiers, target)).isCanceled())
                     return SpellCastResult.CANCELLED;
                 if (target instanceof EntityHitResult entityHitResult) {
-                    result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
+                    result = component.invoke(spell, caster, directEntity, level, modifiers, entityHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
                         Vec3 location = target.getLocation();
                         PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
@@ -212,14 +212,14 @@ public final class SpellHelper implements ISpellHelper {
                     }
                 }
                 if (target instanceof BlockHitResult blockHitResult) {
-                    result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
+                    result = component.invoke(spell, caster, directEntity, level, modifiers, blockHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
                         Vec3 location = target.getLocation();
                         PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
                         PacketDistributor.NEAR.with(targetPoint).send(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
                     }
                 }
-                return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
+                return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, directEntity, level, target, castingTicks, index + 1, awardXp);
             }
             case SHAPE -> {
                 ISpellShape shape = (ISpellShape) part;

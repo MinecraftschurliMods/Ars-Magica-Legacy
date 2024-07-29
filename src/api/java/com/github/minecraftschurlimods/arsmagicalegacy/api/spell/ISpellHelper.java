@@ -157,6 +157,23 @@ public interface ISpellHelper {
     float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target, int componentIndex);
 
     /**
+     * Casts the spell. Deprecated, use variant with directEntity parameter below.
+     *
+     * @param spell        The spell to cast.
+     * @param caster       The entity casting the spell.
+     * @param level        The level the spell is cast in.
+     * @param target       The target of the spell cast.
+     * @param castingTicks How long the spell has already been cast.
+     * @param index        The 1 based index of the currently invoked part.
+     * @param awardXp      The magic xp awarded for casting this spell.
+     * @return A SpellCastResult that represents the spell casting outcome.
+     */
+    @Deprecated(forRemoval = true)
+    default SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp) {
+        return invoke(spell, caster, null, level, target, castingTicks, index, awardXp);
+    }
+
+    /**
      * Casts the spell.
      *
      * @param spell        The spell to cast.
@@ -168,7 +185,7 @@ public interface ISpellHelper {
      * @param awardXp      The magic xp awarded for casting this spell.
      * @return A SpellCastResult that represents the spell casting outcome.
      */
-    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp);
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp);
 
     /**
      * Selects the next shape group of the given spell item stack, wrapping around.

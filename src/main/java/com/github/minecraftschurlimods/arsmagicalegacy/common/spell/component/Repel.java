@@ -27,7 +27,8 @@ public class Repel extends AbstractComponent {
         boolean success = false;
         for (Entity e : caster.level().getEntities(targetEntity, aabb)) {
             if (e == caster) continue;
-            if (e instanceof AbstractSpellEntity effect && effect.getOwner() != null && effect.getOwner().is(e)) continue;
+            if (e instanceof AbstractSpellEntity effect && effect.getOwner() != null && effect.getOwner().is(e))
+                continue;
             success = true;
             Vec3 vec = e.position();
             double distance = targetPos.distanceTo(vec) + 0.1;
@@ -39,14 +40,14 @@ public class Repel extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index) * 2;
         Entity entity = target.getEntity();
         return performRepel(entity, entity.getBoundingBox().inflate(range, range, range), caster, target.getLocation(), modifiers, spell, target, index);
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index) * 2;
         return performRepel(null, AABB.ofSize(target.getLocation(), range, range, range), caster, target.getLocation(), modifiers, spell, target, index);
     }

@@ -1,20 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.AMRenderTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -30,44 +25,8 @@ import org.joml.Vector4f;
 /**
  * Taken and adapted from <a href="https://github.com/Direwolf20-MC/MiningGadgets/blob/mc/1.18/src/main/java/com/direwolf20/mininggadgets/client/renderer/RenderMiningLaser.java">Direwolf20's Mining Gadgets mod</a>.
  */
-public class BeamRenderer extends RenderType {
-    private static final ResourceLocation CORE_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png");
-    private static final RenderType CORE = create("beam_core", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(CORE_TEXTURE, false, false))
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .createCompositeState(false));
-    private static final ResourceLocation MAIN_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png");
-    private static final RenderType MAIN = create("beam_main", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(MAIN_TEXTURE, false, false))
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .createCompositeState(false));
-    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png");
-    private static final RenderType GLOW = create("beam_glow", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(GLOW_TEXTURE, false, false))
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .createCompositeState(false));
-
-    public BeamRenderer(String pName, VertexFormat pFormat, VertexFormat.Mode pMode, int pBufferSize, boolean pAffectsCrumbling, boolean pSortOnUpload, Runnable pSetupState, Runnable pClearState) {
-        super(pName, pFormat, pMode, pBufferSize, pAffectsCrumbling, pSortOnUpload, pSetupState, pClearState);
-    }
+public class BeamRenderer {
+    private BeamRenderer() {}
 
     public static void drawBeam(PoseStack stack, Entity entity, Vec3 target, InteractionHand hand, int color, float ticks) {
         Minecraft mc = Minecraft.getInstance();
@@ -114,9 +73,9 @@ public class BeamRenderer extends RenderType {
         PoseStack.Pose pose = stack.last();
         Matrix3f normal = pose.normal();
         Matrix4f matrix = pose.pose();
-        drawPart(buffer.getBuffer(GLOW), matrix, normal, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), distance, 0.5f, 1, x, y, z, hand, r, g, b, 0.7f);
-        drawPart(buffer.getBuffer(MAIN), matrix, normal, 0.02f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
-        drawPart(buffer.getBuffer(CORE), matrix, normal, 0.01f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
+        drawPart(buffer.getBuffer(AMRenderTypes.BEAM_GLOW), matrix, normal, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), distance, 0.5f, 1, x, y, z, hand, r, g, b, 0.7f);
+        drawPart(buffer.getBuffer(AMRenderTypes.BEAM_MAIN), matrix, normal, 0.02f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
+        drawPart(buffer.getBuffer(AMRenderTypes.BEAM_CORE), matrix, normal, 0.01f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
         stack.popPose();
         buffer.endBatch();
     }

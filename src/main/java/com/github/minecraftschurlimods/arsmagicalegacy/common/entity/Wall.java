@@ -93,7 +93,7 @@ public class Wall extends AbstractSpellEntity {
             Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
             closest = new Vec3(closest.x, getY(), closest.z);
             if (tryReflect(e) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, this, level, new EntityHitResult(e), tickCount, index, true);
             }
         }
         if (tickCount > 0) {

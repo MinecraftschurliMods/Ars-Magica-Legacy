@@ -1,6 +1,7 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
+package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.colorpicker;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.AMRenderTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.databinding.Listenable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -88,7 +89,7 @@ public class ColorPickerWidget extends AbstractWidget {
         float cX = getX() + radius;
         float cY = getY() + radius;
         graphics.pose().pushPose();
-        AMRenderTypes.setColorWheel(cX, cY, radius, _brightness);
+        ColorPickerState.get().setColorWheel(cX, cY, radius, _brightness);
         graphics.fillGradient(AMRenderTypes.COLOR_WHEEL, getX(), getY(), getX() + width, getY() + height, 0xFFFFFFFF, 0xFFFFFFFF, 0);
         graphics.pose().popPose();
     }
