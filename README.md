@@ -24,8 +24,8 @@ You can download the latest version of the mod from [CurseForge][CurseForge Proj
 |      1.18.1       |       0.1.5        |          39.0.66           |     ❌     |                    [CurseForge][Download-1.18.1-CurseForge]                     |
 |      1.18.2       |       1.3.0        |          40.1.35           |     ❌     | [CurseForge][Download-1.18.2-CurseForge] / [Modrinth][Download-1.18.2-Modrinth] |
 |      1.19.2       |       1.3.1        |          43.1.13           |     ❌     | [CurseForge][Download-1.19.2-CurseForge] / [Modrinth][Download-1.19.2-Modrinth] |
-|      1.20.1       |       1.3.1        |          47.0.34           |     ✅     | [CurseForge][Download-1.20.1-CurseForge] / [Modrinth][Download-1.20.1-Modrinth] |
-|      1.20.4       |       1.3.1        |          20.4.232          |     ✅     | [CurseForge][Download-1.20.4-CurseForge] / [Modrinth][Download-1.20.4-Modrinth] |
+|      1.20.1       |       1.5.0        |          47.0.34           |     ✅     | [CurseForge][Download-1.20.1-CurseForge] / [Modrinth][Download-1.20.1-Modrinth] |
+|      1.20.4       |       1.5.0        |          20.4.232          |     ✅     | [CurseForge][Download-1.20.4-CurseForge] / [Modrinth][Download-1.20.4-Modrinth] |
 
 *Versions up to 1.20.1 require [Minecraft Forge][Forge], versions from 1.20.4 onward require [NeoForge].
 
