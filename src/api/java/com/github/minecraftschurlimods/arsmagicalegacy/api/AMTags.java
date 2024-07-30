@@ -126,10 +126,6 @@ public final class AMTags {
     public static final class DamageTypes {
         public static final TagKey<DamageType> SPELL = tag("spell");
 
-        private static TagKey<DamageType> forgeTag(String name) {
-            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FORGE, name));
-        }
-
         private static TagKey<DamageType> tag(String name) {
             return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
