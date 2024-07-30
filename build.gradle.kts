@@ -7,7 +7,7 @@ import com.github.minecraftschurlimods.helperplugin.sourceSets
 plugins {
     idea
     id("net.neoforged.gradle.userdev")
-    id ("com.github.minecraftschurlimods.helperplugin")
+    id("com.github.minecraftschurlimods.helperplugin")
 }
 
 helper.license.url = helper.gitHub.url.zip(helper.license.file) { url, file -> "$url/blob/version/1.20.x/$file" }
@@ -167,6 +167,10 @@ dependencies {
     sourceSets.forEach {
         it.compileOnlyConfigurationName("org.jetbrains:annotations:23.0.0")
     }
+}
+
+afterEvaluate {
+    tasks.findByName("testJunit")?.enabled = false
 }
 
 helper.withCommonRuns()

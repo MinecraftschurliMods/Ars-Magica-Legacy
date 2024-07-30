@@ -1,0 +1,18 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:insolator",
+  "ingredient": {
+    "item": "arsmagicalegacy:cerublossom"
+  },
+  "output": [
+    {
+      "chance": 2.0,
+      "item": "arsmagicalegacy:cerublossom"
+    }
+  ]
+}

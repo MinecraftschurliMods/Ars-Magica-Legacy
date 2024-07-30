@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:tarma_root"
+    }
+  ],
+  "processingTime": 50,
+  "results": [
+    {
+      "count": 2,
+      "item": "minecraft:brown_dye"
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:brown_dye"
+    }
+  ]
+}

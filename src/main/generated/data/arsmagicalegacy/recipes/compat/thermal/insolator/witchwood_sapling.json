@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:insolator",
+  "energy_mod": 3.0,
+  "ingredient": {
+    "item": "arsmagicalegacy:witchwood_sapling"
+  },
+  "output": [
+    {
+      "chance": 6.0,
+      "item": "arsmagicalegacy:witchwood_log"
+    },
+    {
+      "chance": 1.1,
+      "item": "arsmagicalegacy:witchwood_sapling"
+    }
+  ],
+  "water_mod": 3.0
+}
