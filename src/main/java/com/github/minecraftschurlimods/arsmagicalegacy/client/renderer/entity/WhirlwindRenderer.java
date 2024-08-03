@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class WhirlwindRenderer extends FlatTextureRenderer<Whirlwind> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/whirlwind.png");
+    private static final ResourceLocation TEXTURE = ArsMagicaAPI.resource("textures/entity/whirlwind.png");
 
     public WhirlwindRenderer(EntityRendererProvider.Context context) {
         super(context);

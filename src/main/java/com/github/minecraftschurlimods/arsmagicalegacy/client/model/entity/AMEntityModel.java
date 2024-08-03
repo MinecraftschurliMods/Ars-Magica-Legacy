@@ -24,9 +24,9 @@ public class AMEntityModel<T extends Entity> extends EntityModel<T> {
     private final Set<ModelPart> PARTS = new HashSet<>();
 
     @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float r, float g, float b, float a) {
+    public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
         for (ModelPart mp : PARTS) {
-            mp.render(stack, consumer, light, overlay, r, g, b, a);
+            mp.render(stack, consumer, light, overlay, color);
         }
     }
 

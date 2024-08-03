@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements CustomPacketPayload {
-    static final Type<InscriptionTableSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync"));
+    static final Type<InscriptionTableSyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("inscription_table_sync"));
     static final StreamCodec<RegistryFriendlyByteBuf, InscriptionTableSyncPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
             InscriptionTableSyncPacket::blockPos,

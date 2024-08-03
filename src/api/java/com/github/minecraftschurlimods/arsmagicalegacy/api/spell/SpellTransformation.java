@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
 public record SpellTransformation(RuleTest from, BlockState to, ResourceLocation spellPart) {
-    public static final ResourceKey<Registry<SpellTransformation>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_transformation"));
+    public static final ResourceKey<Registry<SpellTransformation>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("spell_transformation"));
     public static final Codec<SpellTransformation> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RuleTest.CODEC.fieldOf("from").forGetter(SpellTransformation::from),
             BlockState.CODEC.fieldOf("to").forGetter(SpellTransformation::to),

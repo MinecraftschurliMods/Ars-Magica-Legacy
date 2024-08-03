@@ -129,7 +129,7 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private record MagicSyncPacket(MagicHolder data) implements CustomPacketPayload {
-        public static final Type<MagicSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_sync"));
+        public static final Type<MagicSyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("magic_sync"));
         public static final StreamCodec<RegistryFriendlyByteBuf, MagicSyncPacket> STREAM_CODEC = MagicHolder.STREAM_CODEC.map(MagicSyncPacket::new, MagicSyncPacket::data);
 
         private void handle(IPayloadContext context) {

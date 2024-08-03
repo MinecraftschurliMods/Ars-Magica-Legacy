@@ -38,32 +38,32 @@ import java.util.function.BiPredicate;
 
 @CompatManager.ModCompat("patchouli")
 public class PatchouliCompat implements ICompatHandler {
-    public static final ResourceLocation ARCANE_COMPENDIUM               = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium");
-    public static final ResourceLocation SPELL_PART_PAGE                 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_part");
-    public static final ResourceLocation CRAFTING_ALTAR                  = new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar");
-    public static final ResourceLocation OBELISK_CHALK                   = new ResourceLocation(ArsMagicaAPI.MOD_ID, "obelisk_chalk");
-    public static final ResourceLocation OBELISK_PILLARS                 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "obelisk_pillars");
-    public static final ResourceLocation CELESTIAL_PRISM_CHALK           = new ResourceLocation(ArsMagicaAPI.MOD_ID, "celestial_prism_chalk");
-    public static final ResourceLocation CELESTIAL_PRISM_PILLAR1         = new ResourceLocation(ArsMagicaAPI.MOD_ID, "celestial_prism_pillar1");
-    public static final ResourceLocation CELESTIAL_PRISM_PILLAR2         = new ResourceLocation(ArsMagicaAPI.MOD_ID, "celestial_prism_pillar2");
-    public static final ResourceLocation CELESTIAL_PRISM_PILLAR3         = new ResourceLocation(ArsMagicaAPI.MOD_ID, "celestial_prism_pillar3");
-    public static final ResourceLocation CELESTIAL_PRISM_PILLAR4         = new ResourceLocation(ArsMagicaAPI.MOD_ID, "celestial_prism_pillar4");
-    public static final ResourceLocation BLACK_AUREM_CHALK               = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_chalk");
-    public static final ResourceLocation BLACK_AUREM_PILLAR1             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar1");
-    public static final ResourceLocation BLACK_AUREM_PILLAR2             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar2");
-    public static final ResourceLocation BLACK_AUREM_PILLAR3             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar3");
-    public static final ResourceLocation BLACK_AUREM_PILLAR4             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar4");
-    public static final ResourceLocation WATER_GUARDIAN_SPAWN_RITUAL     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_guardian_spawn_ritual");
-    public static final ResourceLocation FIRE_GUARDIAN_SPAWN_RITUAL      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_guardian_spawn_ritual");
-    public static final ResourceLocation EARTH_GUARDIAN_SPAWN_RITUAL     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth_guardian_spawn_ritual");
-    public static final ResourceLocation AIR_GUARDIAN_SPAWN_RITUAL       = new ResourceLocation(ArsMagicaAPI.MOD_ID, "air_guardian_spawn_ritual");
-    public static final ResourceLocation ICE_GUARDIAN_SPAWN_RITUAL       = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice_guardian_spawn_ritual");
-    public static final ResourceLocation LIGHTNING_GUARDIAN_SPAWN_RITUAL = new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_guardian_spawn_ritual");
-    public static final ResourceLocation LIFE_GUARDIAN_SPAWN_RITUAL      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "life_guardian_spawn_ritual");
-    public static final ResourceLocation ARCANE_GUARDIAN_SPAWN_RITUAL    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_guardian_spawn_ritual");
-    public static final ResourceLocation ENDER_GUARDIAN_SPAWN_RITUAL     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_guardian_spawn_ritual");
-    public static final ResourceLocation PURIFICATION_RITUAL             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification_ritual");
-    public static final ResourceLocation CORRUPTION_RITUAL               = new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption_ritual");
+    public static final ResourceLocation ARCANE_COMPENDIUM               = ArsMagicaAPI.resource("arcane_compendium");
+    public static final ResourceLocation SPELL_PART_PAGE                 = ArsMagicaAPI.resource("spell_part");
+    public static final ResourceLocation CRAFTING_ALTAR                  = ArsMagicaAPI.resource("crafting_altar");
+    public static final ResourceLocation OBELISK_CHALK                   = ArsMagicaAPI.resource("obelisk_chalk");
+    public static final ResourceLocation OBELISK_PILLARS                 = ArsMagicaAPI.resource("obelisk_pillars");
+    public static final ResourceLocation CELESTIAL_PRISM_CHALK           = ArsMagicaAPI.resource("celestial_prism_chalk");
+    public static final ResourceLocation CELESTIAL_PRISM_PILLAR1         = ArsMagicaAPI.resource("celestial_prism_pillar1");
+    public static final ResourceLocation CELESTIAL_PRISM_PILLAR2         = ArsMagicaAPI.resource("celestial_prism_pillar2");
+    public static final ResourceLocation CELESTIAL_PRISM_PILLAR3         = ArsMagicaAPI.resource("celestial_prism_pillar3");
+    public static final ResourceLocation CELESTIAL_PRISM_PILLAR4         = ArsMagicaAPI.resource("celestial_prism_pillar4");
+    public static final ResourceLocation BLACK_AUREM_CHALK               = ArsMagicaAPI.resource("black_aurem_chalk");
+    public static final ResourceLocation BLACK_AUREM_PILLAR1             = ArsMagicaAPI.resource("black_aurem_pillar1");
+    public static final ResourceLocation BLACK_AUREM_PILLAR2             = ArsMagicaAPI.resource("black_aurem_pillar2");
+    public static final ResourceLocation BLACK_AUREM_PILLAR3             = ArsMagicaAPI.resource("black_aurem_pillar3");
+    public static final ResourceLocation BLACK_AUREM_PILLAR4             = ArsMagicaAPI.resource("black_aurem_pillar4");
+    public static final ResourceLocation WATER_GUARDIAN_SPAWN_RITUAL     = ArsMagicaAPI.resource("water_guardian_spawn_ritual");
+    public static final ResourceLocation FIRE_GUARDIAN_SPAWN_RITUAL      = ArsMagicaAPI.resource("fire_guardian_spawn_ritual");
+    public static final ResourceLocation EARTH_GUARDIAN_SPAWN_RITUAL     = ArsMagicaAPI.resource("earth_guardian_spawn_ritual");
+    public static final ResourceLocation AIR_GUARDIAN_SPAWN_RITUAL       = ArsMagicaAPI.resource("air_guardian_spawn_ritual");
+    public static final ResourceLocation ICE_GUARDIAN_SPAWN_RITUAL       = ArsMagicaAPI.resource("ice_guardian_spawn_ritual");
+    public static final ResourceLocation LIGHTNING_GUARDIAN_SPAWN_RITUAL = ArsMagicaAPI.resource("lightning_guardian_spawn_ritual");
+    public static final ResourceLocation LIFE_GUARDIAN_SPAWN_RITUAL      = ArsMagicaAPI.resource("life_guardian_spawn_ritual");
+    public static final ResourceLocation ARCANE_GUARDIAN_SPAWN_RITUAL    = ArsMagicaAPI.resource("arcane_guardian_spawn_ritual");
+    public static final ResourceLocation ENDER_GUARDIAN_SPAWN_RITUAL     = ArsMagicaAPI.resource("ender_guardian_spawn_ritual");
+    public static final ResourceLocation PURIFICATION_RITUAL             = ArsMagicaAPI.resource("purification_ritual");
+    public static final ResourceLocation CORRUPTION_RITUAL               = ArsMagicaAPI.resource("corruption_ritual");
     private static final String[][] CRAFTING_ALTAR_STRUCTURE = new String[][]{
             {" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
             {" BMB ", " 6 6 ", "     ", " 5 5 ", " BMB "},

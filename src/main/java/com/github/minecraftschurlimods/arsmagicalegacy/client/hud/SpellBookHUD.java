@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -14,14 +15,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public final class SpellBookHUD extends HUDElement {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/spell_book.png");
+    private static final ResourceLocation TEXTURE = ArsMagicaAPI.resource("textures/hud/spell_book.png");
 
     public SpellBookHUD() {
         super(Config.CLIENT.SPELL_BOOK_ANCHOR_X, Config.CLIENT.SPELL_BOOK_ANCHOR_Y, Config.CLIENT.SPELL_BOOK_X::get, Config.CLIENT.SPELL_BOOK_Y::get, () -> 148, () -> 22);
     }
 
     @Override
-    public void draw(GuiGraphics graphics, float partialTicks) {
+    public void draw(GuiGraphics graphics, DeltaTracker partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);

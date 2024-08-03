@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import java.util.Optional;
 
 public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements CustomPacketPayload {
-    public static final Type<?> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "block_entity_client_sync"));
+    public static final Type<?> TYPE = new Type<>(ArsMagicaAPI.resource("block_entity_client_sync"));
 
     public BEClientSyncPacket(BlockEntity blockEntity) {
         this(blockEntity.getBlockPos(), blockEntity.getUpdateTag());

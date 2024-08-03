@@ -26,7 +26,7 @@ public final class AMPermissions {
     public static final PermissionNode<Integer> MAX_RIFT_SIZE                   = registerPermissionNode("max_rift_size", PermissionTypes.INTEGER, DefaultPermissions.staticValue(54));
 
     private static <T> PermissionNode<T> registerPermissionNode(String name, PermissionType<T> type, PermissionNode.PermissionResolver<T> defaultResolver, PermissionDynamicContextKey<?>... contextKeys) {
-        return registerPermissionNode(new ResourceLocation(ArsMagicaAPI.MOD_ID, name), type, defaultResolver, contextKeys);
+        return registerPermissionNode(ArsMagicaAPI.resource(name), type, defaultResolver, contextKeys);
     }
 
     private static <T> PermissionNode<T> registerPermissionNode(ResourceLocation nodeName, PermissionType<T> type, PermissionNode.PermissionResolver<T> defaultResolver, PermissionDynamicContextKey<?>... contextKeys) {

@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -45,7 +45,7 @@ public class Forge extends AbstractComponent {
         BlockPos pos = target.getBlockPos();
         Block block = level.getBlockState(pos).getBlock();
         if (level.getBlockState(pos).isAir()) return SpellCastResult.EFFECT_FAILED;
-        Optional<RecipeHolder<SmeltingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), level);
+        Optional<RecipeHolder<SmeltingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(new ItemStack(block)), level);
         if (recipe.isEmpty()) return SpellCastResult.EFFECT_FAILED;
         ItemStack smelted = recipe.get().value().getResultItem(level.registryAccess());
         if (!level.isClientSide()) {

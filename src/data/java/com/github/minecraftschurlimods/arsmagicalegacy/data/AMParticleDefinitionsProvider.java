@@ -48,10 +48,10 @@ public class AMParticleDefinitionsProvider extends ParticleDescriptionProvider {
     }
 
     private void spriteSet(Supplier<SimpleParticleType> particle, String name, int textureCount) {
-        spriteSet(particle.get(), new ResourceLocation(ArsMagicaAPI.MOD_ID, name), textureCount, false);
+        spriteSet(particle.get(), ArsMagicaAPI.resource(name), textureCount, false);
     }
 
     private void sprite(Supplier<SimpleParticleType> particle, String name) {
-        sprite(particle.get(), new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        sprite(particle.get(), ArsMagicaAPI.resource(name));
     }
 }

@@ -22,7 +22,7 @@ import java.util.Set;
 
 public record Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, int x, int y, boolean hidden) implements ITranslatable.WithDescription {
     public static final String SKILL = "skill";
-    public static final ResourceKey<Registry<Skill>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, SKILL));
+    public static final ResourceKey<Registry<Skill>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource(SKILL));
 
     public static final Codec<Skill> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(Skill::parents),

@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record OpenSpellRecipeGuiInLecternPacket(ItemStack stack, BlockPos pos, int page) implements CustomPacketPayload {
-    static final Type<OpenSpellRecipeGuiInLecternPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "open_spell_recipe_gui_in_lectern"));
+    static final Type<OpenSpellRecipeGuiInLecternPacket> TYPE = new Type<>(ArsMagicaAPI.resource("open_spell_recipe_gui_in_lectern"));
     static final StreamCodec<RegistryFriendlyByteBuf, OpenSpellRecipeGuiInLecternPacket> STREAM_CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,
             OpenSpellRecipeGuiInLecternPacket::stack,

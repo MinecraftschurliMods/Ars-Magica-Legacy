@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class DryadRenderer extends HumanoidMobRenderer<Dryad, DryadModel> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/dryad.png");
+    private static final ResourceLocation TEXTURE = ArsMagicaAPI.resource("textures/entity/dryad.png");
 
     public DryadRenderer(final EntityRendererProvider.Context context) {
         super(context, new DryadModel(context.bakeLayer(DryadModel.LAYER_LOCATION)), 0.5f);

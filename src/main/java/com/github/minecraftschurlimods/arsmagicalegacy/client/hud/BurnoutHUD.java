@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,7 @@ public final class BurnoutHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(GuiGraphics graphics, float partialTick) {
+    public void draw(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;

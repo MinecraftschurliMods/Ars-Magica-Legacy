@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SpellCustomizationScreen extends Screen {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
+    private static final ResourceLocation BACKGROUND = ArsMagicaAPI.resource("textures/gui/spell_customization.png");
     private static final int ICON_SIZE = 15;
     private static final int ICON_MARGIN = 1;
     private final int imageWidth = 176;

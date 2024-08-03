@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 public final class TierMapping extends SimplePreparableReloadListener<JsonArray> {
-    private static final ResourceLocation TIER_MAPPING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "tier_mapping.json");
+    private static final ResourceLocation TIER_MAPPING = ArsMagicaAPI.resource("tier_mapping.json");
     private static final Lazy<TierMapping> INSTANCE = Lazy.of(TierMapping::new);
     private final Logger LOGGER = LogUtils.getLogger();
     private final Gson gson = new GsonBuilder().create();

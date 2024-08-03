@@ -34,8 +34,8 @@ repositories {
         }
     }
     maven {
-        name = "theillusivec4 Maven"
-        url = uri("https://maven.theillusivec4.top/")
+        name = "OctoStudios"
+        url = uri("https://maven.octo-studios.com/releases")
         content {
             includeGroup("top.theillusivec4.curios")
         }
@@ -115,7 +115,7 @@ dependencies {
     "dataRuntimeOnly"(patchouliDep)
 
     // geckolib for animations
-    val geckolibDep = geckolib.version.map { "software.bernie.geckolib:geckolib-neoforge-1.20.6:${it}" }
+    val geckolibDep = geckolib.version.map { "software.bernie.geckolib:geckolib-neoforge-1.21:${it}" }
     implementation(geckolibDep)
     testRuntimeOnly(geckolibDep)
     "dataRuntimeOnly"(geckolibDep)
@@ -135,7 +135,7 @@ dependencies {
         runtimeOnly(theoneprobeDep)
         runtimeOnly(jeiDep)
         runtimeOnly(jadeDep)
-        runtimeOnly(curiosDep)
+        // runtimeOnly(curiosDep)
     }
 
     // add internal libraries

@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record NextShapeGroupPacket(InteractionHand hand, boolean reverse) implements CustomPacketPayload {
-    static final Type<NextShapeGroupPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "next_shape_group"));
+    static final Type<NextShapeGroupPacket> TYPE = new Type<>(ArsMagicaAPI.resource("next_shape_group"));
     static final StreamCodec<FriendlyByteBuf, NextShapeGroupPacket> STREAM_CODEC = StreamCodec.composite(
             NeoForgeStreamCodecs.enumCodec(InteractionHand.class),
             NextShapeGroupPacket::hand,

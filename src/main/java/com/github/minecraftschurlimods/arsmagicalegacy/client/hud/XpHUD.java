@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +14,7 @@ public final class XpHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(GuiGraphics graphics, float v) {
+    public void draw(GuiGraphics graphics, DeltaTracker v) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;

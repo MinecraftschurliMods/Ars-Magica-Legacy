@@ -18,7 +18,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMArmorMaterials {
-    Holder<ArmorMaterial> MAGITECH = ARMOR_MATERIALS.register("magitech", () -> new ArmorMaterial(new EnumMap<>(ArmorItem.Type.class), 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, List.of(new ArmorMaterial.Layer(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magitech"))), 0, 0));
+    Holder<ArmorMaterial> MAGITECH = ARMOR_MATERIALS.register("magitech", () -> new ArmorMaterial(new EnumMap<>(ArmorItem.Type.class), 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, List.of(new ArmorMaterial.Layer(ArsMagicaAPI.resource("magitech"))), 0, 0));
     Holder<ArmorMaterial> MAGE = ARMOR_MATERIALS.register("mage", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(ArmorItem.Type.HELMET, 2);
         map.put(ArmorItem.Type.CHESTPLATE, 6);

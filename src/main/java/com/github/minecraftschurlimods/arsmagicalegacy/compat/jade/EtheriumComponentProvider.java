@@ -15,7 +15,7 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
 class EtheriumComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
-    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    private static final ResourceLocation ID = ArsMagicaAPI.resource("etherium");
     private static final String ETHERIUM = "etherium";
     private static final String MAX_ETHERIUM = "max_etherium";
     private static final String TIER = "tier";

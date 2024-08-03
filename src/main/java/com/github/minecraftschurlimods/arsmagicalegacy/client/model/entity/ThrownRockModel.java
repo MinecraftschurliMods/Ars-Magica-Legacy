@@ -7,10 +7,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
 
 public class ThrownRockModel extends AMEntityModel<ThrownRock> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "thrown_rock"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ArsMagicaAPI.resource("thrown_rock"), "main");
 
     public ThrownRockModel(ModelPart root) {
         addPart(root, "rock1");

@@ -33,7 +33,7 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     public static final String DEFAULT_RENDERER = "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer";
 
     public static final String OCCULUS_TAB = "occulus_tab";
-    public static final ResourceKey<Registry<OcculusTab>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, OCCULUS_TAB));
+    public static final ResourceKey<Registry<OcculusTab>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource(OCCULUS_TAB));
     public static final int TEXTURE_WIDTH = 1024;
     public static final int TEXTURE_HEIGHT = 1024;
 
@@ -54,7 +54,7 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     public ResourceLocation background(RegistryAccess access) {
         if (background != null) return background;
         ResourceLocation id = getId(access);
-        return new ResourceLocation(id.getNamespace(), "textures/gui/occulus/" + id.getPath() + ".png");
+        return id.withPath(path -> "textures/gui/occulus/" + id + ".png");
     }
 
     /**
@@ -63,7 +63,7 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     public ResourceLocation icon(RegistryAccess access) {
         if (icon != null) return icon;
         ResourceLocation id = getId(access);
-        return new ResourceLocation(id.getNamespace(), "textures/icon/" + id.getPath() + ".png");
+        return id.withPath(path -> "textures/icon/" + id + ".png");
     }
 
     @Override

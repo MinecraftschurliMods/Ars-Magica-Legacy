@@ -66,9 +66,9 @@ public class FireGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new FireRainGoal(this));
         goalSelector.addGoal(1, new FlamethrowerGoal(this));
         Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_fire_bolt")).spell(), 20));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("fire_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("strong_fire_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("melt_armor")).spell(), 20));
     }
 
     @Override

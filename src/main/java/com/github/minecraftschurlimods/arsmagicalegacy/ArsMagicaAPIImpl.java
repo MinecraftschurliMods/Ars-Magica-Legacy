@@ -59,7 +59,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public ItemStack getBookStack() {
         if (ModList.get().isLoaded("patchouli")) {
-            return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+            return PatchouliAPI.get().getBookStack(ArsMagicaAPI.resource("arcane_compendium"));
         }
         return ItemStack.EMPTY;
     }

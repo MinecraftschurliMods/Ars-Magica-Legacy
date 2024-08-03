@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,8 +30,8 @@ public class SkillPointOverrideModel extends BakedModelWrapper<BakedModel> {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             SkillPoint skillPoint = ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(stack);
-            ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + "_" + skillPoint.getId().getPath());
-            return Minecraft.getInstance().getModelManager().getModel(rl);
+            ResourceLocation rl = skillPoint.getId().withPrefix("item/" + BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + "_");
+            return Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(rl));
         }
     }
 }

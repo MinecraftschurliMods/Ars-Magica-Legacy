@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
-    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
+    private static final ResourceLocation GUI = ArsMagicaAPI.resource("textures/gui/inscription_table.png");
     private static final Component SEARCH_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
     private static final Component NAME_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_NAME);
     private final List<DragArea<SpellPartDraggable>> dragAreas = new ArrayList<>();
@@ -195,7 +195,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     private void setDragged(@Nullable SpellPartDraggable dragged) {
         this.dragged = dragged;
-        sourceArea.setTypeFilter(shapeGroupArea.canStore(), spellGrammarArea.canStore(), !spellGrammarArea.getAll().isEmpty() && spellGrammarArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.COMPONENT || !shapeGroupArea.getAll().isEmpty() && shapeGroupArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.SHAPE);
+        sourceArea.setTypeFilter(shapeGroupArea.canStore(), spellGrammarArea.canStore(), !spellGrammarArea.getAll().isEmpty() && spellGrammarArea.getAll().getFirst().getPart().getType() == ISpellPart.SpellPartType.COMPONENT || !shapeGroupArea.getAll().isEmpty() && shapeGroupArea.getAll().getFirst().getPart().getType() == ISpellPart.SpellPartType.SHAPE);
     }
 
     @Nullable

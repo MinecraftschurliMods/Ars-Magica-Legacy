@@ -415,11 +415,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("entities.dryad.bonemeal_radius", "The radius of bonemeal application.");
         configTranslation("entities.dryad.kill_cooldown", "If enough dryads are killed during this amount of time (in seconds), the Nature Guardian will spawn. Set this to 0 to disable this way of summoning the Nature Guardian (if you have an alternate way to spawn it).");
         configTranslation("entities.dryad.kills_to_nature_guardian_spawn", "If this amount of dryads is killed within the required timeframe, the Nature Guardian will spawn.");
-        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense"), "Offense");
-        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "defense"), "Defense");
-        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility"), "Utility");
-        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), "Affinity");
-        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent"), "Talents");
+        occulusTabTranslation(ArsMagicaAPI.resource("offense"), "Offense");
+        occulusTabTranslation(ArsMagicaAPI.resource("defense"), "Defense");
+        occulusTabTranslation(ArsMagicaAPI.resource("utility"), "Utility");
+        occulusTabTranslation(ArsMagicaAPI.resource("affinity"), "Affinity");
+        occulusTabTranslation(ArsMagicaAPI.resource("talent"), "Talents");
         damageSourceTranslation("falling_star", "%1$s was obliterated by a falling star");
         damageSourceTranslation("nature_scythe", "%1$s was ripped apart by %2$s's scythe");
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");

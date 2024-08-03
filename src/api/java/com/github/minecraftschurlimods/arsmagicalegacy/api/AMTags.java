@@ -4,11 +4,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Fluid;
 
 /**
  * Class holding the references for all tags added by this mod.
@@ -64,11 +62,11 @@ public final class AMTags {
         public static final TagKey<Item> SPELLCRAFTING_END = tag("spellcrafting_end");
 
         private static TagKey<Item> cTag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(C, name));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(C, name));
         }
 
         private static TagKey<Item> tag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, ArsMagicaAPI.resource(name));
         }
     }
 
@@ -89,11 +87,11 @@ public final class AMTags {
         public static final TagKey<Block> STORAGE_BLOCKS_SUNSTONE = cTag("storage_blocks/sunstone");
 
         private static TagKey<Block> cTag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(C, name));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(C, name));
         }
 
         private static TagKey<Block> tag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, ArsMagicaAPI.resource(name));
         }
     }
 
@@ -116,7 +114,7 @@ public final class AMTags {
         public static final TagKey<Biome> CAN_SPAWN_WATER_GUARDIAN = tag("can_spawn_water_guardian");
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.create(Registries.BIOME, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, ArsMagicaAPI.resource(name));
         }
     }
 
@@ -127,7 +125,7 @@ public final class AMTags {
         public static final TagKey<DamageType> SPELL = tag("spell");
 
         private static TagKey<DamageType> tag(String name) {
-            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource(name));
         }
     }
 }

@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HealGoal
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -60,23 +59,23 @@ public class ArcaneGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new HealGoal<>(this));
         Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
         goalSelector.addGoal(1, new ExecuteRandomSpellGoal<>(this, List.of(
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_bolt")).spell()
+                prefabSpells.get(ArsMagicaAPI.resource("water_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("fire_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("earth_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("lightning_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("ice_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("arcane_bolt")).spell()
         ), 30));
         goalSelector.addGoal(1, new ExecuteRandomSpellGoal<>(this, List.of(
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_water_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_fire_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_earth_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_lightning_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_ice_bolt")).spell(),
-                prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_arcane_bolt")).spell()
+                prefabSpells.get(ArsMagicaAPI.resource("strong_water_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("strong_fire_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("strong_earth_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("strong_lightning_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("strong_ice_bolt")).spell(),
+                prefabSpells.get(ArsMagicaAPI.resource("strong_arcane_bolt")).spell()
         ), 30));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "blink")).spell(), 30));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "debuff")).spell(), 30));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("blink")).spell(), 30));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("debuff")).spell(), 30));
     }
 
     @Override

@@ -16,3 +16,19 @@ plugins {
 }
 
 rootProject.name = "Ars-Magica-Legacy"
+
+includeBuild("../codeclib"){
+    dependencySubstitution {
+        substitute(module("com.github.minecraftschurlimods:codeclib")).using(project(":"))
+    }
+}
+includeBuild("../betterkeybindlib"){
+    dependencySubstitution {
+        substitute(module("com.github.minecraftschurlimods:betterkeybindlib")).using(project(":"))
+    }
+}
+includeBuild("../betterhudlib") {
+    dependencySubstitution {
+        substitute(module("com.github.minecraftschurlimods:betterhudlib")).using(project(":"))
+    }
+}

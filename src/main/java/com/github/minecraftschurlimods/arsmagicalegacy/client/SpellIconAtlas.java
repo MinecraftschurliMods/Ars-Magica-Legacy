@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 public final class SpellIconAtlas extends TextureAtlasHolder {
-    public static final ResourceLocation SPELL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");
-    public static final ResourceLocation SPELL_ICON_ATLAS_INFO = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_icons");
+    public static final ResourceLocation SPELL_ICON_ATLAS = ArsMagicaAPI.resource("textures/atlas/spell_icons.png");
+    public static final ResourceLocation SPELL_ICON_ATLAS_INFO = ArsMagicaAPI.resource("spell_icons");
     private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
 
     private SpellIconAtlas() {

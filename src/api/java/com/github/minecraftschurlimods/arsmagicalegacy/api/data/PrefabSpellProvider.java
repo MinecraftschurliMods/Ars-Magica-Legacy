@@ -17,7 +17,7 @@ public abstract class PrefabSpellProvider extends AbstractDatapackRegistryProvid
     }
 
     public void add(String name, String displayName, ResourceLocation icon, ISpell spell) {
-        add(name, new PrefabSpell(makeNameComponent(new ResourceLocation(this.namespace, name), displayName), spell, icon));
+        add(name, new PrefabSpell(makeNameComponent(ResourceLocation.fromNamespaceAndPath(this.namespace, name), displayName), spell, icon));
     }
 
     private Component makeNameComponent(ResourceLocation id, String name) {

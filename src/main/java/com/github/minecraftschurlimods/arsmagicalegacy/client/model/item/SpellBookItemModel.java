@@ -51,9 +51,9 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
         Player player = ClientHelper.getLocalPlayer();
         if (player != null && api.getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
             ResourceLocation affinity = api.getSpellHelper().getSpell(stack).primaryAffinity().getId();
-            return new SpellItemHandModel(SpellItemModel.getModel(new ResourceLocation(affinity.getNamespace(), "item/" + AMItems.SPELL.getId().getPath() + "_" + affinity.getPath())));
+            return new SpellItemHandModel(SpellItemModel.getModel(affinity.withPrefix("item/" + AMItems.SPELL.getId().getPath() + "_")));
         }
-        return SpellItemModel.getModel(new ResourceLocation(AMItems.SPELL_BOOK.getId().getNamespace(), "item/" + AMItems.SPELL_BOOK.getId().getPath() + "_handheld")).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
+        return SpellItemModel.getModel(AMItems.SPELL_BOOK.getId().withPath(path -> "item/" + path + "_handheld")).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
 
     }
 }

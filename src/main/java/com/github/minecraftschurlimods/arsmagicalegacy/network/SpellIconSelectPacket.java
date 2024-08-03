@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SpellIconSelectPacket(String name, ResourceLocation icon) implements CustomPacketPayload {
-    static final Type<SpellIconSelectPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_icon_select"));
+    static final Type<SpellIconSelectPacket> TYPE = new Type<>(ArsMagicaAPI.resource("spell_icon_select"));
     static final StreamCodec<ByteBuf, SpellIconSelectPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8,
             SpellIconSelectPacket::name,

@@ -44,7 +44,7 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
             try {
                 return cache.get(icon, () -> {
                     TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(icon);
-                    return List.of(new FaceBakery().bakeQuad(new Vector3f(0, 0, 8.504f), new Vector3f(16, 16, 8.504f), new BlockElementFace(null, 2, sprite.contents().name().toString(), new BlockFaceUV(new float[]{0, 0, 16, 16}, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true, sprite.contents().name()));
+                    return List.of(new FaceBakery().bakeQuad(new Vector3f(0, 0, 8.504f), new Vector3f(16, 16, 8.504f), new BlockElementFace(null, 2, sprite.contents().name().toString(), new BlockFaceUV(new float[]{0, 0, 16, 16}, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true));
                 });
             } catch (ExecutionException ignored) {
             }

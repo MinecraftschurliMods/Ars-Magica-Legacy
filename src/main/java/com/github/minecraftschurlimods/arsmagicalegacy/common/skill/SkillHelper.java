@@ -266,7 +266,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     private record SkillSyncPacket(KnowledgeHolder knowledge) implements CustomPacketPayload {
-        public static final Type<SkillSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge_sync"));
+        public static final Type<SkillSyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("knowledge_sync"));
         public static final StreamCodec<RegistryFriendlyByteBuf, SkillSyncPacket> STREAM_CODEC = KnowledgeHolder.STREAM_CODEC.map(SkillSyncPacket::new, SkillSyncPacket::knowledge);
 
         private void handle(IPayloadContext context) {

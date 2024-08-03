@@ -7,10 +7,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
 
 public class NatureScytheModel extends AMEntityModel<NatureScythe> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_scythe"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ArsMagicaAPI.resource("nature_scythe"), "main");
     private final ModelPart rod;
     private final ModelPart head;
     private final ModelPart blade1;

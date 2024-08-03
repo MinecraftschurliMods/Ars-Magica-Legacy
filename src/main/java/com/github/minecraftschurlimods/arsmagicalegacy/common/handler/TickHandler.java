@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUUIDs;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.LightLayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -109,12 +108,13 @@ final class TickHandler {
         }
         ability = manager.get(AMAbilities.FROST_WALKER);
         if (ability != null && ability.test(player)) {
-            FrostWalkerEnchantment.onEntityMoved(player, player.level(), player.blockPosition(), 1);
+            // TODO fix
+            //FrostWalkerEnchantment.onEntityMoved(player, player.level(), player.blockPosition(), 1);
         }
         AttributeMap attributes = player.getAttributes();
         AttributeInstance maxHealth = attributes.getInstance(Attributes.MAX_HEALTH);
         assert maxHealth != null;
-        maxHealth.removeModifier(AbilityUUIDs.HEALTH_REDUCTION);
+        maxHealth.removeModifier(AbilityIDs.HEALTH_REDUCTION);
         Ability lightHealthReduction = manager.get(AMAbilities.LIGHT_HEALTH_REDUCTION);
         Ability waterHealthReduction = manager.get(AMAbilities.WATER_HEALTH_REDUCTION);
         if ((lightHealthReduction != null
@@ -129,7 +129,7 @@ final class TickHandler {
             } else {
                 depth = helper.getAffinityDepthOrElse(player, Objects.requireNonNullElse(waterHealthReduction, lightHealthReduction).affinity(), 0);
             }
-            maxHealth.addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -depth * 4, AttributeModifier.Operation.ADD_VALUE));
+            maxHealth.addPermanentModifier(new AttributeModifier(AbilityIDs.HEALTH_REDUCTION, -depth * 4, AttributeModifier.Operation.ADD_VALUE));
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
             }

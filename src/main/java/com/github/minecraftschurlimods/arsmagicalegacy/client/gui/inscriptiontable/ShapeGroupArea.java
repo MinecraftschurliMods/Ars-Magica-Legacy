@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
-    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
+    private static final ResourceLocation GUI = ArsMagicaAPI.resource("textures/gui/inscription_table.png");
     public static final int ROWS = 2;
     public static final int COLUMNS = 2;
     public static final int X_PADDING = 2;
@@ -52,7 +52,7 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     @Override
     public boolean canPick(SpellPartDraggable draggable, int mouseX, int mouseY) {
         if (lockState == LockState.ALL) return false;
-        if (lockState == LockState.FIRST && !contents.isEmpty() && contents.get(0).getPart() == draggable.getPart()) return false;
+        if (lockState == LockState.FIRST && !contents.isEmpty() && contents.getFirst().getPart() == draggable.getPart()) return false;
         List<SpellPartDraggable> list = new ArrayList<>(contents);
         list.remove(draggable);
         return isValid(list);
@@ -92,7 +92,7 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
 
     public static boolean isValid(List<SpellPartDraggable> list) {
         if (list.isEmpty()) return true;
-        SpellPartDraggable first = list.get(0);
+        SpellPartDraggable first = list.getFirst();
         if (first.getPart().getType() != ISpellPart.SpellPartType.SHAPE) return false;
         if (((ISpellShape) first.getPart()).needsPrecedingShape()) return false;
         SpellPartDraggable last = Objects.requireNonNull(AMUtil.getLastMatching(list, e -> e.getPart().getType() == ISpellPart.SpellPartType.SHAPE));

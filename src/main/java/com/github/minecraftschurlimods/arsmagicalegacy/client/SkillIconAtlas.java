@@ -10,8 +10,8 @@ import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 
 public final class SkillIconAtlas extends TextureAtlasHolder {
-    public static final ResourceLocation SKILL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/skill_icons.png");
-    public static final ResourceLocation SKILL_ICON_ATLAS_INFO = new ResourceLocation(ArsMagicaAPI.MOD_ID, "skill_icons");
+    public static final ResourceLocation SKILL_ICON_ATLAS = ArsMagicaAPI.resource("textures/atlas/skill_icons.png");
+    public static final ResourceLocation SKILL_ICON_ATLAS_INFO = ArsMagicaAPI.resource("skill_icons");
     private static final Lazy<SkillIconAtlas> INSTANCE = Lazy.of(SkillIconAtlas::new);
 
     private SkillIconAtlas() {
