@@ -11,7 +11,7 @@ import java.util.Objects;
  * Base interface for a spell part. A spell part can be a component of type {@link ISpellComponent}, a modifier of type {@link ISpellModifier} or a shape of type {@link ISpellShape}.
  */
 public interface ISpellPart {
-    ResourceKey<Registry<ISpellPart>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_part"));
+    ResourceKey<Registry<ISpellPart>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("spell_part"));
 
     /**
      * @return The type of this spell part.

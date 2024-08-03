@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Collection;
 
 class AltarProbeInfoProvider implements IProbeInfoProvider {
-    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "altar");
+    private static final ResourceLocation ID = ArsMagicaAPI.resource("altar");
 
     @Override
     public ResourceLocation getID() {

@@ -19,7 +19,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.List;
 
 public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements, RitualEffect effect, BlockPos offset) {
-    public static final ResourceKey<Registry<Ritual>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ritual"));
+    public static final ResourceKey<Registry<Ritual>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("ritual"));
     public static final Codec<Ritual> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RitualTrigger.CODEC.fieldOf("trigger").forGetter(Ritual::trigger),
             RitualRequirement.CODEC.listOf().fieldOf("requirements").forGetter(Ritual::requirements),
@@ -29,7 +29,7 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
     public static final Codec<Holder<Ritual>> REFERENCE_CODEC = RegistryFileCodec.create(REGISTRY_KEY, DIRECT_CODEC);
     public static final Codec<HolderSet<Ritual>> LIST_CODEC = RegistryCodecs.homogeneousList(REGISTRY_KEY, DIRECT_CODEC);
 
-    private static final Holder<ResourceLocation> STAT = DeferredHolder.create(Registries.CUSTOM_STAT, new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"));
+    private static final Holder<ResourceLocation> STAT = DeferredHolder.create(Registries.CUSTOM_STAT, ArsMagicaAPI.resource("rituals_triggered"));
 
     public Ritual {
         trigger.register(this);

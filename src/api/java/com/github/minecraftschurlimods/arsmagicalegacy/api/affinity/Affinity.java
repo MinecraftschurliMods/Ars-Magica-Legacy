@@ -31,19 +31,19 @@ import java.util.function.Supplier;
  */
 public record Affinity(int color, HolderSet<Affinity> minorOpposites, HolderSet<Affinity> majorOpposites, Holder<Affinity> directOpposite, @Nullable Holder<SoundEvent> castSound, @Nullable Holder<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
     public static final String AFFINITY = "affinity";
-    public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, AFFINITY));
+    public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource(AFFINITY));
 
-    public static final ResourceKey<Affinity> NONE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "none"));
-    public static final ResourceKey<Affinity> ARCANE    = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane"));
-    public static final ResourceKey<Affinity> WATER     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "water"));
-    public static final ResourceKey<Affinity> FIRE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire"));
-    public static final ResourceKey<Affinity> EARTH     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth"));
-    public static final ResourceKey<Affinity> AIR       = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "air"));
-    public static final ResourceKey<Affinity> LIGHTNING = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning"));
-    public static final ResourceKey<Affinity> ICE       = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice"));
-    public static final ResourceKey<Affinity> NATURE    = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature"));
-    public static final ResourceKey<Affinity> LIFE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "life"));
-    public static final ResourceKey<Affinity> ENDER     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender"));
+    public static final ResourceKey<Affinity> NONE      = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("none"));
+    public static final ResourceKey<Affinity> ARCANE    = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("arcane"));
+    public static final ResourceKey<Affinity> WATER     = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("water"));
+    public static final ResourceKey<Affinity> FIRE      = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("fire"));
+    public static final ResourceKey<Affinity> EARTH     = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("earth"));
+    public static final ResourceKey<Affinity> AIR       = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("air"));
+    public static final ResourceKey<Affinity> LIGHTNING = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("lightning"));
+    public static final ResourceKey<Affinity> ICE       = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("ice"));
+    public static final ResourceKey<Affinity> NATURE    = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("nature"));
+    public static final ResourceKey<Affinity> LIFE      = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("life"));
+    public static final ResourceKey<Affinity> ENDER     = ResourceKey.create(REGISTRY_KEY, ArsMagicaAPI.resource("ender"));
 
     /**
      * @return A new affinity builder.

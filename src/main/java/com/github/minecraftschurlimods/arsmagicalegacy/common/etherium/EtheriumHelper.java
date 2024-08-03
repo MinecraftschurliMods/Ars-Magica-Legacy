@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,8 +15,8 @@ import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 
 public final class EtheriumHelper implements IEtheriumHelper {
-    public static final BlockCapability<IEtheriumProvider, Void> ETHERIUM_PROVIDER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_provider"), IEtheriumProvider.class);
-    public static final BlockCapability<IEtheriumConsumer, Void> ETHERIUM_CONSUMER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_consumer"), IEtheriumConsumer.class);
+    public static final BlockCapability<IEtheriumProvider, Void> ETHERIUM_PROVIDER = BlockCapability.createVoid(ArsMagicaAPI.resource("etherium_provider"), IEtheriumProvider.class);
+    public static final BlockCapability<IEtheriumConsumer, Void> ETHERIUM_CONSUMER = BlockCapability.createVoid(ArsMagicaAPI.resource("etherium_consumer"), IEtheriumConsumer.class);
     private static final Lazy<EtheriumHelper> INSTANCE = Lazy.of(EtheriumHelper::new);
 
     private EtheriumHelper() {}

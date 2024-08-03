@@ -122,17 +122,17 @@ class AMRecipeProvider extends RecipeProvider {
                               .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 0), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
-                              .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_1"));
+                              .save(consumer, ArsMagicaAPI.resource("inscription_table_tier_1"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE, 1, DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 2)).build()))
                               .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 1), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
-                              .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_2"));
+                              .save(consumer, ArsMagicaAPI.resource("inscription_table_tier_2"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(AMItems.INSCRIPTION_TABLE, 1, DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 3)).build()))
                               .requires(DataComponentIngredient.of(false, DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(InscriptionTableBlock.TIER, 2), AMItems.INSCRIPTION_TABLE.get()))
                               .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3.get())
                               .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
-                              .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_3"));
+                              .save(consumer, ArsMagicaAPI.resource("inscription_table_tier_3"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AMItems.ALTAR_CORE.get())
                            .pattern("V")
                            .pattern("S")
@@ -476,13 +476,13 @@ class AMRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, pUnpacked, 9)
                               .requires(pPackedTag)
                               .unlockedBy(getHasName(pPacked), has(pPacked))
-                              .save(pFinishedRecipeConsumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, pUnpackingRecipeName));
+                              .save(pFinishedRecipeConsumer, ArsMagicaAPI.resource(pUnpackingRecipeName));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, pPacked)
                            .define('#', pUnpackedTag)
                            .pattern("###")
                            .pattern("###")
                            .pattern("###")
                            .unlockedBy(getHasName(pUnpacked), has(pUnpacked))
-                           .save(pFinishedRecipeConsumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, pPackingRecipeName));
+                           .save(pFinishedRecipeConsumer, ArsMagicaAPI.resource(pPackingRecipeName));
     }
 }

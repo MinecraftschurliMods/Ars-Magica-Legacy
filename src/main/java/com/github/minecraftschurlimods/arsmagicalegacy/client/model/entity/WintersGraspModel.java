@@ -7,12 +7,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.Set;
 
 public class WintersGraspModel extends AMEntityModel<WintersGrasp> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "winters_grasp"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ArsMagicaAPI.resource("winters_grasp"), "main");
     private final Set<ModelPart> parts;
 
     public WintersGraspModel(ModelPart root) {

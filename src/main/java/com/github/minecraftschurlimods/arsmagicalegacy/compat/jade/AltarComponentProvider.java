@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 class AltarComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
-    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "altar");
+    private static final ResourceLocation ID = ArsMagicaAPI.resource("altar");
     private static final String POWER = "power";
     private static final String POSITIONS = "positions";
     static final AltarComponentProvider INSTANCE = new AltarComponentProvider();

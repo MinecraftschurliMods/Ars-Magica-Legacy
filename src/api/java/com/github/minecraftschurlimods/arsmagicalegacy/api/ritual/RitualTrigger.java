@@ -6,14 +6,13 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Function;
 
 public interface RitualTrigger {
-    ResourceKey<Registry<MapCodec<? extends RitualTrigger>>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ritual_trigger_type"));
+    ResourceKey<Registry<MapCodec<? extends RitualTrigger>>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("ritual_trigger_type"));
     Codec<RitualTrigger> CODEC = Codec.lazyInitialized(() -> ArsMagicaAPI.get().getRitualTriggerTypeRegistry().byNameCodec()).dispatch(RitualTrigger::codec, Function.identity());
 
     void register(Ritual ritual);

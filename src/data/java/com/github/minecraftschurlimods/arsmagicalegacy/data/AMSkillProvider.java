@@ -11,10 +11,10 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpel
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.*;
 
 class AMSkillProvider extends SkillProvider {
-    private static final ResourceLocation OFFENSE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense");
-    private static final ResourceLocation DEFENSE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "defense");
-    private static final ResourceLocation UTILITY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility");
-    private static final ResourceLocation TALENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent");
+    private static final ResourceLocation OFFENSE = ArsMagicaAPI.resource("offense");
+    private static final ResourceLocation DEFENSE = ArsMagicaAPI.resource("defense");
+    private static final ResourceLocation UTILITY = ArsMagicaAPI.resource("utility");
+    private static final ResourceLocation TALENT = ArsMagicaAPI.resource("talent");
 
     AMSkillProvider() {
         super(ArsMagicaAPI.MOD_ID);

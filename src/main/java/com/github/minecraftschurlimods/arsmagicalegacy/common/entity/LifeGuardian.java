@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HealGoal
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SummonAlliesGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.InteractionHand;
@@ -78,7 +77,7 @@ public class LifeGuardian extends AbstractBoss {
             entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_AXE));
             return entity;
         }, EntityType.WITCH::create)));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 30));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(ArsMagicaAPI.resource("nausea")).spell(), 30));
         goalSelector.addGoal(1, new HealGoal<>(this));
     }
 

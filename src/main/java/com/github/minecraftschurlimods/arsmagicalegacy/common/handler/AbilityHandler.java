@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUUIDs;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.tags.DamageTypeTags;
@@ -169,45 +169,45 @@ final class AbilityHandler {
         Affinity affinity = event.affinity;
         Player player = event.getEntity();
         AttributeMap attributes = player.getAttributes();
-        attributes.getInstance(NeoForgeMod.SWIM_SPEED).removeModifier(AbilityUUIDs.SWIM_SPEED);
-        attributes.getInstance(Attributes.ATTACK_SPEED).removeModifier(AbilityUUIDs.HASTE);
-        attributes.getInstance(Attributes.GRAVITY).removeModifier(AbilityUUIDs.GRAVITY);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SLOWNESS);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SPEED);
+        attributes.getInstance(NeoForgeMod.SWIM_SPEED).removeModifier(AbilityIDs.SWIM_SPEED);
+        attributes.getInstance(Attributes.ATTACK_SPEED).removeModifier(AbilityIDs.HASTE);
+        attributes.getInstance(Attributes.GRAVITY).removeModifier(AbilityIDs.GRAVITY);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityIDs.SLOWNESS);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityIDs.SPEED);
         Ability ability = abilityRegistry.get(AMAbilities.SWIM_SPEED);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(NeoForgeMod.SWIM_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SWIM_SPEED, "Swim Speed Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                attributes.getInstance(NeoForgeMod.SWIM_SPEED).addPermanentModifier(new AttributeModifier(AbilityIDs.SWIM_SPEED, helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.HASTE);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HASTE, "Haste Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityIDs.HASTE, helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.GRAVITY);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.GRAVITY).addPermanentModifier(new AttributeModifier(AbilityUUIDs.GRAVITY, "Gravity Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                attributes.getInstance(Attributes.GRAVITY).addPermanentModifier(new AttributeModifier(AbilityIDs.GRAVITY, helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.SLOWNESS);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepthOrElse(player, affinity, 0) - ability.bounds().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADD_VALUE));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityIDs.SLOWNESS, -(helper.getAffinityDepthOrElse(player, affinity, 0) - ability.bounds().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADD_VALUE));
             }
         }
         ability = abilityRegistry.get(AMAbilities.SPEED);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepthOrElse(player, affinity, 0) - ability.bounds().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADD_VALUE));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityIDs.SPEED, (helper.getAffinityDepthOrElse(player, affinity, 0) - ability.bounds().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADD_VALUE));
             }
         }
         ability = abilityRegistry.get(AMAbilities.STEP_ASSIST);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.STEP_HEIGHT).addPermanentModifier(new AttributeModifier(AbilityUUIDs.STEP_ASSIST, "Step Assist Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.4f, AttributeModifier.Operation.ADD_VALUE));
+                attributes.getInstance(Attributes.STEP_HEIGHT).addPermanentModifier(new AttributeModifier(AbilityIDs.STEP_ASSIST, helper.getAffinityDepthOrElse(player, affinity, 0) * 0.4f, AttributeModifier.Operation.ADD_VALUE));
             }
         }
         ability = abilityRegistry.get(AMAbilities.POISON_RESISTANCE);

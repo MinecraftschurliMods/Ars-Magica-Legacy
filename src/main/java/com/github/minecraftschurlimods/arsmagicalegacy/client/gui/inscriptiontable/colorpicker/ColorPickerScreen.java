@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class ColorPickerScreen extends Screen {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/color_picker.png");
+    private static final ResourceLocation BACKGROUND = ArsMagicaAPI.resource("textures/gui/color_picker.png");
     private static final int textureWidth = 180;
     private static final int textureHeight = 130;
     private final Consumer<Integer> onPick;

@@ -45,7 +45,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         return cameraTransformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || cameraTransformType.firstPerson();
     }
 
-    static BakedModel getModel(ResourceLocation modelLocation) {
+    static BakedModel getModel(ModelResourceLocation modelLocation) {
         return Minecraft.getInstance().getModelManager().getModel(modelLocation);
     }
 
@@ -71,7 +71,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             return getModel(SPELL_PARCHMENT).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
         if (isHand(cameraTransformType) && affinity != null) {
-            return new SpellItemHandModel(getModel(new ResourceLocation(affinity.getId().getNamespace(), "item/spell_" + affinity.getId().getPath()))).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
+            return new SpellItemHandModel(getModel(ModelResourceLocation.standalone(affinity.getId().withPrefix("item/spell_")))).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
         if (icon.isEmpty() || cameraTransformType != ItemDisplayContext.GUI) {
             return getModel(SPELL_PARCHMENT).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);

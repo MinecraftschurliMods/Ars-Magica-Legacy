@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public abstract class AbstractHUD extends HUDElement {
-    public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/bar.png");
+    public static final ResourceLocation BAR_TEXTURE = ArsMagicaAPI.resource("textures/hud/bar.png");
     private final EnumValue<AnchorX> anchorX;
     private final EnumValue<AnchorY> anchorY;
     private final IntValue x;

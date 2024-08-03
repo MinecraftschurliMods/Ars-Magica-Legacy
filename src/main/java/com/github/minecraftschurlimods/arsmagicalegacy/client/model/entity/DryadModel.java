@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 
 public class DryadModel extends HumanoidModel<Dryad> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dryad"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ArsMagicaAPI.resource("dryad"), "main");
 
     public DryadModel(ModelPart pRoot) {
         super(pRoot);

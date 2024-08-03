@@ -45,8 +45,12 @@ import java.util.ServiceLoader;
 @NonExtendable
 public interface ArsMagicaAPI {
     String MOD_ID = "arsmagicalegacy";
-    ResourceLocation PREFAB_SPELLS_CREATIVE_TAB = new ResourceLocation(MOD_ID, "prefab_spells");
-    ResourceLocation MAIN_CREATIVE_TAB = new ResourceLocation(MOD_ID, "main");
+    ResourceLocation PREFAB_SPELLS_CREATIVE_TAB = resource("prefab_spells");
+    ResourceLocation MAIN_CREATIVE_TAB = resource("main");
+
+    static ResourceLocation resource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
 
     /**
      * @return The API instance.

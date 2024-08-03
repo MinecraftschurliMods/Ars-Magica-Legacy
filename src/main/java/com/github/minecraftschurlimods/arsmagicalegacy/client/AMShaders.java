@@ -5,7 +5,6 @@ import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
 import java.io.IOException;
@@ -85,7 +84,7 @@ public final class AMShaders {
 
     static void init(RegisterShadersEvent evt) {
         try {
-            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "color_wheel"), DefaultVertexFormat.POSITION), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
+            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), ArsMagicaAPI.resource("color_wheel"), DefaultVertexFormat.POSITION), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public record SpawnComponentParticlesPacket(ISpellComponent component, LivingEntity caster, Either<BlockHitResult, EntityHitResult> hit, int color) implements CustomPacketPayload {
-    static final Type<SpawnComponentParticlesPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_component_particles"));
+    static final Type<SpawnComponentParticlesPacket> TYPE = new Type<>(ArsMagicaAPI.resource("spawn_component_particles"));
     static final StreamCodec<FriendlyByteBuf, BlockHitResult> BLOCK_HIT_RESULT_STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
             BlockHitResult::getBlockPos,

@@ -20,7 +20,7 @@ public interface AMTalents {
     ResourceLocation SPELL_MOTION         = registerTalent("spell_motion");
 
     private static ResourceLocation registerTalent(String name) {
-        ResourceLocation rl = new ResourceLocation(ArsMagicaAPI.MOD_ID, name);
+        ResourceLocation rl = ArsMagicaAPI.resource(name);
         ALL.add(rl);
         return rl;
     }

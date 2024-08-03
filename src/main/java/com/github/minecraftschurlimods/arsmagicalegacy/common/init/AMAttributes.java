@@ -20,12 +20,12 @@ public interface AMAttributes {
     Holder<Attribute> MAGIC_VISION  = registerBool("magic_vision", false, true);
 
     private static Holder<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
-        String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
+        String key = Util.makeDescriptionId("attribute", ArsMagicaAPI.resource(id));
         return ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
     }
 
     private static Holder<Attribute> registerBool(String id, boolean defaultValue, boolean syncable) {
-        String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
+        String key = Util.makeDescriptionId("attribute", ArsMagicaAPI.resource(id));
         return ATTRIBUTES.register(id, () -> new BooleanAttribute(key, defaultValue).setSyncable(syncable));
     }
 

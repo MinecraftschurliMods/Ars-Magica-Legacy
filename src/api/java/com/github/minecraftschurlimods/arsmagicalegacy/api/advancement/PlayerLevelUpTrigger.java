@@ -16,7 +16,7 @@ import java.util.Optional;
  * Advancement trigger for when a player levels up in magic.
  */
 public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTrigger.TriggerInstance> {
-    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_level_up");
+    public static final ResourceLocation ID = ArsMagicaAPI.resource("player_level_up");
 
     /**
      * Triggers the advancement trigger.

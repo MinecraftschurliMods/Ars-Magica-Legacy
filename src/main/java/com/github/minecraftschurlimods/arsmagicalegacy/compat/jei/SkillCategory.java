@@ -37,7 +37,7 @@ import java.util.Objects;
 public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
     public static final RecipeType<Recipe> RECIPE_TYPE = RecipeType.create(ArsMagicaAPI.MOD_ID, "skill", Recipe.class);
     private static final Component TITLE = Component.translatable(TranslationConstants.SKILL_CATEGORY);
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/skill_category.png");
+    private static final ResourceLocation BACKGROUND = ArsMagicaAPI.resource("textures/gui/skill_category.png");
     private static final int INGREDIENT_COLUMNS = 7;
     private static final int SLOT_SIZE = 18;
     private static final int WIDTH = INGREDIENT_COLUMNS * SLOT_SIZE;

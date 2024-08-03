@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SpellBookNextSpellPacket(boolean backwards) implements CustomPacketPayload {
-    static final Type<SpellBookNextSpellPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_book_next_spell"));
+    static final Type<SpellBookNextSpellPacket> TYPE = new Type<>(ArsMagicaAPI.resource("spell_book_next_spell"));
     static final StreamCodec<ByteBuf, SpellBookNextSpellPacket> STREAM_CODEC = ByteBufCodecs.BOOL.map(SpellBookNextSpellPacket::new, SpellBookNextSpellPacket::backwards);
 
     void handle(IPayloadContext context) {

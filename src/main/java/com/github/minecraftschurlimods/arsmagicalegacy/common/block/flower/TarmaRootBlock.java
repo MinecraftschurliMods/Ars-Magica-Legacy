@@ -8,9 +8,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.PlantType;
 
-public class TarmaRootBlock extends FlowerBlock {
+public class TarmaRootBlock extends FlowerBlock implements IPlantable {
     public TarmaRootBlock() {
         super(MobEffects.DIG_SLOWDOWN, 7, Properties.ofLegacyCopy(Blocks.POPPY));
     }
@@ -24,5 +25,10 @@ public class TarmaRootBlock extends FlowerBlock {
     @Override
     public PlantType getPlantType(BlockGetter world, BlockPos pos) {
         return PlantType.CAVE;
+    }
+
+    @Override
+    public BlockState getPlant(BlockGetter blockGetter, BlockPos blockPos) {
+        return defaultBlockState();
     }
 }

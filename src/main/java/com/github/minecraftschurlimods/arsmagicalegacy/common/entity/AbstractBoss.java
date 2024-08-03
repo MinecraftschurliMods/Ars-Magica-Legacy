@@ -120,7 +120,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed() {
         return false;
     }
 

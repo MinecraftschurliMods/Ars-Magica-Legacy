@@ -10,8 +10,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -99,14 +102,16 @@ public final class AMUtil {
     }
 
     /**
-     * @param fortune   The fortune level to enchant the stack with.
-     * @param silkTouch The silk touch level to enchant the stack with.
+     * @param registries 
+     * @param fortune    The fortune level to enchant the stack with.
+     * @param silkTouch  The silk touch level to enchant the stack with.
      * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
      */
-    public static ItemStack createDummyStack(int fortune, int silkTouch) {
+    public static ItemStack createDummyStack(HolderLookup.Provider registries, int fortune, int silkTouch) {
         ItemStack stack = new ItemStack(Items.NETHERITE_PICKAXE);
-        stack.enchant(Enchantments.FORTUNE, fortune);
-        stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
+        HolderLookup.RegistryLookup<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
+        stack.enchant(enchantments.getOrThrow(Enchantments.FORTUNE), fortune);
+        stack.enchant(enchantments.getOrThrow(Enchantments.SILK_TOUCH), silkTouch);
         return stack;
     }
 

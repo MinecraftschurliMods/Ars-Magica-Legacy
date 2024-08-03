@@ -59,11 +59,11 @@ public class LightningGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new LightningRodGoal(this));
         goalSelector.addGoal(1, new StaticGoal(this));
         Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 10));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_lightning_bolt")).spell(), 10));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 10));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 10));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("lightning_bolt")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("strong_lightning_bolt")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("area_lightning")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("lightning_rune")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(ArsMagicaAPI.resource("scramble_synapses")).spell(), 10));
     }
 
     @Override

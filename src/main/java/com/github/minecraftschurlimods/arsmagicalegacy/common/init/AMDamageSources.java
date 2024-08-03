@@ -18,18 +18,18 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public interface AMDamageSources {
-    ResourceKey<DamageType> SPELL_DROWNING =        ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_drowning"));
-    ResourceKey<DamageType> SPELL_FIRE =            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_fire"));
-    ResourceKey<DamageType> SPELL_FROST =           ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_frost"));
-    ResourceKey<DamageType> SPELL_LIGHTNING =       ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_lightning"));
-    ResourceKey<DamageType> SPELL_MAGIC =           ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_magic"));
-    ResourceKey<DamageType> SPELL_PHYSICAL =        ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_physical"));
-    ResourceKey<DamageType> SPELL_PHYSICAL_PLAYER = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_physical_player"));
-    ResourceKey<DamageType> NATURE_SCYTHE =         ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_scythe"));
-    ResourceKey<DamageType> SHOCKWAVE =             ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "shockwave"));
-    ResourceKey<DamageType> THROWN_ROCK =           ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "thrown_rock"));
-    ResourceKey<DamageType> WIND =                  ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "wind"));
-    ResourceKey<DamageType> FALLING_STAR =          ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "falling_star"));
+    ResourceKey<DamageType> SPELL_DROWNING =        ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_drowning"));
+    ResourceKey<DamageType> SPELL_FIRE =            ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_fire"));
+    ResourceKey<DamageType> SPELL_FROST =           ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_frost"));
+    ResourceKey<DamageType> SPELL_LIGHTNING =       ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_lightning"));
+    ResourceKey<DamageType> SPELL_MAGIC =           ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_magic"));
+    ResourceKey<DamageType> SPELL_PHYSICAL =        ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_physical"));
+    ResourceKey<DamageType> SPELL_PHYSICAL_PLAYER = ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("spell_physical_player"));
+    ResourceKey<DamageType> NATURE_SCYTHE =         ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("nature_scythe"));
+    ResourceKey<DamageType> SHOCKWAVE =             ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("shockwave"));
+    ResourceKey<DamageType> THROWN_ROCK =           ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("thrown_rock"));
+    ResourceKey<DamageType> WIND =                  ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("wind"));
+    ResourceKey<DamageType> FALLING_STAR =          ResourceKey.create(Registries.DAMAGE_TYPE, ArsMagicaAPI.resource("falling_star"));
 
     private static Holder<DamageType> type(RegistryAccess access, ResourceKey<DamageType> type) {
         return access.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type);

@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public record SkillPoint(int color, int minEarnLevel, int levelsForPoint) implements ITranslatable {
     public static final String SKILL_POINT = "skill_point";
-    public static final ResourceKey<Registry<SkillPoint>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, SKILL_POINT));
+    public static final ResourceKey<Registry<SkillPoint>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource(SKILL_POINT));
 
     @Override
     public String getType() {

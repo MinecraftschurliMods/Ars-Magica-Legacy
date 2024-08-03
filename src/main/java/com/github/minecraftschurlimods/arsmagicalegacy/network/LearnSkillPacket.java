@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import java.util.Map;
 
 public record LearnSkillPacket(ResourceLocation skill) implements CustomPacketPayload {
-    static final Type<LearnSkillPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "learn_skill"));
+    static final Type<LearnSkillPacket> TYPE = new Type<>(ArsMagicaAPI.resource("learn_skill"));
     static final StreamCodec<ByteBuf, LearnSkillPacket> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(LearnSkillPacket::new, LearnSkillPacket::skill);
 
     void handle(IPayloadContext ctx) {

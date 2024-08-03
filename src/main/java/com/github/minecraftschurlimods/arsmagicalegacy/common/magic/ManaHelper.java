@@ -103,7 +103,7 @@ public final class ManaHelper implements IManaHelper {
     }
 
     private record ManaSyncPacket(float mana) implements CustomPacketPayload {
-        public static final Type<ManaSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_sync"));
+        public static final Type<ManaSyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("mana_sync"));
         public static final StreamCodec<ByteBuf, ManaSyncPacket> STREAM_CODEC = ByteBufCodecs.FLOAT.map(ManaSyncPacket::new, ManaSyncPacket::mana);
 
         public void handle(IPayloadContext context) {

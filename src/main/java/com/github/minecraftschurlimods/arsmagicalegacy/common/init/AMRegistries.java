@@ -89,7 +89,7 @@ public interface AMRegistries {
     DeferredRegister<SpellIngredientType<?>>                SPELL_INGREDIENT_TYPES   = DeferredRegister.create(SpellIngredientType.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
 
     // region Custom registries get via ArsMagicaAPI.get().getXYZRegistry()
-    Registry<SkillPoint>                            SKILL_POINT_REGISTRY             = SKILL_POINTS.makeRegistry(builder -> builder.defaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")).sync(true));
+    Registry<SkillPoint>                            SKILL_POINT_REGISTRY             = SKILL_POINTS.makeRegistry(builder -> builder.defaultKey(ArsMagicaAPI.resource("none")).sync(true));
     DefaultedRegistry<Affinity>                     AFFINITY_REGISTRY                = (DefaultedRegistry<Affinity>) AFFINITIES.makeRegistry(builder -> builder.defaultKey(Affinity.NONE).sync(true));
     Registry<ISpellPart>                            SPELL_PART_REGISTRY              = SPELL_PARTS.makeRegistry(builder -> {});
     Registry<ContingencyType>                       CONTINGENCY_TYPE_REGISTRY        = CONTINGENCY_TYPE.makeRegistry(builder -> builder.defaultKey(ContingencyType.NONE));

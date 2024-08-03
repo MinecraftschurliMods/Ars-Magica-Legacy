@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) {
     public static final String SPELL_PREFAB_NAME = "item." + ArsMagicaAPI.MOD_ID + ".spell.prefab.name";
-    public static final ResourceKey<Registry<PrefabSpell>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "prefab_spell"));
+    public static final ResourceKey<Registry<PrefabSpell>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("prefab_spell"));
     public static final Codec<PrefabSpell> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ComponentSerialization.CODEC.optionalFieldOf("name", Component.translatable(SPELL_PREFAB_NAME)).forGetter(PrefabSpell::name),
             ISpell.CODEC.fieldOf("spell").forGetter(PrefabSpell::spell),

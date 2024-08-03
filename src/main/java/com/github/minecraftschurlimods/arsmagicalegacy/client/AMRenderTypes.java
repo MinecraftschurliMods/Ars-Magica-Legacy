@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AMRenderTypes {
     private static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
-    private static final RenderStateShard.TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png"), false, false);
-    private static final RenderStateShard.TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png"), false, false);
-    private static final RenderStateShard.TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(ArsMagicaAPI.resource("textures/misc/beam_core.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(ArsMagicaAPI.resource("textures/misc/beam_main.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(ArsMagicaAPI.resource("textures/misc/beam_glow.png"), false, false);
 
     public static final RenderType COLOR_WHEEL = RenderType.create(
             "color_wheel",

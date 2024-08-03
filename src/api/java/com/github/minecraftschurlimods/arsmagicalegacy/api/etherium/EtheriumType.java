@@ -32,7 +32,7 @@ public enum EtheriumType implements ITranslatable {
 
     @Override
     public ResourceLocation getId() {
-        return new ResourceLocation(ArsMagicaAPI.MOD_ID, name().toLowerCase());
+        return ArsMagicaAPI.resource(name().toLowerCase());
     }
 
     @Override

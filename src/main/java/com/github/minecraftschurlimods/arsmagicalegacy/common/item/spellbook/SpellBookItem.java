@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -15,12 +14,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class SpellBookItem extends Item {
     public static final int ACTIVE_SPELL_SLOTS = 8;
@@ -73,8 +70,8 @@ public class SpellBookItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
-        return getSelectedSpell(stack).getUseDuration();
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return getSelectedSpell(stack).getUseDuration(entity);
     }
 
     @Override
@@ -85,11 +82,6 @@ public class SpellBookItem extends Item {
 
     public static IItemHandler getItemCapability(ItemStack stack, Void $) {
         return new InvWrapper(getContainer(stack));
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new SpellItemRenderProperties());
     }
 
     public static int getSelectedSlot(ItemStack stack) {

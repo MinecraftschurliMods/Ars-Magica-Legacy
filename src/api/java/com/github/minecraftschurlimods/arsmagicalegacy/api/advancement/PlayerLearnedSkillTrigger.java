@@ -15,7 +15,7 @@ import java.util.Optional;
  * Advancement trigger for when a player learns a new skill.
  */
 public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLearnedSkillTrigger.TriggerInstance> {
-    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_learned_skill");
+    public static final ResourceLocation ID = ArsMagicaAPI.resource("player_learned_skill");
 
     /**
      * Triggers the advancement trigger.

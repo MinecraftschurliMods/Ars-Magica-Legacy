@@ -91,7 +91,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     private record BurnoutSyncPacket(float burnout) implements CustomPacketPayload {
-        public static final Type<BurnoutSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_sync"));
+        public static final Type<BurnoutSyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("burnout_sync"));
         public static final StreamCodec<ByteBuf, BurnoutSyncPacket> STREAM_CODEC = ByteBufCodecs.FLOAT.map(BurnoutSyncPacket::new, BurnoutSyncPacket::burnout);
 
         private void handle(IPayloadContext context) {

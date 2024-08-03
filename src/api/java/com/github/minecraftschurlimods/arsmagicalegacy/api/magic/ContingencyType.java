@@ -10,13 +10,13 @@ import net.minecraft.resources.ResourceLocation;
  * Class representing a contingency type. Only used to register them.
  */
 public final class ContingencyType {
-    public static final ResourceKey<Registry<ContingencyType>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "contingency_type"));
+    public static final ResourceKey<Registry<ContingencyType>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource("contingency_type"));
     public static final Codec<ContingencyType> CODEC = Codec.lazyInitialized(() -> ArsMagicaAPI.get().getContingencyTypeRegistry().byNameCodec());
 
-    public static final ResourceLocation NONE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "none");
-    public static final ResourceLocation DEATH = new ResourceLocation(ArsMagicaAPI.MOD_ID, "death");
-    public static final ResourceLocation FIRE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire");
-    public static final ResourceLocation HEALTH = new ResourceLocation(ArsMagicaAPI.MOD_ID, "health");
-    public static final ResourceLocation FALL = new ResourceLocation(ArsMagicaAPI.MOD_ID, "fall");
-    public static final ResourceLocation DAMAGE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "damage");
+    public static final ResourceLocation NONE = ArsMagicaAPI.resource("none");
+    public static final ResourceLocation DEATH = ArsMagicaAPI.resource("death");
+    public static final ResourceLocation FIRE = ArsMagicaAPI.resource("fire");
+    public static final ResourceLocation HEALTH = ArsMagicaAPI.resource("health");
+    public static final ResourceLocation FALL = ArsMagicaAPI.resource("fall");
+    public static final ResourceLocation DAMAGE = ArsMagicaAPI.resource("damage");
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillPointPanel extends AbstractWidget {
-    private static final ResourceLocation SKILL_POINT_BG = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/skill_points.png");
+    private static final ResourceLocation SKILL_POINT_BG = ArsMagicaAPI.resource("textures/gui/occulus/skill_points.png");
     private final Font font;
     private final List<Component> skillPointText;
 

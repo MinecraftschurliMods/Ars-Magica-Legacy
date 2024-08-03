@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 class EtheriumProbeInfoProvider implements IProbeInfoProvider {
-    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    private static final ResourceLocation ID = ArsMagicaAPI.resource("etherium");
 
     @Override
     public ResourceLocation getID() {

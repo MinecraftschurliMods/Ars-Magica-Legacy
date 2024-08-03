@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record InscriptionTableCreateSpellPacket(BlockPos pos) implements CustomPacketPayload {
-    static final Type<InscriptionTableCreateSpellPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_create_spell"));
+    static final Type<InscriptionTableCreateSpellPacket> TYPE = new Type<>(ArsMagicaAPI.resource("inscription_table_create_spell"));
     static final StreamCodec<ByteBuf, InscriptionTableCreateSpellPacket> STREAM_CODEC = BlockPos.STREAM_CODEC.map(InscriptionTableCreateSpellPacket::new, InscriptionTableCreateSpellPacket::pos);
 
     void handle(IPayloadContext context) {

@@ -278,7 +278,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     private record AffinitySyncPacket(AffinityHolder data) implements CustomPacketPayload {
-        public static final Type<AffinitySyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_sync"));
+        public static final Type<AffinitySyncPacket> TYPE = new Type<>(ArsMagicaAPI.resource("affinity_sync"));
         public static final StreamCodec<RegistryFriendlyByteBuf, AffinitySyncPacket> STREAM_CODEC = AffinityHolder.STREAM_CODEC.map(AffinitySyncPacket::new, AffinitySyncPacket::data);
 
         private void handle(IPayloadContext context) {

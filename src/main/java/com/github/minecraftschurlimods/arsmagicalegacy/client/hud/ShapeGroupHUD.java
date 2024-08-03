@@ -13,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontab
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
 import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -23,14 +24,14 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public final class ShapeGroupHUD extends HUDElement {
-    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
+    private static final ResourceLocation GUI = ArsMagicaAPI.resource("textures/gui/inscription_table.png");
 
     public ShapeGroupHUD() {
         super(Config.CLIENT.SHAPE_GROUP_ANCHOR_X, Config.CLIENT.SHAPE_GROUP_ANCHOR_Y, Config.CLIENT.SHAPE_GROUP_X::get, Config.CLIENT.SHAPE_GROUP_Y::get, () -> ShapeGroupArea.WIDTH * 5, () -> ShapeGroupArea.HEIGHT);
     }
 
     @Override
-    public void draw(GuiGraphics graphics, float partialTicks) {
+    public void draw(GuiGraphics graphics, DeltaTracker partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);

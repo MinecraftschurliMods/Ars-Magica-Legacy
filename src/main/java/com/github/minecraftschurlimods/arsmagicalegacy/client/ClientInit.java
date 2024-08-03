@@ -47,9 +47,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Na
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WintersGraspRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell.BeamRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -72,7 +72,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -112,7 +111,8 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -141,6 +141,7 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerHUDs);
         modEventBus.addListener(ClientInit::registerMenuScreens);
         modEventBus.addListener(AMShaders::init);
+        modEventBus.addListener(ClientInit::registerClientExtensions);
         IEventBus forgeBus = NeoForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::movementInputUpdate);
         forgeBus.addListener(ClientInit::mouseScroll);
@@ -165,11 +166,11 @@ public final class ClientInit {
     }
 
     private static void registerHUDs(RegisterGuiLayersEvent event) {
-        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_hud"), new ManaHUD());
-        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_hud"), new BurnoutHUD());
-        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "xp_hud"), new XpHUD());
-        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shape_group_hud"), new ShapeGroupHUD());
-        event.registerBelowAll(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_book_hud"), new SpellBookHUD());
+        event.registerBelowAll(ArsMagicaAPI.resource("mana_hud"), new ManaHUD());
+        event.registerBelowAll(ArsMagicaAPI.resource("burnout_hud"), new BurnoutHUD());
+        event.registerBelowAll(ArsMagicaAPI.resource("xp_hud"), new XpHUD());
+        event.registerBelowAll(ArsMagicaAPI.resource("shape_group_hud"), new ShapeGroupHUD());
+        event.registerBelowAll(ArsMagicaAPI.resource("spell_book_hud"), new SpellBookHUD());
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -214,39 +215,37 @@ public final class ClientInit {
         Registry<Affinity> affinities = api.getAffinityRegistry();
         for (Item item : BuiltInRegistries.ITEM) {
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
-            if (itemId == null) continue;
             if (item instanceof IAffinityItem affinityItem) {
                 for (Affinity affinity : affinities) {
-                    if (Affinity.NONE.equals(affinities.getKey(affinity)) && !affinityItem.hasNoneVariant()) continue;
-                    event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                    if (Affinity.NONE.location().equals(affinities.getKey(affinity)) && !affinityItem.hasNoneVariant()) continue;
+                    event.register(ModelResourceLocation.standalone(affinity.getId().withPrefix("item/" + itemId.getPath() + "_")));
                 }
             }
             if (item instanceof ISkillPointItem) {
                 for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
-                    event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
+                    event.register(ModelResourceLocation.standalone(skillPoint.getId().withPrefix("item/" + itemId.getPath() + "_")));
                 }
             }
             if (item instanceof ISpellItem) {
                 for (Affinity affinity : affinities) {
-                    event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                    event.register(ModelResourceLocation.standalone(affinity.getId().withPrefix("item/" + itemId.getPath() + "_")));
                 }
             }
             if (item instanceof SpellBookItem) {
-                event.register(new ResourceLocation(itemId.getNamespace(), "item/" + itemId.getPath() + "_handheld"));
+                event.register(ModelResourceLocation.standalone(itemId.withPath(path -> "item/" + path + "_handheld")));
             }
         }
     }
 
     private static void modelBake(ModelEvent.ModifyBakingResult event) {
-        Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         for (Item item : BuiltInRegistries.ITEM) {
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
-            if (itemId == null) continue;
             if (item instanceof IAffinityItem) {
-                modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), ($, model) -> new AffinityOverrideModel(model));
+                modelRegistry.computeIfPresent(ModelResourceLocation.inventory(itemId), ($, model) -> new AffinityOverrideModel(model));
             }
             if (item instanceof ISkillPointItem) {
-                modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), ($, model) -> new SkillPointOverrideModel(model));
+                modelRegistry.computeIfPresent(ModelResourceLocation.inventory(itemId), ($, model) -> new SkillPointOverrideModel(model));
             }
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), ($, model) -> new SpellItemModel(model));
@@ -363,7 +362,7 @@ public final class ClientInit {
         Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
         Level level = Objects.requireNonNull(Minecraft.getInstance().level);
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        float ticks = event.getPartialTick();
+        float ticks = event.getPartialTick().getGameTimeDeltaTicks();
         PoseStack poseStack = event.getPoseStack();
         int dist = Minecraft.getInstance().options.getEffectiveRenderDistance() * 8;
         for (Player p : level.players()) {
@@ -376,7 +375,7 @@ public final class ClientInit {
                 if (!(stack.getItem() instanceof ISpellItem)) continue;
             }
             ISpell spell = helper.getSpell(stack);
-            Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
+            Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().getFirst();
             ISpellPart part = pair.getFirst();
             List<ISpellModifier> modifiers = pair.getSecond();
             int color = helper.getColor(modifiers, spell, p, 1, spell.primaryAffinity().color());
@@ -396,5 +395,20 @@ public final class ClientInit {
                 }
             }
         }
+    }
+
+    private static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(new SpellItemRenderProperties(), AMItems.SPELL.get(), AMItems.SPELL_BOOK.get());
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return ArsMagicaAPI.resource("block/liquid_essence_still");
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return ArsMagicaAPI.resource("block/liquid_essence_flowing");
+            }
+        }, AMFluids.LIQUID_ESSENCE_TYPE.get());
     }
 }

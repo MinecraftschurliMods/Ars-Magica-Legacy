@@ -24,7 +24,7 @@ import java.util.function.Predicate;
  */
 public record Ability(Affinity affinity, MinMaxBounds.Doubles bounds) implements ITranslatable.WithDescription, Predicate<Player> {
     public static final String ABILITY = "ability";
-    public static final ResourceKey<Registry<Ability>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, ABILITY));
+    public static final ResourceKey<Registry<Ability>> REGISTRY_KEY = ResourceKey.createRegistryKey(ArsMagicaAPI.resource(ABILITY));
 
     public static final Codec<Ability> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Codec.lazyInitialized(() -> ArsMagicaAPI.get().getAffinityRegistry().byNameCodec()).fieldOf("affinity").forGetter(Ability::affinity),

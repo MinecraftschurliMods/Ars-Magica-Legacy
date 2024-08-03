@@ -45,7 +45,7 @@ public class Dig extends AbstractComponent {
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target, index), (int) helper.getModifiedStat(0, SpellPartStats.SILK_TOUCH, modifiers, spell, caster, target, index));
+            ItemStack dummyStack = AMUtil.createDummyStack(level.registryAccess(), (int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target, index), (int) helper.getModifiedStat(0, SpellPartStats.SILK_TOUCH, modifiers, spell, caster, target, index));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);

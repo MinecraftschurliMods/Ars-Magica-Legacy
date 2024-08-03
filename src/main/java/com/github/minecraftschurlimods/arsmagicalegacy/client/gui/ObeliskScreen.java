@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ObeliskScreen extends AbstractContainerScreen<ObeliskMenu> {
-    private static final ResourceLocation LOCATION = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/obelisk.png");
+    private static final ResourceLocation LOCATION = ArsMagicaAPI.resource("textures/gui/obelisk.png");
 
     public ObeliskScreen(ObeliskMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

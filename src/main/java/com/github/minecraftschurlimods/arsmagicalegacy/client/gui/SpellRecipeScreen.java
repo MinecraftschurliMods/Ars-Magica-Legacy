@@ -46,7 +46,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class SpellRecipeScreen extends Screen {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_recipe.png");
+    private static final ResourceLocation BACKGROUND = ArsMagicaAPI.resource("textures/gui/spell_recipe.png");
     private static final int WIDTH = 192;
     private static final int HEIGHT = 192;
     private final List<SpellRecipePage> pages = new ArrayList<>();

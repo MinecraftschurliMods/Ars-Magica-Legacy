@@ -16,9 +16,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
@@ -32,13 +35,12 @@ import java.util.function.UnaryOperator;
 public class SpellPartPage implements ICustomComponent {
     private String part;
     private transient int x, y;
-    private transient ISpellPart _part;
+    private transient Holder<ISpellPart> _part;
 
     @Override
     public void build(int x, int y, int page) {
         this.x = x;
         this.y = y;
-        this._part = ArsMagicaAPI.get().getSpellPartRegistry().get(ResourceLocation.tryParse(part));
     }
 
     @Override
@@ -46,12 +48,12 @@ public class SpellPartPage implements ICustomComponent {
         int cx = x + 50;
         int cy = y + 70;
         graphics.pose().pushPose();
-        List<ISpellModifier> modifiers = AMUtil.getModifiersForPart(_part);
+        List<ISpellModifier> modifiers = AMUtil.getModifiersForPart(_part.value());
         if (modifiers.isEmpty()) cy -= 16;
         else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(graphics, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
-        ResourceLocation registryName = this._part.getId();
+        ResourceLocation registryName = this._part.getKey().location();
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
         Skill skill = registryAccess.registryOrThrow(Skill.REGISTRY_KEY).get(registryName);
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(Objects.requireNonNull(skill).getId(registryAccess));
@@ -66,13 +68,13 @@ public class SpellPartPage implements ICustomComponent {
     }
 
     @Override
-    public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
-        part = lookup.apply(IVariable.wrap(part)).asString();
+    public void onVariablesAvailable(UnaryOperator<IVariable> lookup, HolderLookup.Provider registries) {
+        this._part = registries.lookupOrThrow(ISpellPart.REGISTRY_KEY).getOrThrow(ResourceKey.create(ISpellPart.REGISTRY_KEY, ResourceLocation.parse(lookup.apply(IVariable.wrap(part, registries)).asString())));
     }
 
     private void renderModifiers(GuiGraphics graphics, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
         if (modifiers.isEmpty()) return;
-        Component shapeName = Component.translatable(_part.getType() == ISpellPart.SpellPartType.MODIFIER ? TranslationConstants.SPELL_PART_MODIFIES : TranslationConstants.SPELL_PART_MODIFIED_BY);
+        Component shapeName = Component.translatable(_part.value().getType() == ISpellPart.SpellPartType.MODIFIER ? TranslationConstants.SPELL_PART_MODIFIES : TranslationConstants.SPELL_PART_MODIFIED_BY);
         Font font = context.getGui().getMinecraft().font;
         graphics.drawString(font, shapeName, (int)(posX + 58 - (font.width(shapeName) / 2f)), posY, 0, false);
         RenderSystem.setShaderFogColor(1.0f, 1.0f, 1.0f);
@@ -101,7 +103,7 @@ public class SpellPartPage implements ICustomComponent {
 
     private void renderRecipe(GuiGraphics graphics, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
         if (this._part == null) return;
-        ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part);
+        ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part.value());
         if (data == null) return;
         List<ISpellIngredient> recipe = data.recipe();
         if (recipe.isEmpty()) return;

@@ -28,7 +28,7 @@ import java.util.List;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
-    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, ArsMagicaAPI.MOD_ID);
+    private static final ResourceLocation ID = ArsMagicaAPI.resource(ArsMagicaAPI.MOD_ID);
 
     @Override
     public ResourceLocation getPluginUid() {

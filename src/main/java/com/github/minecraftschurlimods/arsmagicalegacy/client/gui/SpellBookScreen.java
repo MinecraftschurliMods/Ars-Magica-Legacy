@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 public class SpellBookScreen extends AbstractContainerScreen<SpellBookMenu> {
-    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_book.png");
+    private static final ResourceLocation GUI = ArsMagicaAPI.resource("textures/gui/spell_book.png");
 
     public SpellBookScreen(SpellBookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);

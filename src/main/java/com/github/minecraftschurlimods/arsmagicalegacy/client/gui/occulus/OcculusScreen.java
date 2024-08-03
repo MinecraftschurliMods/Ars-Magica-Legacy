@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class OcculusScreen extends Screen {
-    private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
+    private static final ResourceLocation OVERLAY = ArsMagicaAPI.resource("textures/gui/occulus/overlay.png");
     private static final Component TITLE = Component.translatable("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
     private static final int GUI_WIDTH = 210;
     private static final int GUI_HEIGHT = 210;

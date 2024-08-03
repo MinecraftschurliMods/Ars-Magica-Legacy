@@ -11,9 +11,9 @@ public class AMGeckolibModel<T extends GeoAnimatable> extends GeoModel<T> {
     private final ResourceLocation ANIMATION_LOCATION;
 
     public AMGeckolibModel(String name) {
-        MODEL_LOCATION = new ResourceLocation(ArsMagicaAPI.MOD_ID, "geo/" + name + ".geo.json");
-        TEXTURE_LOCATION = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/" + name + ".png");
-        ANIMATION_LOCATION = new ResourceLocation(ArsMagicaAPI.MOD_ID, "animations/" + name + ".animation.json");
+        MODEL_LOCATION = ArsMagicaAPI.resource("geo/" + name + ".geo.json");
+        TEXTURE_LOCATION = ArsMagicaAPI.resource("textures/entity/" + name + ".png");
+        ANIMATION_LOCATION = ArsMagicaAPI.resource("animations/" + name + ".animation.json");
     }
 
     @Override
