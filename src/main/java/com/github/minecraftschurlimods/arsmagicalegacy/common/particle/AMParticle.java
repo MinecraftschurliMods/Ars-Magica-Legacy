@@ -352,10 +352,10 @@ public class AMParticle extends SimpleAnimatedParticle {
         float v0 = getV0();
         float v1 = getV1();
         int light = getLightColor(partialTicks);
-        vc.vertex(vec[0].x(), vec[0].y(), vec[0].z()).uv(u1, v1).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
-        vc.vertex(vec[1].x(), vec[1].y(), vec[1].z()).uv(u1, v0).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
-        vc.vertex(vec[2].x(), vec[2].y(), vec[2].z()).uv(u0, v0).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
-        vc.vertex(vec[3].x(), vec[3].y(), vec[3].z()).uv(u0, v1).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
+        vc.addVertex(vec[0].x(), vec[0].y(), vec[0].z()).setUv(u1, v1).setColor(getRed(), getGreen(), getBlue(), getAlpha()).setLight(light);
+        vc.addVertex(vec[1].x(), vec[1].y(), vec[1].z()).setUv(u1, v0).setColor(getRed(), getGreen(), getBlue(), getAlpha()).setLight(light);
+        vc.addVertex(vec[2].x(), vec[2].y(), vec[2].z()).setUv(u0, v0).setColor(getRed(), getGreen(), getBlue(), getAlpha()).setLight(light);
+        vc.addVertex(vec[3].x(), vec[3].y(), vec[3].z()).setUv(u0, v1).setColor(getRed(), getGreen(), getBlue(), getAlpha()).setLight(light);
     }
 
     public void addController(ParticleController controller) {

@@ -46,10 +46,10 @@ public abstract class FlatTextureRenderer<T extends Entity> extends EntityRender
         float x = (float) entityPos.x;
         float y = (float) entityPos.y;
         float z = (float) entityPos.z;
-        consumer.vertex(array[0].x(), array[0].y(), array[0].z(), 1f, 1f, 1f, 1f, maxU, maxV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
-        consumer.vertex(array[1].x(), array[1].y(), array[1].z(), 1f, 1f, 1f, 1f, maxU, minV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
-        consumer.vertex(array[2].x(), array[2].y(), array[2].z(), 1f, 1f, 1f, 1f, minU, minV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
-        consumer.vertex(array[3].x(), array[3].y(), array[3].z(), 1f, 1f, 1f, 1f, minU, maxV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
+        consumer.addVertex(array[0].x(), array[0].y(), array[0].z(), 0xFFFFFFFF, maxU, maxV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
+        consumer.addVertex(array[1].x(), array[1].y(), array[1].z(), 0xFFFFFFFF, maxU, minV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
+        consumer.addVertex(array[2].x(), array[2].y(), array[2].z(), 0xFFFFFFFF, minU, minV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
+        consumer.addVertex(array[3].x(), array[3].y(), array[3].z(), 0xFFFFFFFF, minU, maxV, OverlayTexture.NO_OVERLAY, pPackedLight, x, y, z);
         pMatrixStack.popPose();
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }

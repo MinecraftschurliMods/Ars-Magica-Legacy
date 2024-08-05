@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class EmptyRenderer extends EntityRenderer<Entity> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("missingno");
+    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("missingno");
 
     public EmptyRenderer(EntityRendererProvider.Context context) {
         super(context);
