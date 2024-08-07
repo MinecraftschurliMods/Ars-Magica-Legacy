@@ -15,7 +15,7 @@ public class FlightEffect extends AMMobEffect {
     @Override
     public void stopEffect(LivingEntity entity, MobEffectInstance effect) {
         if (entity instanceof ServerPlayer && !((ServerPlayer) entity).isCreative()) {
-            entity.fallDistance = 0;// todo is this needed?
+            entity.fallDistance = 0;
         }
     }
 }

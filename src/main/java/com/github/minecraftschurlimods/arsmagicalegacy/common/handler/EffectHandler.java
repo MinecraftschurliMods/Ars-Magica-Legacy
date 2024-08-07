@@ -95,19 +95,19 @@ final class EffectHandler {
     }
 
     private static void potionAdded(MobEffectEvent.Added event) {
-        if (!event.getEntity().level().isClientSide() && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect().value() instanceof AMMobEffect effect) {
             effect.startEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
     private static void potionExpiry(MobEffectEvent.Expired event) {
-        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect().value() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
     private static void potionRemove(MobEffectEvent.Remove event) {
-        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect().value() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }
