@@ -26,6 +26,7 @@ You can download the latest version of the mod from [CurseForge][CurseForge Proj
 |      1.19.2       |       1.3.1        |      [Forge] 43.1.13       |     ❌     | [CurseForge][Download-1.19.2-CurseForge] / [Modrinth][Download-1.19.2-Modrinth] |
 |      1.20.1       |       1.5.0        |      [Forge] 47.0.34       |     ✅     | [CurseForge][Download-1.20.1-CurseForge] / [Modrinth][Download-1.20.1-Modrinth] |
 |      1.20.4       |       1.5.0        |    [NeoForge] 20.4.232     |     ✅     | [CurseForge][Download-1.20.4-CurseForge] / [Modrinth][Download-1.20.4-Modrinth] |
+|       1.21        |       1.5.0        |    [NeoForge] 21.0.143     |     ✅     |   [CurseForge][Download-1.21-CurseForge] / [Modrinth][Download-1.21-Modrinth]   |
 
 ## Dependencies
 
@@ -141,6 +142,8 @@ Some textures used in this mod are property of D3miurge, used with permission.
 [Download-1.20.1-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.1
 [Download-1.20.4-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.20.4
 [Download-1.20.4-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.4
+[Download-1.21-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.21
+[Download-1.21-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.21
 
 [Forge]: https://files.minecraftforge.net/
 [NeoForge]: https://neoforged.net
