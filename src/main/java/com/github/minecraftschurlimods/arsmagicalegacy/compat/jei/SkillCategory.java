@@ -1,4 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jei;
+/*
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
@@ -169,3 +170,4 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
         return (int) (WIDTH - font.getSplitter().stringWidth(String.valueOf(affinityShifts.values().stream().min(Float::compareTo).orElse(0f)))) / 2;
     }
 }
+*/

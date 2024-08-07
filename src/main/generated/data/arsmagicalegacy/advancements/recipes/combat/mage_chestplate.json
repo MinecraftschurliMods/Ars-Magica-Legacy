@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:white_rune"
-            ]
+            "items": "arsmagicalegacy:white_rune"
           }
         ]
       },

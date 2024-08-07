@@ -16,7 +16,7 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:dusts/purified_vinteum"
+        "tag": "c:dusts/purified_vinteum"
       }
     }
   ]

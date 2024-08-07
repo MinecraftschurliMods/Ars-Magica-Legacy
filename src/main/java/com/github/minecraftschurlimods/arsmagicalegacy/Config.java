@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,12 +28,11 @@ public final class Config {
     }
 
     @Internal
-    static synchronized void init() {
+    static synchronized void init(ModContainer container) {
         if (init) return;
         init = true;
-        ModLoadingContext context = ModLoadingContext.get();
-        context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
-        context.registerConfig(ModConfig.Type.SERVER, serverSpec);
+        container.registerConfig(ModConfig.Type.CLIENT, clientSpec);
+        container.registerConfig(ModConfig.Type.SERVER, serverSpec);
     }
 
     /**

@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public final class SpellBookHUD extends HUDElement {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/spell_book.png");
@@ -22,15 +21,15 @@ public final class SpellBookHUD extends HUDElement {
     }
 
     @Override
-    public void draw(ExtendedGui forgeGui, GuiGraphics graphics, float partialTicks) {
+    public void draw(GuiGraphics graphics, float partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (mainHand.getItem() instanceof SpellBookItem) {
-            renderSpellBookHUD(forgeGui, graphics, mainHand);
+            renderSpellBookHUD(graphics, mainHand);
         } else if (offHand.getItem() instanceof SpellBookItem) {
-            renderSpellBookHUD(forgeGui, graphics, offHand);
+            renderSpellBookHUD(graphics, offHand);
         }
     }
 
@@ -47,7 +46,7 @@ public final class SpellBookHUD extends HUDElement {
         Config.CLIENT.save();
     }
 
-    private void renderSpellBookHUD(ExtendedGui gui, GuiGraphics graphics, ItemStack spellBook) {
+    private void renderSpellBookHUD(GuiGraphics graphics, ItemStack spellBook) {
         SimpleContainer active = SpellBookItem.getContainer(spellBook).active();
         final int selected = SpellBookItem.getSelectedSlot(spellBook);
         if (selected != -1) {
@@ -61,7 +60,7 @@ public final class SpellBookHUD extends HUDElement {
                 graphics.pose().pushPose();
                 graphics.pose().translate(i * 18f, 2f, 0);
                 graphics.renderItem(spell, 3, 1);
-                graphics.renderItemDecorations(gui.getFont(), spell, 3, 1);
+                graphics.renderItemDecorations(Minecraft.getInstance().gui.getFont(), spell, 3, 1);
                 graphics.pose().popPose();
             }
             graphics.pose().pushPose();

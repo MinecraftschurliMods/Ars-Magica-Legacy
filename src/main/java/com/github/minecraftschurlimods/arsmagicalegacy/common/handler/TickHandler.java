@@ -20,8 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.LightLayer;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.Objects;
 
@@ -34,48 +34,22 @@ final class TickHandler {
         forgeBus.addListener(TickHandler::playerTick);
     }
 
-    private static void livingUpdate(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.value()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
+    private static void livingUpdate(EntityTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) return;
+        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
         }
         if (event.getEntity().isOnFire()) {
-            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntity(), ContingencyType.FIRE);
+            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(entity, ContingencyType.FIRE);
         }
     }
 
-    private static void playerTick(TickEvent.PlayerTickEvent event) {
-        switch (event.side) {
-            case CLIENT -> {
-                switch (event.phase) {
-                    case START -> playerTickClientStart(event.player);
-                    case END -> playerTickClientEnd(event.player);
-                }
-            }
-            case SERVER -> {
-                switch (event.phase) {
-                    case START -> playerTickServerStart(event.player);
-                    case END -> playerTickServerEnd(event.player);
-                }
-            }
+    private static void playerTick(PlayerTickEvent.Pre event) {
+        Player player = event.getEntity();
+        if (!player.level().isClientSide()) {
+            manaAndBurnoutRegen(player);
+            handleAbilities(player);
         }
-    }
-
-    private static void playerTickServerStart(final Player player) {
-        manaAndBurnoutRegen(player);
-        handleAbilities(player);
-    }
-
-    private static void playerTickServerEnd(final Player player) {
-        // NOOP
-    }
-
-    private static void playerTickClientStart(final Player player) {
-        // NOOP
-    }
-
-    private static void playerTickClientEnd(final Player player) {
-        // NOOP
     }
 
     private static void manaAndBurnoutRegen(final Player player) {
@@ -92,8 +66,8 @@ final class TickHandler {
         } else if (skillHelper.knows(player, AMTalents.MANA_REGEN_BOOST_1)) {
             factor = 1.05f;
         }
-        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.value()) * factor);
-        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.value()) * factor);
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN) * factor);
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN) * factor);
     }
 
     private static void handleAbilities(final Player player) {
@@ -155,7 +129,7 @@ final class TickHandler {
             } else {
                 depth = helper.getAffinityDepthOrElse(player, Objects.requireNonNullElse(waterHealthReduction, lightHealthReduction).affinity(), 0);
             }
-            maxHealth.addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -depth * 4, AttributeModifier.Operation.ADDITION));
+            maxHealth.addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -depth * 4, AttributeModifier.Operation.ADD_VALUE));
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
             }

@@ -18,7 +18,7 @@ import net.neoforged.testframework.gametest.ExtendedGameTestHelper;
 public class SkillLearnRitualTest {
     private static void test(ExtendedGameTestHelper helper, ResourceLocation skill, ISpellPart... parts) {
         helper.startSequence(() -> helper.makeTickingMockServerPlayerInLevel(GameType.SURVIVAL))
-              .thenExecuteAfter(2, player -> ArsMagicaAPI.get().makeSpell(SpellStack.of(parts)).cast(player, player.level(), 0, false, false))
+              .thenExecuteAfter(2, player -> ArsMagicaAPI.get().getSpellHelper().cast(ArsMagicaAPI.get().makeSpell(SpellStack.of(parts)), player, player.level(), 0, false, false))
               .thenExecuteAfter(8, player -> {
                   if (!ArsMagicaAPI.get().getSkillHelper().knows(player, skill)) {
                       helper.fail("Player does not know " + skill);

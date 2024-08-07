@@ -9,7 +9,6 @@ import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -35,8 +34,8 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<MinMaxBounds.Ints> level) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(TriggerInstance::player),
-                ExtraCodecs.strictOptionalField(MinMaxBounds.Ints.CODEC, "level").forGetter(TriggerInstance::level)
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+                MinMaxBounds.Ints.CODEC.optionalFieldOf("level").forGetter(TriggerInstance::level)
         ).apply(inst, TriggerInstance::new));
 
         /**

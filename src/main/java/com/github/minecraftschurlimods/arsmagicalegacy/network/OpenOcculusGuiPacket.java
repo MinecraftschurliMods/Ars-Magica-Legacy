@@ -2,27 +2,22 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record OpenOcculusGuiPacket() implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "open_occulus_gui");
+    static final Type<OpenOcculusGuiPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "open_occulus_gui"));
+    static final StreamCodec<ByteBuf, OpenOcculusGuiPacket> STREAM_CODEC = StreamCodec.unit(new OpenOcculusGuiPacket());
 
-    OpenOcculusGuiPacket(FriendlyByteBuf buf) {
-        this();
+    void handle(IPayloadContext ctx) {
+        ClientHelper.openOcculusGui();
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {}
-
-    @Override
-    public ResourceLocation id() {
-        return ID;
-    }
-
-    void handle(PlayPayloadContext ctx) {
-        ctx.workHandler().execute(ClientHelper::openOcculusGui);
+    public Type<OpenOcculusGuiPacket> type() {
+        return TYPE;
     }
 }

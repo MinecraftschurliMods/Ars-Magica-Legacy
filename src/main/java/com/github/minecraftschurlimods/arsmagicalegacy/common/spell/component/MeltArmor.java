@@ -17,7 +17,8 @@ public class MeltArmor extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         boolean success = false;
-        for (ItemStack stack : target.getEntity().getArmorSlots()) {
+        if (!(target.getEntity() instanceof LivingEntity targetEntity)) return SpellCastResult.EFFECT_FAILED;
+        for (ItemStack stack : targetEntity.getArmorSlots()) {
             if (stack != null && stack.isDamageableItem()) {
                 int damage = stack.getMaxDamage() - stack.getDamageValue();
                 stack.setDamageValue(damage * 2 / 3);

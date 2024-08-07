@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -25,13 +25,9 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import java.util.Map;
 
 public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements RitualTrigger {
-    public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RegistryCodecs.homogeneousList(Registries.GAME_EVENT).fieldOf("event").forGetter(GameEventRitualTrigger::event)
     ).apply(instance, GameEventRitualTrigger::new));
-
-    public static GameEventRitualTrigger simple(GameEvent gameEvent) {
-        return any(gameEvent.builtInRegistryHolder());
-    }
 
     public static GameEventRitualTrigger simple(HolderGetter<GameEvent> holderGetter, ResourceKey<GameEvent> gameEvent) {
         return GameEventRitualTrigger.any(holderGetter.getOrThrow(gameEvent));
@@ -51,7 +47,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
         NeoForge.EVENT_BUS.addListener((VanillaGameEvent evt) -> {
             Vec3 pos = evt.getEventPosition();
             Level level = evt.getLevel();
-            if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {
+            if (event().contains(evt.getVanillaEvent()) && level instanceof ServerLevel serverLevel) {
                 for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(pos, 5, 5, 5))) {
                     if (ritual.perform(player, serverLevel, BlockPos.containing(pos), new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
                         return;
@@ -63,13 +59,13 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
 
     @Override
     public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final Context ctx) {
-        GameEvent evt = ctx.get("event", GameEvent.class);
+        Holder<GameEvent> evt = ctx.get("event", Holder.class);
         assert evt != null;
-        return event().contains(evt.builtInRegistryHolder());
+        return event().contains(evt);
     }
 
     @Override
-    public Codec<? extends RitualTrigger> codec() {
+    public MapCodec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

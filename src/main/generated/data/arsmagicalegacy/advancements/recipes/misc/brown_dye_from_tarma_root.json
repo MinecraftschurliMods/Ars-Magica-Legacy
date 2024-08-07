@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:tarma_root"
-            ]
+            "items": "arsmagicalegacy:tarma_root"
           }
         ]
       },

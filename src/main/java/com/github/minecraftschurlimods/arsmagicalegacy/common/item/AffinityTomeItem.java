@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -39,8 +40,9 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
         var helper = api.getAffinityHelper();
         Affinity affinity = helper.getAffinityForStack(stack);
         float shift = Config.SERVER.AFFINITY_TOME_SHIFT.get().floatValue();
-        for (Affinity a : api.getAffinityRegistry()) {
-            if (a.getId() == Affinity.NONE) continue;
+        DefaultedRegistry<Affinity> affinityRegistry = api.getAffinityRegistry();
+        for (Affinity a : affinityRegistry) {
+            if (affinityRegistry.getResourceKey(a).map(it -> it == Affinity.NONE).orElse(false)) continue;
             if (affinity == a) {
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, a, shift, false);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {

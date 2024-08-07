@@ -3,16 +3,16 @@
   "category": "equipment",
   "key": {
     "C": {
-      "tag": "forge:gems/chimerite"
+      "tag": "c:gems/chimerite"
     },
     "G": {
-      "tag": "forge:nuggets/gold"
+      "tag": "c:nuggets/gold"
     },
     "L": {
       "item": "minecraft:leather"
     },
     "T": {
-      "tag": "forge:gems/topaz"
+      "tag": "c:gems/topaz"
     }
   },
   "pattern": [
@@ -21,6 +21,7 @@
     "TLT"
   ],
   "result": {
-    "item": "arsmagicalegacy:magitech_goggles"
+    "count": 1,
+    "id": "arsmagicalegacy:magitech_goggles"
   }
 }

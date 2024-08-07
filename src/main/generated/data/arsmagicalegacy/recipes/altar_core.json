@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "S": {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     },
     "V": {
-      "tag": "forge:dusts/vinteum"
+      "tag": "c:dusts/vinteum"
     }
   },
   "pattern": [
@@ -14,6 +14,7 @@
     "S"
   ],
   "result": {
-    "item": "arsmagicalegacy:altar_core"
+    "count": 1,
+    "id": "arsmagicalegacy:altar_core"
   }
 }

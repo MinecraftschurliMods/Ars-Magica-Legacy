@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:deepslate_chimerite_ore"
-            ]
+            "items": "arsmagicalegacy:deepslate_chimerite_ore"
           }
         ]
       },

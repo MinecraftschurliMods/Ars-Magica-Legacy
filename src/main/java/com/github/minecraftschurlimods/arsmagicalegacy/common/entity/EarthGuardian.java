@@ -13,7 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public class EarthGuardian extends AbstractBoss {
     public boolean shouldRenderRock;
@@ -23,7 +23,11 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 1000).add(AMAttributes.MAX_BURNOUT.value(), 1000);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 120)
+                .add(Attributes.ARMOR, 10)
+                .add(AMAttributes.MAX_MANA, 1000)
+                .add(AMAttributes.MAX_BURNOUT, 1000);
     }
 
     @Override

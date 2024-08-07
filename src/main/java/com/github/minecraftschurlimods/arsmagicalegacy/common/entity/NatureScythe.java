@@ -35,35 +35,28 @@ public class NatureScythe extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(OWNER, 0);
-        entityData.define(STACK, ItemStack.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, 0)
+               .define(STACK, ItemStack.EMPTY);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         entityData.set(OWNER, tag.getInt("Owner"));
-        entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
+        entityData.set(STACK, ItemStack.parseOptional(level().registryAccess(), tag.getCompound("Stack")));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putInt("Owner", entityData.get(OWNER));
-        CompoundTag stack = new CompoundTag();
-        entityData.get(STACK).save(stack);
-        tag.put("Stack", stack);
+        tag.put("Stack", entityData.get(STACK).save(level().registryAccess()));
     }
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         return false;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -11,11 +12,11 @@ import net.neoforged.neoforge.common.Tags;
 
 public class DesertNovaBlock extends FlowerBlock {
     public DesertNovaBlock() {
-        super(() -> MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.ofLegacyCopy(Blocks.POPPY));
+        super(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.ofLegacyCopy(Blocks.POPPY));
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return level.getBlockState(pos.below()).is(Tags.Blocks.SAND);
+        return level.getBlockState(pos.below()).is(BlockTags.SAND);
     }
 }

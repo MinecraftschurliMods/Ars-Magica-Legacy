@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,12 +28,12 @@ public class Blizzard extends AbstractSpellEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(COLOR, -1);
-        entityData.define(DURATION, 200);
-        entityData.define(OWNER, 0);
-        entityData.define(DAMAGE, 0f);
-        entityData.define(RADIUS, 1f);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(COLOR, -1)
+               .define(DURATION, 200)
+               .define(OWNER, 0)
+               .define(DAMAGE, 0f)
+               .define(RADIUS, 1f);
     }
 
     @Override
@@ -62,10 +63,10 @@ public class Blizzard extends AbstractSpellEntity {
         float damage = getDamage();
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(damageSources().freeze(), damage);
-            e.addEffect(new MobEffectInstance(AMMobEffects.FROST.value(), 50));
+            e.addEffect(new MobEffectInstance(AMMobEffects.FROST, 50));
         });
         if (tickCount > 0) {
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(blockPosition().getX(), blockPosition().getY(), blockPosition().getZ(), 128, level().dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, blockPosition().getX(), blockPosition().getY(), blockPosition().getZ(), 128, new SpawnAMParticlesPacket(this));
         }
     }
 

@@ -4,16 +4,17 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.easydatagenlib.CompatDataProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
 class AMCompatDataProvider extends CompatDataProvider {
-    AMCompatDataProvider(GatherDataEvent event) {
-        super(ArsMagicaAPI.MOD_ID, event);
+    AMCompatDataProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, boolean runServer, boolean runClient) {
+        super(ArsMagicaAPI.MOD_ID, output, registries, runServer, runClient);
     }
 
     @Override

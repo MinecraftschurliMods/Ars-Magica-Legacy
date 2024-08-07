@@ -10,7 +10,8 @@ public class EntangleEffect extends AMMobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         pLivingEntity.setDeltaMovement(Vec3.ZERO);
+        return super.applyEffectTick(pLivingEntity, pAmplifier);
     }
 }

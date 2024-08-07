@@ -3,22 +3,22 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * @param color          The color for this affinity.
@@ -29,21 +29,21 @@ import java.util.stream.Collectors;
  * @param loopSound      The sound to play when casting a continuous spell with this affinity.
  * @param particle       The particle type associated with this affinity.
  */
-public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, @Nullable Holder<SoundEvent> castSound, @Nullable Holder<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
+public record Affinity(int color, HolderSet<Affinity> minorOpposites, HolderSet<Affinity> majorOpposites, Holder<Affinity> directOpposite, @Nullable Holder<SoundEvent> castSound, @Nullable Holder<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
     public static final String AFFINITY = "affinity";
     public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, AFFINITY));
 
-    public static final ResourceLocation NONE      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "none");
-    public static final ResourceLocation ARCANE    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane");
-    public static final ResourceLocation WATER     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "water");
-    public static final ResourceLocation FIRE      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire");
-    public static final ResourceLocation EARTH     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth");
-    public static final ResourceLocation AIR       = new ResourceLocation(ArsMagicaAPI.MOD_ID, "air");
-    public static final ResourceLocation LIGHTNING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning");
-    public static final ResourceLocation ICE       = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice");
-    public static final ResourceLocation NATURE    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature");
-    public static final ResourceLocation LIFE      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "life");
-    public static final ResourceLocation ENDER     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender");
+    public static final ResourceKey<Affinity> NONE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "none"));
+    public static final ResourceKey<Affinity> ARCANE    = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane"));
+    public static final ResourceKey<Affinity> WATER     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "water"));
+    public static final ResourceKey<Affinity> FIRE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire"));
+    public static final ResourceKey<Affinity> EARTH     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth"));
+    public static final ResourceKey<Affinity> AIR       = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "air"));
+    public static final ResourceKey<Affinity> LIGHTNING = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning"));
+    public static final ResourceKey<Affinity> ICE       = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice"));
+    public static final ResourceKey<Affinity> NATURE    = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature"));
+    public static final ResourceKey<Affinity> LIFE      = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "life"));
+    public static final ResourceKey<Affinity> ENDER     = ResourceKey.create(REGISTRY_KEY, new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender"));
 
     /**
      * @return A new affinity builder.
@@ -57,8 +57,8 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
      */
     @Unmodifiable
     @Override
-    public Set<ResourceLocation> minorOpposites() {
-        return Collections.unmodifiableSet(minorOpposites);
+    public HolderSet<Affinity> minorOpposites() {
+        return minorOpposites;
     }
 
     /**
@@ -66,15 +66,15 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
      */
     @Unmodifiable
     @Override
-    public Set<ResourceLocation> majorOpposites() {
-        return Collections.unmodifiableSet(majorOpposites);
+    public HolderSet<Affinity> majorOpposites() {
+        return majorOpposites;
     }
 
     /**
      * @return The adjacent affinities for this affinity.
      */
-    public Set<ResourceLocation> getAdjacentAffinities() {
-        return ArsMagicaAPI.get().getAffinityRegistry().stream().filter(iAffinity -> !minorOpposites().contains(iAffinity.getId()) && !majorOpposites().contains(iAffinity.getId()) && !directOpposite().equals(iAffinity.getId())).map(Affinity::getId).collect(Collectors.toSet());
+    public HolderSet<Affinity> getAdjacentAffinities() {
+        return HolderSet.direct(ArsMagicaAPI.get().getAffinityRegistry().holders().filter(iAffinity -> !minorOpposites().contains(iAffinity) && !majorOpposites().contains(iAffinity) && !directOpposite().is(iAffinity)).toList());
     }
 
     /**
@@ -101,10 +101,10 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
     }
 
     public static class Builder {
-        private final Set<ResourceLocation> minorOpposites = new HashSet<>();
-        private final Set<ResourceLocation> majorOpposites = new HashSet<>();
+        private final Set<ResourceKey<Affinity>> minorOpposites = new HashSet<>();
+        private final Set<ResourceKey<Affinity>> majorOpposites = new HashSet<>();
         private Integer color;
-        private ResourceLocation directOpposite;
+        private ResourceKey<Affinity> directOpposite;
         @Nullable
         private Holder<SoundEvent> castSound;
         @Nullable
@@ -124,7 +124,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param minorOpposite The minor opposite to add.
          * @return This builder, for chaining.
          */
-        public Builder addMinorOpposite(ResourceLocation minorOpposite) {
+        public Builder addMinorOpposite(ResourceKey<Affinity> minorOpposite) {
             minorOpposites.add(minorOpposite);
             return this;
         }
@@ -133,7 +133,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param majorOpposite The major opposite to add.
          * @return This builder, for chaining.
          */
-        public Builder addMajorOpposite(ResourceLocation majorOpposite) {
+        public Builder addMajorOpposite(ResourceKey<Affinity> majorOpposite) {
             majorOpposites.add(majorOpposite);
             return this;
         }
@@ -142,7 +142,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param minorOpposite The minor opposite(s) to add.
          * @return This builder, for chaining.
          */
-        public Builder addMinorOpposites(ResourceLocation... minorOpposite) {
+        public Builder addMinorOpposites(ResourceKey<Affinity>... minorOpposite) {
             minorOpposites.addAll(Arrays.asList(minorOpposite));
             return this;
         }
@@ -151,7 +151,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param majorOpposite The major opposite(s) to add.
          * @return This builder, for chaining.
          */
-        public Builder addMajorOpposites(ResourceLocation... majorOpposite) {
+        public Builder addMajorOpposites(ResourceKey<Affinity>... majorOpposite) {
             majorOpposites.addAll(Arrays.asList(majorOpposite));
             return this;
         }
@@ -160,7 +160,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param directOpposite The direct opposite to set.
          * @return This builder, for chaining.
          */
-        public Builder setDirectOpposite(ResourceLocation directOpposite) {
+        public Builder setDirectOpposite(ResourceKey<Affinity> directOpposite) {
             this.directOpposite = directOpposite;
             return this;
         }
@@ -202,7 +202,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
             if (directOpposite == null) {
                 throw new IllegalStateException("An affinity needs a direct opposite!");
             }
-            return new Affinity(color, minorOpposites, majorOpposites, directOpposite, castSound, loopSound, particle);
+            return new Affinity(color, HolderSet.direct(DeferredHolder::create, minorOpposites), HolderSet.direct(DeferredHolder::create, majorOpposites), DeferredHolder.create(directOpposite), castSound, loopSound, particle);
         }
     }
 }

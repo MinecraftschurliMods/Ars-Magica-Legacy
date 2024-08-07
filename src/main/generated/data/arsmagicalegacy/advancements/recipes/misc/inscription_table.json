@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:spell_parchment"
-            ]
+            "items": "arsmagicalegacy:spell_parchment"
           }
         ]
       },

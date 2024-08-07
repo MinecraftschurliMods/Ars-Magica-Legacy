@@ -22,7 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public class EnderGuardian extends AbstractBoss {
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
@@ -30,7 +30,11 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 5000).add(AMAttributes.MAX_BURNOUT.value(), 5000);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 500)
+                .add(Attributes.ARMOR, 20)
+                .add(AMAttributes.MAX_MANA, 5000)
+                .add(AMAttributes.MAX_BURNOUT, 5000);
     }
 
     @Override

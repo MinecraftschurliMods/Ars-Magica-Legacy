@@ -18,7 +18,6 @@ public interface AMAttributes {
     Holder<Attribute> MANA_REGEN    = registerRanged("mana_regen", 0.1d, 0d, Short.MAX_VALUE, false);
     Holder<Attribute> BURNOUT_REGEN = registerRanged("burnout_regen", 0.2d, 0d, Short.MAX_VALUE, false);
     Holder<Attribute> MAGIC_VISION  = registerBool("magic_vision", false, true);
-    Holder<Attribute> SCALE         = registerRanged("scale", 1d, 0.01d, 100d, true);
 
     private static Holder<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));

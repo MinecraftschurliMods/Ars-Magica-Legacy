@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/chimerite"
+      "tag": "c:storage_blocks/chimerite"
     }
   ],
   "result": {
     "count": 9,
-    "item": "arsmagicalegacy:chimerite"
+    "id": "arsmagicalegacy:chimerite"
   }
 }

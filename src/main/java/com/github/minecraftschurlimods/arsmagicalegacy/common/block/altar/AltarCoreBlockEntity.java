@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
@@ -13,18 +14,20 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +48,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +62,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
@@ -239,62 +240,58 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
-        saveAltar(tag);
-        return tag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag updateTag = super.getUpdateTag(provider);
+        saveAltar(updateTag, provider);
+        return updateTag;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        saveAltar(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        saveAltar(tag, provider);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pProvider) {
         boundPositions = SET_OF_POSITIONS_CODEC.decode(NbtOps.INSTANCE, pTag.get(PROVIDERS_KEY))
                 .map(Pair::getFirst)
-                .get()
-                .mapRight(DataResult.PartialResult::message)
-                .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                .left()
+                .ifError(e -> ArsMagicaLegacy.LOGGER.warn(e.message()))
+                .result()
                 .orElse(Set.of());
         recipe = ISpellIngredient.CODEC
                 .listOf()
                 .decode(NbtOps.INSTANCE, pTag.get(RECIPE_KEY))
                 .map(Pair::getFirst)
-                .get()
-                .mapRight(DataResult.PartialResult::message)
-                .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                .left()
+                .ifError(e -> ArsMagicaLegacy.LOGGER.warn(e.message()))
+                .result()
                 .map(ArrayDeque::new)
                 .orElse(null);
         powerLevel = pTag.getInt(ALTAR_POWER_KEY);
         requiredPower = pTag.getInt(REQUIRED_POWER_KEY);
         if (pTag.contains(CAMO_KEY)) {
             camoState = BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
-                    .map(Pair::getFirst)
-                    .get()
-                    .mapRight(DataResult.PartialResult::message)
-                    .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                    .left()
-                    .orElse(null);
+                                        .map(Pair::getFirst)
+                                        .ifError(e -> ArsMagicaLegacy.LOGGER.warn(e.message()))
+                                        .result()
+                                        .orElse(null);
             requestModelDataUpdate();
         }
-        super.load(pTag);
+        super.loadAdditional(pTag, pProvider);
     }
 
     /**
      * Saves the altar to the given tag.
      *
-     * @param tag        The tag to save to.
+     * @param tag      The tag to save to.
+     * @param provider
      */
-    public void saveAltar(CompoundTag tag) {
-        tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, boundPositions).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        tag.put(RECIPE_KEY, ISpellIngredient.CODEC.listOf().encodeStart(NbtOps.INSTANCE, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+    public void saveAltar(CompoundTag tag, HolderLookup.Provider provider) {
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(ops, boundPositions).getOrThrow());
+        tag.put(RECIPE_KEY, ISpellIngredient.CODEC.listOf().encodeStart(ops, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow());
         if (camoState != null) {
-            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, camoState).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(ops, camoState).getOrThrow());
         }
     }
 
@@ -323,7 +320,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private void sync() {
         if (getLevel() != null && !getLevel().isClientSide()) {
-            PacketDistributor.TRACKING_CHUNK.with(getLevel().getChunkAt(getBlockPos())).send(new BEClientSyncPacket(this));
+            ((ServerLevel) getLevel()).getChunkSource().blockChanged(getBlockPos());
+            //PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) getLevel(), SectionPos.of(getBlockPos()).chunk(), new BEClientSyncPacket(this));
         }
     }
 
@@ -339,10 +337,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     private ItemStack makeSpell() {
-        var helper = ArsMagicaAPI.get().getSpellHelper();
         ItemStack stack = new ItemStack(AMItems.SPELL.get());
-        helper.setSpell(stack, helper.getSpell(getBook()));
-        helper.setSpellName(stack, helper.getSpellName(getBook()).orElse(Component.translatable(TranslationConstants.SPELL_UNNAMED)));
+        stack.set(AMDataComponents.SPELL, getBook().get(AMDataComponents.SPELL_RECIPE));
+        stack.set(AMDataComponents.SPELL_NAME, getBook().getOrDefault(AMDataComponents.SPELL_NAME, Component.translatable(TranslationConstants.SPELL_UNNAMED)));
         return stack;
     }
 

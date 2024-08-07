@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
 public record LearnSkillRitualEffect(ResourceLocation id) implements RitualEffect {
-    public static final Codec<LearnSkillRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<LearnSkillRitualEffect> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("skill").forGetter(LearnSkillRitualEffect::id)
     ).apply(inst, LearnSkillRitualEffect::new));
 
@@ -26,7 +26,7 @@ public record LearnSkillRitualEffect(ResourceLocation id) implements RitualEffec
     }
 
     @Override
-    public Codec<? extends RitualEffect> codec() {
+    public MapCodec<? extends RitualEffect> codec() {
         return CODEC;
     }
 }

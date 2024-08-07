@@ -27,10 +27,10 @@ public class BlackAuremBER implements BlockEntityRenderer<BlackAuremBlockEntity>
         poseStack.mulPose(Axis.ZP.rotation(instance.player.tickCount / 10f % 360));
         TextureAtlasSprite sprite = instance.getBlockRenderer().getBlockModelShaper().getParticleIcon(blockEntity.getBlockState());
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.translucent());
-        buffer.vertex(poseStack.last().pose(), -1F, -1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU1(), sprite.getV1()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(), 0, 1, 0).endVertex();
-        buffer.vertex(poseStack.last().pose(), -1F, 1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU1(), sprite.getV0()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(), 0, 1, 0).endVertex();
-        buffer.vertex(poseStack.last().pose(), 1F, 1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU0(), sprite.getV0()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(), 0, 1, 0).endVertex();
-        buffer.vertex(poseStack.last().pose(), 1F, -1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU0(), sprite.getV1()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(), 0, 1, 0).endVertex();
+        buffer.vertex(poseStack.last().pose(), -1F, -1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU1(), sprite.getV1()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 1, 0).endVertex();
+        buffer.vertex(poseStack.last().pose(), -1F, 1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU1(), sprite.getV0()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 1, 0).endVertex();
+        buffer.vertex(poseStack.last().pose(), 1F, 1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU0(), sprite.getV0()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 1, 0).endVertex();
+        buffer.vertex(poseStack.last().pose(), 1F, -1F, 0F).color(1f, 1f, 1f, 1f).uv(sprite.getU0(), sprite.getV1()).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 1, 0).endVertex();
         poseStack.popPose();
     }
 }

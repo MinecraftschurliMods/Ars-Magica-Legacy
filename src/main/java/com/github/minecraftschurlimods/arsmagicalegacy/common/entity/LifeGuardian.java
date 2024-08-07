@@ -22,7 +22,7 @@ import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +37,11 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 400).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 2500).add(AMAttributes.MAX_BURNOUT.value(), 2500);
+        return createBossAttributes()
+                .add(Attributes.MAX_HEALTH, 400)
+                .add(Attributes.ARMOR, 10)
+                .add(AMAttributes.MAX_MANA, 2500)
+                .add(AMAttributes.MAX_BURNOUT, 2500);
     }
 
     @Override

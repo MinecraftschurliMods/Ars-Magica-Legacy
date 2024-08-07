@@ -46,7 +46,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
     protected void addBooks(HolderLookup.Provider provider, Consumer<BookBuilder<?, ?, ?>> consumer) {
         var api = ArsMagicaAPI.get();
         var affinityHelper = api.getAffinityHelper();
-        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", translationConsumer)
+        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", translationConsumer, provider)
                 .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
                 .setCreativeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
@@ -378,7 +378,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .collect(Collectors.groupingBy(abilityReference -> abilityReference.value().affinity()));
         for (Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
-            if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE)) continue;
+            if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE.location())) continue;
             TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
             entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));

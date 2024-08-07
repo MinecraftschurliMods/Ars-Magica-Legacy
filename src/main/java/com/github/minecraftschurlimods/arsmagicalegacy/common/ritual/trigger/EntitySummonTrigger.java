@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,9 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import java.util.Map;
 
 public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
-    public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(EntityPredicate.CODEC.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
+    public static final MapCodec<EntitySummonTrigger> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            EntityPredicate.CODEC.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)
+    ).apply(inst, EntitySummonTrigger::new));
 
     public static EntitySummonTrigger simple(EntityType<?> entityType) {
         return new EntitySummonTrigger(EntityPredicate.Builder.entity().of(entityType).build());
@@ -53,7 +56,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public Codec<? extends RitualTrigger> codec() {
+    public MapCodec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

@@ -16,14 +16,14 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:dusts/glowstone"
+        "tag": "c:dusts/glowstone"
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:dusts/redstone"
+        "tag": "c:dusts/redstone"
       }
     }
   ]

@@ -1,1 +1,1 @@
-Add shape group HUD, various small fixes and improvements
+Update to 1.20.6

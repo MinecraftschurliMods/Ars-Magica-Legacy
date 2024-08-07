@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -26,7 +27,7 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide()) return InteractionResultHolder.fail(stack);
-        ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, getSkillPoint(stack));
+        ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, Objects.requireNonNull(stack.get(AMDataComponents.SKILL_POINT)));
         stack.shrink(1);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), AMSounds.GET_KNOWLEDGE_POINT.value(), SoundSource.PLAYERS, 1f, 1f);
         return InteractionResultHolder.success(stack);
@@ -34,7 +35,7 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
 
     @Override
     public Component getName(ItemStack stack) {
-        return Component.translatable(getDescriptionId(stack), getSkillPoint(stack));
+        return Component.translatable(getDescriptionId(stack), stack.get(AMDataComponents.SKILL_POINT));
     }
 
     @Override

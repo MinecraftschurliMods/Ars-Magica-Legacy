@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/vinteum"
+      "tag": "c:storage_blocks/vinteum"
     }
   ],
   "result": {
     "count": 9,
-    "item": "arsmagicalegacy:vinteum_dust"
+    "id": "arsmagicalegacy:vinteum_dust"
   }
 }

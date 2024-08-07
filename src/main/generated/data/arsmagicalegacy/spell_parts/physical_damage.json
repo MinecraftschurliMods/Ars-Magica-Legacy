@@ -23,14 +23,14 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:dusts/vinteum"
+        "tag": "c:dusts/vinteum"
       }
     },
     {
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:ingots/iron"
+        "tag": "c:ingots/iron"
       }
     }
   ]

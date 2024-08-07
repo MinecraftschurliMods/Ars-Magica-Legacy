@@ -3,10 +3,10 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     {
-      "tag": "forge:crops/potato"
+      "tag": "c:crops/potato"
     },
     {
       "item": "minecraft:ice"
@@ -15,12 +15,17 @@
       "item": "minecraft:sugar"
     },
     {
-      "type": "neoforge:nbt",
-      "item": "minecraft:potion",
-      "tag": "{Potion:\"minecraft:water\"}"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      },
+      "items": "minecraft:potion"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:mana_martini"
+    "count": 1,
+    "id": "arsmagicalegacy:mana_martini"
   }
 }

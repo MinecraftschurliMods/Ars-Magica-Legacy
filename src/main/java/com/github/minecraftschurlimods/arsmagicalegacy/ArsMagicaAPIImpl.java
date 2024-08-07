@@ -37,7 +37,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +48,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Unmodifiable;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -70,7 +70,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public Registry<Affinity> getAffinityRegistry() {
+    public DefaultedRegistry<Affinity> getAffinityRegistry() {
         return AMRegistries.AFFINITY_REGISTRY;
     }
 
@@ -85,17 +85,17 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public Registry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
+    public Registry<MapCodec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
         return AMRegistries.RITUAL_TRIGGER_TYPE_REGISTRY;
     }
 
     @Override
-    public Registry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry() {
+    public Registry<MapCodec<? extends RitualRequirement>> getRitualRequirementTypeRegistry() {
         return AMRegistries.RITUAL_REQUIREMENT_TYPE_REGISTRY;
     }
 
     @Override
-    public Registry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
+    public Registry<MapCodec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
         return AMRegistries.RITUAL_EFFECT_TYPE_REGISTRY;
     }
 
@@ -166,7 +166,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public void openOcculusGui(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.PLAYER.with(serverPlayer).send(new OpenOcculusGuiPacket());
+            serverPlayer.connection.send(new OpenOcculusGuiPacket());
         } else if (player.isLocalPlayer()) {
             ClientHelper.openOcculusGui();
         }

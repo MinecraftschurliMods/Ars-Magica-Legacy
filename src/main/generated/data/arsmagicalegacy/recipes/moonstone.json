@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/moonstone"
+      "tag": "c:storage_blocks/moonstone"
     }
   ],
   "result": {
     "count": 9,
-    "item": "arsmagicalegacy:moonstone"
+    "id": "arsmagicalegacy:moonstone"
   }
 }

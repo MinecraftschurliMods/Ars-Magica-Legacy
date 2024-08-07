@@ -25,7 +25,8 @@ public class ObeliskConversionRitualTest {
     @GameTest(templateNamespace = ArsMagicaAPI.MOD_ID, template = "corruption_ritual")
     @TestHolder(description = "Test if the corruption ritual correctly converts the obelisk to a black aurem")
     public static void testCorruptionRitual(ExtendedGameTestHelper helper) {
-        ISpell corruptionSpell = ArsMagicaAPI.get().makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.FIRE_DAMAGE.get()), new CompoundTag());
+        ArsMagicaAPI api = ArsMagicaAPI.get();
+        ISpell corruptionSpell = api.makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.FIRE_DAMAGE.get()), new CompoundTag());
         BlockPos center = new BlockPos(3, 2, 2);
         BlockPos absoluteCenter = helper.absolutePos(center);
         // create player
@@ -38,7 +39,7 @@ public class ObeliskConversionRitualTest {
         // cast spell
         .thenExecuteAfter(4, player -> {
             player.lookAt(EntityAnchorArgument.Anchor.EYES, Vec3.atCenterOf(absoluteCenter));
-            corruptionSpell.cast(player, player.level(), 0, false, false);
+            api.getSpellHelper().cast(corruptionSpell, player, player.level(), 0, false, false);
         // check for black aurem existence and item removal
         }).thenExecuteAfter(10, () -> {
             helper.assertBlock(center.above(), block -> block == AMBlocks.BLACK_AUREM.get(), "Black aurem not found");
@@ -49,7 +50,8 @@ public class ObeliskConversionRitualTest {
     @GameTest(templateNamespace = ArsMagicaAPI.MOD_ID, template = "purification_ritual")
     @TestHolder(description = "Test if the purification ritual correctly converts the obelisk to a celestial prism")
     public static void testPurificationRitual(ExtendedGameTestHelper helper) {
-        ISpell purificationSpell = ArsMagicaAPI.get().makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.LIGHT.get()), new CompoundTag());
+        ArsMagicaAPI api = ArsMagicaAPI.get();
+        ISpell purificationSpell = api.makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.LIGHT.get()), new CompoundTag());
         BlockPos center = new BlockPos(3, 2, 3);
         BlockPos absoluteCenter = helper.absolutePos(center);
         // create player
@@ -62,7 +64,7 @@ public class ObeliskConversionRitualTest {
         // cast spell
         .thenExecuteAfter(4, player -> {
             player.lookAt(EntityAnchorArgument.Anchor.EYES, Vec3.atCenterOf(absoluteCenter));
-            purificationSpell.cast(player, player.level(), 0, false, false);
+            api.getSpellHelper().cast(purificationSpell, player, player.level(), 0, false, false);
         // check for celestial prism and item removal
         }).thenExecuteAfter(10, () -> {
             helper.assertBlock(center, block -> block == AMBlocks.CELESTIAL_PRISM.get(), "Celestial Prism not found");

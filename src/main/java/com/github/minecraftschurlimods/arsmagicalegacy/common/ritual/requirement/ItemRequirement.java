@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requiremen
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public record ItemRequirement(List<Ingredient> ingredients, int radius) implements RitualRequirement {
-    public static final Codec<ItemRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<ItemRequirement> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").forGetter(ItemRequirement::ingredients),
             ExtraCodecs.NON_NEGATIVE_INT.fieldOf("radius").forGetter(ItemRequirement::radius)
     ).apply(inst, ItemRequirement::new));
@@ -45,7 +46,7 @@ public record ItemRequirement(List<Ingredient> ingredients, int radius) implemen
     }
 
     @Override
-    public Codec<? extends RitualRequirement> codec() {
+    public MapCodec<? extends RitualRequirement> codec() {
         return CODEC;
     }
 }

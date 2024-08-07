@@ -9,8 +9,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements RitualTrigger {
-    public static final Codec<SpellComponentCastRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<SpellComponentCastRitualTrigger> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             AMRegistries.SPELL_PART_REGISTRY.byNameCodec().comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error(() -> "Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
             AMRegistries.SPELL_PART_REGISTRY.byNameCodec().comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error(() -> "Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
     ).apply(inst, SpellComponentCastRitualTrigger::new));
@@ -70,7 +70,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
     }
 
     @Override
-    public Codec<? extends RitualTrigger> codec() {
+    public MapCodec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

@@ -1,4 +1,4 @@
-// 1.20.4	2024-03-07T11:37:55.0323865	vanilla/Advancements
+// 1.20.6	2024-05-05T22:36:52.0676924	vanilla/Advancements
 98026f787e158ab3306e960ea2b4ea211cedbd60 data/arsmagicalegacy/advancements/book/absorption.json
 da0c2174efc403729468a38743abe2b452409594 data/arsmagicalegacy/advancements/book/affinity_gains_boost.json
 a38b9cf37137bc6bb9822e0092e2ed4357c50407 data/arsmagicalegacy/advancements/book/agility.json
@@ -86,7 +86,7 @@ e8dec872f3baac942aa34bfecf9c94e9c42e15bb data/arsmagicalegacy/advancements/book/
 cb4d30481e513b4f00e3fe539e22023aaa2561f8 data/arsmagicalegacy/advancements/book/regeneration.json
 19829b30bbfbfc1ca9172635ce1b55067aa9b644 data/arsmagicalegacy/advancements/book/repel.json
 ac0fe17c96ac240fddaa333d50f45e73832d4d15 data/arsmagicalegacy/advancements/book/rift.json
-e899042a4ed418da8025546cd00985bf1d3150e3 data/arsmagicalegacy/advancements/book/root.json
+5213325bff658356441b08cb578aa5bc77d8de14 data/arsmagicalegacy/advancements/book/root.json
 28b3ef39c8111d106428e084129d1dab51d781e4 data/arsmagicalegacy/advancements/book/rune.json
 f6148f029e5d7b461034fe27a0e029df779d9c22 data/arsmagicalegacy/advancements/book/rune_procs.json
 6f30720bc1bcb3920e591a58d86dfac0d3f88029 data/arsmagicalegacy/advancements/book/self.json

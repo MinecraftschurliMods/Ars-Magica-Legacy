@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -9,29 +9,29 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SpellBookItem extends Item implements DyeableLeatherItem {
+public class SpellBookItem extends Item {
     public static final int ACTIVE_SPELL_SLOTS = 8;
     public static final int BACKUP_SPELL_SLOTS = 32;
     public static final int TOTAL_SPELL_SLOTS = ACTIVE_SPELL_SLOTS + BACKUP_SPELL_SLOTS;
-    public static final String SELECTED_SLOT_KEY = "SelectedSlot";
-    public static final String SPELLS_KEY = "Spells";
 
     public SpellBookItem() {
-        super(AMItems.ITEM_1);
+        super(new Item.Properties()
+                      .stacksTo(1)
+                      .component(AMDataComponents.SPELLS, ItemContainerContents.EMPTY)
+        );
     }
 
     @Override
@@ -78,12 +78,12 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         ItemStack selectedSpell = getSelectedSpell(stack);
-        selectedSpell.getItem().appendHoverText(selectedSpell, level, tooltipComponents, isAdvanced);
+        selectedSpell.getItem().appendHoverText(selectedSpell, context, tooltip, flag);
     }
 
-    public static IItemHandler getItemCapability(ItemStack stack, Void v) {
+    public static IItemHandler getItemCapability(ItemStack stack, Void $) {
         return new InvWrapper(getContainer(stack));
     }
 
@@ -93,7 +93,7 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     }
 
     public static int getSelectedSlot(ItemStack stack) {
-        return stack.getOrCreateTag().getInt(SELECTED_SLOT_KEY);
+        return stack.getOrDefault(AMDataComponents.SELECTED_SLOT, 0);
     }
 
     public static void prevSelectedSlot(ItemStack stack) {
@@ -113,7 +113,7 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     }
 
     private static void setSelectedSlot(ItemStack stack, int slot) {
-        stack.getOrCreateTag().putInt(SELECTED_SLOT_KEY, slot);
+        stack.set(AMDataComponents.SELECTED_SLOT, slot);
     }
 
     public static ItemStack getSelectedSpell(ItemStack stack) {

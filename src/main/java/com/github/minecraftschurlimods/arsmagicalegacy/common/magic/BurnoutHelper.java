@@ -2,19 +2,19 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.mojang.serialization.Codec;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.function.Supplier;
 
@@ -22,7 +22,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 public final class BurnoutHelper implements IBurnoutHelper {
     private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
-    private static final Supplier<AttachmentType<Float>> BURNOUT = ATTACHMENT_TYPES.register("burnout", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((owner, inst) -> inst).build());
+    private static final Supplier<AttachmentType<Float>> BURNOUT = ATTACHMENT_TYPES.register("burnout", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((inst, owner, provider) -> inst).build());
 
     private BurnoutHelper() {
     }
@@ -41,7 +41,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
 
     @Override
     public float getMaxBurnout(LivingEntity entity) {
-        return entity.getAttributes().hasAttribute(AMAttributes.MAX_BURNOUT.value()) ? (float) entity.getAttributeValue(AMAttributes.MAX_BURNOUT.value()) : 0f;
+        return entity.getAttributes().hasAttribute(AMAttributes.MAX_BURNOUT) ? (float) entity.getAttributeValue(AMAttributes.MAX_BURNOUT) : 0f;
     }
 
     @Override
@@ -83,32 +83,24 @@ public final class BurnoutHelper implements IBurnoutHelper {
      */
     public void syncToPlayer(LivingEntity entity) {
         if (!(entity instanceof ServerPlayer serverPlayer)) return;
-        PacketDistributor.PLAYER.with(serverPlayer).send(new BurnoutSyncPacket(serverPlayer.getData(BURNOUT)));
+        serverPlayer.connection.send(new BurnoutSyncPacket(serverPlayer.getData(BURNOUT)));
     }
 
-    public static void registerSyncPacket(IPayloadRegistrar registrar) {
-        registrar.play(BurnoutSyncPacket.ID, BurnoutSyncPacket::new, builder -> builder.client(BurnoutSyncPacket::handle));
+    public static void registerSyncPacket(PayloadRegistrar registrar) {
+        registrar.playToClient(BurnoutSyncPacket.TYPE, BurnoutSyncPacket.STREAM_CODEC, BurnoutSyncPacket::handle);
     }
 
     private record BurnoutSyncPacket(float burnout) implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_sync");
+        public static final Type<BurnoutSyncPacket> TYPE = new Type<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_sync"));
+        public static final StreamCodec<ByteBuf, BurnoutSyncPacket> STREAM_CODEC = ByteBufCodecs.FLOAT.map(BurnoutSyncPacket::new, BurnoutSyncPacket::burnout);
 
-        public BurnoutSyncPacket(FriendlyByteBuf buf) {
-            this(buf.readFloat());
+        private void handle(IPayloadContext context) {
+            context.player().setData(BURNOUT, this.burnout());
         }
 
         @Override
-        public void write(FriendlyByteBuf buf) {
-            buf.writeFloat(burnout());
-        }
-
-        @Override
-        public ResourceLocation id() {
-            return ID;
-        }
-
-        private void handle(PlayPayloadContext context) {
-            context.workHandler().execute(() -> context.player().orElseGet(ClientHelper::getLocalPlayer).setData(BURNOUT, this.burnout()));
+        public Type<BurnoutSyncPacket> type() {
+            return TYPE;
         }
     }
 }

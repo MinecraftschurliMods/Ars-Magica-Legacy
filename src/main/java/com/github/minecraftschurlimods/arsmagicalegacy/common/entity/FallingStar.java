@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -36,11 +37,11 @@ public class FallingStar extends AbstractSpellEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(COLOR, -1);
-        entityData.define(OWNER, 0);
-        entityData.define(DAMAGE, 10f);
-        entityData.define(RADIUS, 6f);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(COLOR, -1)
+               .define(OWNER, 0)
+               .define(DAMAGE, 10f)
+               .define(RADIUS, 6f);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class FallingStar extends AbstractSpellEntity {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
             if (!level.isClientSide() && tickCount > 0) {
-                PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+                PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
             }
             HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level, 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
@@ -83,7 +84,7 @@ public class FallingStar extends AbstractSpellEntity {
         }
         timeSinceImpact++;
         if (!level.isClientSide() && timeSinceImpact < 2) {
-            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
+            PacketDistributor.sendToPlayersNear((ServerLevel) level(), null, getX(), getY(), getZ(), 128, new SpawnAMParticlesPacket(this));
         }
         for (Entity e : level.getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;

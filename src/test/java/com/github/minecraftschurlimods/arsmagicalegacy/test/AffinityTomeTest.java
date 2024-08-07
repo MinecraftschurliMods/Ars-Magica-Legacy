@@ -38,7 +38,7 @@ public class AffinityTomeTest {
                   api.getMagicHelper().awardXp(gameTestPlayer, 0);
                   double affinityDepthBefore = affinityHelper.getAffinityDepth(gameTestPlayer, affinity);
                   result = gameTestPlayer.gameMode.useItem(gameTestPlayer, gameTestPlayer.level(), tome, InteractionHand.MAIN_HAND);
-                  helper.assertTrue(result.shouldAwardStats(), "Tome not used successfully");
+                  helper.assertTrue(result.indicateItemUse(), "Tome not used successfully");
                   double affinityDepthAfter = BigDecimal.valueOf(affinityHelper.getAffinityDepth(gameTestPlayer, affinity)).setScale(5, RoundingMode.DOWN).doubleValue();
                   double shift = Config.SERVER.AFFINITY_TOME_SHIFT.getAsDouble();
                   helper.assertTrue(affinityDepthBefore + shift == affinityDepthAfter, "Affinity shift did not apply");

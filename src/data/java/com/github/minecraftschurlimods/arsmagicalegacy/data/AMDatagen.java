@@ -16,7 +16,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforgespi.language.IModInfo;
@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public class AMDatagen {
     @SubscribeEvent
     static void gatherData(GatherDataEvent evt) {
@@ -48,16 +48,16 @@ public class AMDatagen {
         CompletableFuture<HolderLookup.Provider> lookupProvider = server.addProvider(wrapWith(AMDatagen::createDatapackGenerator, evt.getLookupProvider(), langConsumer)).getRegistryProvider();
         common.addProvider(wrapWith(AMPatchouliBookProvider::new, lookupProvider, langConsumer, includeClient, includeServer));
         server.addProvider(wrapWith(AMAdvancements::new, lookupProvider, existingFileHelper));
-        server.addProvider(AMLootTableProvider::new);
-        server.addProvider(AMRecipeProvider::new);
+        server.addProvider(wrapWith(AMLootTableProvider::new, lookupProvider));
+        server.addProvider(wrapWith(AMRecipeProvider::new, lookupProvider));
         AMTagsProvider.Blocks blocks = server.addProvider(wrapWith(AMTagsProvider.Blocks::new, lookupProvider, existingFileHelper));
-        server.addProvider(AMGlobalLootModifierProvider::new);
+        server.addProvider(wrapWith(AMGlobalLootModifierProvider::new, lookupProvider));
         server.addProvider(wrapWith(AMTagsProvider.Items::new, lookupProvider, blocks.contentsGetter(), existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.Fluids::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.EntityTypes::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.Biomes::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.DamageTypes::new, lookupProvider, existingFileHelper));
-        server.addProvider(AMSpellPartDataProvider::new);
+        server.addProvider(wrapWith(AMSpellPartDataProvider::new, lookupProvider));
         server.addProvider(wrapWith(AMCuriosDataProvider::new, existingFileHelper, lookupProvider));
         client.addProvider(wrapWith(AMSpriteSourceProvider::new, existingFileHelper, lookupProvider));
         client.addProvider(wrapWith(AMBlockStateProvider::new, existingFileHelper));
@@ -65,7 +65,7 @@ public class AMDatagen {
         client.addProvider(wrapWith(AMParticleDefinitionsProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMSoundDefinitionsProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMEnglishLanguageProvider::new, lang));
-        new AMCompatDataProvider(evt);
+        common.addProvider(wrapWith(AMCompatDataProvider::new, lookupProvider, includeServer, includeClient));
     }
 
     private static PackMetadataGenerator createMetaGenerator(PackOutput output, IModInfo modInfo) {

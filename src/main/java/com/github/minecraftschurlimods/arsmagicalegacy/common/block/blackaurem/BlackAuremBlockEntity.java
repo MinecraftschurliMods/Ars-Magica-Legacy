@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumPro
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -50,18 +51,18 @@ public class BlackAuremBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("etheriumValue", provider.getAmount());
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        this.provider.set(tag.getInt("etheriumValue"));
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        provider.set(tag.getInt("etheriumValue"));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.putInt("etheriumValue", this.provider.getAmount());
     }
 
-    public IEtheriumProvider getEtheriumCapability(Void v) {
+    public IEtheriumProvider getEtheriumCapability(Void $) {
         return provider;
     }
 }

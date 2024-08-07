@@ -6,10 +6,11 @@
       "item": "arsmagicalegacy:blank_rune"
     },
     {
-      "tag": "forge:dyes/brown"
+      "tag": "c:dyes/brown"
     }
   ],
   "result": {
-    "item": "arsmagicalegacy:brown_rune"
+    "count": 1,
+    "id": "arsmagicalegacy:brown_rune"
   }
 }

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "V": {
       "item": "arsmagicalegacy:purified_vinteum_dust"
@@ -15,6 +15,7 @@
     "###"
   ],
   "result": {
-    "item": "arsmagicalegacy:iron_inlay"
+    "count": 1,
+    "id": "arsmagicalegacy:iron_inlay"
   }
 }

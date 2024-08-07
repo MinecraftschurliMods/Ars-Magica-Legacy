@@ -23,7 +23,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.bernie.geckolib.GeckoLib;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
@@ -45,14 +44,14 @@ public final class ArsMagicaLegacy {
         }
         INSTANCE = this;
         modContainer = container;
-        GeckoLib.initialize(bus);
+        //GeckoLib.initialize(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
         ServerInit.init();
         if (FMLEnvironment.dist == Dist.CLIENT) {
             ClientInit.init(bus);
         }
-        Config.init();
+        Config.init(container);
         NetworkInit.init(bus);
         EtheriumHelper.instance();
         MagicHelper.instance();

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:topaz_ore"
-            ]
+            "items": "arsmagicalegacy:topaz_ore"
           }
         ]
       },

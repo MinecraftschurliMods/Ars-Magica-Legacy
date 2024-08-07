@@ -5,8 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumConsumer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,6 @@ public final class EtheriumHelper implements IEtheriumHelper {
     public static final BlockCapability<IEtheriumProvider, Void> ETHERIUM_PROVIDER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_provider"), IEtheriumProvider.class);
     public static final BlockCapability<IEtheriumConsumer, Void> ETHERIUM_CONSUMER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_consumer"), IEtheriumConsumer.class);
     private static final Lazy<EtheriumHelper> INSTANCE = Lazy.concurrentOf(EtheriumHelper::new);
-    private static final String KEY = "etherium_type";
 
     private EtheriumHelper() {}
 
@@ -80,17 +79,11 @@ public final class EtheriumHelper implements IEtheriumHelper {
 
     @Override
     public EtheriumType getEtheriumType(ItemStack stack) {
-        try {
-            return EtheriumType.valueOf(stack.getOrCreateTag().getCompound(ArsMagicaAPI.MOD_ID).getString(KEY).toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+        return stack.get(AMDataComponents.ETHERIUM_TYPE);
     }
 
     @Override
     public void setEtheriumType(ItemStack stack, EtheriumType type) {
-        CompoundTag tag = stack.getOrCreateTag().getCompound(ArsMagicaAPI.MOD_ID);
-        tag.putString(KEY, type.name().toLowerCase());
-        stack.getOrCreateTag().put(ArsMagicaAPI.MOD_ID, tag);
+        stack.set(AMDataComponents.ETHERIUM_TYPE, type);
     }
 }

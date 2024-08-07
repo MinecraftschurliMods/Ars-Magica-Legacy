@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
@@ -8,8 +7,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public final class NetworkInit {
     private static final String NETWORK_VERSION = "5";
@@ -19,22 +18,22 @@ public final class NetworkInit {
         bus.addListener(NetworkInit::registerNetworkPackets);
     }
 
-    private static void registerNetworkPackets(RegisterPayloadHandlerEvent event) {
-        IPayloadRegistrar registrar = event.registrar(ArsMagicaAPI.MOD_ID).versioned(NETWORK_VERSION);
+    private static void registerNetworkPackets(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(NETWORK_VERSION);
         registrar
-                .play(InscriptionTableSyncPacket.ID,        InscriptionTableSyncPacket::new,        builder -> builder.server(InscriptionTableSyncPacket::handle))
-                .play(LearnSkillPacket.ID,                  LearnSkillPacket::new,                  builder -> builder.server(LearnSkillPacket::handle))
-                .play(NextShapeGroupPacket.ID,              NextShapeGroupPacket::new,              builder -> builder.server(NextShapeGroupPacket::handle))
-                .play(SetLecternPagePacket.ID,              SetLecternPagePacket::new,              builder -> builder.server(SetLecternPagePacket::handle))
-                .play(SpellBookNextSpellPacket.ID,          SpellBookNextSpellPacket::new,          builder -> builder.server(SpellBookNextSpellPacket::handle))
-                .play(SpellIconSelectPacket.ID,             SpellIconSelectPacket::new,             builder -> builder.server(SpellIconSelectPacket::handle))
-                .play(TakeSpellRecipeFromLecternPacket.ID,  TakeSpellRecipeFromLecternPacket::new,  builder -> builder.server(TakeSpellRecipeFromLecternPacket::handle))
-                .play(InscriptionTableCreateSpellPacket.ID, InscriptionTableCreateSpellPacket::new, builder -> builder.server(InscriptionTableCreateSpellPacket::handle))
-                .play(BEClientSyncPacket.ID,                BEClientSyncPacket::new,                builder -> builder.client(BEClientSyncPacket::handle))
-                .play(OpenOcculusGuiPacket.ID,              OpenOcculusGuiPacket::new,              builder -> builder.client(OpenOcculusGuiPacket::handle))
-                .play(OpenSpellRecipeGuiInLecternPacket.ID, OpenSpellRecipeGuiInLecternPacket::new, builder -> builder.client(OpenSpellRecipeGuiInLecternPacket::handle))
-                .play(SpawnAMParticlesPacket.ID,            SpawnAMParticlesPacket::new,            builder -> builder.client(SpawnAMParticlesPacket::handle))
-                .play(SpawnComponentParticlesPacket.ID,     SpawnComponentParticlesPacket::new,     builder -> builder.client(SpawnComponentParticlesPacket::handle))
+                .playToServer(InscriptionTableSyncPacket.TYPE,        InscriptionTableSyncPacket.STREAM_CODEC,        InscriptionTableSyncPacket::handle)
+                .playToServer(LearnSkillPacket.TYPE,                  LearnSkillPacket.STREAM_CODEC,                  LearnSkillPacket::handle)
+                .playToServer(NextShapeGroupPacket.TYPE,              NextShapeGroupPacket.STREAM_CODEC,              NextShapeGroupPacket::handle)
+                .playToServer(SetLecternPagePacket.TYPE,              SetLecternPagePacket.STREAM_CODEC,              SetLecternPagePacket::handle)
+                .playToServer(SpellBookNextSpellPacket.TYPE,          SpellBookNextSpellPacket.STREAM_CODEC,          SpellBookNextSpellPacket::handle)
+                .playToServer(SpellIconSelectPacket.TYPE,             SpellIconSelectPacket.STREAM_CODEC,             SpellIconSelectPacket::handle)
+                .playToServer(TakeSpellRecipeFromLecternPacket.TYPE,  TakeSpellRecipeFromLecternPacket.STREAM_CODEC,  TakeSpellRecipeFromLecternPacket::handle)
+                .playToServer(InscriptionTableCreateSpellPacket.TYPE, InscriptionTableCreateSpellPacket.STREAM_CODEC, InscriptionTableCreateSpellPacket::handle)
+                //.playToClient(BEClientSyncPacket.TYPE,                BEClientSyncPacket.STREAM_CODEC,                BEClientSyncPacket::handle)
+                .playToClient(OpenOcculusGuiPacket.TYPE,              OpenOcculusGuiPacket.STREAM_CODEC,              OpenOcculusGuiPacket::handle)
+                .playToClient(OpenSpellRecipeGuiInLecternPacket.TYPE, OpenSpellRecipeGuiInLecternPacket.STREAM_CODEC, OpenSpellRecipeGuiInLecternPacket::handle)
+                .playToClient(SpawnAMParticlesPacket.TYPE,            SpawnAMParticlesPacket.STREAM_CODEC,            SpawnAMParticlesPacket::handle)
+                .playToClient(SpawnComponentParticlesPacket.TYPE,     SpawnComponentParticlesPacket.STREAM_CODEC,     SpawnComponentParticlesPacket::handle)
         ;
         SkillHelper.registerSyncPacket(registrar);
         AffinityHelper.registerSyncPacket(registrar);

@@ -9,6 +9,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellIngred
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
-    public static final Codec<IngredientSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<IngredientSpellIngredient> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
             Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
     ).apply(inst, IngredientSpellIngredient::new));

@@ -4,9 +4,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "patchouli:guide_book"
-            ]
+            "items": "patchouli:guide_book"
           }
         ]
       },

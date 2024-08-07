@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -30,7 +31,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            icon = helper.getSpellIcon(stack);
+            icon = Optional.ofNullable(stack.get(AMDataComponents.SPELL_ICON));
             affinity = stack.isEmpty() ? AMAffinities.NONE.value() : helper.getSpell(stack).primaryAffinity();
             return SpellItemModel.this;
         }
