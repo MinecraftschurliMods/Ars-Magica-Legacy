@@ -319,7 +319,7 @@ public final class EventHandler {
         }
     }
 
-    private static void livingDamage(LivingDamageEvent event) {
+    private static void livingDamage(LivingDamageEvent.Post event) {
         if (event.getEntity().getHealth() * 4 < event.getEntity().getMaxHealth()) {
             ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntity(), ContingencyType.HEALTH);
         }
