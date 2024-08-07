@@ -381,7 +381,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE.location())) continue;
             TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
-            entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
+            entry.addSimpleRecipePage("crafting", id.withPrefix("affinity_essence_"));
             for (Holder.Reference<Ability> ability : abilitiesByAffinity.get(affinity)) {
                 String translationKey = Util.makeDescriptionId(Ability.ABILITY, ability.key().location());
                 entry.addSimpleTextPage(translationKey + ".description", translationKey + ".name");

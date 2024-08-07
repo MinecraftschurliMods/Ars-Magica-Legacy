@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -31,8 +32,8 @@ public interface AMDataComponents {
     Supplier<DataComponentType<ISpell>> SPELL_RECIPE = DATA_COMPONENT_TYPES.registerComponentType("spell_recipe", builder -> builder.persistent(ISpell.CODEC).networkSynchronized(ISpell.STREAM_CODEC));
     Supplier<DataComponentType<Component>> SPELL_NAME = DATA_COMPONENT_TYPES.registerComponentType("spell_name", builder -> builder.persistent(ComponentSerialization.CODEC).networkSynchronized(ComponentSerialization.STREAM_CODEC));
     Supplier<DataComponentType<ResourceLocation>> SPELL_ICON = DATA_COMPONENT_TYPES.registerComponentType("spell_icon", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
-    Supplier<DataComponentType<Affinity>> AFFINITY = DATA_COMPONENT_TYPES.registerComponentType("affinity", builder -> builder.persistent(ArsMagicaAPI.get().getAffinityRegistry().byNameCodec()).networkSynchronized(ByteBufCodecs.registry(Affinity.REGISTRY_KEY)));
-    Supplier<DataComponentType<SkillPoint>> SKILL_POINT = DATA_COMPONENT_TYPES.registerComponentType("skill_point", builder -> builder.persistent(ArsMagicaAPI.get().getSkillPointRegistry().byNameCodec()).networkSynchronized(ByteBufCodecs.registry(SkillPoint.REGISTRY_KEY)));
+    Supplier<DataComponentType<Holder<Affinity>>> AFFINITY = DATA_COMPONENT_TYPES.registerComponentType("affinity", builder -> builder.persistent(ArsMagicaAPI.get().getAffinityRegistry().holderByNameCodec()).networkSynchronized(ByteBufCodecs.holderRegistry(Affinity.REGISTRY_KEY)));
+    Supplier<DataComponentType<Holder<SkillPoint>>> SKILL_POINT = DATA_COMPONENT_TYPES.registerComponentType("skill_point", builder -> builder.persistent(ArsMagicaAPI.get().getSkillPointRegistry().holderByNameCodec()).networkSynchronized(ByteBufCodecs.holderRegistry(SkillPoint.REGISTRY_KEY)));
     Supplier<DataComponentType<Integer>> SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
     Supplier<DataComponentType<ItemContainerContents>> SPELLS = DATA_COMPONENT_TYPES.registerComponentType("spells", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC));
     Supplier<DataComponentType<Integer>> TIER = DATA_COMPONENT_TYPES.registerComponentType("tier", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));

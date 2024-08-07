@@ -31,7 +31,7 @@ class AMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", modLoc("item/arcane_compendium"));
+        singleTexture("arcane_compendium", ResourceLocation.withDefaultNamespace("item/generated"), "layer0", modLoc("item/arcane_compendium"));
         skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
         itemGenerated(INSCRIPTION_TABLE_UPGRADE_TIER_1);
@@ -134,7 +134,7 @@ class AMItemModelProvider extends ItemModelProvider {
         spawnEggItem(LIFE_GUARDIAN_SPAWN_EGG);
         spawnEggItem(ARCANE_GUARDIAN_SPAWN_EGG);
         spawnEggItem(ENDER_GUARDIAN_SPAWN_EGG);
-        withExistingParent(LIQUID_ESSENCE_BUCKET, new ResourceLocation("neoforge", "item/bucket")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(AMFluids.LIQUID_ESSENCE.get()).end();
+        withExistingParent(LIQUID_ESSENCE_BUCKET, ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(AMFluids.LIQUID_ESSENCE.get()).end();
     }
 
     /**
@@ -153,7 +153,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param name The texture id to use.
      */
     private void itemGenerated(DeferredHolder<Item, ? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", modLoc(name));
+        singleTexture(item.getId().getPath(), ResourceLocation.withDefaultNamespace("item/generated"), "layer0", modLoc(name));
     }
 
     /**
@@ -172,7 +172,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param name The texture id to use.
      */
     private void itemHandheld(DeferredHolder<Item, ? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", modLoc(name));
+        singleTexture(item.getId().getPath(), ResourceLocation.withDefaultNamespace("item/handheld"), "layer0", modLoc(name));
     }
 
     /**
@@ -200,7 +200,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private void spawnEggItem(DeferredItem<? extends SpawnEggItem> item) {
-        withExistingParent(item, new ResourceLocation("item/template_spawn_egg"));
+        withExistingParent(item, ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
     }
 
     /**
@@ -213,8 +213,8 @@ class AMItemModelProvider extends ItemModelProvider {
         getBuilder(item.getId().toString());
         for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             if (affinity.getId().equals(Affinity.NONE.location()) && skipNone) continue;
-            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
-            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            ResourceLocation rl = affinity.getId().withPrefix(item.getId().getPath() + "_");
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", rl.withPrefix("item/"));
         }
     }
 
@@ -226,8 +226,8 @@ class AMItemModelProvider extends ItemModelProvider {
     private void skillPointItem(DeferredHolder<Item, ? extends Item> item) {
         getBuilder(item.getId().toString());
         for (SkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
-            ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
-            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            ResourceLocation rl = skillPoint.getId().withPrefix(item.getId().getPath() + "_");
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", rl.withPrefix("item/"));
         }
     }
 

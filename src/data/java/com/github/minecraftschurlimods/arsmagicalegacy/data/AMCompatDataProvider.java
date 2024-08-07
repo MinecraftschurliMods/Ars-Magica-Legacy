@@ -27,7 +27,7 @@ class AMCompatDataProvider extends CompatDataProvider {
                 .addInput(Ingredient.of(AMItems.SUNSTONE_ORE.get()))
                 .addOutput(AMItems.SUNSTONE.get())
                 .addOutput(AMItems.SUNSTONE.get(), 0.75f)
-                .addOutput(new ResourceLocation("create", "powdered_obsidian"), 0.125f).build();
+                .addOutput(ResourceLocation.fromNamespaceAndPath("create", "powdered_obsidian"), 0.125f).build();
         addFlowerProcessing(AMItems.AUM.get(), Items.PINK_DYE, 2, itemId(Items.LIME_DYE), 0.05f, itemId(Items.WHITE_DYE), 0.05f);
         addFlowerProcessing(AMItems.CERUBLOSSOM.get(), Items.BLUE_DYE, 2, itemId(Items.GREEN_DYE), 0.05f, itemId(Items.CYAN_DYE), 0.05f);
         addFlowerProcessing(AMItems.DESERT_NOVA.get(), Items.RED_DYE, 1, itemId(Items.GREEN_DYE), 0.75f, itemId(Items.WHITE_DYE), 0.05f);

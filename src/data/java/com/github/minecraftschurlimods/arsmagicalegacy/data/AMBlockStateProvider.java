@@ -48,7 +48,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBloc
 
 @SuppressWarnings({"SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
-    private static final ResourceLocation ITEM_DEFAULT = new ResourceLocation("neoforge", "item/default");
+    private static final ResourceLocation ITEM_DEFAULT = ResourceLocation.fromNamespaceAndPath("neoforge", "item/default");
 
     AMBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, ArsMagicaAPI.MOD_ID, existingFileHelper);
@@ -301,7 +301,7 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void railBlock(DeferredBlock<? extends BaseRailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
         ModelFile straight = models().withExistingParent(block.getId().getPath(), mcLoc("block/rail")).texture("rail", texture).renderType("cutout");
-        ModelFile curved = models().withExistingParent(block.getId().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner")).renderType("cutout");
+        ModelFile curved = models().withExistingParent(block.getId().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", texture.withSuffix("_corner")).renderType("cutout");
         ModelFile raisedNE = models().withExistingParent(block.getId().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture).renderType("cutout");
         ModelFile raisedSW = models().withExistingParent(block.getId().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture).renderType("cutout");
         getVariantBuilder(block.get()).forAllStates(state -> {
@@ -334,7 +334,7 @@ class AMBlockStateProvider extends BlockStateProvider {
                 .partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(models().getBuilder(texture + "_overlay")
                         .texture("particle", "block/" + texture)
                         .texture("overlay", "block/" + texture + "_overlay")
-                        .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                        .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
                         .element().from(0, 0, 0).to(16, 0, 16).face(Direction.DOWN).texture("#overlay")
                         .end().end().renderType("translucent")
                 ).addModel();
@@ -406,7 +406,8 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void wizardsChalkBlock(DeferredBlock<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
         for (int i = 0; i < models.length; i++) {
-            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i)).renderType("translucent");
+            final int index = i;
+            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", block.getId().withPath(path -> "block/" + path + "_" + index)).renderType("translucent");
         }
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]);
@@ -431,7 +432,7 @@ class AMBlockStateProvider extends BlockStateProvider {
             Direction face = state.getValue(SpellRuneBlock.FACE);
             AABB shape = SpellRuneBlock.COLLISION_SHAPES.get(face).bounds();
             return ConfiguredModel.builder().modelFile(models().getBuilder(texture + "_" + face.getName().toLowerCase())
-                    .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                    .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
                     .texture("texture", blockTexture(block.get()))
                     .element()
                     .from((float) shape.minX * 16f, (float) shape.minY * 16f, (float) shape.minZ * 16f)

@@ -38,7 +38,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -231,19 +230,29 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceLocation skillPoint) {
-        return getStackForSkillPoint(item, Objects.requireNonNull(ArsMagicaAPI.get().getSkillPointRegistry().get(skillPoint)));
+        return getStackForSkillPoint(item, ArsMagicaAPI.get().getSkillPointRegistry().getHolder(skillPoint).orElseThrow());
     }
 
     @Override
     public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, SkillPoint skillPoint) {
+        return getStackForSkillPoint(item, ArsMagicaAPI.get().getSkillPointRegistry().getKey(skillPoint));
+    }
+
+    @Override
+    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, Holder<SkillPoint> skillPoint) {
         ItemStack stack = new ItemStack(item);
         stack.set(AMDataComponents.SKILL_POINT, skillPoint);
         return stack;
     }
 
     @Override
+    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceKey<SkillPoint> skillPoint) {
+        return getStackForSkillPoint(item, ArsMagicaAPI.get().getSkillPointRegistry().getHolderOrThrow(skillPoint));
+    }
+
+    @Override
     public SkillPoint getSkillPointForStack(ItemStack stack) {
-        return stack.getOrDefault(AMDataComponents.SKILL_POINT, AMSkillPoints.NONE.value());
+        return stack.getOrDefault(AMDataComponents.SKILL_POINT, AMSkillPoints.NONE).value();
     }
 
     @Override
