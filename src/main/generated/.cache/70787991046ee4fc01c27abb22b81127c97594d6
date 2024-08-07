@@ -1,4 +1,4 @@
-// 1.20.6	2024-06-08T11:30:13.3232452	vanilla/Spell Part Data[arsmagicalegacy]
+// 1.21	2024-08-07T10:47:39.2407331	vanilla/Spell Part Data[arsmagicalegacy]
 1026fae6eb7a4dc4deca92ff478fbd0a4f3ed9e4 data/arsmagicalegacy/spell_parts/absorption.json
 4961117b2eddf811cc5af61220c584fa7e2d0cf0 data/arsmagicalegacy/spell_parts/agility.json
 5ffc3ea9a65c738348f0d9f377323be9f7efe0db data/arsmagicalegacy/spell_parts/aoe.json
@@ -22,8 +22,8 @@ cccda45990adf5a8e8c1c44dd65bf1e1bb59509b data/arsmagicalegacy/spell_parts/contin
 6069e3b3371c2233cdf9b77366a67d984ad03d5e data/arsmagicalegacy/spell_parts/create_water.json
 846691efd7b8816b146c0a4f3cd1d1c883bca83f data/arsmagicalegacy/spell_parts/damage.json
 6cd831d899119c237b64e8f438c4907af4ba68a2 data/arsmagicalegacy/spell_parts/daylight.json
-996f8b223dfa37b72076ec2593953fb0143c1915 data/arsmagicalegacy/spell_parts/dig.json
-a5e11a87721f650fe2344f281de1549c791bd286 data/arsmagicalegacy/spell_parts/disarm.json
+1f2f91541fefd1f59dfb10c22decfc05b9a883e4 data/arsmagicalegacy/spell_parts/dig.json
+bfb8c9a5e312a1d15f2d89688c592f2c804cd198 data/arsmagicalegacy/spell_parts/disarm.json
 f388704d58ade619d9779fbad96842fbd936ee24 data/arsmagicalegacy/spell_parts/dismembering.json
 f916d5b03f1898a8acc3465797041c934565b82f data/arsmagicalegacy/spell_parts/dispel.json
 8d36de9dec914c68dc84228646b29ffa81e605b7 data/arsmagicalegacy/spell_parts/divine_intervention.json
@@ -73,7 +73,7 @@ f426f6f696a724fdcd4886c00d6085e84f6af0b3 data/arsmagicalegacy/spell_parts/moonri
 f12cc3045b4a4248b51b08202b1a72994c3e73f6 data/arsmagicalegacy/spell_parts/piercing.json
 2da8048bc414a79c91061872a4dbab5baa537a82 data/arsmagicalegacy/spell_parts/place_block.json
 4487fdf586dd939ccf73e337b4a276aca4c97ee4 data/arsmagicalegacy/spell_parts/plant.json
-7226914f0c996f41558dd05c2a6decf0a22bbc06 data/arsmagicalegacy/spell_parts/plow.json
+146f367dbd5962c2d870426508be88e3c089837f data/arsmagicalegacy/spell_parts/plow.json
 759b0f93adcceda33d7a1d85f192fd6a4c66ed46 data/arsmagicalegacy/spell_parts/projectile.json
 69a1d2ccb966d7642c0a3dd04d204578f0d66d7a data/arsmagicalegacy/spell_parts/prosperity.json
 25853d9b98c56f423cd4ad9e13cdbca4dc14c014 data/arsmagicalegacy/spell_parts/random_teleport.json

@@ -16,7 +16,7 @@
                     "predicates": {
                       "minecraft:enchantments": [
                         {
-                          "enchantment": "minecraft:silk_touch",
+                          "enchantments": "minecraft:silk_touch",
                           "levels": {
                             "min": 1
                           }
@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "arsmagicalegacy:sunstone_ore"
+              "name": "arsmagicalegacy:chimerite_ore"
             },
             {
               "type": "minecraft:item",
@@ -40,7 +40,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "arsmagicalegacy:sunstone"
+              "name": "arsmagicalegacy:chimerite"
             }
           ]
         }
@@ -48,5 +48,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "arsmagicalegacy:blocks/sunstone_ore"
+  "random_sequence": "arsmagicalegacy:blocks/chimerite_ore"
 }
