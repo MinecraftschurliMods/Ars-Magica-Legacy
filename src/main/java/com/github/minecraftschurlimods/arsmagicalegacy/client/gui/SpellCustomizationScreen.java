@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.mojang.blaze3d.systems.RenderSystem;

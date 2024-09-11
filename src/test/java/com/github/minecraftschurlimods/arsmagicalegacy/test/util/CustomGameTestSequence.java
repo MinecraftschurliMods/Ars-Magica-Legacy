@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.test.util;
 
-import it.unimi.dsi.fastutil.ints.IntIterables;
 import it.unimi.dsi.fastutil.ints.IntIterators;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

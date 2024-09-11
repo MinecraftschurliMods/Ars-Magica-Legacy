@@ -1,11 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

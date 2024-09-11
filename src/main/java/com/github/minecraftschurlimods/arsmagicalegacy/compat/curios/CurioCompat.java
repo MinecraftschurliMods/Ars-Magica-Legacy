@@ -21,9 +21,6 @@ import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
-import java.util.List;
-import java.util.UUID;
-
 @CompatManager.ModCompat("curios")
 public class CurioCompat implements ICompatHandler {
     @Override
