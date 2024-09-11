@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
 import java.util.Objects;
@@ -26,7 +26,7 @@ final class EffectHandler {
         forgeBus.addListener(EffectHandler::livingJump);
         forgeBus.addListener(EffectHandler::livingFall);
         forgeBus.addListener(EventPriority.HIGHEST, EffectHandler::livingDeath);
-        forgeBus.addListener(EventPriority.LOWEST, EffectHandler::livingHurt);
+        forgeBus.addListener(EventPriority.LOWEST, EffectHandler::livingIncomingDamage);
         forgeBus.addListener(EffectHandler::enderEntityTeleport);
         forgeBus.addListener(EffectHandler::enderPearlTeleport);
         forgeBus.addListener(EffectHandler::chorusFruitTeleport);
@@ -61,7 +61,7 @@ final class EffectHandler {
         }
     }
 
-    private static void livingHurt(LivingHurtEvent event) {
+    private static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
         if (!event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD)) {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD)).getAmplifier());

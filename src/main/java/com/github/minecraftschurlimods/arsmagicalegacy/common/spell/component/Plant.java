@@ -14,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.SpecialPlantable;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +36,7 @@ public class Plant extends AbstractComponent {
         Map<Integer, ItemStack> map = new HashMap<>();
         for (int i = 0; i < inv.slots.size(); i++) {
             ItemStack slotStack = inv.getSlot(i).getItem();
-            if (slotStack.getItem() instanceof BlockItem block && block.getBlock() instanceof IPlantable) {
+            if (slotStack.getItem() instanceof BlockItem block && block.getBlock() instanceof SpecialPlantable) {
                 map.put(i, slotStack);
             }
         }

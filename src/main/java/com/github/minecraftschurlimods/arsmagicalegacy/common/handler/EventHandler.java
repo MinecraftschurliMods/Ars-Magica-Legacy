@@ -98,9 +98,9 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -139,7 +139,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerItemCrafted);
         forgeBus.addListener(EventHandler::playerRespawn);
-        forgeBus.addListener(EventHandler::livingHurt);
+        forgeBus.addListener(EventHandler::livingIncomingDamage);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventHandler::rightClickBlock);
         forgeBus.addListener(EventHandler::affinityChangingPre);
@@ -218,9 +218,9 @@ public final class EventHandler {
         AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(ArsMagicaAPI.get().getSpellHelper()::makeSpellFromPrefab).forEach(output::accept);
     }
 
-    private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
-        evt.register(AMEntities.DRYAD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+    private static void registerSpawnPlacements(RegisterSpawnPlacementsEvent evt) {
+        evt.register(AMEntities.DRYAD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     private static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
@@ -312,7 +312,7 @@ public final class EventHandler {
         }
     }
 
-    private static void livingHurt(LivingHurtEvent event) {
+    private static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         var api = ArsMagicaAPI.get();
         var helper = api.getManaHelper();
         if (event.getEntity() instanceof Player player && api.getSkillHelper().knows(player, AMTalents.SHIELD_OVERLOAD) && helper.getMana(player) == helper.getMaxMana(player)) {
