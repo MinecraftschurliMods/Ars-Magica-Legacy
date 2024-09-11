@@ -171,29 +171,30 @@ class AMLootTableProvider extends LootTableProvider {
             this.registries = registries;
         }
 
+        @SuppressWarnings("DataFlowIssue")
         protected void generate() {
-            addTomeLoot(BuiltInLootTables.ANCIENT_CITY, AMAffinities.NONE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.ANCIENT_CITY_ICE_BOX, AMAffinities.NONE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.SHIPWRECK_TREASURE, AMAffinities.WATER.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_BIG, AMAffinities.WATER.value(), 0.025f);
-            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_SMALL, AMAffinities.WATER.value(), 0.025f);
-            addTomeLoot(BuiltInLootTables.BASTION_TREASURE, AMAffinities.FIRE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.NETHER_BRIDGE, AMAffinities.FIRE.value(), 0.05f);
-            addTomeLoot(BuiltInLootTables.ABANDONED_MINESHAFT, AMAffinities.EARTH.value(), 0.05f);
-            addTomeLoot(BuiltInLootTables.SIMPLE_DUNGEON, AMAffinities.EARTH.value(), 0.05f);
-            addTomeLoot(BuiltInLootTables.DESERT_PYRAMID, AMAffinities.AIR.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_DESERT_HOUSE, AMAffinities.AIR.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.IGLOO_CHEST, AMAffinities.ICE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, AMAffinities.ICE.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, AMAffinities.ICE.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.PILLAGER_OUTPOST, AMAffinities.LIGHTNING.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE, AMAffinities.LIGHTNING.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.JUNGLE_TEMPLE, AMAffinities.NATURE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_PLAINS_HOUSE, AMAffinities.NATURE.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.STRONGHOLD_LIBRARY, AMAffinities.ARCANE.value(), 0.1f);
-            addTomeLoot(BuiltInLootTables.WOODLAND_MANSION, AMAffinities.ARCANE.value(), 0.05f);
-            addTomeLoot(BuiltInLootTables.VILLAGE_TEMPLE, AMAffinities.ARCANE.value(), 0.02f);
-            addTomeLoot(BuiltInLootTables.END_CITY_TREASURE, AMAffinities.ENDER.value(), 0.1f);
+            addTomeLoot(BuiltInLootTables.ANCIENT_CITY, AMAffinities.NONE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.ANCIENT_CITY_ICE_BOX, AMAffinities.NONE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.SHIPWRECK_TREASURE, AMAffinities.WATER.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_BIG, AMAffinities.WATER.getKey(), 0.025f);
+            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_SMALL, AMAffinities.WATER.getKey(), 0.025f);
+            addTomeLoot(BuiltInLootTables.BASTION_TREASURE, AMAffinities.FIRE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.NETHER_BRIDGE, AMAffinities.FIRE.getKey(), 0.05f);
+            addTomeLoot(BuiltInLootTables.ABANDONED_MINESHAFT, AMAffinities.EARTH.getKey(), 0.05f);
+            addTomeLoot(BuiltInLootTables.SIMPLE_DUNGEON, AMAffinities.EARTH.getKey(), 0.05f);
+            addTomeLoot(BuiltInLootTables.DESERT_PYRAMID, AMAffinities.AIR.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_DESERT_HOUSE, AMAffinities.AIR.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.IGLOO_CHEST, AMAffinities.ICE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, AMAffinities.ICE.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, AMAffinities.ICE.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.PILLAGER_OUTPOST, AMAffinities.LIGHTNING.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE, AMAffinities.LIGHTNING.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.JUNGLE_TEMPLE, AMAffinities.NATURE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_PLAINS_HOUSE, AMAffinities.NATURE.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.STRONGHOLD_LIBRARY, AMAffinities.ARCANE.getKey(), 0.1f);
+            addTomeLoot(BuiltInLootTables.WOODLAND_MANSION, AMAffinities.ARCANE.getKey(), 0.05f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_TEMPLE, AMAffinities.ARCANE.getKey(), 0.02f);
+            addTomeLoot(BuiltInLootTables.END_CITY_TREASURE, AMAffinities.ENDER.getKey(), 0.1f);
         }
 
         protected void add(ResourceKey<LootTable> key, LootTable.Builder builder) {
