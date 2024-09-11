@@ -14,4 +14,9 @@ public class EntangleEffect extends AMMobEffect {
         pLivingEntity.setDeltaMovement(Vec3.ZERO);
         return super.applyEffectTick(pLivingEntity, pAmplifier);
     }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
+        return true;
+    }
 }

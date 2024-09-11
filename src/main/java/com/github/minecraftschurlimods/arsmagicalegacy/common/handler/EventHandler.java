@@ -61,6 +61,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationCo
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -181,15 +182,15 @@ public final class EventHandler {
             switch (o.get()) {
                 case ISkillPointItem skillPointItem -> {
                     ISkillHelper skillHelper = api.getSkillHelper();
-                    for (SkillPoint point : api.getSkillPointRegistry()) {
-                        if (point == AMSkillPoints.NONE.value()) continue;
+                    for (Holder.Reference<SkillPoint> point : params.holders().lookupOrThrow(SkillPoint.REGISTRY_KEY).listElements().toList()) {
+                        if (point.is(AMSkillPoints.NONE)) continue;
                         list.add(skillHelper.getStackForSkillPoint((Item & ISkillPointItem) skillPointItem, point));
                     }
                 }
                 case IAffinityItem affinityItem -> {
                     IAffinityHelper affinityHelper = api.getAffinityHelper();
-                    for (Affinity affinity : api.getAffinityRegistry()) {
-                        if (Affinity.NONE.equals(affinity.getId())) continue;
+                    for (Holder.Reference<Affinity> affinity : params.holders().lookupOrThrow(Affinity.REGISTRY_KEY).listElements().toList()) {
+                        if (affinity.is(Affinity.NONE) && !affinityItem.hasNoneVariant()) continue;
                         list.add(affinityHelper.getStackForAffinity((Item & IAffinityItem) affinityItem, affinity));
                     }
                 }
