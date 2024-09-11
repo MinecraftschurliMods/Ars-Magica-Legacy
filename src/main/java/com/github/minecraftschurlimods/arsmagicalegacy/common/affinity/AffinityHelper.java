@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
@@ -84,7 +85,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public ItemStack getTomeForAffinity(Holder<Affinity> affinity) {
-        return getTomeForAffinity(affinity.unwrapKey().get().location());
+        return getTomeForAffinity(affinity.unwrapKey().orElseThrow().location());
     }
 
     @Override
@@ -95,19 +96,19 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation aff) {
         
-        return getStackForAffinity(item, ArsMagicaAPI.get().getAffinityRegistry().get(aff));
+        return getStackForAffinity(item, ArsMagicaAPI.get().getAffinityRegistry().getHolder(aff).orElseThrow());
     }
 
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity) {
-        ItemStack stack = new ItemStack(item);
-        stack.set(AMDataComponents.AFFINITY, affinity);
-        return stack;
+        return getStackForAffinity(item, ArsMagicaAPI.get().getAffinityRegistry().getKey(affinity));
     }
 
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Holder<Affinity> affinity) {
-        return getStackForAffinity(item, affinity.unwrapKey().orElseThrow());
+        ItemStack stack = new ItemStack(item);
+        stack.set(AMDataComponents.AFFINITY, affinity);
+        return stack;
     }
 
     @Override
@@ -117,7 +118,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public Affinity getAffinityForStack(ItemStack stack) {
-        return stack.getOrDefault(AMDataComponents.AFFINITY, ArsMagicaAPI.get().getAffinityRegistry().get(Affinity.NONE.location()));
+        return stack.getOrDefault(AMDataComponents.AFFINITY, AMAffinities.NONE).value();
     }
 
     @Override
@@ -132,7 +133,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public double getAffinityDepth(Player player, Holder<Affinity> affinity) {
-        return getAffinityDepth(player, affinity.unwrapKey().get().location());
+        return getAffinityDepth(player, affinity.unwrapKey().orElseThrow().location());
     }
 
     @Override
@@ -147,7 +148,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public double getAffinityDepthOrElse(Player player, Holder<Affinity> affinity, double defaultValue) {
-        return getAffinityDepthOrElse(player, affinity.unwrapKey().get().location(), defaultValue);
+        return getAffinityDepthOrElse(player, affinity.unwrapKey().orElseThrow().location(), defaultValue);
     }
 
     @Override
@@ -164,7 +165,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void setAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
-        setAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
+        setAffinityDepth(player, affinity.unwrapKey().orElseThrow().location(), amount);
     }
 
     @Override
@@ -181,7 +182,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void increaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
-        increaseAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
+        increaseAffinityDepth(player, affinity.unwrapKey().orElseThrow().location(), amount);
     }
 
     @Override
@@ -198,7 +199,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void decreaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
-        decreaseAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
+        decreaseAffinityDepth(player, affinity.unwrapKey().orElseThrow().location(), amount);
     }
 
     @Override
@@ -253,7 +254,7 @@ public final class AffinityHelper implements IAffinityHelper {
     public void updateLock(Player player) {
         AffinityHolder holder = player.getData(AFFINITY);
         for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(Affinity.NONE)) continue;
+            if (affinity.getId().equals(Affinity.NONE.location())) continue;
             if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
                 lock(player);
                 return;

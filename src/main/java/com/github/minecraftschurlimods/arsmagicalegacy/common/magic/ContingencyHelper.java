@@ -30,7 +30,7 @@ public final class ContingencyHelper implements IContingencyHelper {
     private ContingencyHelper() {
         NeoForge.EVENT_BUS.addListener((LivingDeathEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DEATH));
         NeoForge.EVENT_BUS.addListener((LivingFallEvent event) -> triggerContingency(event.getEntity(), ContingencyType.FALL));
-        NeoForge.EVENT_BUS.addListener((LivingDamageEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DAMAGE));
+        NeoForge.EVENT_BUS.addListener((LivingDamageEvent.Post event) -> triggerContingency(event.getEntity(), ContingencyType.DAMAGE));
     }
 
     public static ContingencyHelper instance() {

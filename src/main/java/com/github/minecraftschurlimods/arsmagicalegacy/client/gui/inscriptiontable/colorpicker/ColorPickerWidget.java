@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.databinding.Listenable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -247,8 +248,7 @@ public class ColorPickerWidget extends AbstractWidget {
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder bufferbuilder = tesselator.getBuilder();
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             switch (orientation) {
                 case BOTTOM_TO_TOP -> {
                     _brightness = isHovered ? (mouseY - getY()) / (float) height : brightness.get();
@@ -267,32 +267,16 @@ public class ColorPickerWidget extends AbstractWidget {
                     fillGradient(graphics, bufferbuilder, x1, y1, x2, y2, c2, c1, c1, c2);
                 }
             }
-            tesselator.end();
+            BufferUploader.draw(bufferbuilder.buildOrThrow()); // TODO check
             RenderSystem.disableBlend();
         }
 
         private void fillGradient(GuiGraphics graphics, BufferBuilder buffer, int x1, int y1, int x2, int y2, int c1, int c2, int c3, int c4) {
             Matrix4f pose = graphics.pose().last().pose();
-            float a1 = (c1 >> 24 & 255) / 255.0F;
-            float r1 = (c1 >> 16 & 255) / 255.0F;
-            float g1 = (c1 >> 8 & 255) / 255.0F;
-            float b1 = (c1 & 255) / 255.0F;
-            float a2 = (c2 >> 24 & 255) / 255.0F;
-            float r2 = (c2 >> 16 & 255) / 255.0F;
-            float g2 = (c2 >> 8 & 255) / 255.0F;
-            float b2 = (c2 & 255) / 255.0F;
-            float a3 = (c3 >> 24 & 255) / 255.0F;
-            float r3 = (c3 >> 16 & 255) / 255.0F;
-            float g3 = (c3 >> 8 & 255) / 255.0F;
-            float b3 = (c3 & 255) / 255.0F;
-            float a4 = (c4 >> 24 & 255) / 255.0F;
-            float r4 = (c4 >> 16 & 255) / 255.0F;
-            float g4 = (c4 >> 8 & 255) / 255.0F;
-            float b4 = (c4 & 255) / 255.0F;
-            buffer.vertex(pose, x2, y1, 0).color(r1, g1, b1, a1).endVertex();
-            buffer.vertex(pose, x1, y1, 0).color(r2, g2, b2, a2).endVertex();
-            buffer.vertex(pose, x1, y2, 0).color(r3, g3, b3, a3).endVertex();
-            buffer.vertex(pose, x2, y2, 0).color(r4, g4, b4, a4).endVertex();
+            buffer.addVertex(pose, x2, y1, 0).setColor(c1);
+            buffer.addVertex(pose, x1, y1, 0).setColor(c2);
+            buffer.addVertex(pose, x1, y2, 0).setColor(c3);
+            buffer.addVertex(pose, x2, y2, 0).setColor(c4);
         }
 
         @Override

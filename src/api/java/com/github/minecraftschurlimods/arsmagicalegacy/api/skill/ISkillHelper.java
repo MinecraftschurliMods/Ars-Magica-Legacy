@@ -275,6 +275,22 @@ public interface ISkillHelper {
     <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, SkillPoint skillPoint);
 
     /**
+     * @param item       The item to make the item stack from.
+     * @param skillPoint The skill point type to set on the item stack.
+     * @param <T>        The item implementing ISkillPointItem.
+     * @return An item stack of the given item with the given skill point type stored in it.
+     */
+    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, Holder<SkillPoint> skillPoint);
+
+    /**
+     * @param item       The item to make the item stack from.
+     * @param skillPoint The skill point type to set on the item stack.
+     * @param <T>        The item implementing ISkillPointItem.
+     * @return An item stack of the given item with the given skill point type stored in it.
+     */
+    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceKey<SkillPoint> skillPoint);
+
+    /**
      * @param stack The stack to get the skill point type from.
      * @return The skill point type stored in the stack, or null if the stack does not contain one.
      */

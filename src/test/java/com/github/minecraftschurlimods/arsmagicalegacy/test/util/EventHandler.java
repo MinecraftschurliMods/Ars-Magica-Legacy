@@ -26,7 +26,7 @@ public class EventHandler {
     static void initTestframework(FMLConstructModEvent evt) {
         ModContainer container = ArsMagicaLegacy.getModContainer();
         FrameworkConfiguration configuration = FrameworkConfiguration
-                .builder(new ResourceLocation(container.getModId(), "tests"))
+                .builder(ResourceLocation.fromNamespaceAndPath(container.getModId(), "tests"))
                 .clientConfiguration(() -> ClientConfiguration.builder().toggleOverlayKey(GLFW.GLFW_KEY_J).openManagerKey(GLFW.GLFW_KEY_N).build())
                 .enable(Feature.CLIENT_SYNC, Feature.CLIENT_MODIFICATIONS, Feature.TEST_STORE)
                 .dumpers(new GitHubActionsStepSummaryDumper(ArsMagicaLegacy.getModName() + " Gametest Summary"))

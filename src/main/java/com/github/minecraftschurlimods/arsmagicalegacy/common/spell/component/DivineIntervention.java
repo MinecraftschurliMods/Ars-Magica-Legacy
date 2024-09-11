@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +34,7 @@ public class DivineIntervention extends AbstractComponent {
             } else if (level.dimension() != Level.OVERWORLD && level instanceof ServerLevel server) {
                 ServerLevel serverlevel = server.getServer().getLevel(Level.OVERWORLD);
                 if (serverlevel != null) {
-                    living.changeDimension(serverlevel);
+                    living.changeDimension(new DimensionTransition(serverlevel, living, DimensionTransition.DO_NOTHING));
                     return SpellCastResult.SUCCESS;
                 }
             }

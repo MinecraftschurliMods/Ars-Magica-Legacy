@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:press",
+  "energy": 400,
+  "input": [
+    {
+      "count": 9,
+      "item": "arsmagicalegacy:chimerite"
+    },
+    {
+      "item": "thermal:press_packing_3x3_die"
+    }
+  ],
+  "output": [
+    {
+      "item": "arsmagicalegacy:chimerite_block"
+    }
+  ]
+}

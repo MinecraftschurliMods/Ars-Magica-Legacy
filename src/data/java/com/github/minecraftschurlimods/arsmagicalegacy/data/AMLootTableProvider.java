@@ -19,7 +19,6 @@ import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -30,7 +29,7 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
-import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -49,12 +48,16 @@ import java.util.stream.Stream;
 
 class AMLootTableProvider extends LootTableProvider {
     AMLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, Set.of(), List.of(new SubProviderEntry(Block::new, LootContextParamSets.BLOCK), new SubProviderEntry(Entity::new, LootContextParamSets.ENTITY), new SubProviderEntry(Chest::new, LootContextParamSets.CHEST)), registries);
+        super(output, Set.of(), List.of(
+                new SubProviderEntry(Block::new, LootContextParamSets.BLOCK),
+                new SubProviderEntry(Entity::new, LootContextParamSets.ENTITY),
+                new SubProviderEntry(Chest::new, LootContextParamSets.CHEST)
+        ), registries);
     }
 
     private static class Block extends BlockLootSubProvider {
-        protected Block() {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+        protected Block(HolderLookup.Provider registries) {
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
         }
 
         @Override
@@ -133,8 +136,8 @@ class AMLootTableProvider extends LootTableProvider {
     }
 
     private static class Entity extends EntityLootSubProvider {
-        protected Entity() {
-            super(FeatureFlags.REGISTRY.allFlags());
+        protected Entity(HolderLookup.Provider registries) {
+            super(FeatureFlags.REGISTRY.allFlags(), registries);
         }
 
         @Override
@@ -144,24 +147,29 @@ class AMLootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.WATER.value())))));
-            add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.FIRE.value())))));
-            add(AMEntities.EARTH_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.EARTH.value())))));
-            add(AMEntities.AIR_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.AIR.value())))));
-            add(AMEntities.ICE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ICE.value())))));
-            add(AMEntities.LIGHTNING_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.LIGHTNING.value())))));
-            add(AMEntities.LIFE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.LIFE.value())))));
-            add(AMEntities.NATURE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.NATURE.value())))));
-            add(AMEntities.ARCANE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ARCANE.value())))));
-            add(AMEntities.ENDER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ENDER.value())))));
+            add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.WATER)))));
+            add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.FIRE)))));
+            add(AMEntities.EARTH_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.EARTH)))));
+            add(AMEntities.AIR_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.AIR)))));
+            add(AMEntities.ICE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ICE)))));
+            add(AMEntities.LIGHTNING_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.LIGHTNING)))));
+            add(AMEntities.LIFE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.LIFE)))));
+            add(AMEntities.NATURE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.NATURE)))));
+            add(AMEntities.ARCANE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ARCANE)))));
+            add(AMEntities.ENDER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.ENDER)))));
             add(AMEntities.DRYAD.get(), LootTable.lootTable());
             add(AMEntities.MAGE.get(), LootTable.lootTable());
-            add(AMEntities.MANA_CREEPER.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0F, 2F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F))))));
+            add(AMEntities.MANA_CREEPER.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0F, 2F))).apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0F, 1F))))));
         }
     }
 
     private static class Chest implements LootTableSubProvider {
         private final Map<ResourceKey<LootTable>, LootTable.Builder> lootTables = new HashMap<>();
+        private final HolderLookup.Provider registries;
+
+        private Chest(HolderLookup.Provider registries) {
+            this.registries = registries;
+        }
 
         protected void generate() {
             addTomeLoot(BuiltInLootTables.ANCIENT_CITY, AMAffinities.NONE.value(), 0.1f);
@@ -188,21 +196,22 @@ class AMLootTableProvider extends LootTableProvider {
             addTomeLoot(BuiltInLootTables.END_CITY_TREASURE, AMAffinities.ENDER.value(), 0.1f);
         }
 
-        @Override
-        public void generate(HolderLookup.Provider p_331050_, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
-            this.generate();
-            lootTables.forEach(consumer);
-        }
-
         protected void add(ResourceKey<LootTable> key, LootTable.Builder builder) {
             this.lootTables.put(key, builder);
         }
 
-        protected void addTomeLoot(ResourceKey<LootTable> lootTable, Affinity affinity, float chance) {
-            add(ResourceKey.create(lootTable.registryKey(), new ResourceLocation(affinity.getId().getNamespace(), lootTable.location().getPath().replace("chests/", "chests/modify/"))), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                    .add(LootItem.lootTableItem(AMItems.AFFINITY_TOME).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), affinity)).setWeight(19))
-                    .add(LootItem.lootTableItem(AMItems.AFFINITY_TOME).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), AMAffinities.LIFE.value())).setWeight(1))
+        protected void addTomeLoot(ResourceKey<LootTable> lootTable, ResourceKey<Affinity> affinity, float chance) {
+            HolderLookup.RegistryLookup<Affinity> lookup = registries.lookupOrThrow(Affinity.REGISTRY_KEY);
+            add(ResourceKey.create(lootTable.registryKey(), affinity.location().withPath(lootTable.location().getPath().replace("chests/", "chests/modify/"))), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(AMItems.AFFINITY_TOME).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), lookup.getOrThrow(affinity))).setWeight(19))
+                    .add(LootItem.lootTableItem(AMItems.AFFINITY_TOME).apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), lookup.getOrThrow(Affinity.LIFE))).setWeight(1))
                     .add(EmptyLootItem.emptyItem().setWeight((int) (20 / chance) - 20))));
+        }
+
+        @Override
+        public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+            this.generate();
+            lootTables.forEach(output);
         }
     }
 }

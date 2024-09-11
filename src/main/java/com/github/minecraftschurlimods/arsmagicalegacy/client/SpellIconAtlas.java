@@ -17,7 +17,7 @@ public final class SpellIconAtlas extends TextureAtlasHolder {
     private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
 
     private SpellIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SPELL_ICON_ATLAS, SPELL_ICON_ATLAS_INFO);
+        super(Minecraft.getInstance().getTextureManager(), SPELL_ICON_ATLAS, SPELL_ICON_ATLAS_INFO);
     }
 
     /**

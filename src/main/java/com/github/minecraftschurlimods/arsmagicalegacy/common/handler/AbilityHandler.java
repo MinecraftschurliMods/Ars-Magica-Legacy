@@ -26,13 +26,13 @@ import net.neoforged.neoforge.event.entity.living.EnderManAngerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
 final class AbilityHandler {
     static void init(IEventBus forgeBus) {
         forgeBus.addListener(EventPriority.HIGHEST, AbilityHandler::livingDeath);
-        forgeBus.addListener(EventPriority.LOWEST, AbilityHandler::livingHurt);
+        forgeBus.addListener(EventPriority.LOWEST, AbilityHandler::livingIncomingDamage);
         forgeBus.addListener(AbilityHandler::livingJump);
         forgeBus.addListener(AbilityHandler::livingFall);
         forgeBus.addListener(AbilityHandler::enderManAnger);
@@ -55,7 +55,7 @@ final class AbilityHandler {
         }
     }
 
-    private static void livingHurt(LivingHurtEvent event) {
+    private static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
         var api = ArsMagicaAPI.get();
         var helper = api.getAffinityHelper();

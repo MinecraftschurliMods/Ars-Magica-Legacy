@@ -88,7 +88,7 @@ final class AMTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider lookup) {
-            tag(TagKey.create(Registries.ITEM, new ResourceLocation("curios", "head"))).add(AMItems.MAGITECH_GOGGLES.get());
+            tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "head"))).add(AMItems.MAGITECH_GOGGLES.get());
             copy(AMTags.Blocks.WITCHWOOD_LOGS, AMTags.Items.WITCHWOOD_LOGS);
             copy(AMTags.Blocks.ORES_CHIMERITE, AMTags.Items.ORES_CHIMERITE);
             copy(AMTags.Blocks.ORES_TOPAZ, AMTags.Items.ORES_TOPAZ);

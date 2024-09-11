@@ -17,7 +17,7 @@ plugins {
 
 rootProject.name = "Ars-Magica-Legacy"
 
-includeBuild("../codeclib"){
+/*includeBuild("../codeclib"){
     dependencySubstitution {
         substitute(module("com.github.minecraftschurlimods:codeclib")).using(project(":"))
     }
@@ -31,4 +31,4 @@ includeBuild("../betterhudlib") {
     dependencySubstitution {
         substitute(module("com.github.minecraftschurlimods:betterhudlib")).using(project(":"))
     }
-}
+}*/

@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "integrateddynamics"
+    }
+  ],
+  "type": "integrateddynamics:squeezer",
+  "item": {
+    "item": "arsmagicalegacy:desert_nova"
+  },
+  "result": {
+    "items": [
+      {
+        "count": 4,
+        "item": "minecraft:red_dye"
+      }
+    ]
+  }
+}

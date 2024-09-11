@@ -19,18 +19,22 @@
 
 You can download the latest version of the mod from [CurseForge][CurseForge Project] or [Modrinth][Modrinth Project].
 
-| Minecraft Version | Latest Mod Version | Minimum Forge Version | Supported |                                    Download                                     |
-|:-----------------:|:------------------:|:---------------------:|:---------:|:-------------------------------------------------------------------------------:|
-|      1.18.1       |       0.1.5        |        39.0.66        |     ❌     |                    [CurseForge][Download-1.18.1-CursedForge]                    |
-|      1.18.2       |       1.3.0        |        40.1.35        |     ❌     | [CurseForge][Download-1.18.2-CurseForge] / [Modrinth][Download-1.18.2-Modrinth] |
-|      1.19.2       |       1.3.1        |        43.1.13        |     ✅     | [CurseForge][Download-1.19.2-CurseForge] / [Modrinth][Download-1.19.2-Modrinth] |
+| Minecraft Version | Latest Mod Version | Minimum Modloader Version* | Supported |                                    Download                                     |
+|:-----------------:|:------------------:|:--------------------------:|:---------:|:-------------------------------------------------------------------------------:|
+|      1.18.1       |       0.1.5        |      [Forge] 39.0.66       |     ❌     |                    [CurseForge][Download-1.18.1-CurseForge]                     |
+|      1.18.2       |       1.3.0        |      [Forge] 40.1.35       |     ❌     | [CurseForge][Download-1.18.2-CurseForge] / [Modrinth][Download-1.18.2-Modrinth] |
+|      1.19.2       |       1.3.1        |      [Forge] 43.1.13       |     ❌     | [CurseForge][Download-1.19.2-CurseForge] / [Modrinth][Download-1.19.2-Modrinth] |
+|      1.20.1       |       1.5.0        |      [Forge] 47.0.34       |     ✅     | [CurseForge][Download-1.20.1-CurseForge] / [Modrinth][Download-1.20.1-Modrinth] |
+|      1.20.4       |       1.5.0        |    [NeoForge] 20.4.232     |     ✅     | [CurseForge][Download-1.20.4-CurseForge] / [Modrinth][Download-1.20.4-Modrinth] |
+|       1.21        |       1.5.0        |    [NeoForge] 21.0.143     |     ✅     |   [CurseForge][Download-1.21-CurseForge] / [Modrinth][Download-1.21-Modrinth]   |
 
 ## Dependencies
 
-- [Forge] (required)
+- [Forge] (required on Minecraft 1.18.1-1.20.1) / [NeoForge] (required on Minecraft 1.20.4+)
 - GeckoLib ([CurseForge][GeckoLib-CurseForge] / [Modrinth][GeckoLib-Modrinth]) (required)
 - Patchouli ([CurseForge][Patchouli-CurseForge] / [Modrinth][Patchouli-Modrinth]) (required)
 - Curios ([CurseForge][Curios-CurseForge] / [Modrinth][Curios-Modrinth]) (optional)
+- Jade ([CurseForge][Jade-CurseForge] / [Modrinth][Jade-Modrinth]) (optional)
 - JEI ([CurseForge][JEI-CurseForge] / [Modrinth][JEI-Modrinth]) (optional)
 - The One Probe ([CurseForge][TOP-CurseForge] / [Modrinth][TOP-Modrinth]) (optional)
 
@@ -129,13 +133,20 @@ Some textures used in this mod are property of D3miurge, used with permission.
 [CurseForge Project]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy
 [Modrinth Project]: https://modrinth.com/mod/ars-magica-legacy
 
-[Download-1.18.1-CursedForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/3656337
-[Download-1.18.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/4657864
-[Download-1.18.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/version/1.18.2-1.3.0
-[Download-1.19.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/4675845
-[Download-1.19.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/version/1.19.2-1.3.0
+[Download-1.18.1-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.18.1
+[Download-1.18.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.18.2
+[Download-1.18.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.18.2
+[Download-1.19.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.19.2
+[Download-1.19.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.19.2
+[Download-1.20.1-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.20.1
+[Download-1.20.1-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.1
+[Download-1.20.4-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.20.4
+[Download-1.20.4-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.4
+[Download-1.21-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.21
+[Download-1.21-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.21
 
 [Forge]: https://files.minecraftforge.net/
+[NeoForge]: https://neoforged.net
 
 [GeckoLib-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/geckolib
 [GeckoLib-Modrinth]: https://modrinth.com/mod/geckolib
@@ -145,6 +156,9 @@ Some textures used in this mod are property of D3miurge, used with permission.
 
 [Curios-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/curios
 [Curios-Modrinth]: https://modrinth.com/mod/curios
+
+[Jade-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/jade
+[Jade-Modrinth]: https://modrinth.com/mod/jade
 
 [JEI-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/jei
 [JEI-Modrinth]: https://modrinth.com/mod/jei

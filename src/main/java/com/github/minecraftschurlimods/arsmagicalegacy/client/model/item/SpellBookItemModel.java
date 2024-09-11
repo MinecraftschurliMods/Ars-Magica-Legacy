@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -51,9 +52,9 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
         Player player = ClientHelper.getLocalPlayer();
         if (player != null && api.getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
             ResourceLocation affinity = api.getSpellHelper().getSpell(stack).primaryAffinity().getId();
-            return new SpellItemHandModel(SpellItemModel.getModel(affinity.withPrefix("item/" + AMItems.SPELL.getId().getPath() + "_")));
+            return new SpellItemHandModel(SpellItemModel.getModel(ModelResourceLocation.standalone(affinity.withPrefix("item/" + AMItems.SPELL.getId().getPath() + "_"))));
         }
-        return SpellItemModel.getModel(AMItems.SPELL_BOOK.getId().withPath(path -> "item/" + path + "_handheld")).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
+        return SpellItemModel.getModel(ModelResourceLocation.standalone(AMItems.SPELL_BOOK.getId().withPath(path -> "item/" + path + "_handheld"))).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
 
     }
 }

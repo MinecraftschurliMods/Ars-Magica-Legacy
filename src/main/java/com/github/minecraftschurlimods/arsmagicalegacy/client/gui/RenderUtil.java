@@ -46,12 +46,11 @@ public final class RenderUtil {
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
-        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+        BufferBuilder buf = Tesselator.getInstance().begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
         RenderSystem.lineWidth(width);
-        buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), ColorUtil.getAlpha(color1)).normal(1, 1, 0).endVertex();
-        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), ColorUtil.getAlpha(color2)).normal(1, 1, 0).endVertex();
-        BufferUploader.drawWithShader(buf.end());
+        buf.addVertex(pose, startX, startY, zLevel).setColor(color1).setNormal(1, 1, 0);
+        buf.addVertex(pose, endX, endY, zLevel).setColor(color2).setNormal(1, 1, 0);
+        BufferUploader.drawWithShader(buf.buildOrThrow());
         RenderSystem.lineWidth(1);
         RenderSystem.enableCull();
         RenderSystem.depthMask(true);
@@ -183,12 +182,11 @@ public final class RenderUtil {
     public static void drawBox(GuiGraphics graphics, float startX, float startY, float endX, float endY, float zLevel, float minU, float minV, float maxU, float maxV) {
         Matrix4f pMatrix = graphics.pose().last().pose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(pMatrix, startX, startY + endY, zLevel).uv(minU, maxV).endVertex();
-        bufferbuilder.vertex(pMatrix, startX + endX, startY + endY, zLevel).uv(maxU, maxV).endVertex();
-        bufferbuilder.vertex(pMatrix, startX + endX, startY, zLevel).uv(maxU, minV).endVertex();
-        bufferbuilder.vertex(pMatrix, startX, startY, zLevel).uv(minU, minV).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.addVertex(pMatrix, startX, startY + endY, zLevel).setUv(minU, maxV);
+        bufferbuilder.addVertex(pMatrix, startX + endX, startY + endY, zLevel).setUv(maxU, maxV);
+        bufferbuilder.addVertex(pMatrix, startX + endX, startY, zLevel).setUv(maxU, minV);
+        bufferbuilder.addVertex(pMatrix, startX, startY, zLevel).setUv(minU, minV);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 }

@@ -15,7 +15,7 @@ public final class SkillIconAtlas extends TextureAtlasHolder {
     private static final Lazy<SkillIconAtlas> INSTANCE = Lazy.of(SkillIconAtlas::new);
 
     private SkillIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SKILL_ICON_ATLAS, SKILL_ICON_ATLAS_INFO);
+        super(Minecraft.getInstance().getTextureManager(), SKILL_ICON_ATLAS, SKILL_ICON_ATLAS_INFO);
     }
 
     /**
