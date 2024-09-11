@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;

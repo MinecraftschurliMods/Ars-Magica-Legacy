@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
@@ -8,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;

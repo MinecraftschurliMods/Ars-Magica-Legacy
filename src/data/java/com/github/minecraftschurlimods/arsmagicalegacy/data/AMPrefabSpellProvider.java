@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.data.PrefabSpellProvi
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BiConsumer;
 

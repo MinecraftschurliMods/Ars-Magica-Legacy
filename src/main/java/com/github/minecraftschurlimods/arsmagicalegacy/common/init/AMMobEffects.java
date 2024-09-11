@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.EntangleEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.FlightEffect;

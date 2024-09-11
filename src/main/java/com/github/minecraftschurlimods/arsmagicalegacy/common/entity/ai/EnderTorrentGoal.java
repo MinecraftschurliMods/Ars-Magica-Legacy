@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.EntityHitResult;
 

@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import org.jetbrains.annotations.ApiStatus.Internal;
