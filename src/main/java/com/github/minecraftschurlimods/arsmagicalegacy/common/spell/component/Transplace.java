@@ -7,14 +7,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Transplace extends AbstractComponent {
+public class Transplace extends AbstractComponent.OnEntity {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION))
@@ -24,10 +23,5 @@ public class Transplace extends AbstractComponent {
         target.getEntity().teleportTo(casterPos.x(), casterPos.y(), casterPos.z());
         caster.teleportTo(targetPos.x(), targetPos.y(), targetPos.z());
         return SpellCastResult.SUCCESS;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
     }
 }

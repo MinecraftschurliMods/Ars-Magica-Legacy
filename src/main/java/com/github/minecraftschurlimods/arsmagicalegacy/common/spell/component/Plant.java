@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.neoforge.common.SpecialPlantable;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,12 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Plant extends AbstractComponent {
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
-    }
-
+public class Plant extends AbstractComponent.OnBlock {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         if (!(caster instanceof Player player)) return SpellCastResult.EFFECT_FAILED;

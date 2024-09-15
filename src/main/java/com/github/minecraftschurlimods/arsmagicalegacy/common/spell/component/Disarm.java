@@ -11,13 +11,12 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Disarm extends AbstractComponent {
+public class Disarm extends AbstractComponent.OnEntity {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();
@@ -50,11 +49,6 @@ public class Disarm extends AbstractComponent {
             enderman.setTarget(caster);
             return SpellCastResult.SUCCESS;
         }
-        return SpellCastResult.EFFECT_FAILED;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
     }
 }

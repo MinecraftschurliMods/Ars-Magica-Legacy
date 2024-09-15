@@ -16,19 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Dig extends AbstractComponent {
+public class Dig extends AbstractComponent.OnBlock {
     public Dig() {
         super(SpellPartStats.FORTUNE, SpellPartStats.MINING_TIER, SpellPartStats.SILK_TOUCH);
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
     }
 
     @Override

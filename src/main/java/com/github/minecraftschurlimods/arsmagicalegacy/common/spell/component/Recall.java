@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Recall extends AbstractComponent {
-
     private static boolean performRecall(Entity target, Level level, ItemStack stack) {
         if (stack.has(AMDataComponents.RECALL_POSITION)) {
             GlobalPos pos = stack.get(AMDataComponents.RECALL_POSITION);

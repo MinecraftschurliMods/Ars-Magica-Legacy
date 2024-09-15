@@ -10,14 +10,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RandomTeleport extends AbstractComponent {
+public class RandomTeleport extends AbstractComponent.OnEntity {
     public RandomTeleport() {
         super(SpellPartStats.RANGE);
     }
@@ -40,10 +39,5 @@ public class RandomTeleport extends AbstractComponent {
         } while (!validPosition);
         entity.moveTo(vec);
         return SpellCastResult.SUCCESS;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
     }
 }

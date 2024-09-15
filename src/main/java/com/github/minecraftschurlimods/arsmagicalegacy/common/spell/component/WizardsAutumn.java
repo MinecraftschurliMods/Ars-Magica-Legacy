@@ -11,19 +11,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class WizardsAutumn extends AbstractComponent {
+public class WizardsAutumn extends AbstractComponent.OnTarget {
     public WizardsAutumn() {
         super(SpellPartStats.RANGE);
     }
 
-    private static SpellCastResult performWizardsAutumn(BlockPos origin, ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target, int index) {
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, HitResult target, int index, int ticksUsed) {
+        BlockPos origin = new BlockPos((int) target.getLocation().x(), (int) target.getLocation().y(), (int) target.getLocation().z());
         int range = (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index);
         for (int i = -range; i <= range; i++) {
             for (int j = -range; j <= range; j++) {
@@ -37,15 +37,5 @@ public class WizardsAutumn extends AbstractComponent {
             }
         }
         return SpellCastResult.EFFECT_FAILED;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performWizardsAutumn(target.getEntity().blockPosition(), spell, caster, level, modifiers, target, index);
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performWizardsAutumn(target.getBlockPos(), spell, caster, level, modifiers, target, index);
     }
 }

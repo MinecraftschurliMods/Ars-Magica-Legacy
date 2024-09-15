@@ -9,13 +9,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartSta
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ManaBlast extends AbstractComponent {
+public class ManaBlast extends AbstractComponent.OnEntity {
     public ManaBlast() {
         super(SpellPartStats.DAMAGE);
     }
@@ -29,10 +28,5 @@ public class ManaBlast extends AbstractComponent {
         living.hurt(level.damageSources().indirectMagic(caster, null), api.getSpellHelper().getModifiedStat((float) (mana / Config.SERVER.MANA_MULTIPLIER.get()), SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
         helper.decreaseMana(caster, mana);
         return SpellCastResult.SUCCESS;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
     }
 }

@@ -7,13 +7,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ManaDrain extends AbstractComponent {
+public class ManaDrain extends AbstractComponent.OnEntity {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {
@@ -23,11 +22,6 @@ public class ManaDrain extends AbstractComponent {
             helper.increaseMana(caster, mana);
             return SpellCastResult.SUCCESS;
         }
-        return SpellCastResult.EFFECT_FAILED;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
     }
 }

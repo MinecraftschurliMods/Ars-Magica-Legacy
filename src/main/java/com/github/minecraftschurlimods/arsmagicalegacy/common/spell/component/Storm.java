@@ -14,19 +14,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Storm extends AbstractComponent {
+public class Storm extends AbstractComponent.OnTarget {
     public Storm() {
         super(SpellPartStats.DURATION);
     }
 
-    private static SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target, int index) {
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, HitResult target, int index, int ticksUsed) {
         if (!level.isClientSide()) {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
@@ -64,15 +63,5 @@ public class Storm extends AbstractComponent {
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target, index);
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target, index);
     }
 }
