@@ -12,9 +12,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
@@ -28,24 +30,28 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMDataComponents {
-    Supplier<DataComponentType<ISpell>> SPELL = DATA_COMPONENT_TYPES.registerComponentType("spell", builder -> builder.persistent(ISpell.CODEC).networkSynchronized(ISpell.STREAM_CODEC));
-    Supplier<DataComponentType<ISpell>> SPELL_RECIPE = DATA_COMPONENT_TYPES.registerComponentType("spell_recipe", builder -> builder.persistent(ISpell.CODEC).networkSynchronized(ISpell.STREAM_CODEC));
-    Supplier<DataComponentType<Component>> SPELL_NAME = DATA_COMPONENT_TYPES.registerComponentType("spell_name", builder -> builder.persistent(ComponentSerialization.CODEC).networkSynchronized(ComponentSerialization.STREAM_CODEC));
-    Supplier<DataComponentType<ResourceLocation>> SPELL_ICON = DATA_COMPONENT_TYPES.registerComponentType("spell_icon", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
-    Supplier<DataComponentType<Holder<Affinity>>> AFFINITY = DATA_COMPONENT_TYPES.registerComponentType("affinity", builder -> builder.persistent(ArsMagicaAPI.get().getAffinityRegistry().holderByNameCodec()).networkSynchronized(ByteBufCodecs.holderRegistry(Affinity.REGISTRY_KEY)));
-    Supplier<DataComponentType<Holder<SkillPoint>>> SKILL_POINT = DATA_COMPONENT_TYPES.registerComponentType("skill_point", builder -> builder.persistent(ArsMagicaAPI.get().getSkillPointRegistry().holderByNameCodec()).networkSynchronized(ByteBufCodecs.holderRegistry(SkillPoint.REGISTRY_KEY)));
-    Supplier<DataComponentType<Integer>> SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
-    Supplier<DataComponentType<ItemContainerContents>> SPELLS = DATA_COMPONENT_TYPES.registerComponentType("spells", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC));
-    Supplier<DataComponentType<Integer>> TIER = DATA_COMPONENT_TYPES.registerComponentType("tier", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
-    Supplier<DataComponentType<EtheriumType>> ETHERIUM_TYPE = DATA_COMPONENT_TYPES.registerComponentType("etherium_type", builder -> builder.persistent(EtheriumType.CODEC).networkSynchronized(EtheriumType.STREAM_CODEC));
-    Supplier<DataComponentType<BlockPos>> SAVED_POS = DATA_COMPONENT_TYPES.registerComponentType("saved_pos", builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-    Supplier<DataComponentType<Float>> MANA_REPAIR_COST = DATA_COMPONENT_TYPES.registerComponentType("mana_repair_cost", builder -> builder.persistent(Codec.FLOAT).networkSynchronized(ByteBufCodecs.FLOAT));
-    Supplier<DataComponentType<Block>> SELECTED_BLOCK = DATA_COMPONENT_TYPES.registerComponentType("selected_block", builder -> builder.persistent(BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.BLOCK)));
-    Supplier<DataComponentType<GlobalPos>> RECALL_POSITION = DATA_COMPONENT_TYPES.registerComponentType("recall_position", builder -> builder.persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC));
+    Supplier<DataComponentType<Holder<Affinity>>>      AFFINITY         = register("affinity", ArsMagicaAPI.get().getAffinityRegistry().holderByNameCodec(), ByteBufCodecs.holderRegistry(Affinity.REGISTRY_KEY));
+    Supplier<DataComponentType<EtheriumType>>          ETHERIUM_TYPE    = register("etherium_type", EtheriumType.CODEC, EtheriumType.STREAM_CODEC);
+    Supplier<DataComponentType<Float>>                 MANA_REPAIR_COST = register("mana_repair_cost", Codec.FLOAT, ByteBufCodecs.FLOAT);
+    Supplier<DataComponentType<GlobalPos>>             RECALL_POSITION  = register("recall_position", GlobalPos.CODEC, GlobalPos.STREAM_CODEC);
+    Supplier<DataComponentType<BlockPos>>              SAVED_POS        = register("saved_pos", BlockPos.CODEC, BlockPos.STREAM_CODEC);
+    Supplier<DataComponentType<Block>>                 SELECTED_BLOCK   = register("selected_block", BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR), ByteBufCodecs.registry(Registries.BLOCK));
+    Supplier<DataComponentType<Integer>>               SELECTED_SLOT    = register("selected_slot", Codec.INT, ByteBufCodecs.VAR_INT);
+    Supplier<DataComponentType<Holder<SkillPoint>>>    SKILL_POINT      = register("skill_point", ArsMagicaAPI.get().getSkillPointRegistry().holderByNameCodec(), ByteBufCodecs.holderRegistry(SkillPoint.REGISTRY_KEY));
+    Supplier<DataComponentType<ISpell>>                SPELL            = register("spell", ISpell.CODEC, ISpell.STREAM_CODEC);
+    Supplier<DataComponentType<ResourceLocation>>      SPELL_ICON       = register("spell_icon", ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC);
+    Supplier<DataComponentType<Component>>             SPELL_NAME       = register("spell_name", ComponentSerialization.CODEC, ComponentSerialization.STREAM_CODEC);
+    Supplier<DataComponentType<ISpell>>                SPELL_RECIPE     = register("spell_recipe", ISpell.CODEC, ISpell.STREAM_CODEC);
+    Supplier<DataComponentType<ItemContainerContents>> SPELLS           = register("spells", ItemContainerContents.CODEC, ItemContainerContents.STREAM_CODEC);
+    Supplier<DataComponentType<Integer>>               TIER             = register("tier", Codec.INT, ByteBufCodecs.VAR_INT);
 
     /**
      * Empty method that is required for classloading
      */
     @Internal
     static void register() {}
+    
+    static <T> Supplier<DataComponentType<T>> register(String name, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        return DATA_COMPONENT_TYPES.registerComponentType(name, builder -> builder.persistent(codec).networkSynchronized(streamCodec));
+    }
 }
