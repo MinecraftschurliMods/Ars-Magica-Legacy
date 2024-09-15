@@ -18,6 +18,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,6 +37,7 @@ public interface AMDataComponents {
     Supplier<DataComponentType<GlobalPos>>             RECALL_POSITION  = register("recall_position", GlobalPos.CODEC, GlobalPos.STREAM_CODEC);
     Supplier<DataComponentType<BlockPos>>              SAVED_POS        = register("saved_pos", BlockPos.CODEC, BlockPos.STREAM_CODEC);
     Supplier<DataComponentType<Block>>                 SELECTED_BLOCK   = register("selected_block", BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR), ByteBufCodecs.registry(Registries.BLOCK));
+    Supplier<DataComponentType<EntityType<?>>>         SELECTED_ENTITY  = register("selected_entity", BuiltInRegistries.ENTITY_TYPE.byNameCodec(), ByteBufCodecs.registry(Registries.ENTITY_TYPE));
     Supplier<DataComponentType<Integer>>               SELECTED_SLOT    = register("selected_slot", Codec.INT, ByteBufCodecs.VAR_INT);
     Supplier<DataComponentType<Holder<SkillPoint>>>    SKILL_POINT      = register("skill_point", ArsMagicaAPI.get().getSkillPointRegistry().holderByNameCodec(), ByteBufCodecs.holderRegistry(SkillPoint.REGISTRY_KEY));
     Supplier<DataComponentType<ISpell>>                SPELL            = register("spell", ISpell.CODEC, ISpell.STREAM_CODEC);

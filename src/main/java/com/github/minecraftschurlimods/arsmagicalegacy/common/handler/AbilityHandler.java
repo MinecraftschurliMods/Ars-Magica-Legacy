@@ -30,6 +30,9 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Holds all event handlers required for the various abilities.
+ */
 final class AbilityHandler {
     static void init(IEventBus forgeBus) {
         forgeBus.addListener(EventPriority.HIGHEST, AbilityHandler::livingDeath);

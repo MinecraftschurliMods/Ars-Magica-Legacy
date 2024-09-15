@@ -296,6 +296,11 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
+    public int getMaxSummons(LivingEntity entity) {
+        return 2; //TODO config
+    }
+
+    @Override
     public ItemStack makeSpellFromPrefab(PrefabSpell prefabSpell) {
         ItemStack stack = new ItemStack(AMItems.SPELL.value());
         stack.set(AMDataComponents.SPELL, prefabSpell.spell());

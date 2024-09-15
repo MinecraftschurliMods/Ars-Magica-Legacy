@@ -561,6 +561,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "effect_failed", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "missing_reagents", "Missing reagents!");
         add(TranslationConstants.SPELL_CAST + "no_permission", "No permission!");
+        add(TranslationConstants.SPELL_CAST + "no_summons", "No more summons!");
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.TIER, "Tier: %s");

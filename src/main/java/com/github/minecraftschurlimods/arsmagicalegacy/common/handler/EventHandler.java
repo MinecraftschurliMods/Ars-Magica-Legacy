@@ -128,6 +128,7 @@ public final class EventHandler {
         TickHandler.init(forgeBus);
         EffectHandler.init(forgeBus);
         AbilityHandler.init(forgeBus);
+        SummonHandler.init(forgeBus);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeCreation);

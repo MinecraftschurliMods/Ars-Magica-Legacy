@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -183,13 +184,18 @@ public interface ISpellHelper {
     void prevShapeGroup(ItemStack stack);
 
     /**
-     * {@return the color for the current part}
-     * 
      * @param modifiers    The list of modifiers for the currently invoked part.
      * @param spell        The spell being cast.
      * @param caster       The entity casting the spell.
      * @param index        The 1 based index of the currently invoked part.
      * @param defaultColor The default color to use as fallback.
+     * @return The color for the current part.
      */
     int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor);
+
+    /**
+     * @param entity The entity to return the max summons for.
+     * @return Returns the maximum possible amount of summoned minions for the given {@link Player}.
+     */
+    int getMaxSummons(LivingEntity entity);
 }

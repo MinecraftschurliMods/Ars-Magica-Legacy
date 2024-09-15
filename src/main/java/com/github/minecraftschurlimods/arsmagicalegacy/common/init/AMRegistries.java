@@ -108,6 +108,7 @@ public interface AMRegistries {
     static void init(IEventBus bus) {
         AMBlocks.register();
         AMFluids.register();
+        AMAttachments.register();
         AMDataComponents.register();
         AMArmorMaterials.register();
         AMItems.register();
