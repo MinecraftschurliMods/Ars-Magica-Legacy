@@ -10,11 +10,6 @@ public class AMMobEffect extends MobEffect {
         super(category, color);
     }
 
-    @Override
-    public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
-        return true;
-    }
-
     /**
      * Called when the given entity gets the effect.
      *

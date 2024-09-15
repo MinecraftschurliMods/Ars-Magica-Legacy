@@ -15,4 +15,9 @@ public class FrostEffect extends AMMobEffect {
         }
         return super.applyEffectTick(pLivingEntity, pAmplifier);
     }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
+        return true;
+    }
 }
