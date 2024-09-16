@@ -104,9 +104,9 @@ public class AMRitualProvider extends RitualProvider {
         add("unlock_daylight", builder(new LearnSkillRitualEffect(AMSpellParts.DAYLIGHT.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.DIVINE_INTERVENTION.get(), AMSpellParts.TRUE_SIGHT.get()), List.of(AMSpellParts.SOLAR.get())))
                 .build());
-        add("unlock_dismembering", builder(new LearnSkillRitualEffect(AMSpellParts.DISMEMBERING.get()),
+        /*add("unlock_dismembering", builder(new LearnSkillRitualEffect(AMSpellParts.DISMEMBERING.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.PHYSICAL_DAMAGE.get()), List.of(AMSpellParts.DAMAGE.get(), AMSpellParts.HEALING.get(), AMSpellParts.PIERCING.get())))
-                .build());
+                .build());*/
         add("unlock_effect_power", builder(new LearnSkillRitualEffect(AMSpellParts.EFFECT_POWER.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.AGILITY.get(), AMSpellParts.FLIGHT.get(), AMSpellParts.REFLECT.get(), AMSpellParts.SHRINK.get(), AMSpellParts.SWIFT_SWIM.get(), AMSpellParts.TEMPORAL_ANCHOR.get())))
                 .build());

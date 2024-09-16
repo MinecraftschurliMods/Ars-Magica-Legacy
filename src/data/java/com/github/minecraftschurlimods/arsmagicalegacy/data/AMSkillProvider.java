@@ -366,10 +366,10 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN)
                 .addParent(LIFE_TAP.getId())
                 .build());
-        add(TELEKINESIS.getId(), utility(165, 300)
+        /*add(TELEKINESIS.getId(), utility(165, 300)
                 .addCost(GREEN)
                 .addParent(ATTRACT.getId())
-                .build());
+                .build());*/
         add(TRANSPLACE.getId(), utility(75, 300)
                 .addCost(GREEN)
                 .addParent(BLINK.getId())
@@ -386,9 +386,9 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED)
                 .addParent(CHAIN.getId())
                 .build());
-        add(DISMEMBERING.getId(), offense(30, 210)
+        /*add(DISMEMBERING.getId(), offense(30, 210)
                 .setHidden()
-                .build());
+                .build());*/
         add(DURATION.getId(), defense(210, 345)
                 .addCost(RED)
                 .addParent(TEMPORAL_ANCHOR.getId())
@@ -423,10 +423,10 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED)
                 .addParent(RANDOM_TELEPORT.getId())
                 .build());
-        add(RUNE_PROCS.getId(), defense(120, 345)
+        /*add(RUNE_PROCS.getId(), defense(120, 345)
                 .addCost(GREEN)
                 .addParent(RUNE.getId())
-                .build());
+                .build());*/
         add(SILK_TOUCH.getId(), utility(75, 75)
                 .addCost(BLUE)
                 .addParent(DIG.getId())

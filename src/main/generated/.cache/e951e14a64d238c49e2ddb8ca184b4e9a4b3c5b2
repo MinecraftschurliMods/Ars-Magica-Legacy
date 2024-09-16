@@ -1,4 +1,4 @@
-// 1.21	2024-09-16T03:40:34.8254646	vanilla/Advancements
+// 1.21	2024-09-16T03:50:14.3778229	vanilla/Advancements
 98026f787e158ab3306e960ea2b4ea211cedbd60 data/arsmagicalegacy/advancement/book/absorption.json
 da0c2174efc403729468a38743abe2b452409594 data/arsmagicalegacy/advancement/book/affinity_gains_boost.json
 a38b9cf37137bc6bb9822e0092e2ed4357c50407 data/arsmagicalegacy/advancement/book/agility.json
@@ -26,7 +26,6 @@ ad390cb45025840b0b70f8112bdc518132c377b2 data/arsmagicalegacy/advancement/book/d
 05d8bc4e42ad1dbc047ddc2ed9a62ddaf8ada60e data/arsmagicalegacy/advancement/book/daylight.json
 998d09ec342fbe22524e0e923086804f31a34a36 data/arsmagicalegacy/advancement/book/dig.json
 657754242008e29e21fcda47a9c0b32f00d6377a data/arsmagicalegacy/advancement/book/disarm.json
-3e49ae4e468e657123fa7f415a8c89d9a344537f data/arsmagicalegacy/advancement/book/dismembering.json
 2b44a157e823bdf6f5095a111ece36610f05a0af data/arsmagicalegacy/advancement/book/dispel.json
 09425ac7418322ee2dd99476ff18998cc8a865d2 data/arsmagicalegacy/advancement/book/divine_intervention.json
 aa962c2e44079780fd9dd75e97983d5c04c24398 data/arsmagicalegacy/advancement/book/drought.json
@@ -89,7 +88,6 @@ cb4d30481e513b4f00e3fe539e22023aaa2561f8 data/arsmagicalegacy/advancement/book/r
 ac0fe17c96ac240fddaa333d50f45e73832d4d15 data/arsmagicalegacy/advancement/book/rift.json
 5213325bff658356441b08cb578aa5bc77d8de14 data/arsmagicalegacy/advancement/book/root.json
 28b3ef39c8111d106428e084129d1dab51d781e4 data/arsmagicalegacy/advancement/book/rune.json
-f6148f029e5d7b461034fe27a0e029df779d9c22 data/arsmagicalegacy/advancement/book/rune_procs.json
 6f30720bc1bcb3920e591a58d86dfac0d3f88029 data/arsmagicalegacy/advancement/book/self.json
 267ffb6617b13aba219a2f68af78f42dbfcfd7ba data/arsmagicalegacy/advancement/book/shield.json
 8d082a5c23a61e90b6e7e936076fa7189714ffce data/arsmagicalegacy/advancement/book/shield_overload.json
@@ -104,7 +102,6 @@ a2fea9c276f2de39b752f64d9a7d74f584ca0da9 data/arsmagicalegacy/advancement/book/s
 0f3cc0010c81686211526e0005a2e632117cf351 data/arsmagicalegacy/advancement/book/summon.json
 fb8909e16fc7effe8e3eedd04f6b1e54707397f4 data/arsmagicalegacy/advancement/book/swift_swim.json
 8f9df795c948d3234d861c026101b1ee751b1a17 data/arsmagicalegacy/advancement/book/target_non_solid.json
-f331e0092019ded966d9f2d7daec70ad03049dd6 data/arsmagicalegacy/advancement/book/telekinesis.json
 4d6dcd410c0668d00fed374a1b30dbd3ffb67b63 data/arsmagicalegacy/advancement/book/temporal_anchor.json
 0730689b14fcfcc412f155eb164dc19a09707b4e data/arsmagicalegacy/advancement/book/touch.json
 51f0701105ebc4cdec016dc1402ce141b1793cfa data/arsmagicalegacy/advancement/book/transplace.json
