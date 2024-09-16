@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -105,6 +106,11 @@ public final class AMTags {
      * Holds the mod's entity type tags.
      */
     public static final class EntityTypes {
+        public static final TagKey<EntityType<?>> SUMMON_BLACKLIST = tag("summon_blacklist");
+
+        private static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, ArsMagicaAPI.resource(name));
+        }
     }
 
     /**

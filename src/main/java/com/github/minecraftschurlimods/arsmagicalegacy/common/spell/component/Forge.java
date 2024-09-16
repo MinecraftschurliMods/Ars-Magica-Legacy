@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
@@ -29,7 +30,7 @@ import java.util.Optional;
 public class Forge extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, @Nullable Entity directEntity, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (target.getEntity() instanceof Villager villager) {
+        if (Config.SERVER.FORGE_SMELTS_VILLAGERS.get() && target.getEntity() instanceof Villager villager) {
             if (!level.isClientSide()) {
                 level.addFreshEntity(new ItemEntity(level, villager.position().x(), villager.position().y(), villager.position().z(), new ItemStack(Items.EMERALD)));
             }

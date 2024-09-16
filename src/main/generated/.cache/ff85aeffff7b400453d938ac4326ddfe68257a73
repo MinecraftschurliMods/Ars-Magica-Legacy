@@ -1,4 +1,4 @@
-// 1.21	2024-08-07T10:47:39.22376	vanilla/Registries
+// 1.21	2024-09-16T03:40:34.8154636	vanilla/Registries
 0095c886f52658495198001f9b2f2d21f136e31f data/arsmagicalegacy/arsmagicalegacy/ability/clarity.json
 bee1556fd07899fd3833f2c63bef87a6e5154952 data/arsmagicalegacy/arsmagicalegacy/ability/enderman_pumpkin.json
 8ee324f913eb2d6d7ec07a77c88c1dbb4a272eee data/arsmagicalegacy/arsmagicalegacy/ability/enderman_thorns.json
@@ -197,6 +197,7 @@ c6910d1dae8cac9eed539feb91e118697bfdeaae data/arsmagicalegacy/arsmagicalegacy/sk
 a590cfc1e1acad04d594722697161b1449d86025 data/arsmagicalegacy/arsmagicalegacy/skill/ender_intervention.json
 2a12708f7d2bd4b605db689110521eb110333ac4 data/arsmagicalegacy/arsmagicalegacy/skill/entangle.json
 e55c8423fa5285418bdcdfac7126db261161c171 data/arsmagicalegacy/arsmagicalegacy/skill/explosion.json
+b74efeffcddf0f7b160d04ed06d35892412578a3 data/arsmagicalegacy/arsmagicalegacy/skill/extra_summons.json
 0e2cd82008bbe7740c0f25476d729ef7cadf0ed7 data/arsmagicalegacy/arsmagicalegacy/skill/falling_star.json
 2962eacd992415b941ddcc0596a509230f44292c data/arsmagicalegacy/arsmagicalegacy/skill/fire_damage.json
 692476130463c9d38874c84ea4eb50a39e7daa10 data/arsmagicalegacy/arsmagicalegacy/skill/fire_rain.json

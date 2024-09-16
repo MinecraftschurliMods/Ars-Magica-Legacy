@@ -1,4 +1,4 @@
-// 1.21	2024-08-07T10:47:39.234755	vanilla/Advancements
+// 1.21	2024-09-16T03:40:34.8254646	vanilla/Advancements
 98026f787e158ab3306e960ea2b4ea211cedbd60 data/arsmagicalegacy/advancement/book/absorption.json
 da0c2174efc403729468a38743abe2b452409594 data/arsmagicalegacy/advancement/book/affinity_gains_boost.json
 a38b9cf37137bc6bb9822e0092e2ed4357c50407 data/arsmagicalegacy/advancement/book/agility.json
@@ -36,6 +36,7 @@ cd06ffd872c56fdba540c5826285207b3f81573f data/arsmagicalegacy/advancement/book/d
 a989c61ac3cf59d35822e80263a7b667a0f1f43d data/arsmagicalegacy/advancement/book/ender_intervention.json
 15a70f3931b087f8fbba0d0ad0fe79e7fc220bae data/arsmagicalegacy/advancement/book/entangle.json
 bf6dba49125e321cfca71d254942ab214f9be7b7 data/arsmagicalegacy/advancement/book/explosion.json
+5214b38f2bacd8342ded3b44d88b033d0b5bc8ef data/arsmagicalegacy/advancement/book/extra_summons.json
 20f41d7ebbb98e9d6202e985cb51a3ba50890eac data/arsmagicalegacy/advancement/book/falling_star.json
 a8e4d02125ec1959885870238b63cc2e3bcdfefd data/arsmagicalegacy/advancement/book/fire_damage.json
 fbb30e20f37e88d35fa4c0d0758204ad1530df7e data/arsmagicalegacy/advancement/book/fire_rain.json

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -24,6 +25,7 @@ final class SummonHandler {
     static void init(IEventBus forgeBus) {
         forgeBus.addListener(SummonHandler::entityJoinWorld);
         forgeBus.addListener(SummonHandler::livingDeath);
+        forgeBus.addListener(SummonHandler::livingExperienceDrop);
         forgeBus.addListener(SummonHandler::livingChangeTarget);
         forgeBus.addListener(SummonHandler::livingIncomingDamage);
         forgeBus.addListener(SummonHandler::livingDamagePost);
@@ -53,6 +55,14 @@ final class SummonHandler {
         Entity ownerEntity = serverLevel.getEntity(owner.uuid().get());
         if (ownerEntity == null) return;
         ownerEntity.setData(AMAttachments.SUMMON_MINIONS, ownerEntity.getData(AMAttachments.SUMMON_MINIONS).remove(entity.getUUID()));
+    }
+
+    private static void livingExperienceDrop(LivingExperienceDropEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.hasData(AMAttachments.SUMMON_OWNER)) return;
+        Summon.Owner owner = entity.getData(AMAttachments.SUMMON_OWNER);
+        if (owner.uuid().isEmpty()) return;
+        event.setCanceled(true);
     }
 
     private static void livingChangeTarget(LivingChangeTargetEvent event) {

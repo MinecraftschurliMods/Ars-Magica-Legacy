@@ -9,9 +9,9 @@ import java.util.List;
 public interface AMTalents {
     List<ResourceLocation> ALL = new ArrayList<>();
     ResourceLocation AFFINITY_GAINS_BOOST = registerTalent("affinity_gains_boost");
-    ResourceLocation AUGMENTED_CASTING    = registerTalent("augmented_casting"); //TODO
-    /*ResourceLocation EXTRA_SUMMONS        = registerTalent("extra_summons");
-    ResourceLocation MAGE_BAND_1          = registerTalent("mage_band_1");
+    ResourceLocation AUGMENTED_CASTING    = registerTalent("augmented_casting");
+    ResourceLocation EXTRA_SUMMONS        = registerTalent("extra_summons");
+    /*ResourceLocation MAGE_BAND_1          = registerTalent("mage_band_1");
     ResourceLocation MAGE_BAND_2          = registerTalent("mage_band_2");*/
     ResourceLocation MANA_REGEN_BOOST_1   = registerTalent("mana_regen_boost_1");
     ResourceLocation MANA_REGEN_BOOST_2   = registerTalent("mana_regen_boost_2");

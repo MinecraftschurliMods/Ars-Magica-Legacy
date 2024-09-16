@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
@@ -20,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataComponents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentParticlesPacket;
@@ -297,7 +299,8 @@ public final class SpellHelper implements ISpellHelper {
 
     @Override
     public int getMaxSummons(LivingEntity entity) {
-        return 2; //TODO config
+        int extra = entity instanceof Player player && ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.EXTRA_SUMMONS) ? Config.SERVER.SUMMON_EXTRA_COUNT.getAsInt() : 0;
+        return Config.SERVER.SUMMON_BASE_COUNT.get() + extra;
     }
 
     @Override

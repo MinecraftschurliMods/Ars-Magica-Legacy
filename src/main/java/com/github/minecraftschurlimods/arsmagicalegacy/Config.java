@@ -181,6 +181,10 @@ public final class Config {
         public final ModConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
         public final ModConfigSpec.DoubleValue DAMAGE;
         public final ModConfigSpec.IntValue DURATION;
+        public final ModConfigSpec.BooleanValue FORGE_SMELTS_VILLAGERS;
+        public final ModConfigSpec.IntValue SUMMON_BASE_COUNT;
+        public final ModConfigSpec.IntValue SUMMON_EXTRA_COUNT;
+        public final ModConfigSpec.DoubleValue SUMMON_MANA_MULTIPLIER;
         public final ModConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
         public final ModConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
         public final ModConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
@@ -271,6 +275,24 @@ public final class Config {
                     .comment("Duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.duration")
                     .defineInRange("duration", 600, 1, Short.MAX_VALUE);
+            FORGE_SMELTS_VILLAGERS = builder
+                    .comment("Whether the Forge component instantly kills villagers, dropping emeralds.")
+                    .translation(TranslationConstants.CONFIG + "spell_parts.forge_smelts_villagers")
+                    .define("forge_smelts_villagers", true);
+            builder.push("summon");
+            SUMMON_BASE_COUNT = builder
+                    .comment("The maximum amount of summons a player can have.")
+                    .translation(TranslationConstants.CONFIG + "spell_parts.summon.base_count")
+                    .defineInRange("base_count", 1, 1, 1000000);
+            SUMMON_EXTRA_COUNT = builder
+                    .comment("The amount of possible summons the Extra Summons talent adds.")
+                    .translation(TranslationConstants.CONFIG + "spell_parts.summon.extra_count")
+                    .defineInRange("extra_count", 1, 1, 1000000);
+            SUMMON_MANA_MULTIPLIER = builder
+                    .comment("When summoning a minion, the mana consumed will be this value times the summoned minion's max health.")
+                    .translation(TranslationConstants.CONFIG + "spell_parts.summon.mana_multiplier")
+                    .defineInRange("mana_multiplier", 20d, 0, 1000000);
+            builder.pop();
             builder.pop();
             builder.push("entities");
             builder.push("dryad");

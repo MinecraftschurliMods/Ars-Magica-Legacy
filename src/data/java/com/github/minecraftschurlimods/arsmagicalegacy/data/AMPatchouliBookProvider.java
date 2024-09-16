@@ -99,6 +99,10 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleDoubleRecipePage("crafting", AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1.getId(), AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.getId())
                 .addSimpleRecipePage("crafting", AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3.getId(), "Shape groups prove useful if, for example, you want to have two modes on a $(l:components/heal)Heal$() spell, one for $(l:shapes/self)yourself$() and one for $(l:shapes/projectile)your friends$().", "")
                 .build()
+                .addEntry("silver_spell_parts", "Silver Spell Parts", new ItemStack(AMItems.MOONSTONE.get()))
+                .addSimpleTextPage("Silver spell parts are among the strongest spell parts known. Due to this, they cannot be unlocked like any other spell part. Instead, to unlock them, a specific combination of other spell parts must be cast.$(br2)While the original combinations have been lost to time, a few general concepts are still known today:")
+                .addSimpleTextPage("- Only components and modifiers need to be considered. Any shape may be used.$(br)- Additional spell parts may be used, the ritual is not strict in that regard.$(br)- There is no particular order of components and modifiers required.$(br)- There is a thematic fit to the unlocking ritual. For example, $(l:components/firestorm)Firestorm$() does not require $(l:components/drown)Drown$().$(br)- All silver spells require at least two and up to six other spell parts.")
+                .build()
                 .build();
         builder.addCategory("blocks", "Blocks", "", new ItemStack(AMItems.OCCULUS.get()))
                 .setSortnum(1)
@@ -343,12 +347,15 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
             TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
                                             .setAdvancement(ArsMagicaAPI.resource("book/" + registryName.getPath()));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
-            if (spellPart == AMSpellParts.CHAIN.get() || spellPart == AMSpellParts.SUMMON.get()) {
+            if (spellPart == AMSpellParts.CHAIN.get()) {
                 entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
+            }
+            if (spellPart == AMSpellParts.SUMMON.get()) {
+                entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
+                entry.addSimpleTextPage(entry.getLangKey(2) + ".text");
             }
             entry.addPage(new SpellPartPageBuilder(registryName, entry)).build();
             entry.build();
-            continue;
         }
         shapes.build();
         components.build();

@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
@@ -29,7 +31,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.concurrent.CompletableFuture;
 
 final class AMTagsProvider {
-
     static class Blocks extends IntrinsicHolderTagsProvider<Block> {
         Blocks(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
             super(output, Registries.BLOCK, lookupProvider, block -> block.builtInRegistryHolder().key(), ArsMagicaAPI.MOD_ID, existingFileHelper);
@@ -167,7 +168,10 @@ final class AMTagsProvider {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider lookup) {}
+        protected void addTags(HolderLookup.Provider lookup) {
+            tag(Tags.EntityTypes.BOSSES).add(AMEntities.WATER_GUARDIAN.get(), AMEntities.FIRE_GUARDIAN.get(), AMEntities.EARTH_GUARDIAN.get(), AMEntities.AIR_GUARDIAN.get(), AMEntities.ICE_GUARDIAN.get(), AMEntities.LIGHTNING_GUARDIAN.get(), AMEntities.NATURE_GUARDIAN.get(), AMEntities.LIFE_GUARDIAN.get(), AMEntities.ARCANE_GUARDIAN.get(), AMEntities.ENDER_GUARDIAN.get());
+            tag(AMTags.EntityTypes.SUMMON_BLACKLIST).addTag(Tags.EntityTypes.BOSSES);
+        }
     }
 
     static class Biomes extends BiomeTagsProvider {

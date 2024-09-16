@@ -1,0 +1,19 @@
+{
+  "type": "arsmagicalegacy:add_conditions",
+  "conditions": [
+    {
+      "condition": "arsmagicalegacy:has_loot_context_param",
+      "params": [
+        "minecraft:this_entity"
+      ]
+    }
+  ],
+  "extra_conditions": [
+    {
+      "condition": "minecraft:inverted",
+      "term": {
+        "condition": "arsmagicalegacy:has_summon_owner"
+      }
+    }
+  ]
+}

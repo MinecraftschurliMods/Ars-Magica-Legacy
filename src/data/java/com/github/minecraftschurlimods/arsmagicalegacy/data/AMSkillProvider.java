@@ -451,11 +451,11 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED)
                 .addParent(SPELL_MOTION)
                 .build());
-        /*add(EXTRA_SUMMONS, talent(30, 165)
+        add(EXTRA_SUMMONS, talent(30, 165)
                 .addCost(RED)
                 .addParent(AUGMENTED_CASTING)
                 .build());
-        add(MAGE_BAND_1, talent(120, 75)
+        /*add(MAGE_BAND_1, talent(120, 75)
                 .addCost(GREEN)
                 .addParent(MANA_REGEN_BOOST_2)
                 .build());

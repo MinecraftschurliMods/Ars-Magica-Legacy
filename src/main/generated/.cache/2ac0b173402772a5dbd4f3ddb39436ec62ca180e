@@ -1,4 +1,4 @@
-// 1.21	2024-08-07T10:47:39.2637334	vanilla/Global Loot Modifiers : arsmagicalegacy
+// 1.21	2024-09-16T03:40:34.8344659	vanilla/Global Loot Modifiers : arsmagicalegacy
 1d9763069c9adf2b51e0d41b7c2b642091f1d83a data/arsmagicalegacy/loot_modifiers/abandoned_mineshaft.json
 7f520c2bab3b05dcbea24c73425840b1d6fc388d data/arsmagicalegacy/loot_modifiers/ancient_city.json
 0b060208d144193f56a8ac5b3e855a8b4375067d data/arsmagicalegacy/loot_modifiers/ancient_city_ice_box.json
@@ -8,6 +8,7 @@ f9036f8532f665b1e8be0d35144b619616398952 data/arsmagicalegacy/loot_modifiers/des
 92eecd5baac6b9d4ecdff3d7d8ed8636524ec7fa data/arsmagicalegacy/loot_modifiers/igloo_chest.json
 7edaabd453e0191775541f2474b56cd10c8dcce3 data/arsmagicalegacy/loot_modifiers/jungle_temple.json
 c8cd7886b0b1065603957a6be2683b198423763b data/arsmagicalegacy/loot_modifiers/nether_bridge.json
+cdd7ef21ae10ddd2c76bbba807cd0e2a67f60bab data/arsmagicalegacy/loot_modifiers/no_summon_loot.json
 834e6db51ced470755a70693a59a345436075850 data/arsmagicalegacy/loot_modifiers/pillager_outpost.json
 611199d9cb7cccb8a6cc919e9dd60dfebb3572e1 data/arsmagicalegacy/loot_modifiers/shipwreck_treasure.json
 d2856d75cf71508eb8ffd344957e31201d16dd7c data/arsmagicalegacy/loot_modifiers/simple_dungeon.json
@@ -21,4 +22,4 @@ d2b10a9f8d978100276ad254857e00e873e1034e data/arsmagicalegacy/loot_modifiers/vil
 2b5e9b88ce9c0b49470e12b63e9a7a32bfc0b5c9 data/arsmagicalegacy/loot_modifiers/village/village_taiga_house.json
 acce7255f5c8d4ccd601cb103e7b8c9b35a5a6fc data/arsmagicalegacy/loot_modifiers/village/village_temple.json
 d49c512bca21969c91e3cc252f518287943b7ce2 data/arsmagicalegacy/loot_modifiers/woodland_mansion.json
-ebefba7fac9f4769fce978af209c84c4d1b829c5 data/neoforge/loot_modifiers/global_loot_modifiers.json
+d66b2431a987de9257e049389c4553f16ff34552 data/neoforge/loot_modifiers/global_loot_modifiers.json

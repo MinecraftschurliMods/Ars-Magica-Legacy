@@ -1,13 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.loot.AddConditionsModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.loot.AddPoolToTableModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.loot.HasLootContextParamCondition;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.loot.HasSummonOwnerCondition;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
@@ -44,6 +49,10 @@ public class AMGlobalLootModifierProvider extends GlobalLootModifierProvider {
         addTomeModifier(BuiltInLootTables.WOODLAND_MANSION);
         addTomeModifier(BuiltInLootTables.VILLAGE_TEMPLE);
         addTomeModifier(BuiltInLootTables.END_CITY_TREASURE);
+
+        add("no_summon_loot", new AddConditionsModifier(
+                new LootItemCondition[]{HasLootContextParamCondition.of(List.of(LootContextParams.THIS_ENTITY))},
+                new LootItemCondition[]{new InvertedLootItemCondition(new HasSummonOwnerCondition())}));
     }
 
     private void addTomeModifier(ResourceKey<LootTable> table) {
