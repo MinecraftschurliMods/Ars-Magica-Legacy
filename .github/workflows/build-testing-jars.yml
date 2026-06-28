@@ -1,4 +1,4 @@
-name: "Build Testing jars"
+name: "Build Testing JARs"
 
 on:
   workflow_dispatch:
@@ -7,6 +7,6 @@ jobs:
   build:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
     with:
-      java-version: 21
+      java-version: 25
       upload-artifacts: true
       release-type: dev

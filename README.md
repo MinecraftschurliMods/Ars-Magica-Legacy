@@ -1,5 +1,4 @@
-[![Ars Magica: Legacy](src/main/resources/logo.png)][CurseForge Project]
-==================
+# Ars Magica: Legacy
 
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
@@ -8,7 +7,7 @@
 [![GitHub Releases](https://img.shields.io/github/v/release/MinecraftschurliMods/Ars-Magica-Legacy?sort=semver&display_name=tag&logo=github)][GitHub Releases]
 [![GitHub Issues](https://img.shields.io/github/issues-raw/MinecraftschurliMods/Ars-Magica-Legacy/bug?label=open%20bugs)][GitHub Issues]
 [![Maven](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fminecraftschurli.ddns.net%2Frepository%2Fmaven-public%2Fcom%2Fgithub%2Fminecraftschurlimods%2Farsmagicalegacy%2Fmaven-metadata.xml&versionPrefix=1.19)][Maven]
-</br>
+<br>
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/350734?logo=curseforge&label=CurseForge%20Downloads&color=orange)][CurseForge Project]
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/hm4S7JIe?logo=modrinth&logoColor=%231bd96a&label=Modrinth%20Downloads&color=%231bd96a)][Modrinth Project]
 [![Discord](https://img.shields.io/discord/358283695104458752?logo=discord&label=Discord&color=%235865F2)][Discord]
@@ -17,16 +16,16 @@
 
 ## Download
 
-You can download the latest version of the mod from [CurseForge][CurseForge Project] or [Modrinth][Modrinth Project].
+You can download the latest version of the mod from [CurseForge][CurseForge Downloads] or [Modrinth][Modrinth Downloads].
 
-| Minecraft Version | Latest Mod Version | Minimum Modloader Version* | Supported |                                    Download                                     |
-|:-----------------:|:------------------:|:--------------------------:|:---------:|:-------------------------------------------------------------------------------:|
-|      1.18.1       |       0.1.5        |      [Forge] 39.0.66       |     ❌     |                    [CurseForge][Download-1.18.1-CurseForge]                     |
-|      1.18.2       |       1.3.0        |      [Forge] 40.1.35       |     ❌     | [CurseForge][Download-1.18.2-CurseForge] / [Modrinth][Download-1.18.2-Modrinth] |
-|      1.19.2       |       1.3.1        |      [Forge] 43.1.13       |     ❌     | [CurseForge][Download-1.19.2-CurseForge] / [Modrinth][Download-1.19.2-Modrinth] |
-|      1.20.1       |       1.5.0        |      [Forge] 47.0.34       |     ✅     | [CurseForge][Download-1.20.1-CurseForge] / [Modrinth][Download-1.20.1-Modrinth] |
-|      1.20.4       |       1.5.0        |    [NeoForge] 20.4.232     |     ✅     | [CurseForge][Download-1.20.4-CurseForge] / [Modrinth][Download-1.20.4-Modrinth] |
-|       1.21        |       1.5.0        |    [NeoForge] 21.0.143     |     ✅     |   [CurseForge][Download-1.21-CurseForge] / [Modrinth][Download-1.21-Modrinth]   |
+| Minecraft Version | Modloader | Supported |
+|:-----------------:|:---------:|:---------:|
+|       26.1        | NeoForge  |    Yes    |
+|      1.20.4       | NeoForge  |    No     |
+|      1.20.1       |   Forge   |    No     |
+|      1.19.2       |   Forge   |    No     |
+|      1.18.2       |   Forge   |    No     |
+|      1.18.1       |   Forge   |    No     |
 
 ## Dependencies
 
@@ -38,16 +37,15 @@ You can download the latest version of the mod from [CurseForge][CurseForge Proj
 - JEI ([CurseForge][JEI-CurseForge] / [Modrinth][JEI-Modrinth]) (optional)
 - The One Probe ([CurseForge][TOP-CurseForge] / [Modrinth][TOP-Modrinth]) (optional)
 
-## Developing addons
+## Developing Addons
 
-You can develop addons for this mod using the [Ars Magica API].
-To use the API you need to first add the maven repository to your `build.gradle`:
+You can develop addons for this mod using the Ars Magica: Legacy API. To use the API you need to first add the maven repository to your `build.gradle`:
 
 ```groovy
 repositories {
     maven {
         name = "MinecraftschurliMods"
-        url = "https://minecraftschurli.ddns.net/repository/maven-public/"
+        url = "https://maven.minecraftschurli.at/maven-public"
     }
 }
 ```
@@ -56,114 +54,41 @@ Then you can add the API as a dependency (don't forget to also include the requi
 
 ```groovy
 dependencies {
-    compileOnly fg.deobf('com.github.minecraftschurli:arsmagicalegacy:<arsmagicalegacy-version>:api')
-    runtimeOnly fg.deobf('com.github.minecraftschurli:arsmagicalegacy:<arsmagicalegacy-version>')
-    runtimeOnly fg.deobf('vazkii.patchouli:Patchouli:<patchouli-version>')
-    runtimeOnly fg.deobf('software.bernie.geckolib:geckolib-forge-<mc-version>:<geckolib-version>')
+    compileOnly "com.github.minecraftschurli:arsmagicalegacy:${arsmagicalegacy_version}:api"
+    runtimeOnly "com.github.minecraftschurli:arsmagicalegacy:${arsmagicalegacy_version}"
+    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
+    runtimeOnly "software.bernie.geckolib:geckolib-neoforge-${mc_version}:${geckolib_version}"
 }
 ```
 
-## Development
-
-### Setup
-
-1. Clone the repository.
-2. Run `./gradlew genIntellijRuns` / `./gradlew genEclipseRuns` / `./gradlew genVSCodeRuns` depending on your IDE to set up the workspace.
-3. Open the project in your IDE.
-
-### Launching the game
-
-#### Client
-
-To launch the client either:
-
-1. Run the `runClient` run configuration generated in setup.
-2. Run `./gradlew runClient` in the project directory.
-
-#### Server
-
-To launch the dedicated server either:
-
-1. Run the `runServer` run configuration generated in setup.
-2. Run `./gradlew runServer` in the project directory.
-
-### Running the data generators
-
-To run the data generators either:
-
-1. Run the `runData` run configuration generated in setup.
-2. Run `./gradlew runData` in the project directory.
-
-### Testing
-
-#### Adding test cases
-
-1. Create a new class in `src/test/java` in the package `com.github.minecraftschurli.arsmagicalegacy.test`.
-2. Add the `@PrefixGameTestTemplate(false)` and `@GameTestHolder(ArsMagicaAPI.MOD_ID)` annotations to the class.
-3. Add the `@GameTest` annotation to the test method and specify the template name (e.g. `@GameTest(template = "example")`). Use the `empty` template for tests that don't require a specific template.
-4. Write the test case. Use the `GameTestHelper` parameter of your test method to fail or succeed. Your testcase is required to call succeed at least once or it will fail with a timeout.
-
-#### Running tests
-
-To run the tests either:
-
-1. Run the `runGameTestServer` run configuration generated in setup.
-2. Run `./gradlew runGameTestServer` in the project directory.
-3. Launch the client and use the `/test` command.
-
-### Building
-
-Run `./gradlew build` to build the mod. The resulting jars will be located in `build/libs`.
-
-## Legal disclaimer
+## Legal Disclaimers & Licensing
 
 Ars Magica is a trademark of Atlas Games®, used with permission.
 
-Some textures used in this mod are property of D3miurge, used with permission.
-
+Different parts of the repository are licensed under different licenses. See [LICENSE.md] for a detailed breakdown of the repository's licensing.
 
 [Build Workflow]: https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/actions/workflows/build.yml
 [GitHub Releases]: https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/releases/latest
 [GitHub Issues]: https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/issues?q=is%3Aopen+is%3Aissue+label%3Abug
 [Maven]: https://minecraftschurli.ddns.net/repository/#/maven-public/com/github/minecraftschurli/arsmagicalegacy
-[CurseForge Downloads]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files
-[Modrinth Downloads]: https://modrinth.com/mod/ars-magica-legacy/versions#all-versions
-[Discord]: https://discord.gg/GcFqXwX
-
 [CurseForge Project]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy
 [Modrinth Project]: https://modrinth.com/mod/ars-magica-legacy
-
-[Download-1.18.1-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.18.1
-[Download-1.18.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.18.2
-[Download-1.18.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.18.2
-[Download-1.19.2-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.19.2
-[Download-1.19.2-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.19.2
-[Download-1.20.1-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.20.1
-[Download-1.20.1-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.1
-[Download-1.20.4-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.20.4
-[Download-1.20.4-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.20.4
-[Download-1.21-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files/all?page=1&pageSize=20&version=1.21
-[Download-1.21-Modrinth]: https://modrinth.com/mod/ars-magica-legacy/versions?g=1.21
+[Discord]: https://discord.gg/GcFqXwX
+[CurseForge Downloads]: https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy/files
+[Modrinth Downloads]: https://modrinth.com/mod/ars-magica-legacy/versions#all-versions
+[LICENSE.md]: LICENSE.md
 
 [Forge]: https://files.minecraftforge.net/
 [NeoForge]: https://neoforged.net
-
 [GeckoLib-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/geckolib
 [GeckoLib-Modrinth]: https://modrinth.com/mod/geckolib
-
 [Patchouli-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/patchouli
 [Patchouli-Modrinth]: https://modrinth.com/mod/patchouli
-
 [Curios-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/curios
 [Curios-Modrinth]: https://modrinth.com/mod/curios
-
 [Jade-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/jade
 [Jade-Modrinth]: https://modrinth.com/mod/jade
-
 [JEI-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/jei
 [JEI-Modrinth]: https://modrinth.com/mod/jei
-
 [TOP-CurseForge]: https://www.curseforge.com/minecraft/mc-mods/the-one-probe
 [TOP-Modrinth]: https://modrinth.com/mod/the-one-probe
-
-[Ars Magica API]: https://minecraftschurli.ddns.net/repository/javadoc/maven-public/com/github/minecraftschurlimods/arsmagicalegacy/1.19.2-1.3.0

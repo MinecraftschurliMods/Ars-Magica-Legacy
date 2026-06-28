@@ -12,6 +12,7 @@ jobs:
   build:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
     with:
-      java-version: 21
+      java-version: 25
       upload-artifacts: true
       datagen-folder: src/main/generated/
+      run-datagen-task: 'runClientData'

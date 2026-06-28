@@ -1,8 +1,8 @@
 import com.github.minecraftschurlimods.helperplugin.api
 import com.github.minecraftschurlimods.helperplugin.localGradleProperty
-import com.github.minecraftschurlimods.helperplugin.version
 import com.github.minecraftschurlimods.helperplugin.moddependencies.ModDependency
 import com.github.minecraftschurlimods.helperplugin.sourceSets
+import com.github.minecraftschurlimods.helperplugin.version
 
 plugins {
     idea
@@ -10,75 +10,69 @@ plugins {
     id("com.github.minecraftschurlimods.helperplugin")
 }
 
-helper.license.url = helper.gitHub.url.zip(helper.license.file) { url, file -> "$url/blob/version/1.20.x/$file" }
-
 helper.withApiSourceSet()
 helper.withDataGenSourceSet()
 helper.withTestSourceSet()
+helper.withJarJar()
+
+helper.accessTransformers.add("META-INF/accesstransformer.cfg")
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        name = "Minecraftschurli Maven"
-        url = uri("https://minecraftschurli.ddns.net/repository/maven-public/")
+        name = "Geckolib"
+        url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
         content {
-            includeGroup("com.github.minecraftschurlimods")
+            includeGroupAndSubgroups("com.geckolib")
         }
     }
     maven {
-        name = "mcjty maven"
-        url = uri("https://maven.k-4u.nl")
-        content {
-            includeGroup("mcjty.theoneprobe")
-        }
-    }
-    maven {
-        name = "OctoStudios"
-        url = uri("https://maven.octo-studios.com/releases")
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top/")
         content {
             includeGroup("top.theillusivec4.curios")
         }
     }
     maven {
-        name = "blamejared Maven"
-        url = uri("https://maven.blamejared.com")
-        content {
-            includeGroup("com.blamejared.controlling")
-            includeGroup("vazkii.patchouli")
-            includeGroup("mezz.jei")
-        }
-    }
-    maven {
-        name = "GeckoLib Maven"
-        url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
-        content {
-            includeGroup("software.bernie.geckolib")
-        }
-    }
-    maven {
-        name = "ModMaven"
-        url = uri("https://modmaven.k-4u.nl")
-    }
-    maven {
+        // Jade
         name = "Modrinth"
         url = uri("https://api.modrinth.com/maven")
         content {
             includeGroup("maven.modrinth")
         }
     }
+    maven {
+        // JEI, Patchouli
+        name = "blamejared Maven"
+        url = uri("https://maven.blamejared.com/")
+        content {
+            includeGroup("mezz.jei")
+            includeGroup("vazkii.patchouli")
+        }
+    }
+    maven {
+        // JEI fallback
+        name = "Modmaven"
+        url = uri("https://modmaven.dev")
+        content {
+            includeGroup("mezz.jei")
+        }
+    }
+    maven {
+        // EasyDatagenLib
+        name = "Minecraftschurli Maven"
+        url = uri("https://maven.minecraftschurli.at/maven-public")
+        content {
+            includeGroup("com.github.minecraftschurlimods")
+            includeGroup("at.minecraftschurli")
+        }
+    }
 }
 
-val jei = helper.dependencies.jei()
-val jade = helper.dependencies.jade()
-val theoneprobe = helper.dependencies.theoneprobe()
 val curios = helper.dependencies.curios()
-val configured = helper.dependencies.configured()
-val catalogue = helper.dependencies.catalogue()
-val potionbundles = helper.dependencies.optional("potionbundles") {
-    curseforgeId = "potion-bundles"
-    modrinthId = "potion-bundles"
-}
+val jade = helper.dependencies.jade()
+val jei = helper.dependencies.jei()
 val geckolib = helper.dependencies.required("geckolib") {
     ordering = ModDependency.Ordering.BEFORE
     side = ModDependency.Side.BOTH
@@ -87,114 +81,99 @@ val patchouli = helper.dependencies.required("patchouli") {
     ordering = ModDependency.Ordering.BEFORE
     side = ModDependency.Side.BOTH
 }
-val embeddium = helper.dependencies.optional("embeddium")
-
 
 dependencies {
     implementation(helper.neoforge())
     testImplementation(helper.testframework())
 
-    // jei for integration
-    val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
-    val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
-    compileOnly(jeiApiDep)
-
-    // curios for additional inventory slots
+    // curios for integration
     val curiosApiDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}:api" }
     val curiosDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}" }
     compileOnly(curiosApiDep)
     "dataCompileOnly"(curiosApiDep)
     "dataRuntimeOnly"(curiosDep)
 
+    // jade for integration
+    val jadeDep = jade.version.map { "maven.modrinth:jade:${it}-neoforge" }
+    compileOnly(jadeDep)
+
+    // jei for integration
+    val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
+    val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
+    compileOnly(jeiApiDep)
+
+    // geckolib for animations
+    val geckolibDep = helper.minecraftVersion.zip(geckolib.version) { mc, version -> "com.geckolib:geckolib-neoforge-${/*mc*/"26.1"}:${version}" }
+    implementation(geckolibDep)
+    testRuntimeOnly(geckolibDep)
+    "dataRuntimeOnly"(geckolibDep)
+    "interfaceInjection"(geckolibDep)
+
     // patchouli for the guide book (arcane compendium)
-    val patchouliApiDep = patchouli.version.map { "vazkii.patchouli:Patchouli:${it}:api" }
-    val patchouliDep = patchouli.version.map { "vazkii.patchouli:Patchouli:${it}" }
+    val patchouliApiDep = patchouli.version.map { "vazkii.patchouli:patchouli-neoforge:${it}:api" }
+    val patchouliDep = patchouli.version.map { "vazkii.patchouli:patchouli-neoforge:${it}" }
     compileOnly(patchouliApiDep)
     runtimeOnly(patchouliDep)
     testRuntimeOnly(patchouliDep)
     "dataRuntimeOnly"(patchouliDep)
 
-    // geckolib for animations
-    val geckolibDep = geckolib.version.map { "software.bernie.geckolib:geckolib-neoforge-1.21:${it}" }
-    implementation(geckolibDep)
-    testRuntimeOnly(geckolibDep)
-    "dataRuntimeOnly"(geckolibDep)
-
-    // theoneprobe for integration
-    val theoneprobeApiDep = theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}:api" }
-    val theoneprobeDep = theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}" }
-    compileOnly(theoneprobeApiDep) { (this as ModuleDependency).isTransitive = false }
-
-    // jade for integration
-    val jadeDep = jade.version.map { "maven.modrinth:jade:${it}-neoforge" }
-    compileOnly(jadeDep)
-
     if (!helper.runningInCI.getOrElse(false)) {
-        val potionbundlesDep = potionbundles.version.map { "com.github.minecraftschurlimods:potionbundles:${it}" }
-        runtimeOnly(potionbundlesDep)
-        runtimeOnly(theoneprobeDep)
-        runtimeOnly(jeiDep)
+        runtimeOnly(curiosDep)
         runtimeOnly(jadeDep)
-        // runtimeOnly(curiosDep)
+        runtimeOnly(jeiDep)
     }
 
-    // add internal libraries
-    val codeclib = project.localGradleProperty("dependency.codeclib.version").map { "com.github.minecraftschurlimods:codeclib:$it" }
-    jarJar(codeclib)
-    "apiCompileOnly"(codeclib)
-    implementation(codeclib)
-    "dataImplementation"(codeclib)
-    testImplementation(codeclib)
-
-    val betterkeybindlib = project.localGradleProperty("dependency.betterkeybindlib.version").map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
-    jarJar(betterkeybindlib)
-    implementation(betterkeybindlib)
-    "dataImplementation"(betterkeybindlib)
-    testImplementation(betterkeybindlib)
-
-    val betterhudlib = project.localGradleProperty("dependency.betterhudlib.version").map { "com.github.minecraftschurlimods:betterhudlib:$it" }
-    jarJar(betterhudlib)
-    implementation(betterhudlib)
-    "dataImplementation"(betterhudlib)
-    testImplementation(betterhudlib)
-
     val easyDatagenLibVersion = project.localGradleProperty("dependency.easydatagenlib.version")
-    val easyDatagenLibApiDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}:api" }
-    val easyDatagenLibDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}" }
+    val easyDatagenLibApiDep = easyDatagenLibVersion.map { "at.minecraftschurli.mods:easydatagenlib:${it}:api" }
+    val easyDatagenLibDep = easyDatagenLibVersion.map { "at.minecraftschurli.mods:easydatagenlib:${it}" }
     "apiCompileOnly"(easyDatagenLibApiDep)
     "dataImplementation"(easyDatagenLibDep)
+    "accessTransformer"(easyDatagenLibDep)
+
+    jarJar(implementation("de.androidpit:color-thief:${project.properties["colorthief_version"]}")) {}
+
+    testImplementation("org.junit.jupiter:junit-jupiter:${project.properties["junit_version"]}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     sourceSets.forEach {
         it.compileOnlyConfigurationName("org.jetbrains:annotations:23.0.0")
+        /*it.annotationProcessorConfigurationName("systems.manifold:manifold-preprocessor:2026.1.6")*/
     }
-}
-
-afterEvaluate {
-    tasks.findByName("testJunit")?.enabled = false
 }
 
 helper.withCommonRuns()
 helper.withGameTestRuns()
-helper.withDataGenRuns {
-    programArguments.add("--mixin.config")
-    programArguments.add(helper.projectId.map { "${it}_data.mixins.json" })
-}
+helper.withDataGenRuns()
 
-helper.modproperties.put("catalogueItemIcon", helper.projectId.map { "$it:occulus" })
-
-helper.mixinConfigs.add(helper.projectId.map { "${it}.mixins.json" })
+minecraft.idea.useArgsFile = false
 
 minecraft.accessTransformers.file("src/main/resources/META-INF/accesstransformer.cfg")
 
-helper.withJarJar()
+tasks.jar {
+    exclude("at/minecraftschurli/arsmagicalegacy/api/data")
+}
+
+tasks.withType<JavaCompile>().matching { !it.name.startsWith("neo") }.configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(arrayOf("-Xlint:-removal", "-Xmaxerrs", "9999"))
+    //options.compilerArgs.add("-Xplugin:Manifold")
+}
+
+tasks.withType<JavaCompile>().matching { it.name == "neoFormRecompile" }.configureEach {
+    options.compilerArgs.add("-Xlint:-removal")
+}
 
 tasks.javadoc {
     classpath = sourceSets.api.get().compileClasspath
     source = sourceSets.api.get().allJava
 }
 
-tasks.jar {
-    exclude("com/github/minecraftschurlimods/arsmagicalegacy/api/data")
+runs {
+    named("client") {
+        renderDoc {
+            enabled = false
+        }
+    }
 }
 
 helper.publication.pom {

@@ -18,11 +18,15 @@ The old mod's potion bundles were moved into their own project: Potion Bundles (
 
 ## Getting Started
 
-**1.19 and above**
+### 26.1 and above
+
+In plains and plains-like biomes, you will rarely find puddles of Liquid Essence. Place an item frame nearby, place a book in the item frame, and wait for the book to be converted into an Arcane Compendium. It will then guide you through the mod.
+
+### 1.19 through 1.20.4
 
 In plains and plains-like biomes, you will rarely find puddles of Liquid Essence. Craft an Arcane Compendium with a book and a Liquid Essence Bucket. It will then guide you through the mod.
 
-**1.18 and below**
+### 1.18 and below
 
 In the underground, you will find a variety of ores added by this mod. The most common of those is Vinteum Ore. Craft an Arcane Compendium with a book and a piece of Vinteum Dust. It will then guide you through the mod.
 
@@ -36,7 +40,7 @@ In the underground, you will find a variety of ores added by this mod. The most 
 - A new fancy tree type that can be found rarely in dark forests
 - In-game documentation via the Patchouli mod
 - Customization via datapacks, allowing you to change dependencies and unlock costs of spell parts, alter mana and crafting costs of spell parts, add new materials for the crafting altar, and much more
-- An extensive API for addon developers to build upon, allowing them to add new spell parts. affinities, skill points etc
+- An extensive API for addon developers to build upon, allowing them to add new spell parts, affinities, skill points etc
 
 ## Planned Features
 
@@ -44,37 +48,31 @@ In the underground, you will find a variety of ores added by this mod. The most 
 
 ## Dependencies & Compatibility
 
-This mod requires Patchouli ([CurseForge](https://curseforge.com/minecraft/mc-mods/patchouli) / [Modrinth](https://modrinth.com/mod/patchouli)) version 1.18-58 or newer for the in-game documentation.
-From version 1.2.0 onwards, this mod requires GeckoLib ([CurseForge](https://curseforge.com/minecraft/mc-mods/geckolib) / [Modrinth](https://modrinth.com/mod/geckolib)).
+This mod requires:
 
-This mod has optional integration with [JEI](https://curseforge.com/minecraft/mc-mods/jei), [Curios](https://curseforge.com/minecraft/mc-mods/curios), [Embeddium](https://curseforge.com/minecraft/mc-mods/embeddium), [Jade](https://curseforge.com/minecraft/mc-mods/jade), [The One Probe](https://curseforge.com/minecraft/mc-mods/the-one-probe).
+- Patchouli ([CurseForge](https://curseforge.com/minecraft/mc-mods/patchouli) / [Modrinth](https://modrinth.com/mod/patchouli))
+- GeckoLib ([CurseForge](https://curseforge.com/minecraft/mc-mods/geckolib) / [Modrinth](https://modrinth.com/mod/geckolib))
 
-This mod is not compatible with OptiFine or most similar mods, due to them breaking rendering internals.
+This mod has optional integration with:
+
+- [Curios](https://curseforge.com/minecraft/mc-mods/curios)
+- [JEI](https://curseforge.com/minecraft/mc-mods/jei)
+- [Jade](https://curseforge.com/minecraft/mc-mods/jade)
+
+This mod is not compatible with OptiFine.
 
 ## Bugs & Crashes
 
-If your game crashes upon starting, please check if you have downloaded all dependencies in the right versions (see above) and if you are on the newest Forge version.
+If your game crashes upon starting, please check if you have downloaded all dependencies in the right versions (see above) and if you are on the newest Forge/NeoForge version.
 
-If it still crashes, please check if it is an incompatibility with another mod. To do that, remove all mods except Ars Magica: Legacy and the dependencies and re-add one mod by another. When you have found an incompatibility, create a [GitHub issue](https://github.com/Minecraftschurli/ArsMagicaLegacy/issues) (only if none with the same error does not exist yet) and put Incompatibility with &lt;Mod Name&gt;
-in the title.
+If it still crashes, please check if it is an incompatibility with another mod. To do that, remove all mods except Ars Magica: Legacy and the dependencies and re-add one mod by another. When you have found an incompatibility, create a [GitHub issue](https://github.com/Minecraftschurli/ArsMagicaLegacy/issues) (only if none with the same error does not exist yet) and put Incompatibility with &lt;Mod Name&gt; in the title.
 
 If you found a bug in-game, please report it on [GitHub](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/issues) as well. Again, please check if a similar issue already exists first.
-
-## Modpacks
-
-You may use this mod in any modpack that meets the following conditions:
-
-- A link back to this page is given
-- The modpack does not require money to be played (Optional donations, such as Patreon, are fine)
-- You give credit to the mod owner (Minecraftschurli)
-- You do not claim that you made this mod or parts of it
 
 ## Fabric
 
 We currently do not support Fabric and have not got the capacity to support it our selves. If you are interested in helping us making it work on Fabric, feel free to contact us on Discord.
 
-## Legal disclaimer
+## Legal Disclaimer
 
 Ars Magica is a trademark of Atlas Games®, used with permission.
-
-Some textures used in this mod are property of D3miurge, used with permission.
