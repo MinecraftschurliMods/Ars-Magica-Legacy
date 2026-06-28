@@ -1,0 +1,16 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:insolator",
+  "ingredient": "arsmagicalegacy:aum",
+  "output": [
+    {
+      "chance": 2.0,
+      "item": "arsmagicalegacy:aum"
+    }
+  ]
+}

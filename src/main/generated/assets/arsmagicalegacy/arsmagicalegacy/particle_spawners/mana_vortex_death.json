@@ -1,0 +1,35 @@
+{
+  "color": 4013516,
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:fade_out",
+      "kill_on_finish": true
+    }
+  ],
+  "count": 72,
+  "max_lifetime": 20,
+  "max_offset": [
+    0.2,
+    0.2,
+    0.2
+  ],
+  "max_speed": [
+    0.1,
+    0.1,
+    0.1
+  ],
+  "min_lifetime": 20,
+  "min_offset": [
+    -0.2,
+    -0.2,
+    -0.2
+  ],
+  "min_speed": [
+    -0.1,
+    -0.1,
+    -0.1
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:ember"
+  }
+}

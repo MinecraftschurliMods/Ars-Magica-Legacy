@@ -1,0 +1,50 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:leave_trail",
+      "spawner": {
+        "color": 11678693,
+        "controllers": [
+          {
+            "type": "arsmagicalegacy:float_upward",
+            "max_speed": -0.3,
+            "min_speed": -0.3
+          }
+        ],
+        "count": 1,
+        "max_lifetime": 5,
+        "min_lifetime": 5,
+        "particle": {
+          "type": "arsmagicalegacy:pulse"
+        }
+      }
+    },
+    {
+      "type": "arsmagicalegacy:orbit_point",
+      "follow_target": true,
+      "max_speed": 0.2,
+      "min_speed": 0.2
+    },
+    {
+      "type": "arsmagicalegacy:fade_out",
+      "kill_on_finish": true
+    }
+  ],
+  "count": 25,
+  "max_lifetime": 20,
+  "max_offset": [
+    0.5,
+    1.0,
+    0.5
+  ],
+  "min_lifetime": 20,
+  "min_offset": [
+    -0.5,
+    -1.0,
+    -0.5
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:pulse"
+  },
+  "scale": 0.05
+}

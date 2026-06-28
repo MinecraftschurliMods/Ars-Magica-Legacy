@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "arsmagicalegacy:battlemage"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "arsmagicalegacy:battlemage"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "arsmagicalegacy:battlemage"
+      }
+    ]
+  }
+}

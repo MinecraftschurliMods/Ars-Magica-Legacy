@@ -1,0 +1,23 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:fire": 0.0020000000949949026
+  },
+  "mana": 100.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:gray_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:fire_charge"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:tnt"
+    }
+  ]
+}

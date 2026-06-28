@@ -1,0 +1,24 @@
+package at.minecraftschurli.mods.arsmagicalegacy.entity.ai;
+
+import at.minecraftschurli.mods.arsmagicalegacy.entity.AbstractBoss;
+import at.minecraftschurli.mods.arsmagicalegacy.entity.EnderGuardian;
+import net.minecraft.world.phys.Vec3;
+
+public class ShadowstepGoal extends AbstractBossGoal<EnderGuardian> {
+    public ShadowstepGoal(EnderGuardian boss) {
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
+    }
+
+    @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getRandom().nextBoolean();
+    }
+
+    @Override
+    public void perform() {
+        if (boss.getTarget() != null) {
+            Vec3 facing = boss.getTarget().getViewVector(1).normalize();
+            boss.teleportTo(boss.getTarget().getX() - facing.x() * 3, boss.getTarget().getY(), boss.getTarget().getX() - facing.z() * 3);
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "affinity_shifts": {},
+  "mana": 2.5,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:gems/moonstone"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:gems/sunstone"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:tarma_root"
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "count": 2500
+    }
+  ]
+}

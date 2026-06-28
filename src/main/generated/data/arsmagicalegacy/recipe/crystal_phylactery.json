@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:dusts/arcane_ash",
+    "G": "#c:glass_blocks",
+    "M": "#c:gems/moonstone",
+    "W": "arsmagicalegacy:magic_wall"
+  },
+  "pattern": [
+    " M ",
+    "GAG",
+    " W "
+  ],
+  "result": {
+    "id": "arsmagicalegacy:crystal_phylactery"
+  }
+}

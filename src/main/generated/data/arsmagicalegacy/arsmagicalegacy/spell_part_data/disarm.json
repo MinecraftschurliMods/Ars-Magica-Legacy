@@ -1,0 +1,35 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:arcane": 0.0020000000949949026
+  },
+  "mana": 60.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:purple_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_spear"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_sword"
+      }
+    }
+  ]
+}

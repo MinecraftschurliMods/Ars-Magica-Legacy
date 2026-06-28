@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:transplace"
+  ],
+  "tab": "arsmagicalegacy:utility",
+  "x": 72,
+  "y": 312
+}

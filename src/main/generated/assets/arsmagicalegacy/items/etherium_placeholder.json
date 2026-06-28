@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "arsmagicalegacy:item/etherium_placeholder",
+    "tints": [
+      {
+        "type": "arsmagicalegacy:etherium_type"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "arsmagicalegacy:affinity_fifty_percent",
+  "criteria": {
+    "affinity": {
+      "conditions": {
+        "new_depth": 1.0
+      },
+      "trigger": "arsmagicalegacy:affinity_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.affinity_full.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:ender"
+      },
+      "id": "arsmagicalegacy:affinity_essence"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.affinity_full.title"
+    }
+  },
+  "requirements": [
+    [
+      "affinity"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "arsmagicalegacy:item/crystal_wrench"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "arsmagicalegacy:item/crystal_wrench_active"
+    },
+    "property": "arsmagicalegacy:crystal_wrench_active"
+  }
+}

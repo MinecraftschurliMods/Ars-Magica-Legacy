@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "type": "immersiveengineering:sawmill",
+  "energy": 800,
+  "input": "arsmagicalegacy:stripped_witchwood_log",
+  "result": {
+    "count": 6,
+    "item": "arsmagicalegacy:witchwood_planks"
+  },
+  "secondaries": [
+    {
+      "output": "#c:dusts/wood",
+      "stripping": false
+    }
+  ]
+}

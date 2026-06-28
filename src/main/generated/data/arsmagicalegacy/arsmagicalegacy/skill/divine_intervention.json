@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:red",
+  "parents": [
+    "arsmagicalegacy:recall"
+  ],
+  "tab": "arsmagicalegacy:utility",
+  "x": 24,
+  "y": 312
+}

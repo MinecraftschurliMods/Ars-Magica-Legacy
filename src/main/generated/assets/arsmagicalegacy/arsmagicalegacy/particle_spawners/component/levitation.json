@@ -1,0 +1,30 @@
+{
+  "color": 3355545,
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:orbit_point",
+      "follow_target": true,
+      "max_distance": 0.8,
+      "max_speed": 0.2,
+      "min_distance": 0.4,
+      "min_speed": 0.1
+    }
+  ],
+  "count": 15,
+  "max_lifetime": 40,
+  "max_offset": [
+    0.5,
+    0.25,
+    0.5
+  ],
+  "min_lifetime": 40,
+  "min_offset": [
+    -0.5,
+    -0.25,
+    -0.5
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:ember"
+  },
+  "scale": 0.5
+}

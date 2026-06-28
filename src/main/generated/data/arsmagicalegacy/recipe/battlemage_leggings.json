@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:fire"
+      },
+      "items": "arsmagicalegacy:affinity_essence"
+    },
+    "G": "#c:ingots/gold",
+    "O": "#c:obsidians/normal",
+    "R": "arsmagicalegacy:red_rune"
+  },
+  "pattern": [
+    "GRG",
+    "OEO",
+    "O O"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:battlemage_leggings"
+  }
+}

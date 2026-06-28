@@ -1,0 +1,29 @@
+{
+  "all_states": {
+    "block": "minecraft:sweet_berry_bush",
+    "predicate_type": "minecraft:block_match"
+  },
+  "crop": {
+    "id": "minecraft:sweet_berries"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:bush",
+    "harvest_states": [
+      {
+        "Name": "minecraft:sweet_berry_bush",
+        "Properties": {
+          "age": "2"
+        }
+      },
+      {
+        "Name": "minecraft:sweet_berry_bush",
+        "Properties": {
+          "age": "3"
+        }
+      }
+    ]
+  },
+  "seed": {
+    "id": "minecraft:sweet_berries"
+  }
+}

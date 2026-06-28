@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:gravel",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:sand"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

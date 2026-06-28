@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tarma_root": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arsmagicalegacy:tarma_root"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:brown_dye_from_tarma_root"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tarma_root"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:brown_dye_from_tarma_root"
+    ]
+  }
+}

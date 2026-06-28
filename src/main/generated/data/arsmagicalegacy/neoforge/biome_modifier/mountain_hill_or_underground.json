@@ -1,0 +1,24 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      {
+        "type": "neoforge:or",
+        "values": [
+          "#c:is_overworld"
+        ]
+      },
+      {
+        "type": "neoforge:or",
+        "values": [
+          "#c:is_mountain",
+          "#c:is_hill",
+          "#c:is_underground"
+        ]
+      }
+    ]
+  },
+  "features": "arsmagicalegacy:tarma_root",
+  "step": "vegetal_decoration"
+}

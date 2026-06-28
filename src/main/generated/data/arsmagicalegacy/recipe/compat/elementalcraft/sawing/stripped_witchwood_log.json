@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "elementalcraft"
+    }
+  ],
+  "type": "elementalcraft:sawing",
+  "element_amount": 1000,
+  "input": "arsmagicalegacy:witchwood_log",
+  "luck_ratio": 0,
+  "output": {
+    "item": "arsmagicalegacy:stripped_witchwood_log"
+  }
+}

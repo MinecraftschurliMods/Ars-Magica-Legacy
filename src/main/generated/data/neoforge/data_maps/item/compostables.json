@@ -1,0 +1,25 @@
+{
+  "values": {
+    "arsmagicalegacy:aum": {
+      "chance": 0.65
+    },
+    "arsmagicalegacy:cerublossom": {
+      "chance": 0.65
+    },
+    "arsmagicalegacy:desert_nova": {
+      "chance": 0.65
+    },
+    "arsmagicalegacy:tarma_root": {
+      "chance": 0.65
+    },
+    "arsmagicalegacy:wakebloom": {
+      "chance": 0.65
+    },
+    "arsmagicalegacy:witchwood_leaves": {
+      "chance": 0.3
+    },
+    "arsmagicalegacy:witchwood_sapling": {
+      "chance": 0.3
+    }
+  }
+}

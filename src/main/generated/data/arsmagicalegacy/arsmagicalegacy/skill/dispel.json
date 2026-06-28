@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:blue",
+  "parents": [
+    "arsmagicalegacy:heal"
+  ],
+  "tab": "arsmagicalegacy:defense",
+  "x": 216,
+  "y": 120
+}

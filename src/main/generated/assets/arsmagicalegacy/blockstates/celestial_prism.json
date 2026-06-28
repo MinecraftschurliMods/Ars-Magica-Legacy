@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=lower": {
+      "model": "arsmagicalegacy:block/celestial_prism"
+    },
+    "part=upper": {
+      "model": "arsmagicalegacy:block/celestial_prism_particle"
+    }
+  }
+}

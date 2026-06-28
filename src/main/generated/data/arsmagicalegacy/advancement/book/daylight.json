@@ -1,0 +1,19 @@
+{
+  "parent": "arsmagicalegacy:book/root",
+  "criteria": {
+    "knows": {
+      "conditions": {
+        "requirements": [
+          "arsmagicalegacy:daylight"
+        ]
+      },
+      "trigger": "arsmagicalegacy:skill_change"
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

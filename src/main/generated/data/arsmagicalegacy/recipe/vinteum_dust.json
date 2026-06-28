@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:storage_blocks/vinteum"
+  ],
+  "result": {
+    "count": 9,
+    "id": "arsmagicalegacy:vinteum_dust"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "arsmagicalegacy:entities",
+  "description": "item.arsmagicalegacy.arcane_compendium.entities.bosses.description",
+  "icon": "arsmagicalegacy:water_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.entities.bosses.name"
+}

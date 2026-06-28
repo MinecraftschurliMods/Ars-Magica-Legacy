@@ -1,0 +1,28 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:ice": 0.0010000000474974513
+  },
+  "mana": 25.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:cyan_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:light_blue_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:gems/topaz"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:ice"
+    }
+  ]
+}

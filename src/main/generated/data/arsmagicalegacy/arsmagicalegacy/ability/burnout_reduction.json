@@ -1,0 +1,14 @@
+{
+  "affinity": "arsmagicalegacy:arcane",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.01
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:burnout_cost_modifier",
+      "max": 0.5,
+      "min": 1.0
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:life": 0.0020000000949949026
+  },
+  "mana": 80.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:gray_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:gems/chimerite"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:dusts/purified_vinteum"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:cerublossom"
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "count": 2500,
+      "etherium_type": "arsmagicalegacy:dark"
+    }
+  ]
+}

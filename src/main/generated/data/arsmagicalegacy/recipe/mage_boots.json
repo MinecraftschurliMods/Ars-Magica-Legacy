@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": "#c:leathers",
+    "R": "arsmagicalegacy:black_rune",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "W W",
+    "LRL"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:mage_boots"
+  }
+}

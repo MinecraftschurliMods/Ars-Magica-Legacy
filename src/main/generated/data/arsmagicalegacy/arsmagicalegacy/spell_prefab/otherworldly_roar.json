@@ -1,0 +1,34 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:blindness",
+      "arsmagicalegacy:slowness",
+      "arsmagicalegacy:knockback"
+    ]
+  },
+  "icon": "arsmagicalegacy:gravity_magenta_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.otherworldly_roar"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:area_of_effect",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range"
+      ]
+    }
+  ]
+}

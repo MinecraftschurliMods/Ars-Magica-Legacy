@@ -1,0 +1,10 @@
+{
+  "cost": "arsmagicalegacy:red",
+  "parents": [
+    "arsmagicalegacy:damage",
+    "arsmagicalegacy:velocity"
+  ],
+  "tab": "arsmagicalegacy:offense",
+  "x": 216,
+  "y": 264
+}

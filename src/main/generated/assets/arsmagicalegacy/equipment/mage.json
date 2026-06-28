@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "arsmagicalegacy:mage"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "arsmagicalegacy:mage"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "arsmagicalegacy:mage"
+      }
+    ]
+  }
+}

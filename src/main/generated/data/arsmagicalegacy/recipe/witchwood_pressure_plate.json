@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "arsmagicalegacy:witchwood_planks"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:witchwood_pressure_plate"
+  }
+}

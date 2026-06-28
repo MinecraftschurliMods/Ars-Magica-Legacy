@@ -1,0 +1,28 @@
+{
+  "parent": "arsmagicalegacy:spell",
+  "criteria": {
+    "level": {
+      "conditions": {
+        "level": 10
+      },
+      "trigger": "arsmagicalegacy:level_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.level_10.description"
+    },
+    "icon": {
+      "id": "arsmagicalegacy:moonstone"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.level_10.title"
+    }
+  },
+  "requirements": [
+    [
+      "level"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

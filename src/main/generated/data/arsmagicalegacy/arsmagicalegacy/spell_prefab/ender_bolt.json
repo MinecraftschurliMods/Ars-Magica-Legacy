@@ -1,0 +1,30 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:random_teleport"
+    ]
+  },
+  "icon": "arsmagicalegacy:beam_jade_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.ender_bolt"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile"
+      ]
+    }
+  ]
+}

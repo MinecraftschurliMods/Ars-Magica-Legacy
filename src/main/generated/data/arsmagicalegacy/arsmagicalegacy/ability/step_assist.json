@@ -1,0 +1,19 @@
+{
+  "affinity": "arsmagicalegacy:lightning",
+  "bounds": {
+    "min": 1.0
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:attribute",
+      "modifiers": {
+        "minecraft:step_height": {
+          "id": "arsmagicalegacy:step_assist",
+          "max": 0.4,
+          "min": 0.0,
+          "operation": "add_value"
+        }
+      }
+    }
+  ]
+}

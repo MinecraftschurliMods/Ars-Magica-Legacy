@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/water_breathing",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/water_breathing.png",
+  "name": "skill.arsmagicalegacy.water_breathing.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.water_breathing.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:water_breathing"
+    }
+  ]
+}

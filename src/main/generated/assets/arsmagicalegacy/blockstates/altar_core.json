@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "arsmagicalegacy:block/altar_core"
+    },
+    "formed=true": {
+      "type": "arsmagicalegacy:altar_core",
+      "parent": {
+        "model": "arsmagicalegacy:block/altar_core_overlay"
+      }
+    }
+  }
+}

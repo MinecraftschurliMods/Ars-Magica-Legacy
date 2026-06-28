@@ -1,0 +1,27 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:arcane_guardian"
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual"
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:dropped_item",
+    "ingredients": [
+      {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "patchouli:book": "arsmagicalegacy:arcane_compendium"
+        },
+        "items": "patchouli:guide_book",
+        "strict": true
+      }
+    ]
+  }
+}

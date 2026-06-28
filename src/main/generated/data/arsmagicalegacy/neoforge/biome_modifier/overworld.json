@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_overworld",
+  "features": [
+    "arsmagicalegacy:chimerite_ore",
+    "arsmagicalegacy:topaz_ore",
+    "arsmagicalegacy:vinteum_ore"
+  ],
+  "step": "underground_ores"
+}

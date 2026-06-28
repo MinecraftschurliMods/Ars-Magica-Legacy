@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:deepslate_bricks",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:cracked_deepslate_bricks"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

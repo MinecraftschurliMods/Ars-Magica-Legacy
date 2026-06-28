@@ -1,0 +1,31 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:damage"
+    ]
+  },
+  "icon": "arsmagicalegacy:rune_orange_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.lightning_rune"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:rune"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "type": "botanypots:soil",
+  "categories": [
+    "stone",
+    "mushroom",
+    "ore",
+    "vinteum_ore",
+    "deepslate",
+    "deepslate_vinteum_ore"
+  ],
+  "display": {
+    "block": "arsmagicalegacy:deepslate_vinteum_ore"
+  },
+  "growthModifier": 1.0,
+  "input": "arsmagicalegacy:deepslate_vinteum_ore"
+}

@@ -1,0 +1,29 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:water": 0.0010000000474974513
+  },
+  "mana": 40.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:blue_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:stones"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:leather_boots"
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:earth": 0.0010000000474974513
+  },
+  "mana": 5.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:brown_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_axe"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_pickaxe"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_shovel"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:iron_hoe"
+      }
+    }
+  ]
+}

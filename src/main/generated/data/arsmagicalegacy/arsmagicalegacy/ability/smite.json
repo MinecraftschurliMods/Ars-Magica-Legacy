@@ -1,0 +1,15 @@
+{
+  "affinity": "arsmagicalegacy:life",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.01
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:extra_damage",
+      "entities": "#arsmagicalegacy:affected_by_smite_ability",
+      "max": 4.0,
+      "min": 0.0
+    }
+  ]
+}

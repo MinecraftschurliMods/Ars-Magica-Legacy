@@ -1,0 +1,23 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:nature": 0.0010000000474974513
+  },
+  "mana": 5.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:green_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:wheat_seeds"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:witchwood_sapling"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:air_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:air_guardian",
+      "text": "Recommended magic level: 30"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:air_guardian_spawn_ritual",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.page2.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.page3.text"
+    }
+  ]
+}

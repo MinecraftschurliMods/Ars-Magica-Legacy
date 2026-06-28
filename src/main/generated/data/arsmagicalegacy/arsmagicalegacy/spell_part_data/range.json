@@ -1,0 +1,27 @@
+{
+  "affinity_shifts": {},
+  "mana": 1.25,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "arsmagicalegacy:affinity": "arsmagicalegacy:air"
+        },
+        "items": "arsmagicalegacy:affinity_essence"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:dusts/redstone"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:arrow"
+    }
+  ]
+}

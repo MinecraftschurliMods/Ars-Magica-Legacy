@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": {
+                "type": "arsmagicalegacy:enchantment_level_from_item",
+                "enchantment": "arsmagicalegacy:dismembering",
+                "value": {
+                  "type": "minecraft:linear",
+                  "base": 0.5,
+                  "per_level_above_first": 0.5
+                }
+              },
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "name": "minecraft:wither_skeleton_skull"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:limit_count",
+          "limit": 1
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "arsmagicalegacy:entities/modify/wither_skeleton_dismembering"
+}

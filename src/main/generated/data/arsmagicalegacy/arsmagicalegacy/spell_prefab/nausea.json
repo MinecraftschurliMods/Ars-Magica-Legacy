@@ -1,0 +1,29 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:nausea"
+    ]
+  },
+  "icon": "arsmagicalegacy:sword_eerie_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.nausea"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile"
+      ]
+    }
+  ]
+}

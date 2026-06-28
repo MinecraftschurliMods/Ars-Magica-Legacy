@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:nether_bricks",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:cracked_nether_bricks"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

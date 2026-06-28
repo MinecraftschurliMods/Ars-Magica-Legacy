@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "chest_boat",
+  "ingredients": [
+    "minecraft:chest",
+    "arsmagicalegacy:witchwood_boat"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:witchwood_chest_boat"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:water_guardian"
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:water_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:dimension",
+      "dimension": "minecraft:overworld"
+    },
+    {
+      "type": "arsmagicalegacy:biome_tag",
+      "tag": "arsmagicalegacy:can_summon_water_guardian"
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:dropped_item",
+    "ingredients": [
+      "#minecraft:boats",
+      "minecraft:water_bucket"
+    ]
+  }
+}

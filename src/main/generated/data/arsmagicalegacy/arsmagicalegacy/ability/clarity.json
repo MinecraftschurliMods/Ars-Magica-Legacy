@@ -1,0 +1,15 @@
+{
+  "affinity": "arsmagicalegacy:arcane",
+  "bounds": {
+    "min": 1.0
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spell_cast_effect",
+      "chance": 0.5,
+      "duration": 1200,
+      "effect": "arsmagicalegacy:clarity",
+      "visible": true
+    }
+  ]
+}

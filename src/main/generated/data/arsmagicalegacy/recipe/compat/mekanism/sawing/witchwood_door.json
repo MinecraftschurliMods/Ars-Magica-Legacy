@@ -1,0 +1,16 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "type": "mekanism:sawing",
+  "input": {
+    "ingredient": "arsmagicalegacy:witchwood_door"
+  },
+  "mainOutput": {
+    "count": 2,
+    "item": "arsmagicalegacy:witchwood_planks"
+  }
+}

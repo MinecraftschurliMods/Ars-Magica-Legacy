@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/recall",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/recall.png",
+  "name": "skill.arsmagicalegacy.recall.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.recall.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:recall"
+    }
+  ]
+}

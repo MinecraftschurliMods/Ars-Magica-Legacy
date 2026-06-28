@@ -1,0 +1,34 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:fire": 0.009999999776482582
+  },
+  "mana": 1000.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "arsmagicalegacy:affinity": "arsmagicalegacy:fire"
+        },
+        "items": "arsmagicalegacy:affinity_essence"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:dusts/arcane_ash"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:netherracks"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:lava_bucket"
+    }
+  ]
+}

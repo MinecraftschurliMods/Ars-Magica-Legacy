@@ -1,0 +1,21 @@
+{
+  "affinity": "arsmagicalegacy:air",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.5
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:attribute",
+      "modifiers": {
+        "minecraft:gravity": {
+          "id": "arsmagicalegacy:gravity",
+          "max": 0.5,
+          "min": 0.0,
+          "operation": "add_multiplied_total"
+        }
+      }
+    }
+  ],
+  "negative": true
+}

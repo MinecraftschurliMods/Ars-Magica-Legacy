@@ -1,0 +1,21 @@
+{
+  "alpha": 0.6,
+  "count": 20,
+  "gravity": 1.0,
+  "max_lifetime": 40,
+  "max_speed": [
+    0.1,
+    0.05,
+    0.1
+  ],
+  "min_lifetime": 40,
+  "min_speed": [
+    -0.1,
+    -0.05,
+    -0.1
+  ],
+  "particle": {
+    "type": "minecraft:snowflake"
+  },
+  "scale": 0.5
+}

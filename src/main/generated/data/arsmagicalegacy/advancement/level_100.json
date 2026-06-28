@@ -1,0 +1,29 @@
+{
+  "parent": "arsmagicalegacy:level_10",
+  "criteria": {
+    "level": {
+      "conditions": {
+        "level": 100
+      },
+      "trigger": "arsmagicalegacy:level_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.level_100.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "arsmagicalegacy:sunstone"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.level_100.title"
+    }
+  },
+  "requirements": [
+    [
+      "level"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

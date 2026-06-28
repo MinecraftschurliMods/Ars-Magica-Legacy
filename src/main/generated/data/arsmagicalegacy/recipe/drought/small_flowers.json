@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:small_flowers"
+  },
+  "result": {
+    "Name": "minecraft:dead_bush"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

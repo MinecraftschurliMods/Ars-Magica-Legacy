@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/swift_swim",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/swift_swim.png",
+  "name": "skill.arsmagicalegacy.swift_swim.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.swift_swim.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:swift_swim"
+    }
+  ]
+}

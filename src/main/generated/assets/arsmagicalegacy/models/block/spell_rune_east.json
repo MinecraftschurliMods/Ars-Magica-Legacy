@@ -1,0 +1,25 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "west": {
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        15.5,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "arsmagicalegacy:block/spell_rune",
+    "texture": "arsmagicalegacy:block/spell_rune"
+  }
+}

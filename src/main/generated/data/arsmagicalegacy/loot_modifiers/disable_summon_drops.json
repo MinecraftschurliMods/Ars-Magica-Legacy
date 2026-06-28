@@ -1,0 +1,12 @@
+{
+  "type": "arsmagicalegacy:add_conditions",
+  "conditions": [],
+  "extra_conditions": [
+    {
+      "condition": "minecraft:inverted",
+      "term": {
+        "condition": "arsmagicalegacy:is_summon"
+      }
+    }
+  ]
+}

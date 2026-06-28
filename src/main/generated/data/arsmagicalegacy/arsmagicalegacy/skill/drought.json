@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:create_water"
+  ],
+  "tab": "arsmagicalegacy:utility",
+  "x": 168,
+  "y": 264
+}

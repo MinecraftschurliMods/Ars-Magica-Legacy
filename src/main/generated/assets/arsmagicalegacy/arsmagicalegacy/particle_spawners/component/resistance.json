@@ -1,0 +1,28 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:orbit_point",
+      "follow_target": true,
+      "max_distance": 1.0,
+      "max_speed": 0.2,
+      "min_speed": 0.2
+    }
+  ],
+  "count": 25,
+  "max_lifetime": 10,
+  "max_offset": [
+    0.0,
+    -1.0,
+    0.0
+  ],
+  "min_lifetime": 10,
+  "min_offset": [
+    0.0,
+    -1.0,
+    0.0
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:symbols"
+  },
+  "scale": 0.5
+}

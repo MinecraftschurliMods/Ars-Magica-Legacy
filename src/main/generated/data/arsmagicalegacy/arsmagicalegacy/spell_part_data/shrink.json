@@ -1,0 +1,28 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:arcane": 0.0010000000474974513
+  },
+  "mana": 30.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:bones"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:stone_button"
+    }
+  ]
+}

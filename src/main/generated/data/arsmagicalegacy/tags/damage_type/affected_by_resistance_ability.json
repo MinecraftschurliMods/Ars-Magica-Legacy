@@ -1,0 +1,8 @@
+{
+  "remove": [
+    "#minecraft:is_fall"
+  ],
+  "values": [
+    "#neoforge:is_physical"
+  ]
+}

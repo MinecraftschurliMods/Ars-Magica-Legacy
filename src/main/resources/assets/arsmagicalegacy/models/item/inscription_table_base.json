@@ -1,0 +1,122 @@
+{
+  "textures": {
+    "particle": "arsmagicalegacy:block/inscription_table_base",
+    "base": "arsmagicalegacy:block/inscription_table_base",
+    "side": "arsmagicalegacy:block/inscription_table_side",
+    "top": "arsmagicalegacy:block/inscription_table_top",
+    "top_left": "arsmagicalegacy:block/inscription_table_top_left",
+    "top_right": "arsmagicalegacy:block/inscription_table_top_right",
+    "book_0": "arsmagicalegacy:block/inscription_table_book_0",
+    "book_1": "arsmagicalegacy:block/inscription_table_book_1",
+    "book_2": "arsmagicalegacy:block/inscription_table_book_2",
+    "book_3": "arsmagicalegacy:block/inscription_table_book_3",
+    "book_4": "arsmagicalegacy:block/inscription_table_book_4",
+    "book_5": "arsmagicalegacy:block/inscription_table_book_5",
+    "cloth": "arsmagicalegacy:block/inscription_table_cloth",
+    "candle": "arsmagicalegacy:block/inscription_table_candle"
+  },
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.15,
+        0.15,
+        0.15
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.225,
+        0.225,
+        0.225
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  }
+}

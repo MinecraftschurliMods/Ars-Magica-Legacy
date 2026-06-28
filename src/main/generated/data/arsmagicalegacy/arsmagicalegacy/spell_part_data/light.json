@@ -1,0 +1,18 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:lightning": 0.0020000000949949026
+  },
+  "mana": 60.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:yellow_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:vinteum_torch"
+    }
+  ]
+}

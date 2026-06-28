@@ -1,0 +1,11 @@
+{
+  "affinity": "arsmagicalegacy:ender",
+  "bounds": {
+    "min": 1.0
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:enderman_pumpkin"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "topaz",
+  "ingredient": "arsmagicalegacy:deepslate_topaz_ore",
+  "result": {
+    "id": "arsmagicalegacy:topaz"
+  }
+}

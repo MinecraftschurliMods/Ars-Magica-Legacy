@@ -1,0 +1,20 @@
+{
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:iron_inlay",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.inlays.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.inlays.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:redstone_inlay",
+      "recipe2": "arsmagicalegacy:iron_inlay"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:gold_inlay"
+    }
+  ]
+}

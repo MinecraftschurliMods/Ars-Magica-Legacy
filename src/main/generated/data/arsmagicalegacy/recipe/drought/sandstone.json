@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:sandstone",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:smooth_sandstone"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

@@ -1,0 +1,24 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:ender_guardian"
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:ender_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:dimension",
+      "dimension": "minecraft:the_end"
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:dropped_item",
+    "ingredients": [
+      "minecraft:ender_eye"
+    ]
+  }
+}

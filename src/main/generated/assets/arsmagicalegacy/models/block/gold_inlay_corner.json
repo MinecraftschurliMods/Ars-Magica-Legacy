@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_curved",
+  "textures": {
+    "rail": "arsmagicalegacy:block/gold_inlay_corner"
+  }
+}

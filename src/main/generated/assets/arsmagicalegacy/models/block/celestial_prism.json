@@ -1,0 +1,11 @@
+{
+  "automatic_culling": false,
+  "emissive_ambient": false,
+  "loader": "neoforge:obj",
+  "model": "arsmagicalegacy:models/block/celestial_prism.obj",
+  "shade_quads": false,
+  "textures": {
+    "particle": "arsmagicalegacy:block/celestial_prism",
+    "tex": "arsmagicalegacy:block/celestial_prism"
+  }
+}

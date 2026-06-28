@@ -1,0 +1,13 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:fade_out"
+    }
+  ],
+  "count": 1,
+  "max_lifetime": 20,
+  "min_lifetime": 20,
+  "particle": {
+    "type": "arsmagicalegacy:stardust"
+  }
+}

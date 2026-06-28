@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:red",
+  "parents": [
+    "arsmagicalegacy:augmented_casting"
+  ],
+  "tab": "arsmagicalegacy:talent",
+  "x": 72,
+  "y": 120
+}

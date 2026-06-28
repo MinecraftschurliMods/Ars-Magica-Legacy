@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": "#c:leathers",
+    "P": "minecraft:paper",
+    "S": "#c:strings"
+  },
+  "pattern": [
+    "SLL",
+    "SPP",
+    "SLL"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:spell_book"
+  }
+}

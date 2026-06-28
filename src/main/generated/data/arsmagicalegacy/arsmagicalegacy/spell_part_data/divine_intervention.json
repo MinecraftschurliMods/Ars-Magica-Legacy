@@ -1,0 +1,28 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:ender": 0.004999999888241291
+  },
+  "mana": 200.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:lime_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:dragon_breath"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:ender_pearls"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#minecraft:beds"
+    }
+  ]
+}

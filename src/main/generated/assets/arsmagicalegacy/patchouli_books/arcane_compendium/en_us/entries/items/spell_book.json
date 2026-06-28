@@ -1,0 +1,19 @@
+{
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:spell_book",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.spell_book.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.spell_book.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.spell_book.page1.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:spell_book"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:fire_guardian"
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:fire_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:environment_attribute",
+      "environment_attribute": {
+        "type": "minecraft:gameplay/water_evaporates",
+        "value": true
+      }
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:dropped_item",
+    "ingredients": [
+      {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "arsmagicalegacy:affinity": "arsmagicalegacy:water"
+        },
+        "items": "arsmagicalegacy:affinity_essence"
+      }
+    ]
+  }
+}

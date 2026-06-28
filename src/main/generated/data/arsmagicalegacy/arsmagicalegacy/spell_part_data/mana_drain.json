@@ -1,0 +1,23 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:arcane": 0.0010000000474974513
+  },
+  "mana": 5.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:cyan_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:gems/moonstone"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:cerublossom"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "count": 15,
+  "gravity": 1.0,
+  "max_lifetime": 15,
+  "max_offset": [
+    0.5,
+    -0.75,
+    0.5
+  ],
+  "max_speed": [
+    0.05,
+    0.2,
+    0.05
+  ],
+  "min_lifetime": 15,
+  "min_offset": [
+    -0.5,
+    -1.25,
+    -0.5
+  ],
+  "min_speed": [
+    -0.05,
+    0.0,
+    -0.05
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:wind"
+  },
+  "scale": 0.5
+}

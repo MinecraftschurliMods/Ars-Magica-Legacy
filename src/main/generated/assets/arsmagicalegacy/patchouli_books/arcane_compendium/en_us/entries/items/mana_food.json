@@ -1,0 +1,16 @@
+{
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:mana_cake",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.mana_food.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.mana_food.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:mana_cake",
+      "recipe2": "arsmagicalegacy:mana_martini"
+    }
+  ]
+}

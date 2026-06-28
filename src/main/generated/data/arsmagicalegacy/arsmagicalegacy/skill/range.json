@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:random_teleport"
+  ],
+  "tab": "arsmagicalegacy:utility",
+  "x": 72,
+  "y": 216
+}

@@ -1,0 +1,25 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:float_upward",
+      "max_speed": 0.5,
+      "min_speed": 0.5
+    }
+  ],
+  "count": 25,
+  "max_lifetime": 35,
+  "max_offset": [
+    2.5,
+    2.0,
+    2.5
+  ],
+  "min_lifetime": 25,
+  "min_offset": [
+    -2.5,
+    -2.0,
+    -2.5
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:water_ball"
+  }
+}

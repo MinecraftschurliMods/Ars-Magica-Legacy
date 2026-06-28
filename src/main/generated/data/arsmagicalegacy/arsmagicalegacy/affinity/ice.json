@@ -1,0 +1,22 @@
+{
+  "adjacents": [
+    "arsmagicalegacy:water",
+    "arsmagicalegacy:earth"
+  ],
+  "cast_sound": "arsmagicalegacy:spell.cast.ice",
+  "color": 13887740,
+  "direct_opposite": "arsmagicalegacy:lightning",
+  "index": 9.0,
+  "loop_sound": "arsmagicalegacy:spell.loop.ice",
+  "major_opposites": [
+    "arsmagicalegacy:fire",
+    "arsmagicalegacy:air"
+  ],
+  "minor_opposites": [
+    "arsmagicalegacy:life",
+    "arsmagicalegacy:ender"
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:ice_hand"
+  }
+}

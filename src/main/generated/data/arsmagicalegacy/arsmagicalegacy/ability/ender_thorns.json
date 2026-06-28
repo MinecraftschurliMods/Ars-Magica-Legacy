@@ -1,0 +1,14 @@
+{
+  "affinity": "arsmagicalegacy:water",
+  "bounds": {
+    "min": 1.0
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:thorns",
+      "entities": "#arsmagicalegacy:affected_by_ender_thorns_ability",
+      "max": 1.0,
+      "min": 1.0
+    }
+  ]
+}

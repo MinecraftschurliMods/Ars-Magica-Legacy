@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "arsmagicalegacy:item/battlemage_boots"
+  }
+}

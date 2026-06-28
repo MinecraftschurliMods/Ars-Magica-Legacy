@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:gravity_well"
+  ],
+  "tab": "arsmagicalegacy:defense",
+  "x": 72,
+  "y": 168
+}

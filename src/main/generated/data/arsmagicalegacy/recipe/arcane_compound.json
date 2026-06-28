@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dusts/glowstone",
+    "#c:dusts/glowstone",
+    "#c:dusts/redstone",
+    "#c:dusts/redstone",
+    "#c:netherracks",
+    "#c:netherracks",
+    "#c:stones",
+    "#c:stones"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:arcane_compound"
+  }
+}

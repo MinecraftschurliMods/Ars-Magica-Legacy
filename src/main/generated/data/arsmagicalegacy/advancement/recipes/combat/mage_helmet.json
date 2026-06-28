@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magenta_rune": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arsmagicalegacy:magenta_rune"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:mage_helmet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_magenta_rune"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:mage_helmet"
+    ]
+  }
+}

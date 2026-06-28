@@ -1,0 +1,59 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:set_block",
+      "offset": [
+        0,
+        -3,
+        0
+      ],
+      "state": {
+        "Name": "minecraft:air"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:set_block",
+      "offset": [
+        0,
+        -2,
+        0
+      ],
+      "state": {
+        "Name": "arsmagicalegacy:black_aurem"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:set_block",
+      "offset": [
+        0,
+        -1,
+        0
+      ],
+      "state": {
+        "Name": "minecraft:air"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "ingredient": "arsmagicalegacy:sunstone",
+      "radius": 4.0
+    },
+    {
+      "type": "arsmagicalegacy:structure",
+      "offset": [
+        0,
+        -3,
+        0
+      ],
+      "structure": "arsmagicalegacy:corruption"
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_cast",
+    "parts": [
+      "arsmagicalegacy:fire_damage"
+    ]
+  }
+}

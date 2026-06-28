@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:air"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome",
+          "weight": 19
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:life"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 46
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "arsmagicalegacy:chests/modify/trial_chambers/reward_ominous_affinity_tome"
+}

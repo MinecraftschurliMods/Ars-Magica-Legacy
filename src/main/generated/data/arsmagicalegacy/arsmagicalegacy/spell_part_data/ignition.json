@@ -1,0 +1,24 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:fire": 0.0020000000949949026
+  },
+  "mana": 80.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:orange_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": {
+        "neoforge:ingredient_type": "neoforge:components",
+        "components": {
+          "minecraft:damage": 0
+        },
+        "items": "minecraft:flint_and_steel"
+      }
+    }
+  ]
+}

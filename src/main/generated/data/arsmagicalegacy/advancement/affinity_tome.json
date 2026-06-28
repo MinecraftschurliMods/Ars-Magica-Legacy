@@ -1,0 +1,33 @@
+{
+  "parent": "arsmagicalegacy:affinity_full",
+  "criteria": {
+    "affinity": {
+      "conditions": {
+        "new_depth": 0.0,
+        "old_depth": 1.0
+      },
+      "trigger": "arsmagicalegacy:affinity_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.affinity_tome.description"
+    },
+    "hidden": true,
+    "icon": {
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:none"
+      },
+      "id": "arsmagicalegacy:affinity_tome"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.affinity_tome.title"
+    }
+  },
+  "requirements": [
+    [
+      "affinity"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

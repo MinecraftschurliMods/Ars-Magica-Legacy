@@ -1,0 +1,11 @@
+{
+  "automatic_culling": false,
+  "emissive_ambient": false,
+  "loader": "neoforge:obj",
+  "model": "arsmagicalegacy:models/block/obelisk.obj",
+  "shade_quads": false,
+  "textures": {
+    "particle": "minecraft:block/stone_bricks",
+    "tex": "arsmagicalegacy:block/obelisk_lit"
+  }
+}

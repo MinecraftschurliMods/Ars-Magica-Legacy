@@ -1,0 +1,9 @@
+{
+  "count": 1,
+  "max_lifetime": 10,
+  "min_lifetime": 10,
+  "particle": {
+    "type": "arsmagicalegacy:wind"
+  },
+  "scale": 10.0
+}

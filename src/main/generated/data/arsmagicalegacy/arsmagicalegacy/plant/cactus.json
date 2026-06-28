@@ -1,0 +1,28 @@
+{
+  "all_states": {
+    "predicate_type": "arsmagicalegacy:composite",
+    "rule_tests": [
+      {
+        "block": "minecraft:cactus",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:cactus_flower",
+        "predicate_type": "minecraft:block_match"
+      }
+    ]
+  },
+  "crop": {
+    "id": "minecraft:cactus"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:upwards",
+    "body": "minecraft:cactus",
+    "head": "minecraft:cactus_flower",
+    "head_required": false,
+    "max_height": 4
+  },
+  "seed": {
+    "id": "minecraft:cactus"
+  }
+}

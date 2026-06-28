@@ -1,0 +1,38 @@
+{
+  "all_states": {
+    "predicate_type": "arsmagicalegacy:composite",
+    "rule_tests": [
+      {
+        "block": "minecraft:pumpkin_stem",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:attached_pumpkin_stem",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:pumpkin",
+        "predicate_type": "minecraft:block_match"
+      }
+    ]
+  },
+  "crop": {
+    "id": "minecraft:pumpkin"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:stem",
+    "age_property": "age",
+    "attached_stem": "minecraft:attached_pumpkin_stem",
+    "fruit": {
+      "Name": "minecraft:pumpkin"
+    },
+    "max_age": 7,
+    "stem": {
+      "block": "minecraft:pumpkin_stem",
+      "predicate_type": "minecraft:block_match"
+    }
+  },
+  "seed": {
+    "id": "minecraft:pumpkin_seeds"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/drought",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/drought.png",
+  "name": "skill.arsmagicalegacy.drought.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.drought.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:drought"
+    }
+  ]
+}

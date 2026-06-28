@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#c:bosses",
+    "#c:capturing_not_supported",
+    "minecraft:armor_stand",
+    "minecraft:giant",
+    "minecraft:illusioner",
+    "minecraft:mannequin",
+    "minecraft:player",
+    "minecraft:warden",
+    "minecraft:creaking",
+    {
+      "id": "bibliocraft:fancy_armor_stand",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:ender_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:ender_guardian",
+      "text": "Recommended magic level: 100"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:ender_guardian_spawn_ritual",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.page2.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.page3.text"
+    }
+  ]
+}

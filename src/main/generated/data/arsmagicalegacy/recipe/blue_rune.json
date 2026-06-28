@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "arsmagicalegacy:blank_rune",
+    "#c:dyes/blue"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:blue_rune"
+  }
+}

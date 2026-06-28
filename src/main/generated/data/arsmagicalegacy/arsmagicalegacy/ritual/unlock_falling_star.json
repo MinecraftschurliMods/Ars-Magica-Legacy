@@ -1,0 +1,17 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:learn_skill",
+      "skill": "arsmagicalegacy:falling_star"
+    }
+  ],
+  "requirements": [],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_cast",
+    "parts": [
+      "arsmagicalegacy:astral_distortion",
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:gravity"
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "all_states": {
+    "block": "minecraft:cocoa",
+    "predicate_type": "minecraft:block_match"
+  },
+  "crop": {
+    "id": "minecraft:cocoa_beans"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:crop",
+    "harvest_states": [
+      {
+        "from": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "2",
+            "facing": "north"
+          }
+        },
+        "to": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "0",
+            "facing": "north"
+          }
+        }
+      },
+      {
+        "from": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "2",
+            "facing": "east"
+          }
+        },
+        "to": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "0",
+            "facing": "east"
+          }
+        }
+      },
+      {
+        "from": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "2",
+            "facing": "south"
+          }
+        },
+        "to": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "0",
+            "facing": "south"
+          }
+        }
+      },
+      {
+        "from": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "2",
+            "facing": "west"
+          }
+        },
+        "to": {
+          "Name": "minecraft:cocoa",
+          "Properties": {
+            "age": "0",
+            "facing": "west"
+          }
+        }
+      }
+    ]
+  },
+  "seed": {
+    "id": "minecraft:cocoa_beans"
+  }
+}

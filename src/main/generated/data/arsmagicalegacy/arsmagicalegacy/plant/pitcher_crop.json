@@ -1,0 +1,45 @@
+{
+  "all_states": {
+    "block": "minecraft:pitcher_crop",
+    "predicate_type": "minecraft:block_match"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:tall_crop",
+    "harvest_states": [
+      {
+        "lower_from": {
+          "Name": "minecraft:pitcher_crop",
+          "Properties": {
+            "age": "4",
+            "half": "lower"
+          }
+        },
+        "lower_to": {
+          "Name": "minecraft:air"
+        },
+        "upper_from": {
+          "Name": "minecraft:pitcher_crop",
+          "Properties": {
+            "age": "4",
+            "half": "upper"
+          }
+        },
+        "upper_to": {
+          "Name": "minecraft:air"
+        }
+      }
+    ],
+    "lower": {
+      "predicate_type": "arsmagicalegacy:block_state_property",
+      "properties": [
+        "half=lower"
+      ]
+    },
+    "upper": {
+      "predicate_type": "arsmagicalegacy:block_state_property",
+      "properties": [
+        "half=upper"
+      ]
+    }
+  }
+}

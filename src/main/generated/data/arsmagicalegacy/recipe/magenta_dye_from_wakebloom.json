@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "magenta_dye",
+  "ingredients": [
+    "arsmagicalegacy:wakebloom"
+  ],
+  "result": {
+    "id": "minecraft:magenta_dye"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "type": "botanypots:soil",
+  "categories": [
+    "wood",
+    "log",
+    "mushroom",
+    "witchwood",
+    "witchwood_wood"
+  ],
+  "display": {
+    "block": "arsmagicalegacy:witchwood_wood",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "growthModifier": 1.0,
+  "input": [
+    "arsmagicalegacy:witchwood_log",
+    "arsmagicalegacy:witchwood_wood"
+  ]
+}

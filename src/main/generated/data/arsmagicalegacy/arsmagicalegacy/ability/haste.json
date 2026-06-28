@@ -1,0 +1,26 @@
+{
+  "affinity": "arsmagicalegacy:earth",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.01
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:attribute",
+      "modifiers": {
+        "minecraft:attack_speed": {
+          "id": "arsmagicalegacy:haste",
+          "max": 0.5,
+          "min": 0.0,
+          "operation": "add_multiplied_total"
+        },
+        "minecraft:block_break_speed": {
+          "id": "arsmagicalegacy:haste",
+          "max": 0.5,
+          "min": 0.0,
+          "operation": "add_multiplied_total"
+        }
+      }
+    }
+  ]
+}

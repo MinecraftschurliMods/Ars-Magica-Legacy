@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ],
+  "type": "ars_nouveau:crush",
+  "input": "arsmagicalegacy:desert_nova",
+  "output": [
+    {
+      "chance": 1.0,
+      "count": 2,
+      "item": "minecraft:red_dye",
+      "maxRange": 1
+    }
+  ],
+  "skip_block_place": false
+}

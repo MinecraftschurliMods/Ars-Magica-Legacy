@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/replant",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/replant.png",
+  "name": "skill.arsmagicalegacy.replant.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.replant.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:replant"
+    }
+  ]
+}

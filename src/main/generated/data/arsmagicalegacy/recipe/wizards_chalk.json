@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "#c:dusts/vinteum",
+    "minecraft:bone_meal",
+    "minecraft:clay_ball",
+    "minecraft:flint",
+    "minecraft:paper"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:wizards_chalk"
+  }
+}

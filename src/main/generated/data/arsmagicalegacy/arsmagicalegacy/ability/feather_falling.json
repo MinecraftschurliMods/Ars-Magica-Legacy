@@ -1,0 +1,15 @@
+{
+  "affinity": "arsmagicalegacy:air",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.01
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:damage_modifier",
+      "damage_types": "#arsmagicalegacy:affected_by_feather_falling_ability",
+      "max": 0.5,
+      "min": 1.0
+    }
+  ]
+}

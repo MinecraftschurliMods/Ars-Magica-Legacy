@@ -1,0 +1,27 @@
+{
+  "color": 6691199,
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:approach_entity",
+      "distance": 0.1,
+      "speed": 0.1
+    }
+  ],
+  "count": 25,
+  "max_lifetime": 15,
+  "max_offset": [
+    1.0,
+    0.25,
+    1.0
+  ],
+  "min_lifetime": 15,
+  "min_offset": [
+    -1.0,
+    -0.25,
+    -1.0
+  ],
+  "particle": {
+    "type": "minecraft:electric_spark"
+  },
+  "scale": 0.5
+}

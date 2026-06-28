@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bundle",
+    "#arsmagicalegacy:runes"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:rune_bag"
+  }
+}

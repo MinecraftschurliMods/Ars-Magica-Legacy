@@ -1,0 +1,46 @@
+{
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:celestial_prism",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page0.text"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:purification",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.title",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.text"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_chalk",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page3.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillars_1",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page4.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillars_2",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page5.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillars_3",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page6.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillars_4",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page7.title"
+    }
+  ]
+}

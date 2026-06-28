@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "arsmagicalegacy:data_component_overrides",
+    "component_type": "arsmagicalegacy:affinity",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "arsmagicalegacy:item/affinity_tome"
+    }
+  }
+}

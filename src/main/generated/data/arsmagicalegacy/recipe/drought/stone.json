@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:stone",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:cobblestone"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

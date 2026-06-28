@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:blue",
+  "parents": [
+    "arsmagicalegacy:true_sight"
+  ],
+  "tab": "arsmagicalegacy:utility",
+  "x": 24,
+  "y": 168
+}

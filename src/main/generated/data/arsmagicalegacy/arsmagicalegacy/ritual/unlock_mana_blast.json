@@ -1,0 +1,16 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:learn_skill",
+      "skill": "arsmagicalegacy:mana_blast"
+    }
+  ],
+  "requirements": [],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_cast",
+    "parts": [
+      "arsmagicalegacy:explosion",
+      "arsmagicalegacy:mana_drain"
+    ]
+  }
+}

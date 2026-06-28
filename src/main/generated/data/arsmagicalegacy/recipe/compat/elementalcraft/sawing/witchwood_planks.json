@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "elementalcraft"
+    }
+  ],
+  "type": "elementalcraft:sawing",
+  "element_amount": 1000,
+  "input": [
+    "arsmagicalegacy:stripped_witchwood_log",
+    "arsmagicalegacy:stripped_witchwood_wood"
+  ],
+  "luck_ratio": 3,
+  "output": {
+    "count": 6,
+    "item": "arsmagicalegacy:witchwood_planks"
+  }
+}

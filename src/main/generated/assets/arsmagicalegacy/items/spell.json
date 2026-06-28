@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "arsmagicalegacy:spell",
+    "default": {
+      "type": "minecraft:model",
+      "model": "arsmagicalegacy:item/spell"
+    }
+  }
+}

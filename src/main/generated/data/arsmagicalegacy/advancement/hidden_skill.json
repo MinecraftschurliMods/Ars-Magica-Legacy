@@ -1,0 +1,29 @@
+{
+  "parent": "arsmagicalegacy:skill",
+  "criteria": {
+    "knows": {
+      "conditions": {
+        "requirements": "any_hidden"
+      },
+      "trigger": "arsmagicalegacy:skill_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.hidden_skill.description"
+    },
+    "hidden": true,
+    "icon": {
+      "id": "arsmagicalegacy:occulus"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.hidden_skill.title"
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

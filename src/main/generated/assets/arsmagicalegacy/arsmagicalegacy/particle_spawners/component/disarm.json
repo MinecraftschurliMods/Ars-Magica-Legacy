@@ -1,0 +1,31 @@
+{
+  "color": 11711001,
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:fade_out"
+    },
+    {
+      "type": "arsmagicalegacy:move_in_view_direction",
+      "max_speed": 0.6,
+      "min_speed": 0.1
+    }
+  ],
+  "count": 25,
+  "gravity": 1.0,
+  "max_lifetime": 40,
+  "max_offset": [
+    0.5,
+    1.0,
+    0.5
+  ],
+  "min_lifetime": 40,
+  "min_offset": [
+    -0.5,
+    -1.0,
+    -0.5
+  ],
+  "particle": {
+    "type": "minecraft:electric_spark"
+  },
+  "scale": 0.5
+}

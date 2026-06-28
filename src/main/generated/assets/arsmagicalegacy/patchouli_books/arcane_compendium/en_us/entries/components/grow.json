@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/grow",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/grow.png",
+  "name": "skill.arsmagicalegacy.grow.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.grow.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:grow"
+    }
+  ]
+}

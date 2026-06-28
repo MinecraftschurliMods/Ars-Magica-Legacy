@@ -1,0 +1,27 @@
+{
+  "color": 11678693,
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:float_upward",
+      "jitter": 0.2,
+      "max_speed": 0.0,
+      "min_speed": 0.0
+    }
+  ],
+  "count": 10,
+  "max_lifetime": 35,
+  "max_offset": [
+    2.5,
+    2.0,
+    2.5
+  ],
+  "min_lifetime": 25,
+  "min_offset": [
+    -2.5,
+    -2.0,
+    -2.5
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:pulse"
+  }
+}

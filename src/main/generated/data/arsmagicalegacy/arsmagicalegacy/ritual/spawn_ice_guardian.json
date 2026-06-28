@@ -1,0 +1,62 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:ice_guardian"
+    },
+    {
+      "type": "arsmagicalegacy:set_block",
+      "state": {
+        "Name": "minecraft:air"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:set_block",
+      "offset": [
+        0,
+        1,
+        0
+      ],
+      "state": {
+        "Name": "minecraft:air"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:set_block",
+      "offset": [
+        0,
+        2,
+        0
+      ],
+      "state": {
+        "Name": "minecraft:air"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:ice_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:dimension",
+      "dimension": "minecraft:overworld"
+    },
+    {
+      "type": "arsmagicalegacy:biome_tag",
+      "tag": "c:is_cold"
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:set_block_state",
+    "offset": [
+      0,
+      2,
+      0
+    ],
+    "test": {
+      "block": "minecraft:carved_pumpkin",
+      "predicate_type": "minecraft:block_match"
+    }
+  }
+}

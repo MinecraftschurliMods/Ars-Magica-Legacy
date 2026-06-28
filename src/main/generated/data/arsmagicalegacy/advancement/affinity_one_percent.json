@@ -1,0 +1,31 @@
+{
+  "parent": "arsmagicalegacy:spell",
+  "criteria": {
+    "affinity": {
+      "conditions": {
+        "new_depth": 0.01
+      },
+      "trigger": "arsmagicalegacy:affinity_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.affinity_one_percent.description"
+    },
+    "icon": {
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:water"
+      },
+      "id": "arsmagicalegacy:affinity_essence"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.affinity_one_percent.title"
+    }
+  },
+  "requirements": [
+    [
+      "affinity"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

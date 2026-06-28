@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_arcane_compound": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:dusts/arcane_compound"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:arcane_ash"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_arcane_compound"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:arcane_ash"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:blue",
+  "parents": [
+    "arsmagicalegacy:drowning_damage"
+  ],
+  "tab": "arsmagicalegacy:offense",
+  "x": 312,
+  "y": 120
+}

@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:area_of_effect"
+  ],
+  "tab": "arsmagicalegacy:offense",
+  "x": 168,
+  "y": 168
+}

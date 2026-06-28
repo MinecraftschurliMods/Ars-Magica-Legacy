@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:dusts/arcane_ash",
+    "E": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:ender"
+      },
+      "items": "arsmagicalegacy:affinity_essence"
+    },
+    "I": "#c:ender_pearls",
+    "J": "minecraft:ender_eye"
+  },
+  "pattern": [
+    "AIA",
+    "JEJ",
+    "AIA"
+  ],
+  "result": {
+    "components": {
+      "arsmagicalegacy:affinity": "arsmagicalegacy:ender"
+    },
+    "count": 2,
+    "id": "arsmagicalegacy:affinity_essence"
+  }
+}

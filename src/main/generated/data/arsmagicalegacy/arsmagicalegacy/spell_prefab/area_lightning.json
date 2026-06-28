@@ -1,0 +1,31 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:damage"
+    ]
+  },
+  "icon": "arsmagicalegacy:rip_water_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.area_lightning"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:area_of_effect"
+      ]
+    }
+  ]
+}

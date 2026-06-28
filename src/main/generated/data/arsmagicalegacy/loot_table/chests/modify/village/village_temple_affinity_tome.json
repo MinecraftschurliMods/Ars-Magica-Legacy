@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:arcane"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome",
+          "weight": 19
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "arsmagicalegacy:affinity": "arsmagicalegacy:life"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 980
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "arsmagicalegacy:chests/modify/village/village_temple_affinity_tome"
+}

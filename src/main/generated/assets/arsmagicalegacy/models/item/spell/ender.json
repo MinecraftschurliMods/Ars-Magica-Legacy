@@ -1,0 +1,6 @@
+{
+  "parent": "arsmagicalegacy:item/template_spell",
+  "textures": {
+    "layer0": "arsmagicalegacy:item/spell/ender"
+  }
+}

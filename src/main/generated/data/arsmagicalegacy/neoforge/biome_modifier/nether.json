@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_nether",
+  "features": "arsmagicalegacy:sunstone_ore",
+  "step": "underground_ores"
+}

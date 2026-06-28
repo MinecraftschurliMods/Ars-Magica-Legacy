@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arsmagicalegacy:tier": 2
+      },
+      "items": "arsmagicalegacy:inscription_table"
+    },
+    "arsmagicalegacy:inscription_table_upgrade_tier_3"
+  ],
+  "result": {
+    "components": {
+      "arsmagicalegacy:tier": 3
+    },
+    "id": "arsmagicalegacy:inscription_table"
+  }
+}

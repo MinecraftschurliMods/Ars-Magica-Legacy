@@ -1,0 +1,10 @@
+{
+  "values": [
+    "minecraft:clay",
+    "minecraft:gravel",
+    "#minecraft:substrate_overworld",
+    "#minecraft:sand",
+    "#minecraft:stone_ore_replaceables",
+    "#minecraft:deepslate_ore_replaceables"
+  ]
+}

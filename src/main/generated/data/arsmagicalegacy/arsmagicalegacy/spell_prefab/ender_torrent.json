@@ -1,0 +1,33 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:knockback",
+      "arsmagicalegacy:damage"
+    ]
+  },
+  "icon": "arsmagicalegacy:light_magenta_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.ender_torrent"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:velocity",
+        "arsmagicalegacy:area_of_effect"
+      ]
+    }
+  ]
+}

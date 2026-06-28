@@ -1,0 +1,24 @@
+{
+  "advancement": "arsmagicalegacy:book/summon",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/summon.png",
+  "name": "skill.arsmagicalegacy.summon.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.summon.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.summon.page1.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.summon.page2.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:summon"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "#c:stones",
+    "V": "#c:dusts/vinteum"
+  },
+  "pattern": [
+    "V",
+    "S"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:altar_core"
+  }
+}

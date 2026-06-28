@@ -1,0 +1,30 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:frost_damage",
+      "arsmagicalegacy:frost"
+    ]
+  },
+  "icon": "arsmagicalegacy:lightning_sky_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.strong_ice_bolt"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile"
+      ]
+    }
+  ]
+}

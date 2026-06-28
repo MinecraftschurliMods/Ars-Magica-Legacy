@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:centrifuge",
+  "energy": 1600,
+  "ingredient": "arsmagicalegacy:tarma_root",
+  "output": [
+    {
+      "count": 3,
+      "item": "minecraft:brown_dye"
+    }
+  ]
+}

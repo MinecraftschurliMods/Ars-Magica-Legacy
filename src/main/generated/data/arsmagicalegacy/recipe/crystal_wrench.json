@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "#c:ingots/gold",
+    "T": "#c:gems/topaz"
+  },
+  "pattern": [
+    "GTG",
+    " G ",
+    " G "
+  ],
+  "result": {
+    "id": "arsmagicalegacy:crystal_wrench"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#overlay"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        0,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "overlay": "arsmagicalegacy:block/altar_core_overlay",
+    "particle": "arsmagicalegacy:block/altar_core"
+  }
+}

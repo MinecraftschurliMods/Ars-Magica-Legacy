@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#c:is_aquatic",
+    "#c:is_beach",
+    "#c:is_stony_shores",
+    "#c:is_swamp"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "#c:rods/wooden",
+    "V": "#c:dusts/vinteum"
+  },
+  "pattern": [
+    "V",
+    "S"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:vinteum_torch"
+  }
+}

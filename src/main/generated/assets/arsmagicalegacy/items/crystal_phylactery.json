@@ -1,0 +1,140 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_0",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.125
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_1",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.25
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_2",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.375
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_3",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_4",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.625
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_5",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.75
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_6",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 0.875
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "arsmagicalegacy:item/crystal_phylactery/fill_7",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "arsmagicalegacy:crystal_phylactery"
+            }
+          ]
+        },
+        "threshold": 1.0
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "arsmagicalegacy:item/crystal_phylactery"
+    },
+    "property": "arsmagicalegacy:crystal_phylactery_fill"
+  }
+}

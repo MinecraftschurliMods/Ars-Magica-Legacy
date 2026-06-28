@@ -1,0 +1,15 @@
+{
+  "affinity": "arsmagicalegacy:ender",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.5
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:effect_resistance",
+      "effects": [
+        "minecraft:poison"
+      ]
+    }
+  ]
+}

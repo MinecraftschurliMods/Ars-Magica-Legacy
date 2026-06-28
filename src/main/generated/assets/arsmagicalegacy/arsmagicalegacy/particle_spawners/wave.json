@@ -1,0 +1,26 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:move_in_view_direction",
+      "max_speed": 0.07,
+      "min_speed": 0.07
+    }
+  ],
+  "count": 1,
+  "max_lifetime": 20,
+  "max_offset": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "min_lifetime": 20,
+  "min_offset": [
+    -0.5,
+    -0.5,
+    -0.5
+  ],
+  "particle": {
+    "type": "minecraft:crit"
+  },
+  "scale": 0.75
+}

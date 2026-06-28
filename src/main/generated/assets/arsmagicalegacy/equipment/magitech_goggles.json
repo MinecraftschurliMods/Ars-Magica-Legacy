@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "arsmagicalegacy:magitech_goggles"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "arsmagicalegacy:magitech_goggles"
+      }
+    ]
+  }
+}

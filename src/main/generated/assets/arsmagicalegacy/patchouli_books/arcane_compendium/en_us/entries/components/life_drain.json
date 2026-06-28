@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/life_drain",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/life_drain.png",
+  "name": "skill.arsmagicalegacy.life_drain.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.life_drain.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:life_drain"
+    }
+  ]
+}

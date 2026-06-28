@@ -1,0 +1,20 @@
+{
+  "affinity_shifts": {},
+  "mana": 2.5,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:dusts/vinteum"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:magic_wall"
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "count": 2500
+    }
+  ]
+}

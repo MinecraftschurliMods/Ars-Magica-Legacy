@@ -1,0 +1,29 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:heal"
+    ]
+  },
+  "icon": "arsmagicalegacy:heart_royal_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.heal_self"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:self"
+      ]
+    }
+  ]
+}

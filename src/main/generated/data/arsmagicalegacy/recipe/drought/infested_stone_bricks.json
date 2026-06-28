@@ -1,0 +1,11 @@
+{
+  "type": "arsmagicalegacy:spell_transformation",
+  "predicate": {
+    "block": "minecraft:infested_stone_bricks",
+    "predicate_type": "minecraft:block_match"
+  },
+  "result": {
+    "Name": "minecraft:infested_cracked_stone_bricks"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

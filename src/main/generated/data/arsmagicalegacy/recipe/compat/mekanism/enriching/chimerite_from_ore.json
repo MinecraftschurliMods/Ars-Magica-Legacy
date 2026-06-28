@@ -1,0 +1,16 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "type": "mekanism:enriching",
+  "input": {
+    "ingredient": "#c:ores/chimerite"
+  },
+  "output": {
+    "count": 2,
+    "item": "arsmagicalegacy:chimerite"
+  }
+}

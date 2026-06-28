@@ -1,0 +1,25 @@
+{
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:fire_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.fire_guardian.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.fire_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:fire_guardian",
+      "text": "Recommended magic level: 90"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:fire_guardian_spawn_ritual",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.fire_guardian.page2.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.fire_guardian.page3.text"
+    }
+  ]
+}

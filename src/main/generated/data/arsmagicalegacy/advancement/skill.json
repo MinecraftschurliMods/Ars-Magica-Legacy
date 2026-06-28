@@ -1,0 +1,28 @@
+{
+  "parent": "arsmagicalegacy:root",
+  "criteria": {
+    "knows": {
+      "conditions": {
+        "requirements": "any_non_hidden"
+      },
+      "trigger": "arsmagicalegacy:skill_change"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.arsmagicalegacy.skill.description"
+    },
+    "icon": {
+      "id": "arsmagicalegacy:occulus"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.skill.title"
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

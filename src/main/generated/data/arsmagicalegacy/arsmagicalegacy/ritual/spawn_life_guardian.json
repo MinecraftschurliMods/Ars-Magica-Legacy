@@ -1,0 +1,34 @@
+{
+  "effects": [
+    {
+      "type": "arsmagicalegacy:spawn_entity",
+      "entity_type": "arsmagicalegacy:life_guardian"
+    }
+  ],
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:life_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:dimension",
+      "dimension": "minecraft:overworld"
+    },
+    {
+      "type": "arsmagicalegacy:environment_attribute",
+      "environment_attribute": {
+        "type": "minecraft:visual/moon_phase",
+        "value": "new_moon"
+      }
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:kill_entity",
+    "predicate": {
+      "type": "minecraft:villager",
+      "flags": {
+        "is_baby": true
+      }
+    }
+  }
+}

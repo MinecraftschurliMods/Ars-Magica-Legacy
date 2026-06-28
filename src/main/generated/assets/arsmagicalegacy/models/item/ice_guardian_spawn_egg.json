@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "arsmagicalegacy:item/ice_guardian_spawn_egg"
+  }
+}

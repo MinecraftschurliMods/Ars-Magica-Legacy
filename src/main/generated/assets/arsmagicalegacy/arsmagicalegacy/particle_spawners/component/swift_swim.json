@@ -1,0 +1,29 @@
+{
+  "controllers": [
+    {
+      "type": "arsmagicalegacy:fade_out"
+    },
+    {
+      "type": "arsmagicalegacy:move_in_view_direction",
+      "max_speed": 0.6,
+      "min_speed": 0.1
+    }
+  ],
+  "count": 25,
+  "max_lifetime": 20,
+  "max_offset": [
+    0.5,
+    1.0,
+    0.5
+  ],
+  "min_lifetime": 20,
+  "min_offset": [
+    -0.5,
+    -1.0,
+    -0.5
+  ],
+  "particle": {
+    "type": "arsmagicalegacy:water_ball"
+  },
+  "scale": 0.5
+}

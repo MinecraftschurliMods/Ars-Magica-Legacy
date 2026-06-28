@@ -1,0 +1,30 @@
+{
+  "active_shape_group": 0,
+  "components": {
+    "grammar": {},
+    "shape_groups": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "grammar": {
+    "parts": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:blindness"
+    ]
+  },
+  "icon": "arsmagicalegacy:lightning_eerie_3",
+  "name": {
+    "translate": "spell_prefab.arsmagicalegacy.strong_lightning_bolt"
+  },
+  "shape_groups": [
+    {
+      "parts": [
+        "arsmagicalegacy:projectile"
+      ]
+    }
+  ]
+}

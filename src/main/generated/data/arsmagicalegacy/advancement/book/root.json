@@ -1,0 +1,23 @@
+{
+  "criteria": {
+    "arcane_compendium": {
+      "conditions": {
+        "items": [
+          {
+            "components": {
+              "patchouli:book": "arsmagicalegacy:arcane_compendium"
+            },
+            "items": "patchouli:guide_book"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "arcane_compendium"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

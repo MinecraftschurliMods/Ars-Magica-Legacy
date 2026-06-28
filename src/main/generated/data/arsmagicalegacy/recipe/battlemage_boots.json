@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arsmagicalegacy:affinity": "arsmagicalegacy:water"
+      },
+      "items": "arsmagicalegacy:affinity_essence"
+    },
+    "G": "#c:ingots/gold",
+    "O": "#c:obsidians/normal",
+    "R": "arsmagicalegacy:blue_rune"
+  },
+  "pattern": [
+    "OEO",
+    "GRG"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:battlemage_boots"
+  }
+}

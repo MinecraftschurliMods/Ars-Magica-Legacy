@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/channel",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/skill/channel.png",
+  "name": "skill.arsmagicalegacy.channel.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.channel.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:channel"
+    }
+  ]
+}

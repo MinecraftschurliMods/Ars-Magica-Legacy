@@ -1,0 +1,16 @@
+{
+  "affinity": "arsmagicalegacy:ender",
+  "bounds": {
+    "max": 0.99,
+    "min": 0.5
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:light_health_modifier",
+      "max": -0.2,
+      "max_light": 10,
+      "min": 0.0
+    }
+  ],
+  "negative": true
+}

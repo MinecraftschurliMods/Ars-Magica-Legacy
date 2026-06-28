@@ -1,0 +1,16 @@
+{
+  "affinity": "arsmagicalegacy:earth",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.5
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:damage_modifier",
+      "damage_types": "#arsmagicalegacy:affected_by_fall_damage_ability",
+      "max": 1.5,
+      "min": 1.0
+    }
+  ],
+  "negative": true
+}

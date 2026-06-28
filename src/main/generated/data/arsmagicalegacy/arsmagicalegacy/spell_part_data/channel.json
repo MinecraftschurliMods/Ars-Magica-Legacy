@@ -1,0 +1,16 @@
+{
+  "affinity_shifts": {},
+  "mana": 0.5,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "#c:dusts/vinteum"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:cerublossom"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#c:is_overworld",
+      "#c:is_plains"
+    ]
+  },
+  "features": "arsmagicalegacy:liquid_etherium_lake",
+  "step": "lakes"
+}

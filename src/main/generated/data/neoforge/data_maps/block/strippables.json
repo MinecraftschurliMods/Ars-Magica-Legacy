@@ -1,0 +1,10 @@
+{
+  "values": {
+    "arsmagicalegacy:witchwood_log": {
+      "stripped_block": "arsmagicalegacy:stripped_witchwood_log"
+    },
+    "arsmagicalegacy:witchwood_wood": {
+      "stripped_block": "arsmagicalegacy:stripped_witchwood_wood"
+    }
+  }
+}

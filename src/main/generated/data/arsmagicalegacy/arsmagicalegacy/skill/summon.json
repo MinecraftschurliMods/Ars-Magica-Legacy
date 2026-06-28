@@ -1,0 +1,9 @@
+{
+  "cost": "arsmagicalegacy:green",
+  "parents": [
+    "arsmagicalegacy:life_tap"
+  ],
+  "tab": "arsmagicalegacy:defense",
+  "x": 120,
+  "y": 72
+}

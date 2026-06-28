@@ -1,0 +1,38 @@
+{
+  "all_states": {
+    "predicate_type": "arsmagicalegacy:composite",
+    "rule_tests": [
+      {
+        "block": "minecraft:melon_stem",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:attached_melon_stem",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:melon",
+        "predicate_type": "minecraft:block_match"
+      }
+    ]
+  },
+  "crop": {
+    "id": "minecraft:melon_slice"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:stem",
+    "age_property": "age",
+    "attached_stem": "minecraft:attached_melon_stem",
+    "fruit": {
+      "Name": "minecraft:melon"
+    },
+    "max_age": 7,
+    "stem": {
+      "block": "minecraft:melon_stem",
+      "predicate_type": "minecraft:block_match"
+    }
+  },
+  "seed": {
+    "id": "minecraft:melon_seeds"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "adjacents": [],
+  "cast_sound": "arsmagicalegacy:spell.cast.none",
+  "color": 0,
+  "direct_opposite": "arsmagicalegacy:none",
+  "index": -1.0,
+  "major_opposites": [],
+  "minor_opposites": [],
+  "particle": {
+    "type": "arsmagicalegacy:none_hand"
+  }
+}

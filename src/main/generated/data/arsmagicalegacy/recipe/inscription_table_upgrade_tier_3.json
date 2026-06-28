@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:book",
+    "#minecraft:candles",
+    "minecraft:honeycomb",
+    "minecraft:glass_bottle"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:inscription_table_upgrade_tier_3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/swiftness",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/skill/swiftness.png",
+  "name": "skill.arsmagicalegacy.swiftness.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.swiftness.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:swiftness"
+    }
+  ]
+}

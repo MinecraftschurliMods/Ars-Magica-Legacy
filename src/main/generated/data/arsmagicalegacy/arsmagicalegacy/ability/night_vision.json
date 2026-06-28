@@ -1,0 +1,14 @@
+{
+  "affinity": "arsmagicalegacy:ender",
+  "bounds": {
+    "max": 1.0,
+    "min": 0.5
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:effect",
+      "duration": 210,
+      "effect": "minecraft:night_vision"
+    }
+  ]
+}

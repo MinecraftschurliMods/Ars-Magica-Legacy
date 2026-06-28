@@ -1,0 +1,25 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "up": {
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        0.5,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "arsmagicalegacy:block/spell_rune",
+    "texture": "arsmagicalegacy:block/spell_rune"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "#c:feathers",
+    "P": "arsmagicalegacy:spell_parchment",
+    "S": "#minecraft:wooden_slabs",
+    "T": "minecraft:torch",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "TPF",
+    "SSS",
+    "W W"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:inscription_table"
+  }
+}

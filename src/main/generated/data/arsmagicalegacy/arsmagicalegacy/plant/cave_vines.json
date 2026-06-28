@@ -1,0 +1,41 @@
+{
+  "all_states": {
+    "predicate_type": "arsmagicalegacy:composite",
+    "rule_tests": [
+      {
+        "block": "minecraft:cave_vines",
+        "predicate_type": "minecraft:block_match"
+      },
+      {
+        "block": "minecraft:cave_vines_plant",
+        "predicate_type": "minecraft:block_match"
+      }
+    ]
+  },
+  "crop": {
+    "id": "minecraft:glow_berries"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:hanging_bush",
+    "body": "minecraft:cave_vines_plant",
+    "harvest_states": [
+      {
+        "Name": "minecraft:cave_vines_plant",
+        "Properties": {
+          "berries": "true"
+        }
+      },
+      {
+        "Name": "minecraft:cave_vines",
+        "Properties": {
+          "age": "0",
+          "berries": "true"
+        }
+      }
+    ],
+    "head": "minecraft:cave_vines"
+  },
+  "seed": {
+    "id": "minecraft:glow_berries"
+  }
+}

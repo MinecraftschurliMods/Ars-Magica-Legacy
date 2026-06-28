@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    "arsmagicalegacy:aum"
+  ],
+  "processingTime": 50,
+  "results": [
+    {
+      "count": 2,
+      "item": "minecraft:pink_dye"
+    },
+    {
+      "chance": 0.05,
+      "item": "minecraft:lime_dye"
+    },
+    {
+      "chance": 0.05,
+      "item": "minecraft:white_dye"
+    }
+  ]
+}

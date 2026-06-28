@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_green_rune": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arsmagicalegacy:green_rune"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:battlemage_chestplate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_green_rune"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:battlemage_chestplate"
+    ]
+  }
+}

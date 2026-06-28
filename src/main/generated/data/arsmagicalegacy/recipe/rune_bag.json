@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "H": "minecraft:rabbit_hide",
+    "R": "#arsmagicalegacy:runes",
+    "S": "#c:strings"
+  },
+  "pattern": [
+    "SHS",
+    "HRH",
+    "HHH"
+  ],
+  "result": {
+    "id": "arsmagicalegacy:rune_bag"
+  }
+}

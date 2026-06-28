@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal"
+    }
+  ],
+  "type": "thermal:smelter",
+  "experience": 0.2,
+  "ingredient": "#c:ores/chimerite",
+  "output": [
+    {
+      "chance": 1.5,
+      "item": "arsmagicalegacy:chimerite"
+    },
+    {
+      "chance": 0.15,
+      "item": "thermal:rich_slag"
+    }
+  ]
+}

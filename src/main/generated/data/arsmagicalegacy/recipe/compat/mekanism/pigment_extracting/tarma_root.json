@@ -1,0 +1,16 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "type": "mekanism:pigment_extracting",
+  "input": {
+    "ingredient": "arsmagicalegacy:tarma_root"
+  },
+  "output": {
+    "amount": 768,
+    "pigment": "mekanism:brown"
+  }
+}

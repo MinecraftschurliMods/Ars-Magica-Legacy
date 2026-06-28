@@ -1,0 +1,31 @@
+{
+  "all_states": {
+    "block": "minecraft:wheat",
+    "predicate_type": "minecraft:block_match"
+  },
+  "crop": {
+    "id": "minecraft:wheat"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:crop",
+    "harvest_states": [
+      {
+        "from": {
+          "Name": "minecraft:wheat",
+          "Properties": {
+            "age": "7"
+          }
+        },
+        "to": {
+          "Name": "minecraft:wheat",
+          "Properties": {
+            "age": "0"
+          }
+        }
+      }
+    ]
+  },
+  "seed": {
+    "id": "minecraft:wheat_seeds"
+  }
+}

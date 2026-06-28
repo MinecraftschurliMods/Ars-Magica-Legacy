@@ -1,0 +1,18 @@
+{
+  "all_states": {
+    "block": "minecraft:sugar_cane",
+    "predicate_type": "minecraft:block_match"
+  },
+  "crop": {
+    "id": "minecraft:sugar_cane"
+  },
+  "growth_type": {
+    "type": "arsmagicalegacy:upwards",
+    "body": "minecraft:sugar_cane",
+    "head": "minecraft:sugar_cane",
+    "max_height": 3
+  },
+  "seed": {
+    "id": "minecraft:sugar_cane"
+  }
+}

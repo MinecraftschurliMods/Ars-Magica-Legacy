@@ -1,0 +1,18 @@
+{
+  "affinity_shifts": {
+    "arsmagicalegacy:arcane": 0.0020000000949949026
+  },
+  "mana": 80.0,
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "arsmagicalegacy:lime_rune"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "count": 1,
+      "item": "minecraft:map"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "affinity": "arsmagicalegacy:fire",
+  "bounds": {
+    "min": 1.0
+  },
+  "effects": [
+    {
+      "type": "arsmagicalegacy:fire_punch",
+      "max": 100,
+      "min": 100
+    }
+  ]
+}
