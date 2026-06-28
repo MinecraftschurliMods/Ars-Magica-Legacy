@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "arsmagicalegacy:block/witchwood_planks",
-    "side": "arsmagicalegacy:block/witchwood_planks",
-    "top": "arsmagicalegacy:block/witchwood_planks"
-  }
-}

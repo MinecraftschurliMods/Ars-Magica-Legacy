@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/rail",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "rail": "arsmagicalegacy:block/redstone_inlay"
-  }
-}

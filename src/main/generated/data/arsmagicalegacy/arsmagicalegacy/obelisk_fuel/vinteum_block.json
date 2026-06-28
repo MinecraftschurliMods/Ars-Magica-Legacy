@@ -1,7 +1,0 @@
-{
-  "burn_time": 900,
-  "etherium_per_tick": 2,
-  "input": {
-    "tag": "c:storage_blocks/vinteum"
-  }
-}

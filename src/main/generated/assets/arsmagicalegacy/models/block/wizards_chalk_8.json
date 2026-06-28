@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/rail_flat",
-  "render_type": "minecraft:translucent",
-  "textures": {
-    "rail": "arsmagicalegacy:block/wizards_chalk_8"
-  }
-}

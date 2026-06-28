@@ -1,5 +1,0 @@
-{
-  "parent": "neoforge:item/bucket",
-  "fluid": "arsmagicalegacy:liquid_essence",
-  "loader": "neoforge:fluid_container"
-}

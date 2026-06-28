@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "arsmagicalegacy:block/witchwood_planks"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "neoforge:item/default",
-  "loader": "neoforge:obj",
-  "model": "arsmagicalegacy:models/block/obj/celestial_prism.obj",
-  "textures": {
-    "particle": "arsmagicalegacy:block/celestial_prism",
-    "tex": "arsmagicalegacy:block/celestial_prism"
-  }
-}
