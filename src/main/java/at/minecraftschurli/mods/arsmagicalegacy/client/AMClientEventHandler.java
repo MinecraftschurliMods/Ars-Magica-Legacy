@@ -10,7 +10,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.api.constants.AMTranslations;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.PrimarySpellShape;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.Spell;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellCastContext;
-import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellShapeGroup;
 import at.minecraftschurli.mods.arsmagicalegacy.apiimpl.ArsMagicaClientApiImpl;
 import at.minecraftschurli.mods.arsmagicalegacy.client.atlas.SkillAtlasHolder;
@@ -77,7 +76,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -433,13 +431,9 @@ final class AMClientEventHandler {
         Player player = Objects.requireNonNull(AMClientUtil.player());
         Minecraft mc = AMClientUtil.mc();
         Options options = mc.options;
-        int distance = options.getEffectiveRenderDistance() * 8;
-        CameraType cameraType = options.getCameraType();
         float partialTick = mc.getDeltaTracker().getGameTimeDeltaTicks();
-        SpellHelper helper = ArsMagicaApi.spellHelper();
         for (Player p : Objects.requireNonNull(AMClientUtil.level()).players()) {
-            boolean isLocalPlayer = p.getUUID().equals(player.getUUID());
-            if (isLocalPlayer && cameraType == CameraType.THIRD_PERSON_BACK || player.distanceTo(p) > distance || !p.isUsingItem()) continue;
+            if (p.getUUID().equals(player.getUUID()) && !options.getCameraType().isMirrored() || player.distanceTo(p) > options.getEffectiveRenderDistance() * 8 || !p.isUsingItem()) continue;
             Spell spell = p.getUseItem().get(AMDataComponents.SPELL);
             if (spell == null || spell.isEmpty()) continue;
             SpellShapeGroup shapeGroup = spell.currentShapeGroup();
@@ -447,17 +441,17 @@ final class AMClientEventHandler {
             boolean isBeam = shape == AMSpells.BEAM.get();
             boolean isChain = shape == AMSpells.CHAIN.get();
             if (!isBeam && !isChain) continue;
-            int color = 0xff000000 | helper.getColor(shapeGroup.primaryModifiers(), spell, spell.activeShapeGroup());
+            int color = 0xff000000 | ArsMagicaApi.spellHelper().getColor(shapeGroup.primaryModifiers(), spell, spell.activeShapeGroup());
             HitResult hitResult = AMUtil.getHitResult(p, spell, isBeam ? AMServerConfig.BEAM_RANGE.get() : AMServerConfig.CHAIN_RANGE.get(), partialTick);
             stack.pushPose();
             stack.translate(event.getLevelRenderState().cameraRenderState.pos.scale(-1));
-            BeamRenderer.submit(stack, collector, true, p, hitResult.getLocation(), color, partialTick);
+            BeamRenderer.submitThirdPerson(stack, collector, p, hitResult.getLocation(), color, partialTick);
             if (isChain && hitResult instanceof EntityHitResult ehr) {
                 List<Entity> list = Chain.getEntities(ehr.getEntity(), shapeGroup.primaryModifiers(), new SpellCastContext(spell, p.level(), p, null, hitResult, false, false), p);
                 for (int i = 1; i < list.size(); i++) {
                     Entity prev = list.get(i - 1);
                     Entity current = list.get(i);
-                    BeamRenderer.submit(stack, collector, false, prev, current.getEyePosition(partialTick), color, partialTick);
+                    BeamRenderer.submitThirdPerson(stack, collector, prev, current.getEyePosition(partialTick), color, partialTick);
                 }
             }
             stack.popPose();

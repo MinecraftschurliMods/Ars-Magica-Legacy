@@ -5,7 +5,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.Options;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -15,11 +14,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Objects;
 
 /// Adapted from [BeaconRenderer]
 public final class BeamRenderer {
@@ -29,30 +25,29 @@ public final class BeamRenderer {
 
     private BeamRenderer() {}
 
-    public static void submit(PoseStack stack, SubmitNodeCollector collector, boolean caster, Entity entity, Vec3 target, int color, float partialTick) {
-        Player player = Objects.requireNonNull(AMClientUtil.player());
+    public static void submitThirdPerson(PoseStack stack, SubmitNodeCollector collector, Entity entity, Vec3 target, int color, float partialTick) {
         Level level = AMClientUtil.level();
-        Options options = AMClientUtil.mc().options;
-        boolean firstPerson = caster && entity.getUUID().equals(player.getUUID()) && options.getCameraType().isFirstPerson();
-        Vec3 origin = firstPerson ? entity.getPosition(partialTick).add(0, entity.getBbHeight() / 2, 0) : entity.getEyePosition(partialTick);
+        Vec3 origin = entity.getEyePosition(partialTick);
         double xd = target.x - origin.x;
         double zd = target.z - origin.z;
-        float xRot = firstPerson ? entity.getViewXRot(partialTick) + 90 : Mth.wrapDegrees((float) Math.toDegrees(-Math.atan2(target.y - origin.y, Math.sqrt(xd * xd + zd * zd))) + 90);
-        float yRot = firstPerson ? entity.getViewYRot(partialTick) : Mth.wrapDegrees((float) Math.toDegrees(Math.atan2(zd, xd)) - 90);
-        float height = (float) target.distanceTo(origin);
-        float time = level != null ? -Math.floorMod(level.getGameTime(), 40) - partialTick : 0f;
-        float vOffset = 1 - Mth.frac((time * 0.2f - Mth.floor(time * 0.1f)) * 4);
-        float glowVOffset = 1 - Mth.frac((time * 0.2f - Mth.floor(time * 0.1f)) * 3);
+        float xRot = Mth.wrapDegrees((float) Math.toDegrees(-Math.atan2(target.y - origin.y, Math.sqrt(xd * xd + zd * zd))) + 90);
+        float yRot = Mth.wrapDegrees((float) Math.toDegrees(Math.atan2(zd, xd)) - 90);
         stack.pushPose();
         stack.translate(origin);
         stack.mulPose(Axis.YP.rotationDegrees(-yRot));
         stack.mulPose(Axis.XP.rotationDegrees(xRot));
+        submit(stack, collector, (float) target.distanceTo(origin), level != null ? -Math.floorMod(level.getGameTime(), 40) - partialTick : 0f, color);
+        stack.popPose();
+    }
+
+    private static void submit(PoseStack stack, SubmitNodeCollector collector, float height, float time, int color) {
+        float vOffset = 1 - Mth.frac((time * 0.2f - Mth.floor(time * 0.1f)) * 4);
+        float glowVOffset = 1 - Mth.frac((time * 0.2f - Mth.floor(time * 0.1f)) * 3);
         submit(stack, collector, GLOW_TEXTURE, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), height, glowVOffset, height + glowVOffset, ARGB.color(32, color));
         stack.pushPose();
-        stack.mulPose(Axis.YP.rotationDegrees(time * 2.25f - 45f));
+        stack.mulPose(Axis.YP.rotationDegrees(time * 2.25f));
         submit(stack, collector, MAIN_TEXTURE, 0.02f, height, vOffset, height * 25f + vOffset, color);
         submit(stack, collector, CORE_TEXTURE, 0.01f, height, vOffset, height * 50f + vOffset, color);
-        stack.popPose();
         stack.popPose();
     }
 
