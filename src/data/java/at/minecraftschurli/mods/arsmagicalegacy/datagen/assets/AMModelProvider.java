@@ -267,6 +267,16 @@ public final class AMModelProvider extends AbstractModelProvider {
             AMDataComponents.SKILL_POINT.get(),
             ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.INFINITY_ORB.get(), ModelTemplates.FLAT_ITEM))
         ), ModelTemplates.FLAT_ITEM, AMMagic.SKILL_POINTS);
+        basicItem(itemModels, AMItems.WATER_ORBS);
+        basicItem(itemModels, AMItems.FIRE_ANTENNAE);
+        basicItem(itemModels, AMItems.EARTH_ARMOR);
+        basicItem(itemModels, AMItems.AIR_SLED);
+        basicItem(itemModels, AMItems.WINTERS_GRASP);
+        basicItem(itemModels, AMItems.LIGHTNING_CHARM);
+        basicItem(itemModels, AMItems.NATURE_SCYTHE);
+        basicItem(itemModels, AMItems.LIFE_WARD);
+        basicItem(itemModels, AMItems.ARCANE_SPELL_BOOK);
+        basicItem(itemModels, AMItems.ENDER_BOOTS);
         itemWithVariants(itemModels, AMItems.AFFINITY_ESSENCE, new DataComponentOverridesModel.Unbaked<>(
             AMDataComponents.AFFINITY.get(),
             ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.AFFINITY_ESSENCE.get(), ModelTemplates.FLAT_ITEM))

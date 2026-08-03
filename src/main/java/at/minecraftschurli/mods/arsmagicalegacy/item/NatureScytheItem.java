@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class NatureScytheItem extends Item {
     public NatureScytheItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Override

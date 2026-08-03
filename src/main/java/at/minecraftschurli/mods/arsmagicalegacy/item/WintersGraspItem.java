@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class WintersGraspItem extends Item {
     public WintersGraspItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Override

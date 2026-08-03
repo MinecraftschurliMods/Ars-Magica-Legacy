@@ -91,8 +91,16 @@ public final class AMLanguageProvider extends LanguageProvider {
         itemWithVariantTranslation(AMItems.INFINITY_ORB, AMMagic.GREEN_POINT.identifier(), "Green Infinity Orb");
         itemWithVariantTranslation(AMItems.INFINITY_ORB, AMMagic.RED_POINT.identifier(), "Red Infinity Orb");
         itemIdTranslation(AMItems.INFINITY_ORB);
+        itemIdTranslation(AMItems.WATER_ORBS);
+        itemIdTranslation(AMItems.FIRE_ANTENNAE);
+        itemIdTranslation(AMItems.EARTH_ARMOR);
+        itemIdTranslation(AMItems.AIR_SLED);
         addItem(AMItems.WINTERS_GRASP, "Winter's Grasp");
+        itemIdTranslation(AMItems.LIGHTNING_CHARM);
         itemIdTranslation(AMItems.NATURE_SCYTHE);
+        itemIdTranslation(AMItems.LIFE_WARD);
+        itemIdTranslation(AMItems.ARCANE_SPELL_BOOK);
+        itemIdTranslation(AMItems.ENDER_BOOTS);
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, Affinity.NONE.identifier(), "Affinity Essence");
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, AMMagic.WATER.identifier(), "Water Affinity Essence");
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, AMMagic.FIRE.identifier(), "Fire Affinity Essence");

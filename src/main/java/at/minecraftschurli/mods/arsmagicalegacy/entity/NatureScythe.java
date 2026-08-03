@@ -110,8 +110,8 @@ public class NatureScythe extends AbstractOwnableEntity {
         LivingEntity owner = getOwner();
         if (owner instanceof NatureGuardian guardian) {
             guardian.setHasScythe(true);
-        } else if (owner instanceof Player player && !player.addItem(getStack())) {
-            ItemEntity item = new ItemEntity(level(), player.getX(), player.getY(), player.getZ(), getStack());
+        } else if (owner != null && (!(owner instanceof Player player) || !player.addItem(getStack()))) {
+            ItemEntity item = new ItemEntity(level(), owner.getX(), owner.getY(), owner.getZ(), getStack());
             level().addFreshEntity(item);
         }
         remove(RemovalReason.KILLED);
