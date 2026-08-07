@@ -2,6 +2,7 @@ package at.minecraftschurli.mods.arsmagicalegacy.datagen.assets;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.item.AMArmorItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.ManaArmorItem;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
@@ -26,6 +27,9 @@ public final class AMEquipmentAssetProvider extends EquipmentAssetProvider {
             .build());
         output.accept(ManaArmorItem.BATTLEMAGE_ASSET_ID, EquipmentClientInfo.builder()
             .addHumanoidLayers(ArsMagicaApi.id("battlemage"))
+            .build());
+        output.accept(EnderBootsItem.ASSET_ID, EquipmentClientInfo.builder()
+            .addMainHumanoidLayer(ArsMagicaApi.id("ender_boots"), false)
             .build());
     }
 }

@@ -14,6 +14,6 @@ public final class AMCuriosProvider extends CuriosDataProvider {
 
     @Override
     public void generate(HolderLookup.Provider provider) {
-        createEntities("player").addPlayer().addSlots("head");
+        createEntities("player").addPlayer().addSlots("head", "belt", "charm");
     }
 }
