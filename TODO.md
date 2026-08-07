@@ -1,0 +1,45 @@
+- Fix inlays (needs Neo changes)
+- Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
+- Boss Drops
+  - Water Orbs
+    - Water breathing
+    - Disable being pushed in water
+    - Custom model
+  - Fire Antennae
+    - Fire resistance
+    - Enable swimming in lava
+    - Custom model
+  - Earth Armor
+    - Custom model
+  - Air Sled
+    - Right-click item to place
+    - Right-click to mount
+    - Creative-like flight
+    - Shift-right-click to break
+    - Custom model
+  - Winter's Grasp
+    - Custom model
+  - Lightning Charm
+    - Activate in inventory if Curios is not present
+    - Config option to still activate in inventory if Curios is present
+    - Item magnet in a 16 block radius
+  - Nature Scythe
+    - Custom model
+  - Life Ward
+    - Activate in inventory if Curios is not present
+    - Config option to still activate in inventory if Curios is present
+    - Shield of up to 20 health
+  - Arcane Spell Book
+    - Like regular spell book
+    - Boosts spell stats - TODO check amount in 1.10
+    - Reduces mana costs - TODO check amount in 1.10
+    - Custom model
+  - Ender Boots
+    - Check attributes and durability in 1.10
+    - Flip gravity when jumping
+- Reduce sound volumes
+- Fix Render Pipelines
+    - Beam
+    - Chain
+- Test With Sodium/Embeddium/Iris
+    - Altar Model & BER
