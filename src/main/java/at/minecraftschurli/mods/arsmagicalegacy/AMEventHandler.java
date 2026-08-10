@@ -88,12 +88,14 @@ import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Util;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
@@ -130,6 +132,7 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
@@ -427,6 +430,9 @@ final class AMEventHandler {
             if (living.isOnFire()) {
                 ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_FIRE_ID);
             }
+            if (AMUtil.isInEquipmentOrCurioSlot(living, EquipmentSlot.LEGS, AMItems.WATER_ORBS.get())) {
+                living.setAirSupply(living.getMaxAirSupply());
+            }
         }
         if (!entity.hasData(AMAttachments.FROST)) return;
         int frost = entity.getData(AMAttachments.FROST);
@@ -444,6 +450,13 @@ final class AMEventHandler {
         Player player = event.getEntity();
         ArsMagicaApi.abilityHelper().getActiveAbilities(player).forEach(holder -> holder.value().effects().forEach(effect -> effect.tick(player, holder)));
         DryadKillsAttachment.tick(player);
+    }
+
+    @SubscribeEvent
+    private static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
+        if (event.getEntity() instanceof LivingEntity living && event.getSource().is(DamageTypeTags.IS_FIRE) && AMUtil.isInEquipmentOrCurioSlot(living, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get())) {
+            event.setInvulnerable(true);
+        }
     }
 
     @SubscribeEvent

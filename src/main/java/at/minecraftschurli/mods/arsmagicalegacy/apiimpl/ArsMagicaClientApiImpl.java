@@ -14,9 +14,9 @@ import at.minecraftschurli.mods.arsmagicalegacy.api.magic.OcculusTab;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellPart;
 import at.minecraftschurli.mods.arsmagicalegacy.client.particle.AMParticle;
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.MagitechGogglesOverlayRenderStateImpl;
-import at.minecraftschurli.mods.arsmagicalegacy.compat.curios.AMCuriosHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
@@ -26,7 +26,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import org.jspecify.annotations.Nullable;
 
@@ -62,7 +61,7 @@ public final class ArsMagicaClientApiImpl extends ArsMagicaClientApi {
     @Override
     protected boolean doShouldRenderMagitechGogglesOutline() {
         LocalPlayer player = AMClientUtil.player();
-        return player != null && (player.getItemBySlot(EquipmentSlot.HEAD).is(AMItems.MAGITECH_GOGGLES) || ModList.get().isLoaded("curios") && AMCuriosHelper.hasItemEquipped(player, AMItems.MAGITECH_GOGGLES.get()));
+        return player != null && AMUtil.isInEquipmentOrCurioSlot(player, EquipmentSlot.HEAD, AMItems.MAGITECH_GOGGLES.get());
     }
 
     @Override

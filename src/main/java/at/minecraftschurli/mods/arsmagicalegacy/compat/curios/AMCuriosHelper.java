@@ -1,6 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.compat.curios;
 
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -11,8 +12,8 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 public final class AMCuriosHelper {
     private AMCuriosHelper() {}
 
-    public static boolean hasItemEquipped(Player player, Item item) {
-        return CuriosApi.getCuriosInventory(player)
+    public static boolean hasItemEquipped(LivingEntity entity, Item item) {
+        return CuriosApi.getCuriosInventory(entity)
             .map(ICuriosItemHandler::getCurios)
             .map(map -> map.values()
                 .stream()
