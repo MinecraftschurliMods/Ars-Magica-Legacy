@@ -290,7 +290,7 @@ public final class AMUtil {
     }
 
     public static HitResult getHitResult(LivingEntity entity, Spell spell, double baseRange, float partialTick) {
-        return getHitResult(entity, spell.currentShapeGroup().primaryModifiers(), new SpellCastContext(spell, entity.level(), entity, false, false), baseRange, partialTick);
+        return getHitResult(entity, spell.currentShapeGroup().primaryModifiers(), new SpellCastContext(spell, entity.level(), entity, false, false, 1), baseRange, partialTick);
     }
 
     public static List<Plant> getPlants(BlockState state, RegistryAccess registryAccess) {

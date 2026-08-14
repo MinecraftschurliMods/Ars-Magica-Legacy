@@ -28,9 +28,6 @@
     - Config option to still activate in inventory if Curios is present
     - Shield of up to 20 health
   - Arcane Spell Book
-    - Like regular spell book
-    - Boosts spell stats - TODO check amount in 1.10
-    - Reduces mana costs - TODO check amount in 1.10
     - Custom model
   - Ender Boots
     - Check attributes and durability in 1.10

@@ -29,6 +29,8 @@ public interface AMDataComponents {
     DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, ArsMagicaApi.MOD_ID);
     // @formatter:off
     DeferredHolder<DataComponentType<?>, DataComponentType<Holder<Affinity>>>               AFFINITY                    = register("affinity",                    Affinity.CODEC,                       ByteBufCodecs.holderRegistry(AMRegistries.Keys.AFFINITY));
+    DeferredHolder<DataComponentType<?>, DataComponentType<Double>>                         BONUS_MANA_MULTIPLIER       = register("bonus_mana_multiplier",       Codec.DOUBLE,                         ByteBufCodecs.DOUBLE);
+    DeferredHolder<DataComponentType<?>, DataComponentType<Double>>                         BONUS_STAT_MULTIPLIER       = register("bonus_stat_multiplier",       Codec.DOUBLE,                         ByteBufCodecs.DOUBLE);
     DeferredHolder<DataComponentType<?>, DataComponentType<CrystalPhylacteryItem.Contents>> CRYSTAL_PHYLACTERY_CONTENTS = register("crystal_phylactery_contents", CrystalPhylacteryItem.Contents.CODEC, CrystalPhylacteryItem.Contents.STREAM_CODEC);
     DeferredHolder<DataComponentType<?>, DataComponentType<Holder<EtheriumType>>>           ETHERIUM_TYPE               = register("etherium_type",               EtheriumType.CODEC,                   ByteBufCodecs.holderRegistry(AMRegistries.Keys.ETHERIUM_TYPE));
     DeferredHolder<DataComponentType<?>, DataComponentType<Double>>                         MANA_REPAIR_COST            = register("mana_repair_cost",            Codec.DOUBLE,                         ByteBufCodecs.DOUBLE);

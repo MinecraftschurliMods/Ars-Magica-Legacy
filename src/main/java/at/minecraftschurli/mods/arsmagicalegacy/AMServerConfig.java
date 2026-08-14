@@ -20,6 +20,8 @@ public final class AMServerConfig {
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_DURATION;
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_HORIZONTAL_RANGE;
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_VERTICAL_RANGE;
+    public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_MANA_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_STAT_MULTIPLIER;
     public static final ModConfigSpec.DoubleValue BOSS_PLAYER_CHECK_DISTANCE;
     public static final ModConfigSpec.IntValue BOSS_PLAYER_CHECK_INTERVAL;
     public static final ModConfigSpec.IntValue DRYAD_GROW_INTERVAL;
@@ -183,6 +185,14 @@ public final class AMServerConfig {
             .comment("The vertical range of the Arcane Compendium conversion.")
             .translation(AMTranslations.CONFIG_KEY + "arcane_compendium_conversion_vertical_range")
             .defineInRange("arcane_compendium_conversion_vertical_range", 2, 1, 16);
+        ARCANE_SPELL_BOOK_MANA_MULTIPLIER = builder
+            .comment("The mana multiplier applied when using the Arcane Spell Book.")
+            .translation(AMTranslations.CONFIG_KEY + "arcane_spell_book_mana_multiplier")
+            .defineInRange("arcane_spell_book_mana_multiplier", 0.8, 0, 1);
+        ARCANE_SPELL_BOOK_STAT_MULTIPLIER = builder
+            .comment("The stat multiplier applied when using the Arcane Spell Book.")
+            .translation(AMTranslations.CONFIG_KEY + "arcane_spell_book_stat_multiplier")
+            .defineInRange("arcane_spell_book_stat_multiplier", 1.4, 1, 8);
         builder.pop();
         builder.comment("Configuration for the various entities.").push("entities");
         BOSS_PLAYER_CHECK_DISTANCE = builder
@@ -602,7 +612,7 @@ public final class AMServerConfig {
         AUGMENTED_CASTING_MULTIPLIER = builder
             .comment("The multiplier to various stats used by the Augmented Casting talent.")
             .translation(AMTranslations.CONFIG_KEY + "augmented_casting_multiplier")
-            .defineInRange("augmented_casting_multiplier", 1.5, 1, 8);
+            .defineInRange("augmented_casting_multiplier", 1.4, 1, 8);
         EXTRA_SUMMONS_COUNT = builder
             .comment("The amount of additional summons a player can have at the same time when they have the Extra Summons talent.")
             .translation(AMTranslations.CONFIG_KEY + "extra_summons_count")

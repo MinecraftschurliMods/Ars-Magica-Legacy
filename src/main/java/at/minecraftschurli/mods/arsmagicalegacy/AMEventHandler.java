@@ -297,6 +297,7 @@ final class AMEventHandler {
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(Capabilities.Item.ITEM, RuneBagItem::getItemHandler, AMItems.RUNE_BAG);
         event.registerItem(Capabilities.Item.ITEM, SpellBookItem::getItemHandler, AMItems.SPELL_BOOK);
+        event.registerItem(Capabilities.Item.ITEM, SpellBookItem::getItemHandler, AMItems.ARCANE_SPELL_BOOK);
         event.registerBlock(Capabilities.Item.BLOCK, ObeliskBlock::getItemHandler, AMBlocks.OBELISK.get());
         event.registerBlockEntity(AMCapabilities.BLOCK_ETHERIUM, AMBlockEntities.ALTAR_CORE.get(), (blockEntity, _) -> blockEntity);
         event.registerBlockEntity(AMCapabilities.BLOCK_ETHERIUM, AMBlockEntities.OBELISK.get(), (blockEntity, _) -> blockEntity);

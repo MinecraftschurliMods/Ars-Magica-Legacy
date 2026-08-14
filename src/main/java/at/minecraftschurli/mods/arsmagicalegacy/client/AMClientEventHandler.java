@@ -65,10 +65,10 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlockEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
-import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
+import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
@@ -385,9 +385,9 @@ final class AMClientEventHandler {
         Player player = AMClientUtil.player();
         if (player == null || !player.isSecondaryUseActive()) return;
         ItemStack stack = player.getMainHandItem();
-        if (!stack.is(AMItems.SPELL_BOOK)) {
+        if (!SpellBookItem.isSpellBook(stack)) {
             stack = player.getOffhandItem();
-            if (!stack.is(AMItems.SPELL_BOOK)) return;
+            if (!SpellBookItem.isSpellBook(stack)) return;
         }
         ClientPacketDistributor.sendToServer(new SpellBookScrollPacket(scroll > 0));
         event.setCanceled(true);
@@ -453,7 +453,7 @@ final class AMClientEventHandler {
             stack.translate(event.getLevelRenderState().cameraRenderState.pos.scale(-1));
             BeamRenderer.submit(stack, collector, true, p, hitResult.getLocation(), color, partialTick);
             if (isChain && hitResult instanceof EntityHitResult ehr) {
-                List<Entity> list = Chain.getEntities(ehr.getEntity(), shapeGroup.primaryModifiers(), new SpellCastContext(spell, p.level(), p, null, hitResult, false, false), p);
+                List<Entity> list = Chain.getEntities(ehr.getEntity(), shapeGroup.primaryModifiers(), new SpellCastContext(spell, p.level(), p, null, hitResult, false, false, 1), p);
                 for (int i = 1; i < list.size(); i++) {
                     Entity prev = list.get(i - 1);
                     Entity current = list.get(i);

@@ -51,7 +51,7 @@ public class SpellBookMenu extends AbstractContainerMenu implements QuickMoveSta
 
     @Override
     public boolean stillValid(Player player) {
-        return player.getItemInHand(hand).is(AMItems.SPELL_BOOK) && ArsMagicaApi.magicHelper().knowsMagic(player);
+        return SpellBookItem.isSpellBook(player.getItemInHand(hand)) && ArsMagicaApi.magicHelper().knowsMagic(player);
     }
 
     @Override

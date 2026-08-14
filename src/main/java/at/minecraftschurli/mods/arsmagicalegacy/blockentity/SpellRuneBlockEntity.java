@@ -67,7 +67,7 @@ public class SpellRuneBlockEntity extends AMBlockEntity<SpellRuneBlockEntity.Dat
     }
 
     public void cast(Level level, BlockPos pos, Entity entity) {
-        SpellCastResult result = ArsMagicaApi.spellHelper().castGrammar(new SpellCastContext(spell, level, owner, null, new EntityHitResult(entity), consume, awardXp));
+        SpellCastResult result = ArsMagicaApi.spellHelper().castGrammar(new SpellCastContext(spell, level, owner, null, new EntityHitResult(entity), consume, awardXp, 1));
         if (!result.isSuccess()) return;
         spell = result.getSpell();
         power--;

@@ -607,6 +607,8 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("arcane_compendium_conversion_duration", "Arcane Compendium Conversion Duration", "The time in ticks that the Arcane Compendium conversion takes.");
         configTranslation("arcane_compendium_conversion_horizontal_range", "Arcane Compendium Conversion Horizontal Range", "The horizontal range of the Arcane Compendium conversion.");
         configTranslation("arcane_compendium_conversion_vertical_range", "Arcane Compendium Conversion Vertical Range", "The vertical range of the Arcane Compendium conversion.");
+        configTranslation("arcane_spell_book_mana_multiplier", "Arcane Spell Book Mana Multiplier", "The mana multiplier applied when using the Arcane Spell Book.");
+        configTranslation("arcane_spell_book_stat_multiplier", "Arcane Spell Book Stat Multiplier", "The stat multiplier applied when using the Arcane Spell Book.");
         configTranslation("entities", "Entities", "Configuration for the various entities.");
         configTranslation("boss_player_check_distance", "Boss Player Check Distance", "The distance from a boss within which the boss bar will be shown.");
         configTranslation("boss_player_check_interval", "Boss Player Check Interval", "The time in ticks between the boss checking for players in its range to show the boss bar to.");
