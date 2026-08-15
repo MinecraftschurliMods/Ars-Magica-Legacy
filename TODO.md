@@ -15,8 +15,6 @@
     - Creative-like flight
     - Shift-right-click to break
     - Custom model
-  - Winter's Grasp
-    - Custom model
   - Lightning Charm
     - Activate in inventory if Curios is not present
     - Config option to still activate in inventory if Curios is present

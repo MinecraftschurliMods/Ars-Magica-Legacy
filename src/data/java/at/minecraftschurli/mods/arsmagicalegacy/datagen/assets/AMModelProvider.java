@@ -271,7 +271,7 @@ public final class AMModelProvider extends AbstractModelProvider {
         basicItem(itemModels, AMItems.FIRE_ANTENNAE);
         basicItem(itemModels, AMItems.EARTH_ARMOR);
         basicItem(itemModels, AMItems.AIR_SLED);
-        basicItem(itemModels, AMItems.WINTERS_GRASP);
+        itemModels.itemModelOutput.register(ArsMagicaApi.id("winters_grasp"), new ClientItem(ItemModelUtils.plainModel(ArsMagicaApi.id("item/winters_grasp")), ClientItem.Properties.DEFAULT));
         basicItem(itemModels, AMItems.LIGHTNING_CHARM);
         basicItem(itemModels, AMItems.NATURE_SCYTHE);
         basicItem(itemModels, AMItems.LIFE_WARD);
