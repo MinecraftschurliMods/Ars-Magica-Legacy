@@ -1,84 +1,74 @@
-# General
-
-- Updated to 26.1.2
-- Rewrote most of the mod from the ground up for more overall stability going forward
-- Many systems now use datapacks instead of in-code solutions
-- Updated many textures, credit to the amazing @MoonlitLamps for their texture work
-
-# Blocks
-
-- Made various witchwood and flower blocks/items flammable, compostable and strippable where appropriate
-- All of the mod's flowers now spawn in larger patches
-- The Altar now accepts Shulker Boxes, Rune Bags and other container items, and will pull spell ingredients from their contents
-
-## Liquid Etherium
-
-- Renamed Liquid Essence to Liquid Etherium
-- Now generates in lakes in plains-like biomes, in addition to the centers of Moonstone meteorites
-- Moonstone meteorites have been made rarer and no longer contain Liquid Etherium, to compensate for Liquid Etherium now generating in lakes
-- Can now be used to create the Arcane Compendium by placing a book in a nearby item frame, similar to old Ars Magica
-- Now has underwater fog
-- Now can be placed in Cauldrons
-- Liquid Etherium Bucket can now be used by Dispensers
-
-## Occulus
-
-- Added a Forget All button
-- Improved the display of the affinities in the Affinity tab
-- Updated the tab icons
-
-## Inscription Table
-
-- Added a Clear button
-- Added a visual for where skills can be dragged when picked up
-- Spell Recipes can now be changed afterwards by placing them back into the table
-- Applied upgrades now show visually on the item if the block is broken, or middle-clicked in creative
-
 # Items
 
-- Dyed Spell Books can now be undyed at a Cauldron
-- Moved some Affinity Tomes to other biomes or structures
-- Rune Bags can no longer be inserted into Shulker Boxes or similar containers
-- The Spell Book HUD now displays right (instead of left) of the hotbar by default
+- Ten new items, one for each boss
 
-## Crystal Phylactery
+## Water Orbs
 
-- New item
-- When killing a mob with an empty Crystal Phylactery in your inventory, a mob "soul" is added to the Crystal Phylactery
-- Full Crystal Phylacteries can be used in a Summon spell to set the summoned mob type
-- Stronger mobs require more kills before they can be used
-- Certain mobs, such as bosses or disabled mobs, cannot be added to a Crystal Phylactery (this can be modified via datapacks)
-- If not empty, a Crystal Phylactery can be shift-right clicked to empty it
-- Filled variants for all supported mobs show up in the creative inventory and in JEI
+- Dropped by the Water Guardian
+- Can be equipped into the Leggings slot, or into the Belt slot if Curios is installed
+- Provides infinite air underwater
 
-## Magitech Goggles
+## Fire Antennae
 
-- Are no longer unbreakable
-- Can be repaired using Topaz
-- Now have visual indicators for etherium connections
-- Now visually display on the player when in a Curios slot
+- Dropped by the Fire Guardian
+- Is fire-proof like Netherite equipment
+- Can be equipped into the Helmet slot, or into the Head slot if Curios is installed
+- Negates all incoming fire damage
 
-# Skills & Spell Parts
+## Earth Armor
 
-- Changed the name and/or behavior of the following spell parts:
-    - Agility: Renamed to Swiftness. Now uses the Swiftness effect. The Agility effect was removed.
-    - Dismembering: Is now functional.
-    - Frost: No longer utilizes an effect, allowing it to stack with similar effects from other mods. The Frost effect was removed.
-    - Grow: Now supports a variety of new crops.
-    - Harvest: Now supports a variety of new crops. No longer has a built-in AoE effect.
-    - Plant: Renamed to Replant. Now acts as an upgrade to Harvest that also replants the crops if applicable.
-    - Rune Procs: Renamed to Rune Power.
-    - Shield: Renamed to Resistance. Now uses the Resistance effect. The Shield and Magic Shield effects were removed.
-    - Touch: Now uses the block/entity interaction range attributes.
-- Changed the positions and costs of various skills, making them cheaper overall
-- Changed how spell parts such as Color, Place Block or Recall store their metadata
-- Added new config options for tweaking the behavior of various spell parts
-- Removed the Telekinesis component
+- Dropped by the Earth Guardian
+- Is fire-proof like Netherite equipment
+- Can be enchanted
+- Repairs itself using mana, like Mage/Battlemage armor
+- Provides 16 armor, 4 armor toughness and 1 extra attack damage when worn; outperforming Netherite armor in all metrics except knockback resistance
+
+## Air Sled
+
+- Dropped by the Air Guardian
+
+## Winter's Grasp
+
+- Dropped by the Ice Guardian
+- Can be used as a melee weapon similar to a sword, dealing 4 attack damage
+- Can be thrown at enemies like the Ice Guardian does, damaging and pulling in the target
+
+## Lightning Charm
+
+- Dropped by the Lightning Guardian
+
+## Nature Scythe
+
+- Dropped by the Nature Guardian
+- Can be used as a melee weapon similar to an axe, dealing 12 attack damage
+- Can be thrown at enemies like the Nature Guardian does, damaging the target
+
+## Life Ward
+
+- Dropped by the Life Guardian
+
+## Arcane Spell Book
+
+- Dropped by the Arcane Guardian
+- Is fire-proof like Netherite equipment
+- Acts as an upgrade to the regular Spell Book
+- Spells cast from the Arcane Spell Book will cost 20% less mana (adjustable in config)
+- Spells cast from the Arcane Spell Book will be boosted in some stats by 40%, similar to the Augmented Casting talent (adjustable in config)
+
+## Ender Boots
+
+- Dropped by the Ender Guardian
+- Is fire-proof like Netherite equipment
+- Can be enchanted
+- Repairs itself using mana, like Mage/Battlemage armor
+- Provides 3 armor and 3 armor toughness; equivalent to Netherite armor save for the missing knockback resistance
 
 # Miscellaneous
 
-- Added new advancements for the mod
-- Added translations for the mod's tags
-- Added a notification when shifting into/out of affinity abilities
-- Dryads now spawn twice as often
-- Various minor fixes and balancing tweaks
+- Slightly debuffed the Augmented Casting talent (50% -> 40% boost to some stats)
+- Fixed the orientation of the Ice Guardian's arm when thrown
+
+# API Changes
+
+- `SpellCastContext`: Now has and requires an additional `statMultiplier` property
+- `SpellHelper#cast`: Now requires two additional parameters `innateManaMultiplier` and `innateStatMultiplier`
