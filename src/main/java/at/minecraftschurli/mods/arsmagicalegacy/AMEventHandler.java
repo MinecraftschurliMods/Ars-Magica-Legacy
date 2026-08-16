@@ -61,6 +61,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMMobEffects;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMRituals;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.CrystalPhylacteryItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
@@ -450,12 +451,13 @@ final class AMEventHandler {
     private static void playerTickPost(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         ArsMagicaApi.abilityHelper().getActiveAbilities(player).forEach(holder -> holder.value().effects().forEach(effect -> effect.tick(player, holder)));
+        FireAntennaeItem.tick(player);
         DryadKillsAttachment.tick(player);
     }
 
     @SubscribeEvent
     private static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
-        if (event.getEntity() instanceof LivingEntity living && event.getSource().is(DamageTypeTags.IS_FIRE) && AMUtil.isInEquipmentOrCurioSlot(living, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get())) {
+        if (event.getEntity() instanceof LivingEntity living && event.getSource().is(DamageTypeTags.IS_FIRE) && FireAntennaeItem.isEquipped(living)) {
             event.setInvulnerable(true);
         }
     }

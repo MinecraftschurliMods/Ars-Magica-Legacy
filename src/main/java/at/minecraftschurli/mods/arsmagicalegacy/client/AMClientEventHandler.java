@@ -68,6 +68,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
+import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
@@ -99,6 +100,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
@@ -126,6 +128,7 @@ import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
@@ -393,10 +396,22 @@ final class AMClientEventHandler {
         event.setCanceled(true);
     }
 
+    /// Adapted from LavaFogEnvironment#setupFog
+    @SubscribeEvent
+    private static void renderFog(ViewportEvent.RenderFog event) {
+        if (event.getType() != FogType.LAVA) return;
+        LocalPlayer player = AMClientUtil.player();
+        if (player == null || player.isSpectator() || !FireAntennaeItem.isEquipped(player)) return;
+        float lavaVision = FireAntennaeItem.getLavaVision(player);
+        event.setNearPlaneDistance(Mth.lerp(lavaVision, 0, -4));
+        event.setFarPlaneDistance(Mth.lerp(lavaVision, 5, AMClientUtil.mc().options.getEffectiveRenderDistance() * 4));
+    }
+
     /// Adapted from ItemInHandRenderer#renderArmWithItem and ItemInHandRenderer#renderPlayerArm
     @SubscribeEvent
     private static void renderHand(RenderHandEvent event) {
-        if (!(AMClientUtil.player() instanceof LocalPlayer player) || player.isInvisible() || !ArsMagicaApi.magicHelper().knowsMagic(player)) return;
+        LocalPlayer player = AMClientUtil.player();
+        if (player == null || player.isInvisible() || !ArsMagicaApi.magicHelper().knowsMagic(player)) return;
         ItemStack item = event.getItemStack();
         if (!item.is(AMTags.Items.SHOWS_SPELL_VISUALS) || !item.has(AMDataComponents.SPELL)) return;
         float swing = event.getSwingProgress();
