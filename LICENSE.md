@@ -46,8 +46,10 @@ The assets are taken from various sources, each under different licenses:
         - `etherium_placeholder.png`
         - `infinity_orb.png`
         - `moonstone.png`
+        - `nature_scythe.png`
         - `sunstone.png`
         - `topaz.png`
+        - `winters_grasp.png`
         - `wizards_chalk.png`
     - All files in the `mob_effect` folder
     - All files in the `particle` folder

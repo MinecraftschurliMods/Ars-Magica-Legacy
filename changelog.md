@@ -31,7 +31,7 @@
 
 - Dropped by the Ice Guardian
 - Can be used as a melee weapon similar to a sword, dealing 4 attack damage
-- Can be thrown at enemies like the Ice Guardian does, damaging and pulling in the target
+- Can be thrown at enemies like the Ice Guardian does, damaging the target for 4 damage and pulling it in
 
 ## Lightning Charm
 
@@ -41,7 +41,7 @@
 
 - Dropped by the Nature Guardian
 - Can be used as a melee weapon similar to an axe, dealing 12 attack damage
-- Can be thrown at enemies like the Nature Guardian does, damaging the target
+- Can be thrown at enemies like the Nature Guardian does, damaging the target for 12 damage
 
 ## Life Ward
 

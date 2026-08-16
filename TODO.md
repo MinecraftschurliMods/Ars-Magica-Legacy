@@ -19,8 +19,6 @@
     - Activate in inventory if Curios is not present
     - Config option to still activate in inventory if Curios is present
     - Item magnet in a 16 block radius
-  - Nature Scythe
-    - Custom model
   - Life Ward
     - Activate in inventory if Curios is not present
     - Config option to still activate in inventory if Curios is present
