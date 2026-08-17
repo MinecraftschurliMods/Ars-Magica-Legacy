@@ -259,6 +259,8 @@
   "arsmagicalegacy.configuration.effect_duration.tooltip": "The duration of effect-based components, in ticks. May be amplified by spell modifiers.",
   "arsmagicalegacy.configuration.effect_particles": "Effect Particles",
   "arsmagicalegacy.configuration.effect_particles.tooltip": "Whether to show effect particles for effect-based components.",
+  "arsmagicalegacy.configuration.ender_boots_fall_damage_multiplier": "Ender Boots Fall Damage Multiplier",
+  "arsmagicalegacy.configuration.ender_boots_fall_damage_multiplier.tooltip": "The fall damage multiplier applied when wearing the Ender Boots.",
   "arsmagicalegacy.configuration.entities": "Entities",
   "arsmagicalegacy.configuration.entities.tooltip": "Configuration for the various entities.",
   "arsmagicalegacy.configuration.explosion_range": "Explosion Range",

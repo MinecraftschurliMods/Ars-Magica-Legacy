@@ -68,8 +68,10 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
+import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
@@ -104,6 +106,7 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -127,6 +130,7 @@ import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyE
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -356,6 +360,10 @@ final class AMClientEventHandler {
     private static void clientTickPost(ClientTickEvent.Post event) {
         LocalPlayer player = AMClientUtil.player();
         if (player == null) return;
+        Minecraft mc = AMClientUtil.mc();
+        while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
+            ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
+        }
         InteractionHand hand = InteractionHand.MAIN_HAND;
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.has(AMDataComponents.SPELL)) {
@@ -376,7 +384,7 @@ final class AMClientEventHandler {
                 ClientPacketDistributor.sendToServer(new SetActiveShapeGroupPacket(spell.activeShapeGroup()));
             }
             while (SPELL_CUSTOMIZATION.consumeClick()) {
-                AMClientUtil.mc().setScreen(new SpellCustomizationScreen(spell, hand));
+                mc.setScreen(new SpellCustomizationScreen(spell, hand));
             }
         }
     }
@@ -394,6 +402,15 @@ final class AMClientEventHandler {
         }
         ClientPacketDistributor.sendToServer(new SpellBookScrollPacket(scroll > 0));
         event.setCanceled(true);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    private static void renderPlayerPre(RenderPlayerEvent.Pre<?> event) {
+        if (EnderBootsItem.isActive(event.getRenderState().feetEquipment)) {
+            PoseStack stack = event.getPoseStack();
+            stack.translate(0, event.getRenderState().boundingBoxHeight, 0);
+            stack.scale(1, -1, 1);
+        }
     }
 
     /// Adapted from LavaFogEnvironment#setupFog
