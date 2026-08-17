@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "at.minecraftschurli.mods.arsmagicalegacy.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "LivingEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

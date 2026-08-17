@@ -16,6 +16,7 @@ helper.withTestSourceSet()
 helper.withJarJar()
 
 helper.accessTransformers.add("META-INF/accesstransformer.cfg")
+helper.mixinConfigs.add("arsmagicalegacy.mixins.json")
 
 repositories {
     mavenLocal()
