@@ -106,6 +106,7 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -129,6 +130,7 @@ import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyE
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -400,6 +402,15 @@ final class AMClientEventHandler {
         }
         ClientPacketDistributor.sendToServer(new SpellBookScrollPacket(scroll > 0));
         event.setCanceled(true);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    private static void renderPlayerPre(RenderPlayerEvent.Pre<?> event) {
+        if (EnderBootsItem.isActive(event.getRenderState().feetEquipment)) {
+            PoseStack stack = event.getPoseStack();
+            stack.translate(0, event.getRenderState().boundingBoxHeight, 0);
+            stack.scale(1, -1, 1);
+        }
     }
 
     /// Adapted from LavaFogEnvironment#setupFog

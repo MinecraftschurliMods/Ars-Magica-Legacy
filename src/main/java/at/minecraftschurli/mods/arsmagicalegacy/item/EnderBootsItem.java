@@ -48,4 +48,11 @@ public class EnderBootsItem extends ManaArmorItem {
         boots.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(modifiers));
         entity.fallDistance = 0;
     }
+
+    public static boolean isActive(ItemStack stack) {
+        return stack.is(AMItems.ENDER_BOOTS) && stack.getAttributeModifiers()
+            .modifiers()
+            .stream()
+            .anyMatch(e -> e.matches(Attributes.GRAVITY, ATTRIBUTE_MODIFIER_KEY));
+    }
 }
