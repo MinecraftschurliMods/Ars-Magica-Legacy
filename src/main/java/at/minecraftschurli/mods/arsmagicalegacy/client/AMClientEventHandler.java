@@ -68,8 +68,10 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
+import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
@@ -356,6 +358,10 @@ final class AMClientEventHandler {
     private static void clientTickPost(ClientTickEvent.Post event) {
         LocalPlayer player = AMClientUtil.player();
         if (player == null) return;
+        Minecraft mc = AMClientUtil.mc();
+        while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
+            ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
+        }
         InteractionHand hand = InteractionHand.MAIN_HAND;
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.has(AMDataComponents.SPELL)) {
@@ -376,7 +382,7 @@ final class AMClientEventHandler {
                 ClientPacketDistributor.sendToServer(new SetActiveShapeGroupPacket(spell.activeShapeGroup()));
             }
             while (SPELL_CUSTOMIZATION.consumeClick()) {
-                AMClientUtil.mc().setScreen(new SpellCustomizationScreen(spell, hand));
+                mc.setScreen(new SpellCustomizationScreen(spell, hand));
             }
         }
     }

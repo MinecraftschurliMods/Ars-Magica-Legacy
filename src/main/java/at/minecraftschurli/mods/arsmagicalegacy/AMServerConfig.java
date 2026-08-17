@@ -22,6 +22,7 @@ public final class AMServerConfig {
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_VERTICAL_RANGE;
     public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_MANA_MULTIPLIER;
     public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_STAT_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER;
     public static final ModConfigSpec.DoubleValue BOSS_PLAYER_CHECK_DISTANCE;
     public static final ModConfigSpec.IntValue BOSS_PLAYER_CHECK_INTERVAL;
     public static final ModConfigSpec.IntValue DRYAD_GROW_INTERVAL;
@@ -193,6 +194,10 @@ public final class AMServerConfig {
             .comment("The stat multiplier applied when using the Arcane Spell Book.")
             .translation(AMTranslations.CONFIG_KEY + "arcane_spell_book_stat_multiplier")
             .defineInRange("arcane_spell_book_stat_multiplier", 1.4, 1, 8);
+        ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER = builder
+            .comment("The fall damage multiplier applied when wearing the Ender Boots.")
+            .translation(AMTranslations.CONFIG_KEY + "ender_boots_fall_damage_multiplier")
+            .defineInRange("ender_boots_fall_damage_multiplier", 0.5, 0, 1);
         builder.pop();
         builder.comment("Configuration for the various entities.").push("entities");
         BOSS_PLAYER_CHECK_DISTANCE = builder

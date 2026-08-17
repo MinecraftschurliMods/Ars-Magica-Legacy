@@ -65,6 +65,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.ForgetSkillsPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableCreateSpellPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableSyncPacket;
@@ -312,6 +313,7 @@ final class AMEventHandler {
             .playToClient(OpenBookInLecternPacket.TYPE, OpenBookInLecternPacket.STREAM_CODEC, OpenBookInLecternPacket::handle)
             .playToClient(LecternSyncPacket.TYPE, LecternSyncPacket.STREAM_CODEC, LecternSyncPacket::handle)
             .playToClient(SetSpellRuneOwnerPacket.TYPE, SetSpellRuneOwnerPacket.STREAM_CODEC, SetSpellRuneOwnerPacket::handle)
+            .playToServer(EnderBootsJumpPacket.TYPE, EnderBootsJumpPacket.STREAM_CODEC, EnderBootsJumpPacket::handle)
             .playToServer(ForgetSkillsPacket.TYPE, ForgetSkillsPacket.STREAM_CODEC, ForgetSkillsPacket::handle)
             .playToServer(InscriptionTableCreateSpellPacket.TYPE, InscriptionTableCreateSpellPacket.STREAM_CODEC, InscriptionTableCreateSpellPacket::handle)
             .playToServer(InscriptionTableSyncPacket.TYPE, InscriptionTableSyncPacket.STREAM_CODEC, InscriptionTableSyncPacket::handle)
@@ -570,7 +572,11 @@ final class AMEventHandler {
 
     @SubscribeEvent
     private static void livingFall(LivingFallEvent event) {
-        ArsMagicaApi.spellHelper().triggerContingency(event.getEntity(), AMSpells.CONTINGENCY_FALL_ID);
+        LivingEntity entity = event.getEntity();
+        if (entity.getItemBySlot(EquipmentSlot.FEET).is(AMItems.ENDER_BOOTS)) {
+            event.setDamageMultiplier((float) (event.getDamageMultiplier() * AMServerConfig.ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER.getAsDouble()));
+        }
+        ArsMagicaApi.spellHelper().triggerContingency(entity, AMSpells.CONTINGENCY_FALL_ID);
     }
 
     @SubscribeEvent
