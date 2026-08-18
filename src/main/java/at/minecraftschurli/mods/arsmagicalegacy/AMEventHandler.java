@@ -459,7 +459,7 @@ final class AMEventHandler {
 
     @SubscribeEvent
     private static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
-        if (event.getEntity() instanceof LivingEntity living && event.getSource().is(DamageTypeTags.IS_FIRE) && FireAntennaeItem.isEquipped(living)) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE) && event.getEntity() instanceof LivingEntity living && FireAntennaeItem.isEquipped(living)) {
             event.setInvulnerable(true);
         }
     }
