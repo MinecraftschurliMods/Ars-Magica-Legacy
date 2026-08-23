@@ -68,7 +68,7 @@ public record Affinity(Holder<Affinity> directOpposite, List<Holder<Affinity>> m
     @Override
     public String toString() {
         return "Affinity{" +
-            "directOpposite=" + directOpposite.getKey() +
+            "directOpposite=" + Objects.requireNonNull(directOpposite.getKey()).identifier() +
             ", majorOpposites=[" + majorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
             "], minorOpposites=[" + minorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
             "], adjacents=[" + adjacents.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
