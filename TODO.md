@@ -5,7 +5,7 @@
     - Disable being pushed in water
     - Custom model
   - Fire Antennae
-    - Enable swimming in lava
+    - Disable being pushed in lava
     - Custom model
   - Earth Armor
     - Custom model
