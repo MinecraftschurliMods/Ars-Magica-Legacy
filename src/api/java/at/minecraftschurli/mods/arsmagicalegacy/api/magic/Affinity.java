@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
@@ -68,9 +69,9 @@ public record Affinity(Holder<Affinity> directOpposite, List<Holder<Affinity>> m
     public String toString() {
         return "Affinity{" +
             "directOpposite=" + directOpposite.getKey() +
-            ", majorOpposites=[" + majorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::toString).collect(Collectors.joining(",")) +
-            "], minorOpposites=[" + minorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::toString).collect(Collectors.joining(",")) +
-            "], adjacents=[" + adjacents.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::toString).collect(Collectors.joining(",")) +
+            ", majorOpposites=[" + majorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
+            "], minorOpposites=[" + minorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
+            "], adjacents=[" + adjacents.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
             "], color=" + color +
             ", index=" + index +
             ", castSound=" + castSound +
