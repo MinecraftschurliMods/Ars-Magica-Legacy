@@ -174,6 +174,9 @@ runs {
             enabled = false
         }
     }
+    all {
+        systemProperties.put("terminal.ansi", "true")
+    }
 }
 
 helper.publication.pom {
