@@ -1,6 +1,8 @@
 package at.minecraftschurli.mods.arsmagicalegacy.mixin;
 
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.WaterOrbsItem;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,5 +24,11 @@ public class LivingEntityMixin {
     @Inject(method = "travelInLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;jumpOutOfFluid(D)V"))
     private void injectTravelInLavaJumpOutOfFluid(Vec3 input, double baseGravity, boolean isFalling, double oldY, CallbackInfo ci, @Share("deltaMovement") LocalRef<Vec3> deltaMovementRef) {
         FireAntennaeItem.modifyTravelInLava((LivingEntity) (Object) this, deltaMovementRef.get(), baseGravity, isFalling, oldY);
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @ModifyExpressionValue(method = "travelInWater", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hasEffect(Lnet/minecraft/core/Holder;)Z"))
+    private boolean modifyTravelInWaterHasEffect(boolean original) {
+        return original || WaterOrbsItem.isEquipped((LivingEntity) (Object) this);
     }
 }
