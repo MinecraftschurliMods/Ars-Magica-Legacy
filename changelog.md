@@ -6,14 +6,20 @@
 
 - Dropped by the Water Guardian
 - Can be equipped into the Leggings slot, or into the Belt slot if Curios is installed
-- Provides infinite air underwater
+- Provides infinite air underwater when worn
+- Disables water drag when worn
+- Increases water swim speed similar to having the Dolphin's Grace effect
+- Unbreakable
 
 ## Fire Antennae
 
 - Dropped by the Fire Guardian
 - Is fire-proof like Netherite equipment
 - Can be equipped into the Helmet slot, or into the Head slot if Curios is installed
-- Negates all incoming fire damage
+- Negates all incoming fire damage when worn
+- Allows swimming and seeing in lava as if it were water when worn
+- Disables lava drag when worn
+- Unbreakable
 
 ## Earth Armor
 
@@ -32,6 +38,7 @@
 - Dropped by the Ice Guardian
 - Can be used as a melee weapon similar to a sword, dealing 4 attack damage
 - Can be thrown at enemies like the Ice Guardian does, damaging the target for 4 damage and pulling it in
+- Unbreakable
 
 ## Lightning Charm
 
@@ -42,6 +49,7 @@
 - Dropped by the Nature Guardian
 - Can be used as a melee weapon similar to an axe, dealing 12 attack damage
 - Can be thrown at enemies like the Nature Guardian does, damaging the target for 12 damage
+- Unbreakable
 
 ## Life Ward
 
@@ -61,7 +69,7 @@
 - Is fire-proof like Netherite equipment
 - Can be enchanted
 - Repairs itself using mana, like Mage/Battlemage armor
-- Provides 3 armor and 3 armor toughness; equivalent to Netherite armor save for the missing knockback resistance
+- Provides 3 armor and 3 armor toughness when worn; equivalent to Netherite armor save for the missing knockback resistance
 
 # Miscellaneous
 

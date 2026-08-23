@@ -65,6 +65,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.WaterOrbsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.ForgetSkillsPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableCreateSpellPacket;
@@ -432,9 +433,13 @@ final class AMEventHandler {
                 ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_HEALTH_ID);
             }
             if (living.isOnFire()) {
-                ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_FIRE_ID);
+                if (FireAntennaeItem.isEquipped(living)) {
+                    living.clearFire();
+                } else {
+                    ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_FIRE_ID);
+                }
             }
-            if (AMUtil.isInEquipmentOrCurioSlot(living, EquipmentSlot.LEGS, AMItems.WATER_ORBS.get())) {
+            if (WaterOrbsItem.isEquipped(living)) {
                 living.setAirSupply(living.getMaxAirSupply());
             }
         }
