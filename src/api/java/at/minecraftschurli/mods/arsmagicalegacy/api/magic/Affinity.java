@@ -11,13 +11,17 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Util;
+import net.neoforged.neoforge.common.extensions.IHolderExtension;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /// Represents an affinity.
 ///
@@ -59,6 +63,21 @@ public record Affinity(Holder<Affinity> directOpposite, List<Holder<Affinity>> m
     /// @param particle       The [ParticleOptions] to associate with the affinity.
     public Affinity(Holder<Affinity> directOpposite, List<Holder<Affinity>> majorOpposites, List<Holder<Affinity>> minorOpposites, List<Holder<Affinity>> adjacents, int color, double index, Holder<SoundEvent> castSound, Holder<SoundEvent> loopSound, ParticleOptions particle) {
         this(directOpposite, majorOpposites, minorOpposites, adjacents, color, index, Optional.of(castSound), Optional.of(loopSound), particle);
+    }
+
+    @Override
+    public String toString() {
+        return "Affinity{" +
+            "directOpposite=" + Objects.requireNonNull(directOpposite.getKey()).identifier() +
+            ", majorOpposites=[" + majorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
+            "], minorOpposites=[" + minorOpposites.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
+            "], adjacents=[" + adjacents.stream().map(IHolderExtension::getKey).filter(Objects::nonNull).map(ResourceKey::identifier).map(Identifier::toString).collect(Collectors.joining(",")) +
+            "], color=" + color +
+            ", index=" + index +
+            ", castSound=" + castSound +
+            ", loopSound=" + loopSound +
+            ", particle=" + particle +
+            '}';
     }
 
     /// @param holder The affinity [Holder] to query.
