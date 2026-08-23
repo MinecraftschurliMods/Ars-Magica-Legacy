@@ -21,6 +21,6 @@ public class LivingEntityMixin {
 
     @Inject(method = "travelInLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;jumpOutOfFluid(D)V"))
     private void injectTravelInLavaJumpOutOfFluid(Vec3 input, double baseGravity, boolean isFalling, double oldY, CallbackInfo ci, @Share("deltaMovement") LocalRef<Vec3> deltaMovementRef) {
-        FireAntennaeItem.modifyTravelInLava((LivingEntity) (Object) this, deltaMovementRef.get(), input, baseGravity, isFalling, oldY);
+        FireAntennaeItem.modifyTravelInLava((LivingEntity) (Object) this, deltaMovementRef.get(), baseGravity, isFalling, oldY);
     }
 }

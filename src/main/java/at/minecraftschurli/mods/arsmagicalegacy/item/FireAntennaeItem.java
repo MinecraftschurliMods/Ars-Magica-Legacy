@@ -4,7 +4,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,17 +31,16 @@ public class FireAntennaeItem extends AMArmorItem {
         } else if (isEquipped(player) && forcedPose == null && inLava && player.isSprinting() && !player.isSpectator()) {
             player.setForcedPose(Pose.SWIMMING);
         }
-        if (player.isLocalPlayer()) {
-            if (!inLava) {
-                lavaVision = 0;
-            } else if (lavaVision < 600) {
-                lavaVision++;
-            }
+        if (!player.isLocalPlayer()) return;
+        if (!inLava) {
+            lavaVision = 0;
+        } else if (lavaVision < 600) {
+            lavaVision++;
         }
     }
 
     public static float getLavaVision(Player player) {
-        if (!player.isEyeInFluid(FluidTags.LAVA)) return 0;
+        if (!player.isEyeInFluid(NeoForgeMod.LAVA_TYPE.value())) return 0;
         if (lavaVision >= LAVA_VISION_MAX) return 1;
         float a = Mth.clamp(lavaVision / LAVA_VISION_MIN, 0, 1);
         float b = lavaVision < LAVA_VISION_MIN ? 0 : Mth.clamp((lavaVision - LAVA_VISION_MIN) / (LAVA_VISION_MAX - LAVA_VISION_MIN), 0, 1);
@@ -53,7 +51,7 @@ public class FireAntennaeItem extends AMArmorItem {
         return AMUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get());
     }
 
-    public static void modifyTravelInLava(LivingEntity entity, Vec3 movement, Vec3 input, double baseGravity, boolean isFalling, double oldY) {
+    public static void modifyTravelInLava(LivingEntity entity, Vec3 movement, double baseGravity, boolean isFalling, double oldY) {
         if (!FireAntennaeItem.isEquipped(entity)) return;
         movement = entity.getFluidFallingAdjustedMovement(baseGravity, isFalling, movement.multiply(0.96, 0.8, 0.96));
         if (entity.horizontalCollision && entity.isFree(movement.x, movement.y + 0.6 - entity.getY() + oldY, movement.z)) {
