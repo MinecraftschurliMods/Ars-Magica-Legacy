@@ -61,6 +61,7 @@ import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
 import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
 import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.ArrayList;
@@ -112,19 +113,23 @@ public final class AMModelProvider extends AbstractModelProvider {
             .to(16, 0, 16)
             .face(Direction.DOWN, face -> face.texture(ALTAR_CORE_OVERLAY)))
         .build();
+    private static final List<DeferredBlock<?>> IGNORED_BLOCKS = List.of(AMBlocks.INSCRIPTION_TABLE);
+    private static final List<DeferredItem<?>> IGNORED_ITEMS = List.of(AMItems.WATER_ORBS, AMItems.WINTERS_GRASP, AMItems.NATURE_SCYTHE);
 
     public AMModelProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, ArsMagicaApi.MOD_ID);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Stream<? extends Holder<Block>> getKnownBlocks() {
-        return super.getKnownBlocks().filter(h -> !h.is(AMBlocks.INSCRIPTION_TABLE.getKey()));
+        return super.getKnownBlocks().filter(h -> IGNORED_BLOCKS.stream().noneMatch(e -> e.is(h)));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Stream<? extends Holder<Item>> getKnownItems() {
-        return super.getKnownItems().filter(h -> !h.is(AMItems.WINTERS_GRASP.getKey()) && !h.is(AMItems.NATURE_SCYTHE.getKey()));
+        return super.getKnownItems().filter(h -> IGNORED_ITEMS.stream().noneMatch(e -> e.is(h)));
     }
 
     @Override
@@ -267,7 +272,6 @@ public final class AMModelProvider extends AbstractModelProvider {
             AMDataComponents.SKILL_POINT.get(),
             ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.INFINITY_ORB.get(), ModelTemplates.FLAT_ITEM))
         ), ModelTemplates.FLAT_ITEM, AMMagic.SKILL_POINTS);
-        basicItem(itemModels, AMItems.WATER_ORBS);
         basicItem(itemModels, AMItems.FIRE_ANTENNAE);
         basicItem(itemModels, AMItems.EARTH_ARMOR);
         basicItem(itemModels, AMItems.AIR_SLED);
