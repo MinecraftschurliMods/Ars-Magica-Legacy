@@ -1,1 +1,1 @@
-Fix a crash related to logging affinities
+Fix an animation error on many bosses
