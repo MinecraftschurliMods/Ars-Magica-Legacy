@@ -106,7 +106,6 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -362,12 +361,13 @@ final class AMClientEventHandler {
         if (player == null) return;
         Minecraft mc = AMClientUtil.mc();
         while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
+            EnderBootsItem.toggle(player);
             ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
         }
         InteractionHand hand = InteractionHand.MAIN_HAND;
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.has(AMDataComponents.SPELL)) {
-            hand =  InteractionHand.OFF_HAND;
+            hand = InteractionHand.OFF_HAND;
             stack = player.getItemInHand(hand);
         }
         if (stack.has(AMDataComponents.SPELL)) {
@@ -404,7 +404,7 @@ final class AMClientEventHandler {
         event.setCanceled(true);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent
     private static void renderPlayerPre(RenderPlayerEvent.Pre<?> event) {
         if (EnderBootsItem.isActive(event.getRenderState().feetEquipment)) {
             PoseStack stack = event.getPoseStack();

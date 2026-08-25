@@ -6,6 +6,9 @@
     "IEntityExtensionMixin",
     "LivingEntityMixin"
   ],
+  "client": [
+    "LevelRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -33,9 +34,9 @@ public class EnderBootsItem extends ManaArmorItem {
         return AMUtil.isInEquipmentSlot(entity, EquipmentSlot.FEET, AMItems.ENDER_BOOTS.get());
     }
 
-    public static void toggle(LivingEntity entity) {
-        if (!isEquipped(entity)) return;
-        ItemStack boots = entity.getItemBySlot(EquipmentSlot.FEET);
+    public static void toggle(Player player) {
+        if (!isEquipped(player) || player.getAbilities().flying) return;
+        ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
         List<ItemAttributeModifiers.Entry> modifiers = new ArrayList<>(boots.getAttributeModifiers().modifiers());
         Optional<ItemAttributeModifiers.Entry> modifier = modifiers.stream()
             .filter(e -> e.matches(Attributes.GRAVITY, ATTRIBUTE_MODIFIER_KEY))
@@ -46,7 +47,11 @@ public class EnderBootsItem extends ManaArmorItem {
             modifiers.add(new ItemAttributeModifiers.Entry(Attributes.GRAVITY, ATTRIBUTE_MODIFIER, EquipmentSlotGroup.FEET));
         }
         boots.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(modifiers));
-        entity.fallDistance = 0;
+        player.fallDistance = 0;
+    }
+
+    public static boolean isActive(LivingEntity entity) {
+        return isEquipped(entity) && isActive(entity.getItemBySlot(EquipmentSlot.FEET));
     }
 
     public static boolean isActive(ItemStack stack) {
