@@ -71,6 +71,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
+@SuppressWarnings("deprecation")
 public final class AMModelProvider extends AbstractModelProvider {
     private static final TextureSlot TEX = TextureSlot.create("tex");
     private static final ModelTemplate CELESTIAL_PRISM_TEMPLATE = ModelTemplates.create(TextureSlot.PARTICLE, TEX)
@@ -114,19 +115,17 @@ public final class AMModelProvider extends AbstractModelProvider {
             .face(Direction.DOWN, face -> face.texture(ALTAR_CORE_OVERLAY)))
         .build();
     private static final List<DeferredBlock<?>> IGNORED_BLOCKS = List.of(AMBlocks.INSCRIPTION_TABLE);
-    private static final List<DeferredItem<?>> IGNORED_ITEMS = List.of(AMItems.WATER_ORBS, AMItems.WINTERS_GRASP, AMItems.NATURE_SCYTHE);
+    private static final List<DeferredItem<?>> IGNORED_ITEMS = List.of(AMItems.WATER_ORBS, AMItems.FIRE_ANTENNAE, AMItems.WINTERS_GRASP, AMItems.NATURE_SCYTHE);
 
     public AMModelProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, ArsMagicaApi.MOD_ID);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected Stream<? extends Holder<Block>> getKnownBlocks() {
         return super.getKnownBlocks().filter(h -> IGNORED_BLOCKS.stream().noneMatch(e -> e.is(h)));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected Stream<? extends Holder<Item>> getKnownItems() {
         return super.getKnownItems().filter(h -> IGNORED_ITEMS.stream().noneMatch(e -> e.is(h)));
@@ -272,7 +271,6 @@ public final class AMModelProvider extends AbstractModelProvider {
             AMDataComponents.SKILL_POINT.get(),
             ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.INFINITY_ORB.get(), ModelTemplates.FLAT_ITEM))
         ), ModelTemplates.FLAT_ITEM, AMMagic.SKILL_POINTS);
-        basicItem(itemModels, AMItems.FIRE_ANTENNAE);
         basicItem(itemModels, AMItems.EARTH_ARMOR);
         basicItem(itemModels, AMItems.AIR_SLED);
         itemModels.itemModelOutput.register(AMItems.WINTERS_GRASP.getId(), new ClientItem(ItemModelUtils.plainModel(AMItems.WINTERS_GRASP.getId().withPrefix("item/")), ClientItem.Properties.DEFAULT));
