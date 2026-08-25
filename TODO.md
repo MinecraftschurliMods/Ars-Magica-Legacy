@@ -1,8 +1,6 @@
 - Fix inlays (needs Neo changes)
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Boss Drops
-  - Water Orbs
-    - Custom model
   - Earth Armor
     - Custom model
   - Air Sled

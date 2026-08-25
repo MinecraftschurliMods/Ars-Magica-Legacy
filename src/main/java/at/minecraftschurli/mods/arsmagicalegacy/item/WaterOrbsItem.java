@@ -1,5 +1,6 @@
 package at.minecraftschurli.mods.arsmagicalegacy.item;
 
+import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.WaterOrbsArmorRenderer;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import com.geckolib.animatable.GeoItem;
@@ -42,7 +43,7 @@ public class WaterOrbsItem extends AMArmorItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private final Lazy<GeoArmorRenderer<WaterOrbsItem, HumanoidRenderState>> armorRenderer = Lazy.of(() -> new GeoArmorRenderer<>(WaterOrbsItem.this));
+            private final Lazy<GeoArmorRenderer<WaterOrbsItem, HumanoidRenderState>> armorRenderer = Lazy.of(() -> new WaterOrbsArmorRenderer(WaterOrbsItem.this));
             private final Lazy<GeoItemRenderer<WaterOrbsItem>> itemRenderer = Lazy.of(() -> new GeoItemRenderer<>(WaterOrbsItem.this));
 
             @Override

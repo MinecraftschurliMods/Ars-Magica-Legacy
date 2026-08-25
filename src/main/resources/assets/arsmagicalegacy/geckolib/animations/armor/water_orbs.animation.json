@@ -5,7 +5,7 @@
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
-				"armorLeftLeg": {
+				"water_orbs": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
