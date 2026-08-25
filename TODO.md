@@ -3,8 +3,6 @@
 - Boss Drops
   - Water Orbs
     - Custom model
-  - Fire Antennae
-    - Custom model
   - Earth Armor
     - Custom model
   - Air Sled
