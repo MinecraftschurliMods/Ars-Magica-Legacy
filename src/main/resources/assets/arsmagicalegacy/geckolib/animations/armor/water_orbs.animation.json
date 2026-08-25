@@ -1,11 +1,11 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"living": {
+		"misc.living": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
-				"armorBody": {
+				"armorLeftLeg": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]

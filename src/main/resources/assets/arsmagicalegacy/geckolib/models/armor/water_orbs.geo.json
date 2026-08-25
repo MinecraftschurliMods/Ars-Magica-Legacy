@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.water_orbs",
-				"texture_width": 64,
-				"texture_height": 32,
+				"texture_width": 16,
+				"texture_height": 16,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
@@ -28,84 +28,6 @@
 					"name": "armorBody",
 					"parent": "bipedBody",
 					"pivot": [0, 32, 0]
-				},
-				{
-					"name": "orbs",
-					"parent": "armorBody",
-					"pivot": [0, 12.5, 0]
-				},
-				{
-					"name": "orb1",
-					"parent": "orbs",
-					"pivot": [0, 12.5, 0],
-					"cubes": [
-						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 4, 0], "rotation": [0, -90, 0], "uv": [32, 16]},
-						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 180, 0], "uv": [32, 13]}
-					]
-				},
-				{
-					"name": "orb2",
-					"parent": "orbs",
-					"pivot": [0, 12.5, 0],
-					"cubes": [
-						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 13, 0], "rotation": [0, 180, 0], "uv": [32, 16]},
-						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 90, 0], "uv": [32, 13]}
-					]
-				},
-				{
-					"name": "orb3",
-					"parent": "orbs",
-					"pivot": [0, 12.5, 0],
-					"cubes": [
-						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 4, 0], "rotation": [0, 90, 0], "uv": [32, 16]},
-						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 0, 0], "uv": [32, 13]}
-					]
-				},
-				{
-					"name": "orb4",
-					"parent": "orbs",
-					"pivot": [0, 12.5, 0],
-					"cubes": [
-						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "uv": [32, 16]},
-						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, -90, 0], "uv": [32, 13]}
-					]
-				},
-				{
-					"name": "rods",
-					"parent": "armorBody",
-					"pivot": [0, 12, 0]
-				},
-				{
-					"name": "rod1",
-					"parent": "rods",
-					"pivot": [0, 12, 0],
-					"cubes": [
-						{"origin": [9.5, 11.5, -4], "size": [1, 1, 10], "pivot": [0, 12, 0], "rotation": [-90, -45, 180], "uv": [22, 20]}
-					]
-				},
-				{
-					"name": "rod2",
-					"parent": "rods",
-					"pivot": [0, 12, 0],
-					"cubes": [
-						{"origin": [9.5, 11.5, -4], "size": [1, 1, 10], "pivot": [0, 12, 0], "rotation": [-90, 45, 180], "uv": [22, 20]}
-					]
-				},
-				{
-					"name": "rod3",
-					"parent": "rods",
-					"pivot": [0, 12, 0],
-					"cubes": [
-						{"origin": [9.5, 11.5, -4], "size": [1, 1, 10], "pivot": [0, 12, 0], "rotation": [90, 45, 0], "uv": [22, 20]}
-					]
-				},
-				{
-					"name": "rod4",
-					"parent": "rods",
-					"pivot": [0, 12, 0],
-					"cubes": [
-						{"origin": [9.5, 11.5, -4], "size": [1, 1, 10], "pivot": [0, 12, 0], "rotation": [90, -45, 0], "uv": [22, 20]}
-					]
 				},
 				{
 					"name": "bipedRightArm",
@@ -133,6 +55,136 @@
 					"name": "armorLeftLeg",
 					"parent": "bipedLeftLeg",
 					"pivot": [2, 12, 0]
+				},
+				{
+					"name": "orbs",
+					"parent": "armorLeftLeg",
+					"pivot": [0, 8, 0]
+				},
+				{
+					"name": "orb1",
+					"parent": "orbs",
+					"pivot": [8, 24.5, -8],
+					"cubes": [
+						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 4, 0], "rotation": [0, -90, 0], "uv": [2, 5]},
+						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 180, 0], "uv": [2, 2]}
+					]
+				},
+				{
+					"name": "orb2",
+					"parent": "orbs",
+					"pivot": [8, 24.5, -8],
+					"cubes": [
+						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 13, 0], "rotation": [0, 180, 0], "uv": [2, 5]},
+						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 90, 0], "uv": [2, 2]}
+					]
+				},
+				{
+					"name": "orb3",
+					"parent": "orbs",
+					"pivot": [8, 24.5, -8],
+					"cubes": [
+						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "pivot": [0, 4, 0], "rotation": [0, 90, 0], "uv": [2, 5]},
+						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, 0, 0], "uv": [2, 2]}
+					]
+				},
+				{
+					"name": "orb4",
+					"parent": "orbs",
+					"pivot": [8, 24.5, -8],
+					"cubes": [
+						{"origin": [9, 12.5, -0.5], "size": [2, 1, 1], "uv": [2, 5]},
+						{"origin": [-1, -6.5, -10], "size": [2, 1, 2], "pivot": [0, 4, 0], "rotation": [-90, -90, 0], "uv": [2, 2]}
+					]
+				},
+				{
+					"name": "rods",
+					"parent": "armorLeftLeg",
+					"pivot": [0, 8, 0]
+				},
+				{
+					"name": "rod1",
+					"parent": "rods",
+					"pivot": [8, 24, -8],
+					"cubes": [
+						{
+							"origin": [9.5, 11.5, -4],
+							"size": [1, 1, 10],
+							"pivot": [0, 12, 0],
+							"rotation": [-90, -45, 180],
+							"uv": {
+								"north": {"uv": [0, 12], "uv_size": [1, 1]},
+								"east": {"uv": [0, 0], "uv_size": [10, 1]},
+								"south": {"uv": [1, 12], "uv_size": [1, 1]},
+								"west": {"uv": [0, 1], "uv_size": [10, 1]},
+								"up": {"uv": [0, 2], "uv_size": [1, 10]},
+								"down": {"uv": [1, 12], "uv_size": [1, -10]}
+							}
+						}
+					]
+				},
+				{
+					"name": "rod2",
+					"parent": "rods",
+					"pivot": [8, 24, -8],
+					"cubes": [
+						{
+							"origin": [9.5, 11.5, -4],
+							"size": [1, 1, 10],
+							"pivot": [0, 12, 0],
+							"rotation": [-90, 45, 180],
+							"uv": {
+								"north": {"uv": [0, 12], "uv_size": [1, 1]},
+								"east": {"uv": [0, 0], "uv_size": [10, 1]},
+								"south": {"uv": [1, 12], "uv_size": [1, 1]},
+								"west": {"uv": [0, 1], "uv_size": [10, 1]},
+								"up": {"uv": [0, 2], "uv_size": [1, 10]},
+								"down": {"uv": [1, 12], "uv_size": [1, -10]}
+							}
+						}
+					]
+				},
+				{
+					"name": "rod3",
+					"parent": "rods",
+					"pivot": [8, 24, -8],
+					"cubes": [
+						{
+							"origin": [9.5, 11.5, -4],
+							"size": [1, 1, 10],
+							"pivot": [0, 12, 0],
+							"rotation": [90, 45, 0],
+							"uv": {
+								"north": {"uv": [0, 12], "uv_size": [1, 1]},
+								"east": {"uv": [0, 0], "uv_size": [10, 1]},
+								"south": {"uv": [1, 12], "uv_size": [1, 1]},
+								"west": {"uv": [0, 1], "uv_size": [10, 1]},
+								"up": {"uv": [0, 2], "uv_size": [1, 10]},
+								"down": {"uv": [1, 12], "uv_size": [1, -10]}
+							}
+						}
+					]
+				},
+				{
+					"name": "rod4",
+					"parent": "rods",
+					"pivot": [8, 24, -8],
+					"cubes": [
+						{
+							"origin": [9.5, 11.5, -4],
+							"size": [1, 1, 10],
+							"pivot": [0, 12, 0],
+							"rotation": [90, -45, 0],
+							"uv": {
+								"north": {"uv": [0, 12], "uv_size": [1, 1]},
+								"east": {"uv": [0, 0], "uv_size": [10, 1]},
+								"south": {"uv": [1, 12], "uv_size": [1, 1]},
+								"west": {"uv": [0, 1], "uv_size": [10, 1]},
+								"up": {"uv": [0, 2], "uv_size": [1, 10]},
+								"down": {"uv": [1, 12], "uv_size": [1, -10]}
+							}
+						}
+					]
 				},
 				{
 					"name": "armorLeftBoot",
