@@ -61,6 +61,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMMobEffects;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMRituals;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.CrystalPhylacteryItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
@@ -97,6 +98,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -135,6 +137,7 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
@@ -566,6 +569,15 @@ final class AMEventHandler {
         ItemStack item = event.getItem();
         if (item.has(DataComponents.USE_EFFECTS) && item.has(AMDataComponents.SPELL) && !Objects.requireNonNull(item.get(AMDataComponents.SPELL)).isEmpty()) {
             item.remove(DataComponents.USE_EFFECTS);
+        }
+    }
+
+    @SubscribeEvent
+    private static void entitySize(EntityEvent.Size event) {
+        if (event.getEntity() instanceof LivingEntity living && living.isAddedToLevel() && EnderBootsItem.isActive(living)) {
+            EntityDimensions oldSize = event.getOldSize();
+            float eyeHeight = oldSize.height() - oldSize.eyeHeight();
+            event.setNewSize(oldSize.withEyeHeight(eyeHeight));
         }
     }
 
