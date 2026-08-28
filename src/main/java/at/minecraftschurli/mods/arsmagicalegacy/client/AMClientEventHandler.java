@@ -412,6 +412,16 @@ final class AMClientEventHandler {
         }
     }
 
+    @SubscribeEvent
+    private static void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        LocalPlayer player = AMClientUtil.player();
+        if (player != null && EnderBootsItem.isActive(player) && event.getCamera().isDetached()) {
+            event.setYaw(event.getYaw() + 180);
+            event.setPitch(-event.getPitch());
+            event.setRoll(-event.getRoll());
+        }
+    }
+
     /// Adapted from LavaFogEnvironment#setupFog
     @SubscribeEvent
     private static void renderFog(ViewportEvent.RenderFog event) {

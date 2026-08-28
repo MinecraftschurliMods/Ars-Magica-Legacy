@@ -8,6 +8,7 @@
     "PlayerMixin"
   ],
   "client": [
+    "CameraMixin",
     "LevelRendererMixin"
   ],
   "injectors": {
