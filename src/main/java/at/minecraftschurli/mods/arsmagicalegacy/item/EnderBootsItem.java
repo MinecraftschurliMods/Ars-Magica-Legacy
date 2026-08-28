@@ -47,19 +47,7 @@ public class EnderBootsItem extends ManaArmorItem {
             modifiers.add(new ItemAttributeModifiers.Entry(Attributes.GRAVITY, ATTRIBUTE_MODIFIER, EquipmentSlotGroup.FEET));
         }
         boots.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(modifiers));
-        player.setPos(player.position().add(0, player.getBbHeight(), 0));
         player.refreshDimensions();
         player.fallDistance = 0;
-    }
-
-    public static boolean isActive(LivingEntity entity) {
-        return isEquipped(entity) && isActive(entity.getItemBySlot(EquipmentSlot.FEET));
-    }
-
-    public static boolean isActive(ItemStack stack) {
-        return stack.is(AMItems.ENDER_BOOTS) && stack.getAttributeModifiers()
-            .modifiers()
-            .stream()
-            .anyMatch(e -> e.matches(Attributes.GRAVITY, ATTRIBUTE_MODIFIER_KEY));
     }
 }

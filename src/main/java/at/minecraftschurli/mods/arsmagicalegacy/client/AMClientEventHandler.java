@@ -129,7 +129,6 @@ import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyE
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
-import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -402,24 +401,6 @@ final class AMClientEventHandler {
         }
         ClientPacketDistributor.sendToServer(new SpellBookScrollPacket(scroll > 0));
         event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    private static void renderPlayerPre(RenderPlayerEvent.Pre<?> event) {
-        if (EnderBootsItem.isActive(event.getRenderState().feetEquipment)) {
-            PoseStack stack = event.getPoseStack();
-            stack.scale(1, -1, 1);
-        }
-    }
-
-    @SubscribeEvent
-    private static void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
-        LocalPlayer player = AMClientUtil.player();
-        if (player != null && EnderBootsItem.isActive(player) && event.getCamera().isDetached()) {
-            event.setYaw(event.getYaw() + 180);
-            event.setPitch(-event.getPitch());
-            event.setRoll(-event.getRoll());
-        }
     }
 
     /// Adapted from LavaFogEnvironment#setupFog

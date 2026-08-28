@@ -4,12 +4,7 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "IEntityExtensionMixin",
-    "LivingEntityMixin",
-    "PlayerMixin"
-  ],
-  "client": [
-    "CameraMixin",
-    "LevelRendererMixin"
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
