@@ -47,6 +47,7 @@ public class EnderBootsItem extends ManaArmorItem {
             modifiers.add(new ItemAttributeModifiers.Entry(Attributes.GRAVITY, ATTRIBUTE_MODIFIER, EquipmentSlotGroup.FEET));
         }
         boots.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(modifiers));
+        player.setPos(player.position().add(0, player.getBbHeight(), 0));
         player.refreshDimensions();
         player.fallDistance = 0;
     }

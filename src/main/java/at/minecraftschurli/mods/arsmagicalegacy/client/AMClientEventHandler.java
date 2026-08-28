@@ -408,7 +408,6 @@ final class AMClientEventHandler {
     private static void renderPlayerPre(RenderPlayerEvent.Pre<?> event) {
         if (EnderBootsItem.isActive(event.getRenderState().feetEquipment)) {
             PoseStack stack = event.getPoseStack();
-            stack.translate(0, event.getRenderState().boundingBoxHeight, 0);
             stack.scale(1, -1, 1);
         }
     }

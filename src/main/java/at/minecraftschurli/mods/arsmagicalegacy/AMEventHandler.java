@@ -574,11 +574,10 @@ final class AMEventHandler {
 
     @SubscribeEvent
     private static void entitySize(EntityEvent.Size event) {
-        if (event.getEntity() instanceof LivingEntity living && living.isAddedToLevel() && EnderBootsItem.isActive(living)) {
-            EntityDimensions oldSize = event.getOldSize();
-            float eyeHeight = oldSize.height() - oldSize.eyeHeight();
-            event.setNewSize(oldSize.withEyeHeight(eyeHeight));
-        }
+        EntityDimensions oldSize = event.getOldSize();
+        if (oldSize.height() < 0 || !(event.getEntity() instanceof LivingEntity living) || !living.isAddedToLevel() || !EnderBootsItem.isActive(living)) return;
+        EntityDimensions newSize = oldSize.scale(1, -1);
+        event.setNewSize(newSize.withEyeHeight(-newSize.height() + newSize.eyeHeight()));
     }
 
     @SubscribeEvent
