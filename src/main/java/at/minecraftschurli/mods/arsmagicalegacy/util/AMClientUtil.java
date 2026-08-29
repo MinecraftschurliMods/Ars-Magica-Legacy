@@ -229,11 +229,11 @@ public final class AMClientUtil {
         blit(graphics, texture, x, y, u, v, width, height, 256, 256, color);
     }
 
-    public static void blit(GuiGraphicsExtractor graphics, TextureAtlasSprite sprite, int x, int y, int width, int height) {
-        blit(graphics, sprite, x, y, width, height, -1);
+    public static void blitSprite(GuiGraphicsExtractor graphics, TextureAtlasSprite sprite, int x, int y, int width, int height) {
+        blitSprite(graphics, sprite, x, y, width, height, -1);
     }
 
-    public static void blit(GuiGraphicsExtractor graphics, TextureAtlasSprite sprite, int x, int y, int width, int height, int color) {
+    public static void blitSprite(GuiGraphicsExtractor graphics, TextureAtlasSprite sprite, int x, int y, int width, int height, int color) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
