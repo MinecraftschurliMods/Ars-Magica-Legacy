@@ -62,6 +62,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMRituals;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.CrystalPhylacteryItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.LifeWardItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
@@ -442,6 +443,7 @@ final class AMEventHandler {
             if (WaterOrbsItem.isEquipped(living)) {
                 living.setAirSupply(living.getMaxAirSupply());
             }
+            LifeWardItem.tick(living);
         }
         if (!entity.hasData(AMAttachments.FROST)) return;
         int frost = entity.getData(AMAttachments.FROST);

@@ -27,6 +27,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.Sp
 import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.SummonCustomizationScreen;
 import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.color.ColorCustomizationScreen;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.BarsLayer;
+import at.minecraftschurli.mods.arsmagicalegacy.client.layer.LifeWardLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.ShapeGroupsLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.SpellBookLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AMEntityModel;
@@ -132,6 +133,7 @@ import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.client.settings.KeyModifier;
@@ -224,6 +226,7 @@ final class AMClientEventHandler {
 
     @SubscribeEvent
     private static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerAbove(VanillaGuiLayers.PLAYER_HEALTH, ArsMagicaApi.id("life_ward"), new LifeWardLayer());
         event.registerBelowAll(ArsMagicaApi.id("bars"), new BarsLayer());
         event.registerBelowAll(ArsMagicaApi.id("shape_groups"), new ShapeGroupsLayer());
         event.registerBelowAll(ArsMagicaApi.id("spell_book"), new SpellBookLayer());

@@ -237,6 +237,14 @@ public final class AMClientUtil {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
+    public static void blitSprite(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height) {
+        blitSprite(graphics, texture, x, y, width, height, -1);
+    }
+
+    public static void blitSprite(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height, int color) {
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height, color);
+    }
+
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ) {
         pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE), PartPose.offset(offsetX, offsetY, offsetZ));
     }
