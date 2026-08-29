@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:special",
-    "base": "arsmagicalegacy:item/fire_antennae",
+    "base": "arsmagicalegacy:item/earth_armor",
     "model": {
       "type": "geckolib:geckolib"
     }

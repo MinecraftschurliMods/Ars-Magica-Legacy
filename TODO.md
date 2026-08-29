@@ -2,7 +2,7 @@
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Boss Drops
   - Earth Armor
-    - Custom model
+    - Render custom model in first person
   - Air Sled
     - Right-click item to place
     - Right-click to mount
@@ -19,9 +19,6 @@
     - Shield of up to 20 health
   - Arcane Spell Book
     - Custom model
-  - Ender Boots
-    - Check attributes and durability in 1.10
-    - Flip gravity when jumping
 - Reduce sound volumes
 - Fix Render Pipelines
     - Beam
