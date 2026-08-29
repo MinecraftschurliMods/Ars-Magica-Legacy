@@ -20,6 +20,10 @@ public final class AMClientConfig {
     public static final ModConfigSpec.IntValue SPELL_BOOK_Y;
     public static final ModConfigSpec.EnumValue<LayerAnchor.X> SPELL_BOOK_X_ANCHOR;
     public static final ModConfigSpec.EnumValue<LayerAnchor.Y> SPELL_BOOK_Y_ANCHOR;
+    public static final ModConfigSpec.IntValue LIFE_WARD_X;
+    public static final ModConfigSpec.IntValue LIFE_WARD_Y;
+    public static final ModConfigSpec.EnumValue<LayerAnchor.X> LIFE_WARD_X_ANCHOR;
+    public static final ModConfigSpec.EnumValue<LayerAnchor.Y> LIFE_WARD_Y_ANCHOR;
     static final ModConfigSpec SPEC;
 
     static {
@@ -74,7 +78,7 @@ public final class AMClientConfig {
             .translation(AMTranslations.CONFIG_KEY + "shape_groups_anchor_y")
             .defineEnum("anchor_y", LayerAnchor.Y.TOP);
         builder.pop();
-        builder.comment("Configuration for the shape groups GUI layer. The size of the layer is 111x17.").push("spell_book");
+        builder.comment("Configuration for the spell book GUI layer. The size of the layer is 111x17.").push("spell_book");
         SPELL_BOOK_X = builder
             .comment("Horizontal position of the shape groups GUI layer.")
             .translation(AMTranslations.CONFIG_KEY + "spell_book_x")
@@ -89,6 +93,24 @@ public final class AMClientConfig {
             .defineEnum("anchor_x", LayerAnchor.X.CENTER);
         SPELL_BOOK_Y_ANCHOR = builder
             .comment("Vertical anchor of the shape groups GUI layer.")
+            .translation(AMTranslations.CONFIG_KEY + "spell_book_anchor_y")
+            .defineEnum("anchor_y", LayerAnchor.Y.BOTTOM);
+        builder.pop();
+        builder.comment("Configuration for the life ward GUI layer. The size of the layer is 111x17.").push("life_ward");
+        LIFE_WARD_X = builder
+            .comment("Horizontal position of the life ward GUI layer.")
+            .translation(AMTranslations.CONFIG_KEY + "spell_book_x")
+            .defineInRange("x", -91, Short.MIN_VALUE, Short.MAX_VALUE);
+        LIFE_WARD_Y = builder
+            .comment("Vertical position of the life ward GUI layer.")
+            .translation(AMTranslations.CONFIG_KEY + "spell_book_y")
+            .defineInRange("y", -39, Short.MIN_VALUE, Short.MAX_VALUE);
+        LIFE_WARD_X_ANCHOR = builder
+            .comment("Horizontal anchor of the life ward GUI layer.")
+            .translation(AMTranslations.CONFIG_KEY + "spell_book_anchor_x")
+            .defineEnum("anchor_x", LayerAnchor.X.CENTER);
+        LIFE_WARD_Y_ANCHOR = builder
+            .comment("Vertical anchor of the life ward GUI layer.")
             .translation(AMTranslations.CONFIG_KEY + "spell_book_anchor_y")
             .defineEnum("anchor_y", LayerAnchor.Y.BOTTOM);
         builder.pop();

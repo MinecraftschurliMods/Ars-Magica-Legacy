@@ -609,6 +609,12 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("arcane_compendium_conversion_vertical_range", "Arcane Compendium Conversion Vertical Range", "The vertical range of the Arcane Compendium conversion.");
         configTranslation("arcane_spell_book_mana_multiplier", "Arcane Spell Book Mana Multiplier", "The mana multiplier applied when using the Arcane Spell Book.");
         configTranslation("arcane_spell_book_stat_multiplier", "Arcane Spell Book Stat Multiplier", "The stat multiplier applied when using the Arcane Spell Book.");
+        configTranslation("life_ward_enable_in_inventory", "Enable Life Ward in Inventory", "Whether to enable the Life Ward functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.");
+        configTranslation("life_ward_cooldown", "Life Ward Cooldown", "The amount of ticks to wait until the Life Ward starts to regenerate.");
+        configTranslation("life_ward_interval", "Life Ward Interval", "The amount of ticks to wait until the Life Ward regenerates half a heart, after the initial cooldown.");
+        configTranslation("life_ward_max_health", "Life Ward Max Health", "The max extra health the Life Ward can provide.");
+        configTranslation("lightning_charm_enable_in_inventory", "Enable Lightning Charm in Inventory", "Whether to enable the Life Ward functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.");
+        configTranslation("lightning_charm_range", "Lightning Charm Range", "The range of the Lightning Charm's effect.");
         configTranslation("ender_boots_fall_damage_multiplier", "Ender Boots Fall Damage Multiplier", "The fall damage multiplier applied when wearing the Ender Boots.");
         configTranslation("entities", "Entities", "Configuration for the various entities.");
         configTranslation("boss_player_check_distance", "Boss Player Check Distance", "The distance from a boss within which the boss bar will be shown.");
@@ -741,6 +747,11 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("spell_book_y", "Vertical Position", "Vertical position of the spell book GUI layer.");
         configTranslation("spell_book_anchor_x", "Horizontal Anchor", "Horizontal anchor of the spell book GUI layer.");
         configTranslation("spell_book_anchor_y", "Vertical Anchor", "Vertical anchor of the spell book GUI layer.");
+        configTranslation("life_ward", "Life Ward", "Configuration for the life ward GUI layer. The size of the layer is 111x17.");
+        configTranslation("life_ward_x", "Horizontal Position", "Horizontal position of the life ward GUI layer.");
+        configTranslation("life_ward_y", "Vertical Position", "Vertical position of the life ward GUI layer.");
+        configTranslation("life_ward_anchor_x", "Horizontal Anchor", "Horizontal anchor of the life ward GUI layer.");
+        configTranslation("life_ward_anchor_y", "Vertical Anchor", "Vertical anchor of the life ward GUI layer.");
         add("enchantment", "dismembering", "Dismembering");
         add("enchantment", "dismembering.desc", "Adds a drop chance for heads for certain mobs.");
         add("affinity", "none", "None");
@@ -1078,7 +1089,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add("item", "arcane_compendium." + compendiumEntry, translation);
     }
 
-    /// Adds a translation with the key format "[type].arsmagicalegacy.[name]".
+    /// Adds a translation with the key format "`type`.arsmagicalegacy.`name`".
     /// @param type        The type part of the key.
     /// @param name        The name part of the key.
     /// @param translation The translation to add.
