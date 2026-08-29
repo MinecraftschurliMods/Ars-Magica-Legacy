@@ -328,6 +328,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTags.DamageTypes.AFFECTED_BY_FALL_DAMAGE_ABILITY, "Affected by the Fall Damage Ability");
         add(AMTags.DamageTypes.AFFECTED_BY_FEATHER_FALLING_ABILITY, "Affected by the Feather Falling Ability");
         add(AMTags.DamageTypes.AFFECTED_BY_MAGIC_DAMAGE_ABILITY, "Affected by the Magic Damage Ability");
+        add(AMTags.DamageTypes.BYPASSES_LIFE_WARD, "Bypasses Life Ward");
         add(AMTags.DamageTypes.BYPASSES_SHIELD_OVERLOAD, "Bypasses Shield Overload");
         add(AMTags.DamageTypes.IS_SPELL, "Spell Damage");
         add(AMTags.DamageTypes.WATER_GUARDIAN_IS_VULNERABLE_TO, "Is vulnerability of the Water Guardian");

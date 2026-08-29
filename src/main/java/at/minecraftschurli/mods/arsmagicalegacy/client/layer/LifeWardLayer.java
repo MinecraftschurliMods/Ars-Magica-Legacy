@@ -20,13 +20,20 @@ public class LifeWardLayer implements GuiLayer {
         if (AMClientUtil.mc().options.hideGui) return;
         Player player = AMClientUtil.player();
         if (player == null || player.isSpectator()) return;
+        if (player.isCreative()) return;
         LifeWardAttachment attachment = player.getData(AMAttachments.LIFE_WARD);
         if (attachment.isEmpty()) return;
-        int x = AMClientConfig.LIFE_WARD_X_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_X);
-        int y = AMClientConfig.LIFE_WARD_Y_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_Y);
+        int originalX = AMClientConfig.LIFE_WARD_X_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_X);
+        int originalY = AMClientConfig.LIFE_WARD_Y_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_Y);
+        int x = originalX;
+        int y = originalY;
         for (int i = (int) attachment.health(); i > 0; i -= 2) {
             AMClientUtil.blitSprite(graphics, i == 1 ? HEART_HALF : HEART, x, y, 9, 9);
             x += 8;
+            if (x >= originalX + 80) {
+                y -= 10;
+                x = originalX;
+            }
         }
     }
 }

@@ -11,8 +11,6 @@
     - Custom model
   - Lightning Charm
     - Item magnet in a 16 block radius
-  - Life Ward
-    - Shield of up to 20 health
   - Arcane Spell Book
     - Custom model
 - Reduce sound volumes

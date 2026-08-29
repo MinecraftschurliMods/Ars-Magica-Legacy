@@ -225,6 +225,7 @@ public final class AMTagsProvider {
             tag(AMTags.DamageTypes.AFFECTED_BY_FALL_DAMAGE_ABILITY).addTag(DamageTypeTags.IS_FALL);
             tag(AMTags.DamageTypes.AFFECTED_BY_FEATHER_FALLING_ABILITY).addTag(DamageTypeTags.IS_FALL);
             tag(AMTags.DamageTypes.AFFECTED_BY_MAGIC_DAMAGE_ABILITY).addTag(Tags.DamageTypes.IS_MAGIC).remove(Tags.DamageTypes.IS_POISON);
+            tag(AMTags.DamageTypes.BYPASSES_LIFE_WARD).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
             tag(AMTags.DamageTypes.BYPASSES_SHIELD_OVERLOAD).addTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
             tag(AMTags.DamageTypes.IS_SPELL).add(AMDamageTypes.SPELL_DROWNING, AMDamageTypes.SPELL_FIRE, AMDamageTypes.SPELL_FROST, AMDamageTypes.SPELL_LIGHTNING, AMDamageTypes.SPELL_MAGIC, AMDamageTypes.SPELL_PHYSICAL, AMDamageTypes.SPELL_PHYSICAL_PLAYER);
             tag(AMTags.DamageTypes.WATER_GUARDIAN_IS_VULNERABLE_TO).addTag(DamageTypeTags.IS_LIGHTNING);
