@@ -7,25 +7,25 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMAttachments;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.gui.GuiLayer;
 
-public class LifeWardLayer implements GuiLayer {
+public class LifeWardLayer extends AMGuiLayer {
     private static final Identifier HEART = ArsMagicaApi.id("life_ward_heart");
     private static final Identifier HEART_HALF = ArsMagicaApi.id("life_ward_heart_half");
 
+    public LifeWardLayer() {
+        super(AMClientConfig.LIFE_WARD_X_ANCHOR, AMClientConfig.LIFE_WARD_Y_ANCHOR, AMClientConfig.LIFE_WARD_X, AMClientConfig.LIFE_WARD_Y);
+    }
+
     @Override
-    public void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-        if (AMClientUtil.mc().options.hideGui) return;
-        Player player = AMClientUtil.player();
-        if (player == null || player.isSpectator()) return;
+    public void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, LocalPlayer player) {
+        if (player.isCreative()) return;
         LifeWardAttachment attachment = player.getData(AMAttachments.LIFE_WARD);
         if (attachment.isEmpty()) return;
-        int x = AMClientConfig.LIFE_WARD_X_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_X);
-        int y = AMClientConfig.LIFE_WARD_Y_ANCHOR.get().getLocation(AMClientConfig.LIFE_WARD_Y);
+        int x = 0;
         for (int i = (int) attachment.health(); i > 0; i -= 2) {
-            AMClientUtil.blitSprite(graphics, i == 1 ? HEART_HALF : HEART, x, y, 9, 9);
+            AMClientUtil.blitSprite(graphics, i == 1 ? HEART_HALF : HEART, x, 0, 9, 9);
             x += 8;
         }
     }
