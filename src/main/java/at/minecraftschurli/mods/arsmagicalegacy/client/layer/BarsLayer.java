@@ -31,28 +31,25 @@ public class BarsLayer implements GuiLayer {
         MagicHelper magicHelper = ArsMagicaApi.magicHelper();
         if (!magicHelper.knowsMagic(player)) return;
         ItemStackTemplate book = ArsMagicaApi.book();
-        for (ItemStack stack : player.getInventory()) {
-            if (!stack.is(AMTags.Items.SHOWS_BARS_LAYER) && !ItemStack.isSameItemSameComponents(stack, book)) continue;
-            ManaHelper manaHelper = ArsMagicaApi.manaHelper();
-            BurnoutHelper burnoutHelper = ArsMagicaApi.burnoutHelper();
-            int level = magicHelper.getLevel(player);
-            double xp = magicHelper.getXp(player);
-            double xpForNextLevel = magicHelper.getXpForNextLevel(level);
-            double mana = manaHelper.getMana(player);
-            double maxMana = manaHelper.getMaxMana(player);
-            double burnout = burnoutHelper.getBurnout(player);
-            double maxBurnout = burnoutHelper.getMaxBurnout(player);
-            int x = AMClientConfig.BARS_X_ANCHOR.get().getLocation(AMClientConfig.BARS_X);
-            int y = AMClientConfig.BARS_Y_ANCHOR.get().getLocation(AMClientConfig.BARS_Y);
-            boolean renderLevelAtTop = AMClientConfig.RENDER_LEVEL_AT_TOP.getAsBoolean();
-            String text = String.valueOf(level);
-            Font font = AMClientUtil.font();
-            renderOutlineText(graphics, font, Component.literal(text), x + (WIDTH - font.width(text)) / 2, renderLevelAtTop ? y : y + 30, 0xff7777ff);
-            renderBar(graphics, font, x, renderLevelAtTop ? y + 10 : y + 20, xp, xpForNextLevel, AMTranslations.BARS_VALUE_XP_KEY, 0xff7777ff);
-            renderBar(graphics, font, x, renderLevelAtTop ? y + 20 : y, mana, maxMana, AMTranslations.BARS_VALUE_MANA_KEY, 0xff99ffff);
-            renderBar(graphics, font, x, renderLevelAtTop ? y + 30 : y + 10, burnout, maxBurnout, AMTranslations.BARS_VALUE_BURNOUT_KEY, 0xff880000);
-            break;
-        }
+        if (!player.getInventory().contains(stack -> stack.is(AMTags.Items.SHOWS_BARS_LAYER) || ItemStack.isSameItemSameComponents(stack, book))) return;
+        ManaHelper manaHelper = ArsMagicaApi.manaHelper();
+        BurnoutHelper burnoutHelper = ArsMagicaApi.burnoutHelper();
+        int level = magicHelper.getLevel(player);
+        double xp = magicHelper.getXp(player);
+        double xpForNextLevel = magicHelper.getXpForNextLevel(level);
+        double mana = manaHelper.getMana(player);
+        double maxMana = manaHelper.getMaxMana(player);
+        double burnout = burnoutHelper.getBurnout(player);
+        double maxBurnout = burnoutHelper.getMaxBurnout(player);
+        int x = AMClientConfig.BARS_X_ANCHOR.get().getLocation(AMClientConfig.BARS_X);
+        int y = AMClientConfig.BARS_Y_ANCHOR.get().getLocation(AMClientConfig.BARS_Y);
+        boolean renderLevelAtTop = AMClientConfig.RENDER_LEVEL_AT_TOP.getAsBoolean();
+        String text = String.valueOf(level);
+        Font font = AMClientUtil.font();
+        renderOutlineText(graphics, font, Component.literal(text), x + (WIDTH - font.width(text)) / 2, renderLevelAtTop ? y : y + 30, 0xff7777ff);
+        renderBar(graphics, font, x, renderLevelAtTop ? y + 10 : y + 20, xp, xpForNextLevel, AMTranslations.BARS_VALUE_XP_KEY, 0xff7777ff);
+        renderBar(graphics, font, x, renderLevelAtTop ? y + 20 : y, mana, maxMana, AMTranslations.BARS_VALUE_MANA_KEY, 0xff99ffff);
+        renderBar(graphics, font, x, renderLevelAtTop ? y + 30 : y + 10, burnout, maxBurnout, AMTranslations.BARS_VALUE_BURNOUT_KEY, 0xff880000);
     }
 
     private static void renderBar(GuiGraphicsExtractor graphics, Font font, int x, int y, double value, double maxValue, String translationKey, int color) {
