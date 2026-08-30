@@ -24,9 +24,14 @@ public class LifeWardLayer extends AMGuiLayer {
         LifeWardAttachment attachment = player.getData(AMAttachments.LIFE_WARD);
         if (attachment.isEmpty()) return;
         int x = 0;
+        int y = 0;
         for (int i = (int) attachment.health(); i > 0; i -= 2) {
-            AMClientUtil.blitSprite(graphics, i == 1 ? HEART_HALF : HEART, x, 0, 9, 9);
+            AMClientUtil.blitSprite(graphics, i == 1 ? HEART_HALF : HEART, x, y, 9, 9);
             x += 8;
+            if (x >= 80) {
+                y -= 10;
+                x = 0;
+            }
         }
     }
 }

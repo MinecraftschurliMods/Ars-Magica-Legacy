@@ -504,7 +504,9 @@ final class AMEventHandler {
         if (event.getSource().getEntity() instanceof Player player) {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.EXTRA_DAMAGE_EFFECT.get());
         }
-        if (event.getEntity() instanceof Player player) {
+        LivingEntity entity = event.getEntity();
+        event.setNewDamage(LifeWardItem.attack(entity, event.getSource(), event.getNewDamage()));
+        if (entity instanceof Player player) {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.DAMAGE_MODIFIER_EFFECT.get());
         }
     }

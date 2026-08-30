@@ -1,6 +1,8 @@
 - Fix inlays (needs Neo changes)
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Boss Drops
+  - Water Orbs
+    - Curios animation
   - Earth Armor
     - Render custom model in first person
   - Air Sled
@@ -8,16 +10,13 @@
     - Right-click to mount
     - Creative-like flight
     - Shift-right-click to break
-    - Custom model
   - Lightning Charm
     - Item magnet in a 16 block radius
-  - Life Ward
-    - Shield of up to 20 health
   - Arcane Spell Book
     - Custom model
 - Reduce sound volumes
-- Fix Render Pipelines
-    - Beam
-    - Chain
+- Visuals
+  - Beam/Chain render pipelines
+  - Ender Boots flipping
 - Test With Sodium/Embeddium/Iris
     - Altar Model & BER

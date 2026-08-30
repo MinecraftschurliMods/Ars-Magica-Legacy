@@ -115,7 +115,7 @@ public final class AMModelProvider extends AbstractModelProvider {
             .face(Direction.DOWN, face -> face.texture(ALTAR_CORE_OVERLAY)))
         .build();
     private static final List<DeferredBlock<?>> IGNORED_BLOCKS = List.of(AMBlocks.INSCRIPTION_TABLE);
-    private static final List<DeferredItem<?>> IGNORED_ITEMS = List.of(AMItems.WATER_ORBS, AMItems.FIRE_ANTENNAE, AMItems.EARTH_ARMOR, AMItems.WINTERS_GRASP, AMItems.NATURE_SCYTHE);
+    private static final List<DeferredItem<?>> IGNORED_ITEMS = List.of(AMItems.WATER_ORBS, AMItems.FIRE_ANTENNAE, AMItems.EARTH_ARMOR, AMItems.AIR_SLED, AMItems.WINTERS_GRASP, AMItems.NATURE_SCYTHE);
 
     public AMModelProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, ArsMagicaApi.MOD_ID);
@@ -271,7 +271,6 @@ public final class AMModelProvider extends AbstractModelProvider {
             AMDataComponents.SKILL_POINT.get(),
             ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.INFINITY_ORB.get(), ModelTemplates.FLAT_ITEM))
         ), ModelTemplates.FLAT_ITEM, AMMagic.SKILL_POINTS);
-        basicItem(itemModels, AMItems.AIR_SLED);
         itemModels.itemModelOutput.register(AMItems.WINTERS_GRASP.getId(), new ClientItem(ItemModelUtils.plainModel(AMItems.WINTERS_GRASP.getId().withPrefix("item/")), ClientItem.Properties.DEFAULT));
         basicItem(itemModels, AMItems.LIGHTNING_CHARM);
         itemModels.itemModelOutput.register(AMItems.NATURE_SCYTHE.getId(), new ClientItem(ItemModelUtils.plainModel(AMItems.NATURE_SCYTHE.getId().withPrefix("item/")), ClientItem.Properties.DEFAULT));
