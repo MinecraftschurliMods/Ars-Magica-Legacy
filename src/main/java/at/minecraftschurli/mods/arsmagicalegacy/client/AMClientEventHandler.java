@@ -78,6 +78,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import com.geckolib.renderer.GeoEntityRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -204,6 +205,7 @@ final class AMClientEventHandler {
         BossRenderer.register(event, AMEntities.LIFE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ARCANE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ENDER_GUARDIAN);
+        event.registerEntityRenderer(AMEntities.AIR_SLED.get(), context -> new GeoEntityRenderer<>(context, AMEntities.AIR_SLED.get()));
         event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.WINTERS_GRASP, AMEntityModel::new, AMModelLayers.WINTERS_GRASP_TEXTURE));
         event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.NATURE_SCYTHE, AMEntityModel::new, AMModelLayers.NATURE_SCYTHE_TEXTURE));
         event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.THROWN_ROCK, AMEntityModel::new, AMModelLayers.THROWN_ROCK_TEXTURE));
