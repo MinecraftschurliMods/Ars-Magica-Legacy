@@ -35,6 +35,11 @@ public abstract class AbstractStackOwnableEntity extends AbstractOwnableEntity {
         child.store(STACK_KEY, ItemStack.CODEC, entityData.get(STACK));
     }
 
+    @Override
+    public ItemStack getPickResult() {
+        return getStack();
+    }
+
     public ItemStack getStack() {
         return entityData.get(STACK);
     }
