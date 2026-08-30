@@ -10,7 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class AirSled extends AbstractOwnableEntity implements GeoEntity {
+public class AirSled extends AbstractStackOwnableEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public AirSled(EntityType<? extends AbstractOwnableEntity> type, Level level) {
