@@ -2,6 +2,8 @@ package at.minecraftschurli.mods.arsmagicalegacy.compat.jei;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.api.constants.AMRegistries;
+import at.minecraftschurli.mods.arsmagicalegacy.api.magic.AltarCapMaterial;
+import at.minecraftschurli.mods.arsmagicalegacy.api.magic.AltarMaterial;
 import at.minecraftschurli.mods.arsmagicalegacy.api.magic.Skill;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import mezz.jei.api.IModPlugin;
@@ -15,10 +17,12 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 @JeiPlugin
 public final class AMJeiPlugin implements IModPlugin {
@@ -53,11 +57,13 @@ public final class AMJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        registration.addRecipeCategories(new AltarMaterialCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SkillCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addCraftingStation(AltarMaterialCategory.RECIPE_TYPE, AMItems.ALTAR_CORE.toStack());
         registration.addCraftingStation(SkillCategory.RECIPE_TYPE, AMItems.OCCULUS.toStack(), AMItems.INSCRIPTION_TABLE.toStack(), AMItems.ALTAR_CORE.toStack());
     }
 
@@ -65,6 +71,18 @@ public final class AMJeiPlugin implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         runtime = jeiRuntime;
         HiddenSkills.update();
+        jeiRuntime.getRecipeManager().addRecipes(AltarMaterialCategory.RECIPE_TYPE, Stream.concat(
+            AMRegistries.altarMaterials(true)
+                .stream()
+                .sorted(Comparator.comparing(e -> BuiltInRegistries.BLOCK.getKey(e.block())))
+                .sorted(Comparator.comparing(AltarMaterial::power))
+                .map(AltarMaterialCategory.Recipe::of),
+            AMRegistries.altarCapMaterials(true)
+                .stream()
+                .sorted(Comparator.comparing(e -> BuiltInRegistries.BLOCK.getKey(e.block())))
+                .sorted(Comparator.comparing(AltarCapMaterial::power))
+                .map(AltarMaterialCategory.Recipe::of)
+        ).toList());
         IIngredientManager ingredientManager = runtime.getIngredientManager();
         ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, ingredientManager.getAllIngredients(VanillaTypes.ITEM_STACK)
             .stream()
