@@ -2,6 +2,7 @@ package at.minecraftschurli.mods.arsmagicalegacy.init;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.AirGuardian;
+import at.minecraftschurli.mods.arsmagicalegacy.entity.AirSled;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.ArcaneGuardian;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.Blizzard;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.Dryad;
@@ -34,6 +35,8 @@ import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.UnaryOperator;
+
 public interface AMEntities {
     DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(ArsMagicaApi.MOD_ID);
     DeferredHolder<EntityType<?>, EntityType<Boat>> WITCHWOOD_BOAT =
@@ -61,6 +64,7 @@ public interface AMEntities {
     DeferredHolder<EntityType<?>, EntityType<LifeGuardian>>      LIFE_GUARDIAN      = register("life_guardian",      LifeGuardian::new,      MobCategory.MONSTER,  1f,    1.25f);
     DeferredHolder<EntityType<?>, EntityType<ArcaneGuardian>>    ARCANE_GUARDIAN    = register("arcane_guardian",    ArcaneGuardian::new,    MobCategory.MONSTER,  0.9f,  2.25f);
     DeferredHolder<EntityType<?>, EntityType<EnderGuardian>>     ENDER_GUARDIAN     = register("ender_guardian",     EnderGuardian::new,     MobCategory.MONSTER,  1f,    2.25f);
+    DeferredHolder<EntityType<?>, EntityType<AirSled>>           AIR_SLED           = register("air_sled",           AirSled::new,           MobCategory.MISC,     0.5f,  0.5f, b -> b.passengerAttachments(1.1f));
     DeferredHolder<EntityType<?>, EntityType<WintersGrasp>>      WINTERS_GRASP      = register("winters_grasp",      WintersGrasp::new,      MobCategory.MISC,     0.25f, 0.25f);
     DeferredHolder<EntityType<?>, EntityType<NatureScythe>>      NATURE_SCYTHE      = register("nature_scythe",      NatureScythe::new,      MobCategory.MISC,     0.25f, 0.25f);
     DeferredHolder<EntityType<?>, EntityType<ThrownRock>>        THROWN_ROCK        = register("thrown_rock",        ThrownRock::new,        MobCategory.MISC,     0.5f,  0.5f);
@@ -69,6 +73,10 @@ public interface AMEntities {
     // @formatter:on
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height) {
-        return ENTITIES.registerEntityType(name, factory, category, b -> b.sized(width, height).clientTrackingRange(8));
+        return register(name, factory, category, width, height, UnaryOperator.identity());
+    }
+
+    private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, UnaryOperator<EntityType.Builder<T>> operator) {
+        return ENTITIES.registerEntityType(name, factory, category, b -> operator.apply(b).sized(width, height).clientTrackingRange(8));
     }
 }

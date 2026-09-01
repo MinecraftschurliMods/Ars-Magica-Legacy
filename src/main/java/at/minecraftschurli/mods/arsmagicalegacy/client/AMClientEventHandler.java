@@ -62,6 +62,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.entity.ManaCreep
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.entity.SimpleModelEntityRenderer;
 import at.minecraftschurli.mods.arsmagicalegacy.compat.curios.AMCuriosHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.compat.patchouli.SpellPartPage;
+import at.minecraftschurli.mods.arsmagicalegacy.entity.AirSled;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlockEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
@@ -72,12 +73,14 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import com.geckolib.renderer.GeoEntityRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -100,6 +103,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
@@ -204,6 +208,7 @@ final class AMClientEventHandler {
         BossRenderer.register(event, AMEntities.LIFE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ARCANE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ENDER_GUARDIAN);
+        event.registerEntityRenderer(AMEntities.AIR_SLED.get(), context -> new GeoEntityRenderer<>(context, AMEntities.AIR_SLED.get()));
         event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.WINTERS_GRASP, AMEntityModel::new, AMModelLayers.WINTERS_GRASP_TEXTURE));
         event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.NATURE_SCYTHE, AMEntityModel::new, AMModelLayers.NATURE_SCYTHE_TEXTURE));
         event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.THROWN_ROCK, AMEntityModel::new, AMModelLayers.THROWN_ROCK_TEXTURE));
@@ -354,6 +359,23 @@ final class AMClientEventHandler {
         event.register(AMSpells.PLACE_BLOCK, PlaceBlockCustomizationScreen::new);
         event.register(AMSpells.RECALL, RecallCustomizationScreen::new);
         event.register(AMSpells.SUMMON, SummonCustomizationScreen::new);
+    }
+
+    @SubscribeEvent
+    private static void clientTickPre(ClientTickEvent.Pre event) {
+        LocalPlayer player = AMClientUtil.player();
+        if (player != null && player.isPassenger() && player.getControlledVehicle() instanceof AirSled airSled) {
+            Options options = AMClientUtil.mc().options;
+            boolean w = options.keyUp.isDown();
+            boolean s = options.keyDown.isDown();
+            boolean a = options.keyLeft.isDown();
+            boolean d = options.keyRight.isDown();
+            boolean space = options.keyJump.isDown();
+            boolean shift = options.keyShift.isDown();
+            boolean ctrl = options.keySprint.isDown();
+            airSled.control(w, s, a, d, space, shift, ctrl);
+            ClientPacketDistributor.sendToServer(new AirSledMovementPacket(w, s, a, d, space, shift, ctrl));
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")

@@ -234,6 +234,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         entityIdTranslation(AMEntities.LIFE_GUARDIAN);
         entityIdTranslation(AMEntities.ARCANE_GUARDIAN);
         entityIdTranslation(AMEntities.ENDER_GUARDIAN);
+        entityIdTranslation(AMEntities.AIR_SLED);
         addEntityType(AMEntities.WINTERS_GRASP, "Winter's Grasp");
         entityIdTranslation(AMEntities.NATURE_SCYTHE);
         entityIdTranslation(AMEntities.SHOCKWAVE);
