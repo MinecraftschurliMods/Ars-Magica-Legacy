@@ -77,6 +77,6 @@ public interface AMEntities {
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, UnaryOperator<EntityType.Builder<T>> operator) {
-        return ENTITIES.registerEntityType(name, factory, category, b -> b.sized(width, height).clientTrackingRange(8));
+        return ENTITIES.registerEntityType(name, factory, category, b -> operator.apply(b).sized(width, height).clientTrackingRange(8));
     }
 }

@@ -5,8 +5,6 @@
     - Curios animation
   - Earth Armor
     - Render custom model in first person
-  - Air Sled
-    - Fix attachment point
   - Lightning Charm
     - Item magnet in a 16 block radius
   - Arcane Spell Book
