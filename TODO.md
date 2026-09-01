@@ -6,10 +6,7 @@
   - Earth Armor
     - Render custom model in first person
   - Air Sled
-    - Right-click item to place
-    - Right-click to mount
-    - Creative-like flight
-    - Shift-right-click to break
+    - Fix attachment point
   - Lightning Charm
     - Item magnet in a 16 block radius
   - Arcane Spell Book

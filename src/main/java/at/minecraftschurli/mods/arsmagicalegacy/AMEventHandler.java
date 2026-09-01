@@ -67,6 +67,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.WaterOrbsItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.ForgetSkillsPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableCreateSpellPacket;
@@ -136,6 +137,7 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
@@ -315,6 +317,7 @@ final class AMEventHandler {
             .playToClient(OpenBookInLecternPacket.TYPE, OpenBookInLecternPacket.STREAM_CODEC, OpenBookInLecternPacket::handle)
             .playToClient(LecternSyncPacket.TYPE, LecternSyncPacket.STREAM_CODEC, LecternSyncPacket::handle)
             .playToClient(SetSpellRuneOwnerPacket.TYPE, SetSpellRuneOwnerPacket.STREAM_CODEC, SetSpellRuneOwnerPacket::handle)
+            .playToServer(AirSledMovementPacket.TYPE, AirSledMovementPacket.STREAM_CODEC, AirSledMovementPacket::handle)
             .playToServer(EnderBootsJumpPacket.TYPE, EnderBootsJumpPacket.STREAM_CODEC, EnderBootsJumpPacket::handle)
             .playToServer(ForgetSkillsPacket.TYPE, ForgetSkillsPacket.STREAM_CODEC, ForgetSkillsPacket::handle)
             .playToServer(InscriptionTableCreateSpellPacket.TYPE, InscriptionTableCreateSpellPacket.STREAM_CODEC, InscriptionTableCreateSpellPacket::handle)
@@ -570,6 +573,15 @@ final class AMEventHandler {
         ItemStack item = event.getItem();
         if (item.has(DataComponents.USE_EFFECTS) && item.has(AMDataComponents.SPELL) && !Objects.requireNonNull(item.get(AMDataComponents.SPELL)).isEmpty()) {
             item.remove(DataComponents.USE_EFFECTS);
+        }
+    }
+
+    @SubscribeEvent
+    private static void entitySize(EntityEvent.Size event) {
+        Entity entity = event.getEntity();
+        if (!entity.isAddedToLevel()) return;
+        if (event.getPose() == Pose.CROUCHING && entity.isPassenger() && Objects.requireNonNull(entity.getVehicle()).is(AMEntities.AIR_SLED)) {
+            event.setNewSize(entity.getDimensions(Pose.STANDING));
         }
     }
 
