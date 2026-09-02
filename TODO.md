@@ -1,8 +1,6 @@
 - Fix inlays (needs Neo changes)
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Boss Drops
-  - Earth Armor
-    - Render custom model in first person
   - Lightning Charm
     - Item magnet in a 16 block radius
   - Arcane Spell Book
