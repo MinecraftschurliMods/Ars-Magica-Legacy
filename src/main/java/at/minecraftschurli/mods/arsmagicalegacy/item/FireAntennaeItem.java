@@ -63,7 +63,11 @@ public class FireAntennaeItem extends AMArmorItem implements GeoItem {
         });
     }
 
-    public static void tick(Player player) {
+    public static void tick(LivingEntity entity) {
+        if (isEquipped(entity) && entity.isOnFire()) {
+            entity.clearFire();
+        }
+        if (!(entity instanceof Player player)) return;
         Pose forcedPose = player.getForcedPose();
         boolean inLava = player.isEyeInFluid(NeoForgeMod.LAVA_TYPE.value());
         if (forcedPose == Pose.SWIMMING && (!inLava || player.isSpectator())) {

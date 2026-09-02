@@ -61,4 +61,10 @@ public class WaterOrbsItem extends AMArmorItem implements GeoItem {
     public static boolean isEquipped(LivingEntity entity) {
         return AMUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.LEGS, AMItems.WATER_ORBS.get());
     }
+
+    public static void tick(LivingEntity entity) {
+        if (isEquipped(entity)) {
+            entity.setAirSupply(entity.getMaxAirSupply());
+        }
+    }
 }

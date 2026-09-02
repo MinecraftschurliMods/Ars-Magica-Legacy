@@ -431,6 +431,10 @@ final class AMEventHandler {
             manaHelper.increaseMana(living, manaHelper.getManaRegeneration(living));
             BurnoutHelper burnoutHelper = ArsMagicaApi.burnoutHelper();
             burnoutHelper.decreaseBurnout(living, burnoutHelper.getBurnoutRegeneration(living));
+            FireAntennaeItem.tick(living);
+            LightningCharmItem.tick(living);
+            LifeWardItem.tick(living);
+            WaterOrbsItem.tick(living);
             if (living.hasEffect(AMMobEffects.WATERY_GRAVE) && entity.isInWater()) {
                 entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
             }
@@ -438,17 +442,8 @@ final class AMEventHandler {
                 ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_HEALTH_ID);
             }
             if (living.isOnFire()) {
-                if (FireAntennaeItem.isEquipped(living)) {
-                    living.clearFire();
-                } else {
-                    ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_FIRE_ID);
-                }
+                ArsMagicaApi.spellHelper().triggerContingency(living, AMSpells.CONTINGENCY_FIRE_ID);
             }
-            if (WaterOrbsItem.isEquipped(living)) {
-                living.setAirSupply(living.getMaxAirSupply());
-            }
-            LightningCharmItem.tick(living);
-            LifeWardItem.tick(living);
         }
         if (!entity.hasData(AMAttachments.FROST)) return;
         int frost = entity.getData(AMAttachments.FROST);
@@ -465,7 +460,6 @@ final class AMEventHandler {
     private static void playerTickPost(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         ArsMagicaApi.abilityHelper().getActiveAbilities(player).forEach(holder -> holder.value().effects().forEach(effect -> effect.tick(player, holder)));
-        FireAntennaeItem.tick(player);
         DryadKillsAttachment.tick(player);
     }
 
