@@ -1,8 +1,6 @@
 - Fix inlays (needs Neo changes)
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Boss Drops
-  - Water Orbs
-    - Curios animation
   - Earth Armor
     - Render custom model in first person
   - Lightning Charm
@@ -13,5 +11,6 @@
 - Visuals
   - Beam/Chain render pipelines
   - Ender Boots flipping
+  - Curios renderers
 - Test With Sodium/Embeddium/Iris
     - Altar Model & BER
