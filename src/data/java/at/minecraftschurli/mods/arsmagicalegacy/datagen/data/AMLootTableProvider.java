@@ -48,6 +48,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.List;
 import java.util.Set;
@@ -204,16 +205,16 @@ public final class AMLootTableProvider extends LootTableProvider {
                 .add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get())
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))
                     .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0, 1))))));
-            addBoss(AMEntities.WATER_GUARDIAN, AMMagic.WATER);
-            addBoss(AMEntities.FIRE_GUARDIAN, AMMagic.FIRE);
-            addBoss(AMEntities.EARTH_GUARDIAN, AMMagic.EARTH);
-            addBoss(AMEntities.AIR_GUARDIAN, AMMagic.AIR);
-            addBoss(AMEntities.ICE_GUARDIAN, AMMagic.ICE);
-            addBoss(AMEntities.LIGHTNING_GUARDIAN, AMMagic.LIGHTNING);
-            addBoss(AMEntities.NATURE_GUARDIAN, AMMagic.NATURE);
-            addBoss(AMEntities.LIFE_GUARDIAN, AMMagic.LIFE);
-            addBoss(AMEntities.ARCANE_GUARDIAN, AMMagic.ARCANE);
-            addBoss(AMEntities.ENDER_GUARDIAN, AMMagic.ENDER);
+            addBoss(AMEntities.WATER_GUARDIAN, AMMagic.WATER, AMItems.WATER_ORBS);
+            addBoss(AMEntities.FIRE_GUARDIAN, AMMagic.FIRE, AMItems.FIRE_ANTENNAE);
+            addBoss(AMEntities.EARTH_GUARDIAN, AMMagic.EARTH, AMItems.EARTH_ARMOR);
+            addBoss(AMEntities.AIR_GUARDIAN, AMMagic.AIR, AMItems.AIR_SLED);
+            addBoss(AMEntities.ICE_GUARDIAN, AMMagic.ICE, AMItems.WINTERS_GRASP);
+            addBoss(AMEntities.LIGHTNING_GUARDIAN, AMMagic.LIGHTNING, AMItems.LIGHTNING_CHARM);
+            addBoss(AMEntities.NATURE_GUARDIAN, AMMagic.NATURE, AMItems.NATURE_SCYTHE);
+            addBoss(AMEntities.LIFE_GUARDIAN, AMMagic.LIFE, AMItems.LIFE_WARD);
+            addBoss(AMEntities.ARCANE_GUARDIAN, AMMagic.ARCANE, AMItems.ARCANE_SPELL_BOOK);
+            addBoss(AMEntities.ENDER_GUARDIAN, AMMagic.ENDER, AMItems.ENDER_BOOTS);
         }
 
         @SuppressWarnings("RedundantStreamOptionalCall")
@@ -226,10 +227,13 @@ public final class AMLootTableProvider extends LootTableProvider {
                 .map(e -> e);
         }
 
-        private void addBoss(DeferredHolder<EntityType<?>, ?> boss, ResourceKey<Affinity> affinity) {
-            add(boss.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE)
-                    .apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), registries.lookupOrThrow(AMRegistries.Keys.AFFINITY).getOrThrow(affinity))))));
+        private void addBoss(DeferredHolder<EntityType<?>, ?> boss, ResourceKey<Affinity> affinity, DeferredItem<?> item) {
+            add(boss.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE)
+                        .apply(SetComponentsFunction.setComponent(AMDataComponents.AFFINITY.get(), registries.lookupOrThrow(AMRegistries.Keys.AFFINITY).getOrThrow(affinity)))))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(item))));
         }
     }
 

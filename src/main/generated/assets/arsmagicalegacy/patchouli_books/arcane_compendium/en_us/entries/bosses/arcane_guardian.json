@@ -20,6 +20,11 @@
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.bosses.arcane_guardian.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:arcane_spell_book",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.arcane_guardian.page4.text"
     }
   ]
 }

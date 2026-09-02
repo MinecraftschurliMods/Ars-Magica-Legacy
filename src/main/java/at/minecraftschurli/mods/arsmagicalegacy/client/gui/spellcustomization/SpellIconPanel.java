@@ -61,7 +61,7 @@ class SpellIconPanel extends ScrollPanel {
                 } else if (icon.equals(hovered)) {
                     graphics.fill(x - 1, y - 1, x + ICON_SIZE + 1, y + ICON_SIZE + 1, HOVERED_COLOR);
                 }
-                AMClientUtil.blit(graphics, SpellIconAtlasHolder.getSprite(icon), x, y, ICON_SIZE, ICON_SIZE);
+                AMClientUtil.blitSprite(graphics, SpellIconAtlasHolder.getSprite(icon), x, y, ICON_SIZE, ICON_SIZE);
             }
             i++;
         }

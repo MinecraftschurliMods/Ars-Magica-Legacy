@@ -20,6 +20,11 @@
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:nature_scythe",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page4.text"
     }
   ]
 }

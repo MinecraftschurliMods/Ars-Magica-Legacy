@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "arsmagicalegacy:ender_boots"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "arsmagicalegacy:ender_boots"
+      }
+    ]
+  }
+}

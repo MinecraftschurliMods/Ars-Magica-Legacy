@@ -58,7 +58,7 @@ public class SpellPartButton<T> extends Button {
 
     @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        AMClientUtil.blit(graphics, sprite, getX(), getY(), SIZE, SIZE, active ? -1 : 0xff7f7f7f);
+        AMClientUtil.blitSprite(graphics, sprite, getX(), getY(), SIZE, SIZE, active ? -1 : 0xff7f7f7f);
     }
 
     @SuppressWarnings({"unchecked", "DataFlowIssue"})

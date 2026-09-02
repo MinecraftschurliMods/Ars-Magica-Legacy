@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "arsmagicalegacy:item/fire_antennae",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

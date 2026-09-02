@@ -37,6 +37,7 @@ public class Wall extends SecondarySpellShape {
         wall.setSpell(spell);
         wall.setConsume(context.consume());
         wall.setAwardXp(context.awardXp());
+        wall.setStatMultiplier((float) context.statMultiplier());
         SpellHelper helper = ArsMagicaApi.spellHelper();
         wall.setColor(helper.getColor(modifiers, spell, spell.activeShapeGroup()));
         wall.setTargetNonSolid(helper.getModifiedStat(0, AMSpells.TARGET_NON_SOLID_STAT, modifiers, context) > 0);

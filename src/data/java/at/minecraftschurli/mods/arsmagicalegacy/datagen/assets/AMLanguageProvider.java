@@ -91,8 +91,16 @@ public final class AMLanguageProvider extends LanguageProvider {
         itemWithVariantTranslation(AMItems.INFINITY_ORB, AMMagic.GREEN_POINT.identifier(), "Green Infinity Orb");
         itemWithVariantTranslation(AMItems.INFINITY_ORB, AMMagic.RED_POINT.identifier(), "Red Infinity Orb");
         itemIdTranslation(AMItems.INFINITY_ORB);
+        itemIdTranslation(AMItems.WATER_ORBS);
+        itemIdTranslation(AMItems.FIRE_ANTENNAE);
+        itemIdTranslation(AMItems.EARTH_ARMOR);
+        itemIdTranslation(AMItems.AIR_SLED);
         addItem(AMItems.WINTERS_GRASP, "Winter's Grasp");
+        itemIdTranslation(AMItems.LIGHTNING_CHARM);
         itemIdTranslation(AMItems.NATURE_SCYTHE);
+        itemIdTranslation(AMItems.LIFE_WARD);
+        itemIdTranslation(AMItems.ARCANE_SPELL_BOOK);
+        itemIdTranslation(AMItems.ENDER_BOOTS);
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, Affinity.NONE.identifier(), "Affinity Essence");
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, AMMagic.WATER.identifier(), "Water Affinity Essence");
         itemWithVariantTranslation(AMItems.AFFINITY_ESSENCE, AMMagic.FIRE.identifier(), "Fire Affinity Essence");
@@ -226,6 +234,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         entityIdTranslation(AMEntities.LIFE_GUARDIAN);
         entityIdTranslation(AMEntities.ARCANE_GUARDIAN);
         entityIdTranslation(AMEntities.ENDER_GUARDIAN);
+        entityIdTranslation(AMEntities.AIR_SLED);
         addEntityType(AMEntities.WINTERS_GRASP, "Winter's Grasp");
         entityIdTranslation(AMEntities.NATURE_SCYTHE);
         entityIdTranslation(AMEntities.SHOCKWAVE);
@@ -320,6 +329,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTags.DamageTypes.AFFECTED_BY_FALL_DAMAGE_ABILITY, "Affected by the Fall Damage Ability");
         add(AMTags.DamageTypes.AFFECTED_BY_FEATHER_FALLING_ABILITY, "Affected by the Feather Falling Ability");
         add(AMTags.DamageTypes.AFFECTED_BY_MAGIC_DAMAGE_ABILITY, "Affected by the Magic Damage Ability");
+        add(AMTags.DamageTypes.BYPASSES_LIFE_WARD, "Bypasses Life Ward");
         add(AMTags.DamageTypes.BYPASSES_SHIELD_OVERLOAD, "Bypasses Shield Overload");
         add(AMTags.DamageTypes.IS_SPELL, "Spell Damage");
         add(AMTags.DamageTypes.WATER_GUARDIAN_IS_VULNERABLE_TO, "Is vulnerability of the Water Guardian");
@@ -599,6 +609,15 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("arcane_compendium_conversion_duration", "Arcane Compendium Conversion Duration", "The time in ticks that the Arcane Compendium conversion takes.");
         configTranslation("arcane_compendium_conversion_horizontal_range", "Arcane Compendium Conversion Horizontal Range", "The horizontal range of the Arcane Compendium conversion.");
         configTranslation("arcane_compendium_conversion_vertical_range", "Arcane Compendium Conversion Vertical Range", "The vertical range of the Arcane Compendium conversion.");
+        configTranslation("arcane_spell_book_mana_multiplier", "Arcane Spell Book Mana Multiplier", "The mana multiplier applied when using the Arcane Spell Book.");
+        configTranslation("arcane_spell_book_stat_multiplier", "Arcane Spell Book Stat Multiplier", "The stat multiplier applied when using the Arcane Spell Book.");
+        configTranslation("life_ward_enable_in_inventory", "Enable Life Ward in Inventory", "Whether to enable the Life Ward functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.");
+        configTranslation("life_ward_cooldown", "Life Ward Cooldown", "The amount of ticks to wait until the Life Ward starts to regenerate.");
+        configTranslation("life_ward_interval", "Life Ward Interval", "The amount of ticks to wait until the Life Ward regenerates half a heart, after the initial cooldown.");
+        configTranslation("life_ward_max_health", "Life Ward Max Health", "The max extra health the Life Ward can provide.");
+        configTranslation("lightning_charm_enable_in_inventory", "Enable Lightning Charm in Inventory", "Whether to enable the Life Ward functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.");
+        configTranslation("lightning_charm_range", "Lightning Charm Range", "The range of the Lightning Charm's effect.");
+        configTranslation("ender_boots_fall_damage_multiplier", "Ender Boots Fall Damage Multiplier", "The fall damage multiplier applied when wearing the Ender Boots.");
         configTranslation("entities", "Entities", "Configuration for the various entities.");
         configTranslation("boss_player_check_distance", "Boss Player Check Distance", "The distance from a boss within which the boss bar will be shown.");
         configTranslation("boss_player_check_interval", "Boss Player Check Interval", "The time in ticks between the boss checking for players in its range to show the boss bar to.");
@@ -730,6 +749,11 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("spell_book_y", "Vertical Position", "Vertical position of the spell book GUI layer.");
         configTranslation("spell_book_anchor_x", "Horizontal Anchor", "Horizontal anchor of the spell book GUI layer.");
         configTranslation("spell_book_anchor_y", "Vertical Anchor", "Vertical anchor of the spell book GUI layer.");
+        configTranslation("life_ward", "Life Ward", "Configuration for the life ward GUI layer. The size of the layer is 111x17.");
+        configTranslation("life_ward_x", "Horizontal Position", "Horizontal position of the life ward GUI layer.");
+        configTranslation("life_ward_y", "Vertical Position", "Vertical position of the life ward GUI layer.");
+        configTranslation("life_ward_anchor_x", "Horizontal Anchor", "Horizontal anchor of the life ward GUI layer.");
+        configTranslation("life_ward_anchor_y", "Vertical Anchor", "Vertical anchor of the life ward GUI layer.");
         add("enchantment", "dismembering", "Dismembering");
         add("enchantment", "dismembering.desc", "Adds a drop chance for heads for certain mobs.");
         add("affinity", "none", "None");
@@ -1067,7 +1091,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add("item", "arcane_compendium." + compendiumEntry, translation);
     }
 
-    /// Adds a translation with the key format "[type].arsmagicalegacy.[name]".
+    /// Adds a translation with the key format "`type`.arsmagicalegacy.`name`".
     /// @param type        The type part of the key.
     /// @param name        The name part of the key.
     /// @param translation The translation to add.

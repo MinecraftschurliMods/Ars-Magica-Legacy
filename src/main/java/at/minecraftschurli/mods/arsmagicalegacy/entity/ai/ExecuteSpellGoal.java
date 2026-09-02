@@ -72,7 +72,7 @@ public class ExecuteSpellGoal<T extends Mob & SpellCasterEntity> extends Goal {
                 }
                 Spell spell = getSpell(caster);
                 if (spell != null) {
-                    ArsMagicaApi.spellHelper().cast(spell, level, caster, false, false);
+                    ArsMagicaApi.spellHelper().cast(spell, level, caster, false, false, 1, 1);
                     ticks = 0;
                     stop();
                 }

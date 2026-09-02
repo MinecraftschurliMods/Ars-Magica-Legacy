@@ -3,6 +3,8 @@
     "#curios:player_like"
   ],
   "slots": [
-    "head"
+    "head",
+    "belt",
+    "charm"
   ]
 }
