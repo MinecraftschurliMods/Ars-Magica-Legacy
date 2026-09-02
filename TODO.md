@@ -1,12 +1,8 @@
 - Fix inlays (needs Neo changes)
 - Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
-- Boss Drops
-  - Lightning Charm
-    - Item magnet in a 16 block radius
-  - Arcane Spell Book
-    - Custom model
 - Reduce sound volumes
 - Visuals
+  - Arcane Spell Book model
   - Beam/Chain render pipelines
   - Ender Boots flipping
   - Curios renderers
