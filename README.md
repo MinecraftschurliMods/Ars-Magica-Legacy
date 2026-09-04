@@ -3,10 +3,10 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/MinecraftschurliMods/Ars-Magica-Legacy/build.yml?branch=version%2F1.19.x&logo=github)][Build Workflow]
+[![Build Status](https://img.shields.io/github/actions/workflow/status/MinecraftschurliMods/Ars-Magica-Legacy/build.yml?branch=version%2F26.1&logo=github)][Build Workflow]
 [![GitHub Releases](https://img.shields.io/github/v/release/MinecraftschurliMods/Ars-Magica-Legacy?sort=semver&display_name=tag&logo=github)][GitHub Releases]
 [![GitHub Issues](https://img.shields.io/github/issues-raw/MinecraftschurliMods/Ars-Magica-Legacy/bug?label=open%20bugs)][GitHub Issues]
-[![Maven](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fminecraftschurli.ddns.net%2Frepository%2Fmaven-public%2Fcom%2Fgithub%2Fminecraftschurlimods%2Farsmagicalegacy%2Fmaven-metadata.xml&versionPrefix=1.19)][Maven]
+[![Maven](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fmaven.minecraftschurli.at%2Fmaven-public%2Fat%2Fminecraftschurli%2Fmods%2Farsmagicalegacy%2Fmaven-metadata.xml&versionPrefix=26.1)][Maven]
 <br>
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/350734?logo=curseforge&label=CurseForge%20Downloads&color=orange)][CurseForge Project]
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/hm4S7JIe?logo=modrinth&logoColor=%231bd96a&label=Modrinth%20Downloads&color=%231bd96a)][Modrinth Project]
