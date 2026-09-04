@@ -90,7 +90,6 @@ public final class HiddenSkills {
         runtime.getRecipeManager().hideRecipes(SkillCategory.RECIPE_TYPE, recipes);
     }
 
-    @SuppressWarnings("DataFlowIssue")
     private static void addVisibleSkillsAndRecipes() {
         getSkills().filter(HiddenSkills::shouldShow)
             .map(Holder.Reference::key)
@@ -99,6 +98,7 @@ public final class HiddenSkills {
                 VISIBLE_RECIPES.add(RECIPES.get(skill).get(getKey(getHiddenModifiers(skill)
                     .filter(HiddenSkills::shouldShow)
                     .map(Holder::getKey)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toSet()))));
             });
     }
