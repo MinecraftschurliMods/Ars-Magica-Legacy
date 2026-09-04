@@ -27,10 +27,12 @@
 							"vector": [0, 0, 0]
 						},
 						"2.0": {
-							"vector": [0, 0, 5]
+							"vector": [0, 0, 5],
+							"easing": "easeInOutSine"
 						},
 						"4.0": {
-							"vector": [0, 0, 0]
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
 						}
 					}
 				}
@@ -45,13 +47,16 @@
 							"vector": [0, 0, 0]
 						},
 						"0.1667": {
-							"vector": [-90, -10, 0]
+							"vector": [-90, -10, 0],
+							"easing": "easeInSine"
 						},
 						"0.8333": {
-							"vector": [-90, 10, 0]
+							"vector": [-90, 10, 0],
+							"easing": "easeInBack"
 						},
 						"1.0": {
-							"vector": [0, 0, 0]
+							"vector": [0, 0, 0],
+							"easing": "easeInBack"
 						}
 					}
 				}
