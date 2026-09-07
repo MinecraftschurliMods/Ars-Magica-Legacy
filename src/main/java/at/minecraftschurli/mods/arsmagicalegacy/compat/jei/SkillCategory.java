@@ -91,7 +91,7 @@ final class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
             for (Holder<Affinity> affinity : affinityShifts.keySet().stream().sorted(COMPARATOR).toList()) {
                 builder.addSlot(RecipeIngredientRole.RENDER_ONLY, x, y)
                     .add(AMUtil.set(AMItems.AFFINITY_ESSENCE.toStack(), AMDataComponents.AFFINITY.get(), affinity))
-                    .addRichTooltipCallback((slot, tooltip) -> {
+                    .addRichTooltipCallback((_, tooltip) -> {
                         tooltip.clear();
                         tooltip.add(Affinity.getName(affinity));
                     });

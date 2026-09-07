@@ -74,7 +74,12 @@
 # Miscellaneous
 
 - Slightly debuffed the Augmented Casting talent (50% -> 40% boost to some stats)
+
+# Fixes
+
 - Fixed the orientation of the Ice Guardian's arm when thrown
+- Fixed an animation error on many bosses
+- Fix a crash related to logging affinities
 
 # API Changes
 

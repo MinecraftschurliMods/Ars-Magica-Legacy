@@ -877,6 +877,9 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTranslations.INSCRIPTION_TABLE_KEY, "Inscription Table");
         add(AMTranslations.INSCRIPTION_TABLE_NAME_KEY, "Name");
         add(AMTranslations.INSCRIPTION_TABLE_SEARCH_KEY, "Search");
+        add(AMTranslations.JEI_ALTAR_MATERIAL_CAP_DESCRIPTION_KEY, "+%s Power (Cap)");
+        add(AMTranslations.JEI_ALTAR_MATERIAL_DESCRIPTION_KEY, "+%s Power (Structure)");
+        add(AMTranslations.JEI_ALTAR_MATERIAL_TITLE_KEY, "Altar Materials");
         add(AMTranslations.JEI_SKILL_AFFINITY_BREAKDOWN_KEY, "Affinity Breakdown:");
         add(AMTranslations.JEI_SKILL_INGREDIENTS_KEY, "Ingredients:");
         add(AMTranslations.JEI_SKILL_MODIFIED_BY_KEY, "Modified By:");
