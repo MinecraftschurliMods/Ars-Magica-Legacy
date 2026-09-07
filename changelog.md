@@ -32,6 +32,10 @@
 ## Air Sled
 
 - Dropped by the Air Guardian
+- Right-click to place
+- Mount for creative-like flight
+- Shift while on the ground to dismount
+- Shift-right-click to pick up
 
 ## Winter's Grasp
 
@@ -43,6 +47,8 @@
 ## Lightning Charm
 
 - Dropped by the Lightning Guardian
+- Attracts items in a 16 block range (configurable)
+- Can be placed into a Charm slot from Curios if installed
 
 ## Nature Scythe
 
@@ -54,6 +60,10 @@
 ## Life Ward
 
 - Dropped by the Life Guardian
+- Adds a shield of 20 extra health (10 hearts) in the form of a green heart outline
+- Generates half a heart per second if the last hit is 5 seconds or longer ago
+- Regeneration speed, max amount, and cooldowns can all be configured individually
+- Can be placed into a Charm slot from Curios if installed
 
 ## Arcane Spell Book
 
@@ -73,7 +83,9 @@
 
 # Miscellaneous
 
+- Swimming in Liquid Etherium now grants the Mana Regeneration effect
 - Slightly debuffed the Augmented Casting talent (50% -> 40% boost to some stats)
+- Added a list of altar materials to JEI
 
 # Fixes
 
