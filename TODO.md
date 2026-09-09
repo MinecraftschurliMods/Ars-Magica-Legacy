@@ -1,8 +1,6 @@
 - Fix inlays (needs Neo changes)
-- Apply Mana Regeneration to entities swimming in Liquid Etherium (needs Neo changes)
 - Reduce sound volumes
 - Visuals
-  - Arcane Spell Book model
   - Beam/Chain render pipelines
   - Ender Boots flipping
   - Curios renderers

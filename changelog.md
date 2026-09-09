@@ -83,6 +83,7 @@
 
 # Miscellaneous
 
+- New textures for the Spell Recipe. Credit for this and some of the new items to the amazing @MoonlitLamps!
 - Swimming in Liquid Etherium now grants the Mana Regeneration effect
 - Slightly debuffed the Augmented Casting talent (50% -> 40% boost to some stats)
 - Added a list of altar materials to JEI
