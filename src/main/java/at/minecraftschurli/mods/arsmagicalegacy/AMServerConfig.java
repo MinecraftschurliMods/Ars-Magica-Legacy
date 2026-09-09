@@ -20,6 +20,15 @@ public final class AMServerConfig {
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_DURATION;
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_HORIZONTAL_RANGE;
     public static final ModConfigSpec.IntValue ARCANE_COMPENDIUM_CONVERSION_VERTICAL_RANGE;
+    public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_MANA_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue ARCANE_SPELL_BOOK_STAT_MULTIPLIER;
+    public static final ModConfigSpec.BooleanValue LIFE_WARD_ENABLE_IN_INVENTORY;
+    public static final ModConfigSpec.IntValue LIFE_WARD_COOLDOWN;
+    public static final ModConfigSpec.IntValue LIFE_WARD_INTERVAL;
+    public static final ModConfigSpec.DoubleValue LIFE_WARD_MAX_HEALTH;
+    public static final ModConfigSpec.BooleanValue LIGHTNING_CHARM_ENABLE_IN_INVENTORY;
+    public static final ModConfigSpec.DoubleValue LIGHTNING_CHARM_RANGE;
+    public static final ModConfigSpec.DoubleValue ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER;
     public static final ModConfigSpec.DoubleValue BOSS_PLAYER_CHECK_DISTANCE;
     public static final ModConfigSpec.IntValue BOSS_PLAYER_CHECK_INTERVAL;
     public static final ModConfigSpec.IntValue DRYAD_GROW_INTERVAL;
@@ -183,6 +192,42 @@ public final class AMServerConfig {
             .comment("The vertical range of the Arcane Compendium conversion.")
             .translation(AMTranslations.CONFIG_KEY + "arcane_compendium_conversion_vertical_range")
             .defineInRange("arcane_compendium_conversion_vertical_range", 2, 1, 16);
+        ARCANE_SPELL_BOOK_MANA_MULTIPLIER = builder
+            .comment("The mana multiplier applied when using the Arcane Spell Book.")
+            .translation(AMTranslations.CONFIG_KEY + "arcane_spell_book_mana_multiplier")
+            .defineInRange("arcane_spell_book_mana_multiplier", 0.8, 0, 1);
+        ARCANE_SPELL_BOOK_STAT_MULTIPLIER = builder
+            .comment("The stat multiplier applied when using the Arcane Spell Book.")
+            .translation(AMTranslations.CONFIG_KEY + "arcane_spell_book_stat_multiplier")
+            .defineInRange("arcane_spell_book_stat_multiplier", 1.4, 1, 8);
+        LIFE_WARD_ENABLE_IN_INVENTORY = builder
+            .comment("Whether to enable the Life Ward functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.")
+            .translation(AMTranslations.CONFIG_KEY + "life_ward_enable_in_inventory")
+            .define("life_ward_enable_in_inventory", true);
+        LIFE_WARD_COOLDOWN = builder
+            .comment("The amount of ticks to wait until the Life Ward starts to regenerate.")
+            .translation(AMTranslations.CONFIG_KEY + "life_ward_cooldown")
+            .defineInRange("life_ward_cooldown", 100, 1, 1200);
+        LIFE_WARD_INTERVAL = builder
+            .comment("The amount of ticks to wait until the Life Ward regenerates half a heart, after the initial cooldown.")
+            .translation(AMTranslations.CONFIG_KEY + "life_ward_interval")
+            .defineInRange("life_ward_interval", 20, 1, 1200);
+        LIFE_WARD_MAX_HEALTH = builder
+            .comment("The max extra health the Life Ward can provide.")
+            .translation(AMTranslations.CONFIG_KEY + "life_ward_max_health")
+            .defineInRange("life_ward_max_health", 20., 0, Short.MAX_VALUE);
+        LIGHTNING_CHARM_ENABLE_IN_INVENTORY = builder
+            .comment("Whether to enable the Lightning Charm functionality from the inventory, if Curios is installed. If Curios is not installed, this will always be considered true.")
+            .translation(AMTranslations.CONFIG_KEY + "lightning_charm_enable_in_inventory")
+            .define("lightning_charm_enable_in_inventory", true);
+        LIGHTNING_CHARM_RANGE = builder
+            .comment("The range of the Lightning Charm's effect.")
+            .translation(AMTranslations.CONFIG_KEY + "lightning_charm_range")
+            .defineInRange("lightning_charm_range", 16., 1, 64);
+        ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER = builder
+            .comment("The fall damage multiplier applied when wearing the Ender Boots.")
+            .translation(AMTranslations.CONFIG_KEY + "ender_boots_fall_damage_multiplier")
+            .defineInRange("ender_boots_fall_damage_multiplier", 0.5, 0, 1);
         builder.pop();
         builder.comment("Configuration for the various entities.").push("entities");
         BOSS_PLAYER_CHECK_DISTANCE = builder
@@ -602,7 +647,7 @@ public final class AMServerConfig {
         AUGMENTED_CASTING_MULTIPLIER = builder
             .comment("The multiplier to various stats used by the Augmented Casting talent.")
             .translation(AMTranslations.CONFIG_KEY + "augmented_casting_multiplier")
-            .defineInRange("augmented_casting_multiplier", 1.5, 1, 8);
+            .defineInRange("augmented_casting_multiplier", 1.4, 1, 8);
         EXTRA_SUMMONS_COUNT = builder
             .comment("The amount of additional summons a player can have at the same time when they have the Extra Summons talent.")
             .translation(AMTranslations.CONFIG_KEY + "extra_summons_count")

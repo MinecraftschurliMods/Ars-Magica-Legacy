@@ -76,7 +76,7 @@ public class RecallCustomizationScreen extends AbstractSpellPartCustomizationScr
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
-        AMClientUtil.blit(graphics, sprite, leftPos + 84, topPos, 32, 32, 0xff7f7f7f);
+        AMClientUtil.blitSprite(graphics, sprite, leftPos + 84, topPos, 32, 32, 0xff7f7f7f);
         if (messageTime > 0 && message != null) {
             int alpha = messageTime > MESSAGE_ALPHA_START ? 255 : (int) Mth.lerp((messageTime - partialTick) / MESSAGE_ALPHA_START, 0, 255);
             graphics.centeredText(font, message, leftPos + 100, topPos + 11, alpha << 24 | 0xffffff);

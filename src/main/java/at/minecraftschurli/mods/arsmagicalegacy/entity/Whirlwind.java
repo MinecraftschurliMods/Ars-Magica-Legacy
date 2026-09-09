@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -47,10 +48,11 @@ public class Whirlwind extends AbstractOwnableEntity {
         Integer cooldown = cooldowns.get(player);
         if (cooldown == null || cooldown <= 0) {
             if (random.nextInt(100) < 10) {
-                int slot = player.getInventory().getNonEquipmentItems().size() + random.nextInt(4);
-                ItemStack stack = player.getInventory().getItem(slot).copy();
-                player.getInventory().setItem(slot, ItemStack.EMPTY);
-                if (!player.getInventory().add(stack)) {
+                Inventory inventory = player.getInventory();
+                int slot = inventory.getNonEquipmentItems().size() + random.nextInt(4);
+                ItemStack stack = inventory.getItem(slot).copy();
+                inventory.setItem(slot, ItemStack.EMPTY);
+                if (!inventory.add(stack)) {
                     ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), stack);
                     item.setDeltaMovement(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2 - 0.1);
                     level.addFreshEntity(item);

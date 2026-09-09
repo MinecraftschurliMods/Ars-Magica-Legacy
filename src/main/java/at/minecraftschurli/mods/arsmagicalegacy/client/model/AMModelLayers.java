@@ -32,11 +32,11 @@ public interface AMModelLayers {
     static LayerDefinition createWintersGraspLayer() {
         MeshDefinition md = new MeshDefinition();
         PartDefinition pd = md.getRoot();
-        AMClientUtil.addCube(pd, "arm", 94, 0, -3, -15, -3, 6, 26, 6, 0, 0, 0, 90, 0, 0);
-        AMClientUtil.addCube(pd, "hand", 82, 44, -3, 12, -2, 6, 1, 5, 0, 0, 0, 90, 0, 0);
-        AMClientUtil.addCube(pd, "outer_fingers", 104, 44, 2, 11, -2, 1, 1, 5, 0, 0, 0, 90, 0, 0);
-        AMClientUtil.addCube(pd, "inner_fingers", 104, 44, -3, 11, -2, 1, 1, 5, 0, 0, 0, 90, 0, 0);
-        AMClientUtil.addCube(pd, "thumb", 82, 50, 0, 11, -3, 3, 2, 1, 0, 0, 0, 90, 0, 0);
+        AMClientUtil.addCube(pd, "arm", 94, 0, -3, -15, -3, 6, 26, 6, 0, 0, 0, 90, 180, 0);
+        AMClientUtil.addCube(pd, "hand", 82, 44, -3, 12, -2, 6, 1, 5, 0, 0, 0, 90, 180, 0);
+        AMClientUtil.addCube(pd, "outer_fingers", 104, 44, 2, 11, -2, 1, 1, 5, 0, 0, 0, 90, 180, 0);
+        AMClientUtil.addCube(pd, "inner_fingers", 104, 44, -3, 11, -2, 1, 1, 5, 0, 0, 0, 90, 180, 0);
+        AMClientUtil.addCube(pd, "thumb", 82, 50, 0, 11, -3, 3, 2, 1, 0, 0, 0, 90, 180, 0);
         return LayerDefinition.create(md, 128, 64);
     }
 

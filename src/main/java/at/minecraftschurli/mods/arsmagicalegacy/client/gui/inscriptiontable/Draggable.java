@@ -30,7 +30,7 @@ public class Draggable implements Renderable, NarratableEntry {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        AMClientUtil.blit(graphics, sprite, mouseX, mouseY, SIZE, SIZE);
+        AMClientUtil.blitSprite(graphics, sprite, mouseX, mouseY, SIZE, SIZE);
     }
 
     @Override

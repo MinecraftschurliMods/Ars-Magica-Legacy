@@ -4,6 +4,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.api.magic.MagicAttachment;
 import at.minecraftschurli.mods.arsmagicalegacy.attachment.ContingencyAttachment;
 import at.minecraftschurli.mods.arsmagicalegacy.attachment.DryadKillsAttachment;
+import at.minecraftschurli.mods.arsmagicalegacy.attachment.LifeWardAttachment;
 import at.minecraftschurli.mods.arsmagicalegacy.attachment.MagicAttachmentSyncHandler;
 import at.minecraftschurli.mods.arsmagicalegacy.attachment.RiftAttachment;
 import at.minecraftschurli.mods.arsmagicalegacy.attachment.SummonMinionsAttachment;
@@ -31,6 +32,7 @@ public interface AMAttachments {
     DeferredHolder<AttachmentType<?>, AttachmentType<Integer>>                  COMPENDIUM_TIMER = register("compendium_timer", () -> 0,                             Codec.INT,                   ByteBufCodecs.INT);
     DeferredHolder<AttachmentType<?>, AttachmentType<ContingencyAttachment>>    CONTINGENCY      = register("contingency",      () -> ContingencyAttachment.DEFAULT, ContingencyAttachment.CODEC, ContingencyAttachment.STREAM_CODEC);
     DeferredHolder<AttachmentType<?>, AttachmentType<Integer>>                  FROST            = register("frost",            () -> 0,                             Codec.INT,                   ByteBufCodecs.INT);
+    DeferredHolder<AttachmentType<?>, AttachmentType<LifeWardAttachment>>       LIFE_WARD        = register("life_ward",        () -> LifeWardAttachment.EMPTY,      LifeWardAttachment.CODEC,    LifeWardAttachment.STREAM_CODEC);
     DeferredHolder<AttachmentType<?>, AttachmentType<Double>>                   MANA             = register("mana",             () -> 0.,                            Codec.DOUBLE,                ByteBufCodecs.DOUBLE);
     DeferredHolder<AttachmentType<?>, AttachmentType<RiftAttachment>>           RIFT             = register("rift",             () -> RiftAttachment.DEFAULT,        RiftAttachment.CODEC,        RiftAttachment.STREAM_CODEC);
     DeferredHolder<AttachmentType<?>, AttachmentType<DryadKillsAttachment>>     DRYAD_KILLS      = register("dryad_kills",      () -> DryadKillsAttachment.EMPTY,    DryadKillsAttachment.CODEC);

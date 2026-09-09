@@ -26,6 +26,7 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class SpellBookItem extends Item {
     public static final int INVENTORY_SLOTS = 32;
@@ -39,7 +40,7 @@ public class SpellBookItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (!player.isSecondaryUseActive()) return getSelectedSpell(stack).use(level, player, usedHand);
+        if (!player.isSecondaryUseActive()) return getOnSpell(getSelectedSpell(stack), spell -> spell.use(level, player, usedHand));
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, _) -> new SpellBookMenu(id, inventory, usedHand), Component.empty()), buf -> buf.writeEnum(usedHand));
         }
@@ -48,17 +49,17 @@ public class SpellBookItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return getSelectedSpell(stack).getUseDuration(entity);
+        return getOnSpell(getSelectedSpell(stack), spell -> spell.getUseDuration(entity));
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        getSelectedSpell(stack).onUseTick(level, livingEntity, remainingUseDuration);
+        runOnSpell(getSelectedSpell(stack), spell -> spell.onUseTick(level, livingEntity, remainingUseDuration));
     }
 
     @Override
     public boolean releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
-        getSelectedSpell(stack).releaseUsing(level, livingEntity, timeCharged);
+        runOnSpell(getSelectedSpell(stack), spell -> spell.releaseUsing(level, livingEntity, timeCharged));
         return true;
     }
 
@@ -66,18 +67,31 @@ public class SpellBookItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, display, builder, tooltipFlag);
-        ItemStack spell = getSelectedSpell(stack);
-        if (spell.isEmpty()) {
-            builder.accept(AMTranslations.SPELL_BOOK_NO_SPELL_SELECTED.copy().withStyle(ChatFormatting.GRAY));
-        } else {
-            builder.accept(Component.translatable(AMTranslations.SPELL_BOOK_SELECTED_SPELL_KEY, spell.getHoverName()).withStyle(ChatFormatting.GRAY));
-            spell.getItem().appendHoverText(spell, context, display, builder, tooltipFlag);
-        }
+        runOnSpell(getSelectedSpell(stack), spell -> {
+            if (spell.isEmpty()) {
+                builder.accept(AMTranslations.SPELL_BOOK_NO_SPELL_SELECTED.copy().withStyle(ChatFormatting.GRAY));
+            } else {
+                builder.accept(Component.translatable(AMTranslations.SPELL_BOOK_SELECTED_SPELL_KEY, spell.getHoverName()).withStyle(ChatFormatting.GRAY));
+                spell.getItem().appendHoverText(spell, context, display, builder, tooltipFlag);
+            }
+        });
+    }
+
+    public <T> T getOnSpell(ItemStack spell, Function<ItemStack, T> toRun) {
+        return toRun.apply(spell);
+    }
+
+    public void runOnSpell(ItemStack spell, Consumer<ItemStack> toRun) {
+        toRun.accept(spell);
     }
 
     @SuppressWarnings("unused")
     public static ResourceHandler<ItemResource> getItemHandler(ItemStack stack, ItemAccess access) {
         return VanillaContainerWrapper.of(new SpellBookContainer(stack));
+    }
+
+    public static boolean isSpellBook(ItemStack stack) {
+        return stack.getItem() instanceof SpellBookItem;
     }
 
     public static void scroll(ItemStack stack, boolean backwards) {
@@ -102,7 +116,7 @@ public class SpellBookItem extends Item {
         stack.remove(AMDataComponents.SPELL);
     }
 
-    private static ItemStack getSelectedSpell(ItemStack stack) {
+    protected static ItemStack getSelectedSpell(ItemStack stack) {
         int index = stack.getOrDefault(AMDataComponents.SELECTED_INDEX, -1);
         if (index < 0 || index >= HOTBAR_SLOTS) return ItemStack.EMPTY;
         ItemContainerContents container = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);

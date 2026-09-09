@@ -28,7 +28,7 @@ class PartsPage extends Page<Holder<SpellPart>> {
 
     @Override
     public void extractElement(Holder<SpellPart> element, int index, GuiGraphicsExtractor graphics, int x, int y) {
-        AMClientUtil.blit(graphics, SkillAtlasHolder.getSprite(skill(element).value()), x + index % maxPerLine * (size + spacing), y + index / maxPerLine * (size + spacing), size, size);
+        AMClientUtil.blitSprite(graphics, SkillAtlasHolder.getSprite(skill(element).value()), x + index % maxPerLine * (size + spacing), y + index / maxPerLine * (size + spacing), size, size);
     }
 
     @Override

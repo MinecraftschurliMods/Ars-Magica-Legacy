@@ -91,7 +91,7 @@ public interface AMSpells {
     DeferredRegister<SpellPart> SPELL_PARTS = DeferredRegister.create(AMRegistries.Keys.SPELL_PART, ArsMagicaApi.MOD_ID);
     // @formatter:off
     SpellStat BOUNCE_STAT           = new SpellStat(ArsMagicaApi.id("bounce"));
-    SpellStat DAMAGE_STAT           = new SpellStat(ArsMagicaApi.id("damage"), SpellStatModifier::add);
+    SpellStat DAMAGE_STAT           = new SpellStat(ArsMagicaApi.id("damage"), SpellStatModifier::addMultipliedBase);
     SpellStat DISMEMBERING_STAT     = new SpellStat(ArsMagicaApi.id("dismembering"));
     SpellStat DURATION_STAT         = new SpellStat(ArsMagicaApi.id("duration"), SpellStatModifier::addMultipliedBase);
     SpellStat EFFECT_POWER_STAT     = new SpellStat(ArsMagicaApi.id("effect_power"));
@@ -99,7 +99,7 @@ public interface AMSpells {
     SpellStat GRAVITY_STAT          = new SpellStat(ArsMagicaApi.id("gravity"));
     SpellStat HEALING_STAT          = new SpellStat(ArsMagicaApi.id("healing"), SpellStatModifier::addMultipliedBase);
     SpellStat MINING_POWER_STAT     = new SpellStat(ArsMagicaApi.id("mining_power"));
-    SpellStat PIERCING_STAT         = new SpellStat(ArsMagicaApi.id("piercing"), SpellStatModifier::add);
+    SpellStat PIERCING_STAT         = new SpellStat(ArsMagicaApi.id("piercing"), SpellStatModifier::addMultipliedBase);
     SpellStat RANGE_STAT            = new SpellStat(ArsMagicaApi.id("range"), SpellStatModifier::addMultipliedBase);
     SpellStat RUNE_POWER_STAT       = new SpellStat(ArsMagicaApi.id("rune_power"));
     SpellStat SILK_TOUCH_STAT       = new SpellStat(ArsMagicaApi.id("silk_touch"));

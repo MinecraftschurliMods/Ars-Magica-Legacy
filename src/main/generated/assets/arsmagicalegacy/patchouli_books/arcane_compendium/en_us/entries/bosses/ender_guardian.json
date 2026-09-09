@@ -20,6 +20,11 @@
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:ender_boots",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.ender_guardian.page4.text"
     }
   ]
 }

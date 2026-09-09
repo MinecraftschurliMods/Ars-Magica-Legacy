@@ -14,7 +14,7 @@ import java.util.List;
 final class SkillIngredientRenderer implements IIngredientRenderer<Skill> {
     @Override
     public void render(GuiGraphicsExtractor graphics, Skill skill) {
-        AMClientUtil.blit(graphics, SkillAtlasHolder.getSprite(skill), 0, 0, 16, 16);
+        AMClientUtil.blitSprite(graphics, SkillAtlasHolder.getSprite(skill), 0, 0, 16, 16);
     }
 
     @Override

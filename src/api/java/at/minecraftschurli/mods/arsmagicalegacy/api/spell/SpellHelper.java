@@ -14,13 +14,15 @@ import java.util.List;
 public interface SpellHelper {
     /// Casts the given [Spell].
     ///
-    /// @param spell   The [Spell] to cast.
-    /// @param level   The [Level] the [Spell] is cast in.
-    /// @param caster  The [LivingEntity] casting the [Spell].
-    /// @param consume Whether to consume mana and burnout or not.
-    /// @param awardXp Whether to award xp or not.
+    /// @param spell                The [Spell] to cast.
+    /// @param level                The [Level] the [Spell] is cast in.
+    /// @param caster               The [LivingEntity] casting the [Spell].
+    /// @param consume              Whether to consume mana and burnout or not.
+    /// @param awardXp              Whether to award xp or not.
+    /// @param innateManaMultiplier An innate multiplier to mana cost.
+    /// @param innateStatMultiplier An innate multiplier to generic stats.
     /// @return `null` if the cast was successful, or an error message if not.
-    SpellCastResult cast(Spell spell, Level level, @Nullable LivingEntity caster, boolean consume, boolean awardXp);
+    SpellCastResult cast(Spell spell, Level level, @Nullable LivingEntity caster, boolean consume, boolean awardXp, double innateManaMultiplier, double innateStatMultiplier);
 
     /// Casts the given [Spell]'s primary shape. Note that [SpellCastContext#directEntity()] and [SpellCastContext#hitResult()] are guaranteed to return null here.
     ///

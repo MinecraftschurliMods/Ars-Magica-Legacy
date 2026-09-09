@@ -20,6 +20,11 @@
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:air_sled",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.air_guardian.page4.text"
     }
   ]
 }

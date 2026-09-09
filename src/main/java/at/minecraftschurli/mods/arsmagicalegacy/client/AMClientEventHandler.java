@@ -27,11 +27,13 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.Sp
 import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.SummonCustomizationScreen;
 import at.minecraftschurli.mods.arsmagicalegacy.client.gui.spellcustomization.color.ColorCustomizationScreen;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.BarsLayer;
+import at.minecraftschurli.mods.arsmagicalegacy.client.layer.LifeWardLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.ShapeGroupsLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.layer.SpellBookLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AMEntityModel;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AMModelLayers;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AltarCoreModel;
+import at.minecraftschurli.mods.arsmagicalegacy.client.model.EarthArmorModel;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalPhylacteryItemTintSource;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalPhylacteryRangeSelectItemModelProperty;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalWrenchActiveItemModelProperty;
@@ -61,6 +63,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.entity.ManaCreep
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.entity.SimpleModelEntityRenderer;
 import at.minecraftschurli.mods.arsmagicalegacy.compat.curios.AMCuriosHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.compat.patchouli.SpellPartPage;
+import at.minecraftschurli.mods.arsmagicalegacy.entity.AirSled;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlockEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
@@ -69,11 +72,17 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
+import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import com.geckolib.renderer.GeoEntityRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -95,10 +104,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
@@ -124,9 +135,12 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
+import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.client.settings.KeyModifier;
@@ -171,6 +185,7 @@ final class AMClientEventHandler {
         event.registerLayerDefinition(AMModelLayers.WINTERS_GRASP, AMModelLayers::createWintersGraspLayer);
         event.registerLayerDefinition(AMModelLayers.NATURE_SCYTHE, AMModelLayers::createNatureScytheLayer);
         event.registerLayerDefinition(AMModelLayers.THROWN_ROCK, AMModelLayers::createThrownRockLayer);
+        event.registerLayerDefinition(EarthArmorModel.LAYER_LOCATION, EarthArmorModel::createLayer);
     }
 
     @SubscribeEvent
@@ -197,6 +212,7 @@ final class AMClientEventHandler {
         BossRenderer.register(event, AMEntities.LIFE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ARCANE_GUARDIAN);
         BossRenderer.register(event, AMEntities.ENDER_GUARDIAN);
+        event.registerEntityRenderer(AMEntities.AIR_SLED.get(), context -> new GeoEntityRenderer<>(context, AMEntities.AIR_SLED.get()));
         event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.WINTERS_GRASP, AMEntityModel::new, AMModelLayers.WINTERS_GRASP_TEXTURE));
         event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.NATURE_SCYTHE, AMEntityModel::new, AMModelLayers.NATURE_SCYTHE_TEXTURE));
         event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), context -> new SimpleModelEntityRenderer<>(context, AMModelLayers.THROWN_ROCK, AMEntityModel::new, AMModelLayers.THROWN_ROCK_TEXTURE));
@@ -219,6 +235,7 @@ final class AMClientEventHandler {
 
     @SubscribeEvent
     private static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerAbove(VanillaGuiLayers.PLAYER_HEALTH, ArsMagicaApi.id("life_ward"), new LifeWardLayer());
         event.registerBelowAll(ArsMagicaApi.id("bars"), new BarsLayer());
         event.registerBelowAll(ArsMagicaApi.id("shape_groups"), new ShapeGroupsLayer());
         event.registerBelowAll(ArsMagicaApi.id("spell_book"), new SpellBookLayer());
@@ -348,15 +365,37 @@ final class AMClientEventHandler {
         event.register(AMSpells.SUMMON, SummonCustomizationScreen::new);
     }
 
+    @SubscribeEvent
+    private static void clientTickPre(ClientTickEvent.Pre event) {
+        LocalPlayer player = AMClientUtil.player();
+        if (player != null && player.isPassenger() && player.getControlledVehicle() instanceof AirSled airSled) {
+            Options options = AMClientUtil.mc().options;
+            boolean w = options.keyUp.isDown();
+            boolean s = options.keyDown.isDown();
+            boolean a = options.keyLeft.isDown();
+            boolean d = options.keyRight.isDown();
+            boolean space = options.keyJump.isDown();
+            boolean shift = options.keyShift.isDown();
+            boolean ctrl = options.keySprint.isDown();
+            airSled.control(w, s, a, d, space, shift, ctrl);
+            ClientPacketDistributor.sendToServer(new AirSledMovementPacket(w, s, a, d, space, shift, ctrl));
+        }
+    }
+
     @SuppressWarnings("DataFlowIssue")
     @SubscribeEvent
     private static void clientTickPost(ClientTickEvent.Post event) {
         LocalPlayer player = AMClientUtil.player();
         if (player == null) return;
+        Minecraft mc = AMClientUtil.mc();
+        while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
+            EnderBootsItem.toggle(player);
+            ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
+        }
         InteractionHand hand = InteractionHand.MAIN_HAND;
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.has(AMDataComponents.SPELL)) {
-            hand =  InteractionHand.OFF_HAND;
+            hand = InteractionHand.OFF_HAND;
             stack = player.getItemInHand(hand);
         }
         if (stack.has(AMDataComponents.SPELL)) {
@@ -373,7 +412,7 @@ final class AMClientEventHandler {
                 ClientPacketDistributor.sendToServer(new SetActiveShapeGroupPacket(spell.activeShapeGroup()));
             }
             while (SPELL_CUSTOMIZATION.consumeClick()) {
-                AMClientUtil.mc().setScreen(new SpellCustomizationScreen(spell, hand));
+                mc.setScreen(new SpellCustomizationScreen(spell, hand));
             }
         }
     }
@@ -385,18 +424,30 @@ final class AMClientEventHandler {
         Player player = AMClientUtil.player();
         if (player == null || !player.isSecondaryUseActive()) return;
         ItemStack stack = player.getMainHandItem();
-        if (!stack.is(AMItems.SPELL_BOOK)) {
+        if (!SpellBookItem.isSpellBook(stack)) {
             stack = player.getOffhandItem();
-            if (!stack.is(AMItems.SPELL_BOOK)) return;
+            if (!SpellBookItem.isSpellBook(stack)) return;
         }
         ClientPacketDistributor.sendToServer(new SpellBookScrollPacket(scroll > 0));
         event.setCanceled(true);
     }
 
+    /// Adapted from LavaFogEnvironment#setupFog
+    @SubscribeEvent
+    private static void renderFog(ViewportEvent.RenderFog event) {
+        if (event.getType() != FogType.LAVA) return;
+        LocalPlayer player = AMClientUtil.player();
+        if (player == null || player.isSpectator() || !FireAntennaeItem.isEquipped(player)) return;
+        float lavaVision = FireAntennaeItem.getLavaVision(player);
+        event.setNearPlaneDistance(Mth.lerp(lavaVision, 0, -4));
+        event.setFarPlaneDistance(Mth.lerp(lavaVision, 5, AMClientUtil.mc().options.getEffectiveRenderDistance() * 4));
+    }
+
     /// Adapted from ItemInHandRenderer#renderArmWithItem and ItemInHandRenderer#renderPlayerArm
     @SubscribeEvent
     private static void renderHand(RenderHandEvent event) {
-        if (!(AMClientUtil.player() instanceof LocalPlayer player) || player.isInvisible() || !ArsMagicaApi.magicHelper().knowsMagic(player)) return;
+        LocalPlayer player = AMClientUtil.player();
+        if (player == null || player.isInvisible() || !ArsMagicaApi.magicHelper().knowsMagic(player)) return;
         ItemStack item = event.getItemStack();
         if (!item.is(AMTags.Items.SHOWS_SPELL_VISUALS) || !item.has(AMDataComponents.SPELL)) return;
         float swing = event.getSwingProgress();
@@ -427,6 +478,13 @@ final class AMClientEventHandler {
     }
 
     @SubscribeEvent
+    private static void renderArm(RenderArmEvent event) {
+        if (!event.getPlayer().getItemBySlot(EquipmentSlot.CHEST).is(AMItems.EARTH_ARMOR)) return;
+        EarthArmorModel.get().renderArm(event.getSubmitNodeCollector(), event.getPoseStack(), event.getArm(), event.getPackedLight());
+        event.setCanceled(true);
+    }
+
+    @SubscribeEvent
     private static void submitCustomGeometry(SubmitCustomGeometryEvent event) {
         PoseStack stack = event.getPoseStack();
         SubmitNodeCollector collector = event.getSubmitNodeCollector();
@@ -453,7 +511,7 @@ final class AMClientEventHandler {
             stack.translate(event.getLevelRenderState().cameraRenderState.pos.scale(-1));
             BeamRenderer.submit(stack, collector, true, p, hitResult.getLocation(), color, partialTick);
             if (isChain && hitResult instanceof EntityHitResult ehr) {
-                List<Entity> list = Chain.getEntities(ehr.getEntity(), shapeGroup.primaryModifiers(), new SpellCastContext(spell, p.level(), p, null, hitResult, false, false), p);
+                List<Entity> list = Chain.getEntities(ehr.getEntity(), shapeGroup.primaryModifiers(), new SpellCastContext(spell, p.level(), p, null, hitResult, false, false, 1), p);
                 for (int i = 1; i < list.size(); i++) {
                     Entity prev = list.get(i - 1);
                     Entity current = list.get(i);
