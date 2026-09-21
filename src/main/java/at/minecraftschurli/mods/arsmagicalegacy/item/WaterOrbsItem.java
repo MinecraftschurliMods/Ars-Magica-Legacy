@@ -3,6 +3,7 @@ package at.minecraftschurli.mods.arsmagicalegacy.item;
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.WaterOrbsArmorRenderer;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.ArmorItemUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -16,18 +17,19 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.neoforged.neoforge.common.util.Lazy;
 
 import java.util.function.Consumer;
 
-public class WaterOrbsItem extends AMArmorItem implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = createAssetId("water_orbs");
+public class WaterOrbsItem extends Item implements GeoItem {
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = ArmorItemUtil.createAssetId("water_orbs");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public WaterOrbsItem(Properties properties) {
-        super(properties, EquipmentSlot.LEGS, SoundEvents.ARMOR_EQUIP_GOLD, ASSET_ID);
+        super(ArmorItemUtil.armorProperties(properties, EquipmentSlot.LEGS, SoundEvents.ARMOR_EQUIP_GOLD, ASSET_ID));
     }
 
     @Override

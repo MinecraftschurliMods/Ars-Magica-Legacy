@@ -435,6 +435,16 @@ final class AMEventHandler {
             LightningCharmItem.tick(living);
             LifeWardItem.tick(living);
             WaterOrbsItem.tick(living);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (!slot.isArmor()) continue;
+                ItemStack stack = living.getItemBySlot(slot);
+                if (!stack.isDamaged() || !stack.has(AMDataComponents.MANA_REPAIR_COST)) continue;
+                ManaHelper helper = ArsMagicaApi.manaHelper();
+                double cost = stack.getOrDefault(AMDataComponents.MANA_REPAIR_COST, 1.);
+                if (helper.getMana(living) <= cost) continue;
+                stack.setDamageValue(stack.getDamageValue() - 1);
+                helper.decreaseMana(living, cost);
+            }
             if (living.hasEffect(AMMobEffects.WATERY_GRAVE) && entity.isInWater()) {
                 entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
             }
