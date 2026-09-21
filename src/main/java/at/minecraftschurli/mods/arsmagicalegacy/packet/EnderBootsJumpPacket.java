@@ -1,7 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.packet;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
-import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -12,7 +12,7 @@ public record EnderBootsJumpPacket() implements CustomPacketPayload {
     public static final StreamCodec<ByteBuf, EnderBootsJumpPacket> STREAM_CODEC = StreamCodec.unit(new EnderBootsJumpPacket());
 
     public void handle(IPayloadContext context) {
-        EnderBootsItem.toggle(context.player());
+        AMEquipmentUtil.toggleEnderBoots(context.player());
     }
 
     @Override

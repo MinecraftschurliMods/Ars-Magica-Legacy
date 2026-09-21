@@ -16,7 +16,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.particle.AMParticle;
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.MagitechGogglesOverlayRenderStateImpl;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
-import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
@@ -61,7 +61,7 @@ public final class ArsMagicaClientApiImpl extends ArsMagicaClientApi {
     @Override
     protected boolean doShouldRenderMagitechGogglesOutline() {
         LocalPlayer player = AMClientUtil.player();
-        return player != null && AMUtil.isInEquipmentOrCurioSlot(player, EquipmentSlot.HEAD, AMItems.MAGITECH_GOGGLES.get());
+        return player != null && AMEquipmentUtil.isInEquipmentOrCurioSlot(player, EquipmentSlot.HEAD, AMItems.MAGITECH_GOGGLES.get());
     }
 
     @Override

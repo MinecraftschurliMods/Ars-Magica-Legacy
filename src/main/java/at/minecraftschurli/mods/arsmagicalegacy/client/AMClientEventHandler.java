@@ -72,7 +72,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
-import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
@@ -81,6 +80,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -388,8 +388,8 @@ final class AMClientEventHandler {
         LocalPlayer player = AMClientUtil.player();
         if (player == null) return;
         Minecraft mc = AMClientUtil.mc();
-        while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
-            EnderBootsItem.toggle(player);
+        while (AMEquipmentUtil.isInEquipmentSlot(player, EquipmentSlot.FEET, AMItems.ENDER_BOOTS.get()) && mc.options.keyJump.consumeClick()) {
+            AMEquipmentUtil.toggleEnderBoots(player);
             ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
         }
         InteractionHand hand = InteractionHand.MAIN_HAND;

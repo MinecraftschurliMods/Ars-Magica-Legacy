@@ -1,7 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.item;
 
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
-import at.minecraftschurli.mods.arsmagicalegacy.util.ArmorItemUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.common.util.Lazy;
 import java.util.function.Consumer;
 
 public class EarthArmorItem extends Item implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = ArmorItemUtil.createAssetId("earth_armor");
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = AMEquipmentUtil.createAssetId("earth_armor");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public EarthArmorItem(Properties properties) {
@@ -36,7 +36,7 @@ public class EarthArmorItem extends Item implements GeoItem {
         builder.add(Attributes.ARMOR, new AttributeModifier(modifierId, 16, AttributeModifier.Operation.ADD_VALUE), group);
         builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(modifierId, 4f, AttributeModifier.Operation.ADD_VALUE), group);
         builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(modifierId, 1f, AttributeModifier.Operation.ADD_VALUE), group);
-        super(ArmorItemUtil.armorProperties(properties, EquipmentSlot.CHEST, SoundEvents.ARMOR_EQUIP_DIAMOND, ASSET_ID, builder.build()).fireResistant().durability(1000).enchantable(10).component(AMDataComponents.MANA_REPAIR_COST, 6.));
+        super(AMEquipmentUtil.armorProperties(properties, EquipmentSlot.CHEST, SoundEvents.ARMOR_EQUIP_DIAMOND, ASSET_ID, builder.build()).fireResistant().durability(1000).enchantable(10).component(AMDataComponents.MANA_REPAIR_COST, 6.));
     }
 
     @Override

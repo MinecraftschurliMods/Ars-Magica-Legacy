@@ -1,8 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.item;
 
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
-import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
-import at.minecraftschurli.mods.arsmagicalegacy.util.ArmorItemUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -28,14 +27,14 @@ import net.neoforged.neoforge.common.util.Lazy;
 import java.util.function.Consumer;
 
 public class FireAntennaeItem extends Item implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = ArmorItemUtil.createAssetId("fire_antennae");
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = AMEquipmentUtil.createAssetId("fire_antennae");
     private static final float LAVA_VISION_MIN = 100;
     private static final float LAVA_VISION_MAX = 600;
     private static float lavaVision = 0;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public FireAntennaeItem(Properties properties) {
-        super(ArmorItemUtil.armorProperties(properties, EquipmentSlot.HEAD, SoundEvents.ARMOR_EQUIP_TURTLE, ASSET_ID).fireResistant());
+        super(AMEquipmentUtil.armorProperties(properties, EquipmentSlot.HEAD, SoundEvents.ARMOR_EQUIP_TURTLE, ASSET_ID).fireResistant());
     }
 
     @Override
@@ -94,7 +93,7 @@ public class FireAntennaeItem extends Item implements GeoItem {
     }
 
     public static boolean isEquipped(LivingEntity entity) {
-        return AMUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get());
+        return AMEquipmentUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get());
     }
 
     public static void modifyTravelInLava(LivingEntity entity, Vec3 movement, double baseGravity, boolean isFalling, double oldY) {

@@ -62,8 +62,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMRituals;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.CrystalPhylacteryItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
-import at.minecraftschurli.mods.arsmagicalegacy.item.LifeWardItem;
-import at.minecraftschurli.mods.arsmagicalegacy.item.LightningCharmItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
@@ -83,6 +81,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellCustomizationPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.TakeSpellRecipeFromLecternPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.ToolTiers;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.BossBar;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -432,8 +431,8 @@ final class AMEventHandler {
             BurnoutHelper burnoutHelper = ArsMagicaApi.burnoutHelper();
             burnoutHelper.decreaseBurnout(living, burnoutHelper.getBurnoutRegeneration(living));
             FireAntennaeItem.tick(living);
-            LightningCharmItem.tick(living);
-            LifeWardItem.tick(living);
+            AMEquipmentUtil.tickLightningCharm(living);
+            AMEquipmentUtil.tickLifeWard(living);
             WaterOrbsItem.tick(living);
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (!slot.isArmor()) continue;
@@ -514,7 +513,7 @@ final class AMEventHandler {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.EXTRA_DAMAGE_EFFECT.get());
         }
         LivingEntity entity = event.getEntity();
-        event.setNewDamage(LifeWardItem.attack(entity, event.getSource(), event.getNewDamage()));
+        event.setNewDamage(AMEquipmentUtil.lifeWardAttacked(entity, event.getSource(), event.getNewDamage()));
         if (entity instanceof Player player) {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.DAMAGE_MODIFIER_EFFECT.get());
         }

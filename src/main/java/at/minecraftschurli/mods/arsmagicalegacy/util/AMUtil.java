@@ -14,7 +14,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellModifier;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellPart;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.SpellStat;
-import at.minecraftschurli.mods.arsmagicalegacy.compat.curios.AMCuriosHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMAttachments;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlocks;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
@@ -50,7 +49,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.decoration.ItemFrame;
@@ -75,7 +73,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -330,18 +327,6 @@ public final class AMUtil {
 
     public static boolean is(BlockState state, Block... blocks) {
         return Arrays.stream(blocks).anyMatch(state::is);
-    }
-
-    public static boolean isInEquipmentSlot(LivingEntity entity, EquipmentSlot slot, Item item) {
-        return entity.getItemBySlot(slot).is(item);
-    }
-
-    public static boolean isInCurioSlot(LivingEntity entity, Item item) {
-        return ModList.get().isLoaded("curios") && AMCuriosHelper.hasItemEquipped(entity, item);
-    }
-
-    public static boolean isInEquipmentOrCurioSlot(LivingEntity entity, EquipmentSlot slot, Item item) {
-        return isInEquipmentSlot(entity, slot, item) || isInCurioSlot(entity, item);
     }
 
     public static VoxelShape joinShapes(VoxelShape first, VoxelShape... others) {

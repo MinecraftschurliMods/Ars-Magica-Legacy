@@ -2,8 +2,7 @@ package at.minecraftschurli.mods.arsmagicalegacy.item;
 
 import at.minecraftschurli.mods.arsmagicalegacy.client.renderer.WaterOrbsArmorRenderer;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
-import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
-import at.minecraftschurli.mods.arsmagicalegacy.util.ArmorItemUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -25,11 +24,11 @@ import net.neoforged.neoforge.common.util.Lazy;
 import java.util.function.Consumer;
 
 public class WaterOrbsItem extends Item implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = ArmorItemUtil.createAssetId("water_orbs");
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = AMEquipmentUtil.createAssetId("water_orbs");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public WaterOrbsItem(Properties properties) {
-        super(ArmorItemUtil.armorProperties(properties, EquipmentSlot.LEGS, SoundEvents.ARMOR_EQUIP_GOLD, ASSET_ID));
+        super(AMEquipmentUtil.armorProperties(properties, EquipmentSlot.LEGS, SoundEvents.ARMOR_EQUIP_GOLD, ASSET_ID));
     }
 
     @Override
@@ -61,7 +60,7 @@ public class WaterOrbsItem extends Item implements GeoItem {
     }
 
     public static boolean isEquipped(LivingEntity entity) {
-        return AMUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.LEGS, AMItems.WATER_ORBS.get());
+        return AMEquipmentUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.LEGS, AMItems.WATER_ORBS.get());
     }
 
     public static void tick(LivingEntity entity) {
