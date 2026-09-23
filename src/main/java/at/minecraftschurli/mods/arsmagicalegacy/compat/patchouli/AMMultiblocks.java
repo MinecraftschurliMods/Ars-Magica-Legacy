@@ -1,6 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.compat.patchouli;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
+import at.minecraftschurli.mods.arsmagicalegacy.api.constants.AMTags;
 import at.minecraftschurli.mods.arsmagicalegacy.block.CelestialPrismBlock;
 import at.minecraftschurli.mods.arsmagicalegacy.block.InlayBlock;
 import at.minecraftschurli.mods.arsmagicalegacy.block.ObeliskBlock;
@@ -106,7 +107,7 @@ public final class AMMultiblocks {
     public static void init() {
         PatchouliAPI.IPatchouliAPI api = PatchouliAPI.get();
         IStateMatcher air = api.airMatcher();
-        IStateMatcher chalk = api.looseBlockMatcher(AMBlocks.WIZARDS_CHALK.get());
+        IStateMatcher chalk = api.tagMatcher(AMTags.Blocks.CHALKS);
         IStateMatcher candle = api.propertyMatcher(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true), CandleBlock.LIT);
         IStateMatcher obeliskLower = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState(), ObeliskBlock.PART);
         IStateMatcher obeliskMiddle = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE), ObeliskBlock.PART);
@@ -114,8 +115,8 @@ public final class AMMultiblocks {
         IStateMatcher celestialPrismLower = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState());
         IStateMatcher celestialPrismUpper = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState().setValue(CelestialPrismBlock.PART, CelestialPrismBlock.Part.UPPER));
         IStateMatcher blackAurem = api.strictBlockMatcher(AMBlocks.BLACK_AUREM.get());
-        IStateMatcher quartzPillar = api.strictBlockMatcher(Blocks.QUARTZ_PILLAR);
-        IStateMatcher netherBricks = api.strictBlockMatcher(Blocks.NETHER_BRICKS);
+        IStateMatcher celestialPrismPillar = api.tagMatcher(AMTags.Blocks.CELESTIAL_PRISM_PILLAR);
+        IStateMatcher blackAuremPillar = api.tagMatcher(AMTags.Blocks.BLACK_AUREM_PILLAR);
         IStateMatcher redstoneInlayEastWest = api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.EAST_WEST));
         IStateMatcher redstoneInlayNorthSouth = api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_SOUTH));
         IStateMatcher redstoneInlayNorthEast = api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_EAST));
@@ -167,10 +168,10 @@ public final class AMMultiblocks {
             '0', celestialPrismLower,
             '1', celestialPrismUpper
         ).setSymmetrical(true));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_1, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, quartzPillar, api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get())));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_2, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, quartzPillar, api.strictBlockMatcher(Blocks.GOLD_BLOCK)));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_3, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, quartzPillar, api.strictBlockMatcher(Blocks.DIAMOND_BLOCK)));
-        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_4, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, quartzPillar, api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get())));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_1, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, celestialPrismPillar, api.tagMatcher(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_1)));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_2, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, celestialPrismPillar, api.tagMatcher(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_2)));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_3, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, celestialPrismPillar, api.tagMatcher(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_3)));
+        api.registerMultiblock(CELESTIAL_PRISM_PILLARS_4, makePillarsMultiblock(api, celestialPrismLower, celestialPrismUpper, air, chalk, celestialPrismPillar, api.tagMatcher(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_4)));
         api.registerMultiblock(CORRUPTION, api.makeMultiblock(CORRUPTION_STRUCTURE,
             'W', chalk,
             'C', candle,
@@ -181,10 +182,10 @@ public final class AMMultiblocks {
             'W', chalk,
             '0', blackAurem
         ).setSymmetrical(true));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_1, makePillarsMultiblock(api, blackAurem, air, air, chalk, netherBricks, api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get())));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_2, makePillarsMultiblock(api, blackAurem, air, air, chalk, netherBricks, api.strictBlockMatcher(Blocks.GOLD_BLOCK)));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_3, makePillarsMultiblock(api, blackAurem, air, air, chalk, netherBricks, api.strictBlockMatcher(Blocks.DIAMOND_BLOCK)));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_4, makePillarsMultiblock(api, blackAurem, air, air, chalk, netherBricks, api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get())));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_1, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_1)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_2, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_2)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_3, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_3)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_4, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_4)));
         api.registerMultiblock(WATER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
             WATER_GUARDIAN_SPAWN_RITUAL_STRUCTURE,
             'E', redstoneInlayEastWest,
