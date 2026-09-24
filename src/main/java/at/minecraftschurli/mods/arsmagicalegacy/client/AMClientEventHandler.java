@@ -33,6 +33,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.layer.SpellBookLayer;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AMEntityModel;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AMModelLayers;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.AltarCoreModel;
+import at.minecraftschurli.mods.arsmagicalegacy.client.model.EarthArmorModel;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalPhylacteryItemTintSource;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalPhylacteryRangeSelectItemModelProperty;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalWrenchActiveItemModelProperty;
@@ -70,7 +71,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
-import at.minecraftschurli.mods.arsmagicalegacy.item.EnderBootsItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
@@ -79,6 +79,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.packet.SetActiveShapeGroupPacket
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.shape.Chain;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -102,8 +103,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
@@ -133,6 +134,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
+import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
@@ -182,6 +184,7 @@ final class AMClientEventHandler {
         event.registerLayerDefinition(AMModelLayers.WINTERS_GRASP, AMModelLayers::createWintersGraspLayer);
         event.registerLayerDefinition(AMModelLayers.NATURE_SCYTHE, AMModelLayers::createNatureScytheLayer);
         event.registerLayerDefinition(AMModelLayers.THROWN_ROCK, AMModelLayers::createThrownRockLayer);
+        event.registerLayerDefinition(EarthArmorModel.LAYER_LOCATION, EarthArmorModel::createLayer);
     }
 
     @SubscribeEvent
@@ -384,8 +387,8 @@ final class AMClientEventHandler {
         LocalPlayer player = AMClientUtil.player();
         if (player == null) return;
         Minecraft mc = AMClientUtil.mc();
-        while (EnderBootsItem.isEquipped(player) && mc.options.keyJump.consumeClick()) {
-            EnderBootsItem.toggle(player);
+        while (AMEquipmentUtil.isInEquipmentSlot(player, EquipmentSlot.FEET, AMItems.ENDER_BOOTS.get()) && mc.options.keyJump.consumeClick()) {
+            AMEquipmentUtil.toggleEnderBoots(player);
             ClientPacketDistributor.sendToServer(new EnderBootsJumpPacket());
         }
         InteractionHand hand = InteractionHand.MAIN_HAND;
@@ -471,6 +474,13 @@ final class AMClientEventHandler {
             avatarRenderer.renderLeftHand(stack, submitNodeCollector, lightCoords, skinTexture, player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE), player);
         }
         stack.popPose();
+    }
+
+    @SubscribeEvent
+    private static void renderArm(RenderArmEvent event) {
+        if (!event.getPlayer().getItemBySlot(EquipmentSlot.CHEST).is(AMItems.EARTH_ARMOR)) return;
+        EarthArmorModel.get().renderArm(event.getSubmitNodeCollector(), event.getPoseStack(), event.getArm(), event.getPackedLight());
+        event.setCanceled(true);
     }
 
     @SubscribeEvent

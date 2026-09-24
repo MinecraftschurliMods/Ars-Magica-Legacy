@@ -4,6 +4,7 @@ The assets are taken from various sources, each under different licenses:
 
 - All sound files, that is everything under `src/main/resources/assets/arsmagicalegacy/sounds`, are taken from opengameart.com and freesound.org, and licenses are that of their respective owners.
 - The following texture files are either the property of D3miurge, used with their permission, or of unknown origin, and are licensed as All Rights Reserved\*; all paths are relative to `src/main/resources/assets/arsmagicalegacy/textures`:
+    - All files in the `armor` folder 
     - In the `block` folder:
         - All files starting with `inscription_table_`
         - All files starting with `occulus_`
@@ -41,15 +42,20 @@ The assets are taken from various sources, each under different licenses:
         - All files starting with `inscription_table_`
         - `affinity_essence.png`
         - `affinity_tome.png`
+        - `air_sled.png`
         - `arcane_compendium.png`
         - `chimerite.png`
+        - `earth_armor.png`
         - `etherium_placeholder.png`
+        - `fire_antennae.png`
         - `infinity_orb.png`
         - `moonstone.png`
         - `nature_scythe.png`
         - `sunstone.png`
         - `topaz.png`
+        - `water_orbs.png`
         - `winters_grasp.png`
+        - `winters_grasp_fingers.png`
         - `wizards_chalk.png`
     - All files in the `mob_effect` folder
     - All files in the `particle` folder

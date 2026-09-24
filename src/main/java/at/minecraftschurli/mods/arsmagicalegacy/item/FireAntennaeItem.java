@@ -1,7 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.item;
 
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
-import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.phys.Vec3;
@@ -25,15 +26,15 @@ import net.neoforged.neoforge.common.util.Lazy;
 
 import java.util.function.Consumer;
 
-public class FireAntennaeItem extends AMArmorItem implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = createAssetId("fire_antennae");
+public class FireAntennaeItem extends Item implements GeoItem {
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = AMEquipmentUtil.createAssetId("fire_antennae");
     private static final float LAVA_VISION_MIN = 100;
     private static final float LAVA_VISION_MAX = 600;
     private static float lavaVision = 0;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public FireAntennaeItem(Properties properties) {
-        super(properties.fireResistant(), EquipmentSlot.HEAD, SoundEvents.ARMOR_EQUIP_TURTLE, ASSET_ID);
+        super(AMEquipmentUtil.armorProperties(properties, EquipmentSlot.HEAD, SoundEvents.ARMOR_EQUIP_TURTLE, ASSET_ID).fireResistant());
     }
 
     @Override
@@ -63,7 +64,11 @@ public class FireAntennaeItem extends AMArmorItem implements GeoItem {
         });
     }
 
-    public static void tick(Player player) {
+    public static void tick(LivingEntity entity) {
+        if (isEquipped(entity) && entity.isOnFire()) {
+            entity.clearFire();
+        }
+        if (!(entity instanceof Player player)) return;
         Pose forcedPose = player.getForcedPose();
         boolean inLava = player.isEyeInFluid(NeoForgeMod.LAVA_TYPE.value());
         if (forcedPose == Pose.SWIMMING && (!inLava || player.isSpectator())) {
@@ -88,7 +93,7 @@ public class FireAntennaeItem extends AMArmorItem implements GeoItem {
     }
 
     public static boolean isEquipped(LivingEntity entity) {
-        return AMUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get());
+        return AMEquipmentUtil.isInEquipmentOrCurioSlot(entity, EquipmentSlot.HEAD, AMItems.FIRE_ANTENNAE.get());
     }
 
     public static void modifyTravelInLava(LivingEntity entity, Vec3 movement, double baseGravity, boolean isFalling, double oldY) {

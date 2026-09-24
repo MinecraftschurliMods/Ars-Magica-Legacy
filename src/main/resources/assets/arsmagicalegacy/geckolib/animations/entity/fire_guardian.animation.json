@@ -14,10 +14,12 @@
 							"vector": [0, 0, 0]
 						},
 						"2.0": {
-							"vector": [0, 0, 5]
+							"vector": [0, 0, 5],
+							"easing": "easeInOutSine"
 						},
 						"4.0": {
-							"vector": [0, 0, 0]
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
 						}
 					}
 				},
@@ -27,10 +29,12 @@
 							"vector": [0, 0, 0]
 						},
 						"2.0": {
-							"vector": [0, 0, -5]
+							"vector": [0, 0, -5],
+							"easing": "easeInOutSine"
 						},
 						"4.0": {
-							"vector": [0, 0, 0]
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
 						}
 					}
 				}

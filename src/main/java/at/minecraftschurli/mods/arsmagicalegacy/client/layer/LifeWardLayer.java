@@ -9,6 +9,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.client.gui.GuiLayer;
 
 public class LifeWardLayer extends AMGuiLayer {
     private static final Identifier HEART = ArsMagicaApi.id("life_ward_heart");

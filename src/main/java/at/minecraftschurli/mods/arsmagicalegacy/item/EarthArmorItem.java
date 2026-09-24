@@ -1,5 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.item;
 
+import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -22,8 +25,8 @@ import net.neoforged.neoforge.common.util.Lazy;
 
 import java.util.function.Consumer;
 
-public class EarthArmorItem extends ManaArmorItem implements GeoItem {
-    public static final ResourceKey<EquipmentAsset> ASSET_ID = createAssetId("earth_armor");
+public class EarthArmorItem extends Item implements GeoItem {
+    public static final ResourceKey<EquipmentAsset> ASSET_ID = AMEquipmentUtil.createAssetId("earth_armor");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public EarthArmorItem(Properties properties) {
@@ -33,7 +36,7 @@ public class EarthArmorItem extends ManaArmorItem implements GeoItem {
         builder.add(Attributes.ARMOR, new AttributeModifier(modifierId, 16, AttributeModifier.Operation.ADD_VALUE), group);
         builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(modifierId, 4f, AttributeModifier.Operation.ADD_VALUE), group);
         builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(modifierId, 1f, AttributeModifier.Operation.ADD_VALUE), group);
-        super(properties.fireResistant().durability(1000).enchantable(10), EquipmentSlot.CHEST, SoundEvents.ARMOR_EQUIP_DIAMOND, ASSET_ID, builder.build(), 6.);
+        super(AMEquipmentUtil.armorProperties(properties, EquipmentSlot.CHEST, SoundEvents.ARMOR_EQUIP_DIAMOND, ASSET_ID, builder.build()).fireResistant().durability(1000).enchantable(10).component(AMDataComponents.MANA_REPAIR_COST, 6.));
     }
 
     @Override

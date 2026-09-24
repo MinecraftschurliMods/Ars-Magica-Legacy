@@ -52,7 +52,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -229,7 +228,7 @@ public final class AMModelProvider extends AbstractModelProvider {
             ClientItem.Properties.DEFAULT));
         SPELL_PARENT_TEMPLATE.create(SPELL_PARENT_ID, new TextureMapping(), itemModels.modelOutput);
         itemWithVariants(itemModels, AMItems.SPELL, new SpellItemModel.Unbaked(ItemModelUtils.plainModel(itemModels.createFlatItemModel(AMItems.SPELL.get(), SPELL_TEMPLATE))), SPELL_TEMPLATE, AMMagic.AFFINITIES_WITH_NONE);
-        itemModels.generateFlatItem(AMItems.SPELL_RECIPE.get(), Items.WRITTEN_BOOK, ModelTemplates.FLAT_ITEM);
+        basicItem(itemModels, AMItems.SPELL_RECIPE);
         itemModels.itemModelOutput.accept(AMItems.ETHERIUM_PLACEHOLDER.get(), ItemModelUtils.tintedModel(itemModels.createFlatItemModel(AMItems.ETHERIUM_PLACEHOLDER.get(), ModelTemplates.FLAT_ITEM), new EtheriumTypeItemTintSource()));
         itemModels.itemModelOutput.accept(AMItems.LIQUID_ETHERIUM_BUCKET.get(), new DynamicFluidContainerModel.Unbaked(new DynamicFluidContainerModel.Textures(
             Optional.of(new Material(Identifier.withDefaultNamespace("item/bucket"))),

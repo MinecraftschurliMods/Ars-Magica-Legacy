@@ -58,6 +58,8 @@ public interface AMTranslations {
     String COMMAND_SKILL_POINT_GET_KEY               = "commands." + ArsMagicaApi.MOD_ID + ".skill_point.get.success";
     String COMMAND_SKILL_POINT_SET_MULTIPLE_KEY      = "commands." + ArsMagicaApi.MOD_ID + ".skill_point.set.multiple.success";
     String COMMAND_SKILL_POINT_SET_SINGLE_KEY        = "commands." + ArsMagicaApi.MOD_ID + ".skill_point.set.single.success";
+    String JEI_ALTAR_MATERIAL_CAP_DESCRIPTION_KEY    = "gui." + ArsMagicaApi.MOD_ID + ".jei.altar_material.cap_description";
+    String JEI_ALTAR_MATERIAL_DESCRIPTION_KEY        = "gui." + ArsMagicaApi.MOD_ID + ".jei.altar_material.description";
     String OCCULUS_ABILITY_KEY                       = "gui." + ArsMagicaApi.MOD_ID + ".occulus.ability";
     String OCCULUS_DETAILS_KEY                       = "gui." + ArsMagicaApi.MOD_ID + ".occulus.details";
     String OCCULUS_MISSING_KEY                       = "gui." + ArsMagicaApi.MOD_ID + ".occulus.missing";
@@ -108,6 +110,7 @@ public interface AMTranslations {
     String INSCRIPTION_TABLE_GIVE_SPELL_KEY                  = "gui." + ArsMagicaApi.MOD_ID + ".inscription_table.give_spell";
     String INSCRIPTION_TABLE_NAME_KEY                        = "gui." + ArsMagicaApi.MOD_ID + ".inscription_table.name";
     String INSCRIPTION_TABLE_SEARCH_KEY                      = "gui." + ArsMagicaApi.MOD_ID + ".inscription_table.search";
+    String JEI_ALTAR_MATERIAL_TITLE_KEY                      = "gui." + ArsMagicaApi.MOD_ID + ".jei.altar_material.title";
     String JEI_SKILL_AFFINITY_BREAKDOWN_KEY                  = "gui." + ArsMagicaApi.MOD_ID + ".jei.skill.affinity_breakdown";
     String JEI_SKILL_INGREDIENTS_KEY                         = "gui." + ArsMagicaApi.MOD_ID + ".jei.skill.ingredients";
     String JEI_SKILL_MODIFIED_BY_KEY                         = "gui." + ArsMagicaApi.MOD_ID + ".jei.skill.modified_by";
@@ -173,6 +176,7 @@ public interface AMTranslations {
     Component INSCRIPTION_TABLE_GIVE_SPELL                  = Component.translatable(INSCRIPTION_TABLE_GIVE_SPELL_KEY);
     Component INSCRIPTION_TABLE_NAME                        = Component.translatable(INSCRIPTION_TABLE_NAME_KEY);
     Component INSCRIPTION_TABLE_SEARCH                      = Component.translatable(INSCRIPTION_TABLE_SEARCH_KEY);
+    Component JEI_ALTAR_MATERIAL_TITLE                      = Component.translatable(JEI_ALTAR_MATERIAL_TITLE_KEY);
     Component JEI_SKILL_AFFINITY_BREAKDOWN                  = Component.translatable(JEI_SKILL_AFFINITY_BREAKDOWN_KEY);
     Component JEI_SKILL_INGREDIENTS                         = Component.translatable(JEI_SKILL_INGREDIENTS_KEY);
     Component JEI_SKILL_MODIFIED_BY                         = Component.translatable(JEI_SKILL_MODIFIED_BY_KEY);
