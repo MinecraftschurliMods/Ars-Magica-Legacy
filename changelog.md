@@ -87,6 +87,7 @@
 - Swimming in Liquid Etherium now grants the Mana Regeneration effect
 - Slightly debuffed the Augmented Casting talent (50% -> 40% boost to some stats)
 - Added a list of altar materials to JEI
+- Added a bunch of block tags for some of the mod's multiblocks
 
 # Fixes
 
