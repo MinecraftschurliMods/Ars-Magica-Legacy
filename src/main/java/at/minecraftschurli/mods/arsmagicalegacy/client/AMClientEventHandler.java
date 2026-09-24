@@ -68,6 +68,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlockEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
+import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMMenus;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMParticles;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
