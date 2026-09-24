@@ -19,20 +19,20 @@ import net.minecraft.world.item.equipment.Equippable;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class MagitechGogglesCurioRenderer implements ICurioRenderer {
-    private final ArmorModelSet<PlayerModel> armorModelSet;
-    private final ArmorModelSet<PlayerModel> slimArmorModelSet;
+public class ArmorCurioRenderer implements ICurioRenderer {
+    private static final ArmorModelSet<PlayerModel> ARMOR_MODEL_SET = armorModelSet(false);
+    private static final ArmorModelSet<PlayerModel> SLIM_ARMOR_MODEL_SET = armorModelSet(true);
+    private final EquipmentSlot slot;
 
-    public MagitechGogglesCurioRenderer() {
-        armorModelSet = armorModelSet(false);
-        slimArmorModelSet = armorModelSet(true);
+    public ArmorCurioRenderer(EquipmentSlot slot) {
+        this.slot = slot;
     }
 
     @Override
     public <S extends LivingEntityRenderState, M extends EntityModel<? super S>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, S renderState, RenderLayerParent<S, M> renderLayerParent, EntityRendererProvider.Context context, float yRotation, float xRotation) {
         Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
         if (equippable != null && renderState instanceof AvatarRenderState state && renderLayerParent.getModel() instanceof PlayerModel playerModel) {
-            context.getEquipmentRenderer().renderLayers(renderState.isBaby ? EquipmentClientInfo.LayerType.HUMANOID_BABY : EquipmentClientInfo.LayerType.HUMANOID, equippable.assetId().orElseThrow(), (playerModel.slim ? slimArmorModelSet : armorModelSet).get(EquipmentSlot.HEAD), state, stack, poseStack, submitNodeCollector, renderState.lightCoords, renderState.outlineColor);
+            context.getEquipmentRenderer().renderLayers(renderState.isBaby ? EquipmentClientInfo.LayerType.HUMANOID_BABY : EquipmentClientInfo.LayerType.HUMANOID, equippable.assetId().orElseThrow(), (playerModel.slim ? SLIM_ARMOR_MODEL_SET : ARMOR_MODEL_SET).get(slot), state, stack, poseStack, submitNodeCollector, renderState.lightCoords, renderState.outlineColor);
         }
     }
 

@@ -18,6 +18,16 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "arsmagicalegacy:water_orbs"
+        }
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "arsmagicalegacy:entities/water_guardian"

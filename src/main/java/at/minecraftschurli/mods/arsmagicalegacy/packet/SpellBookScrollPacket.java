@@ -1,7 +1,6 @@
 package at.minecraftschurli.mods.arsmagicalegacy.packet;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
-import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -19,9 +18,9 @@ public record SpellBookScrollPacket(boolean backwards) implements CustomPacketPa
         Player player = context.player();
         if (!player.isSecondaryUseActive()) return;
         ItemStack stack = player.getMainHandItem();
-        if (!stack.is(AMItems.SPELL_BOOK)) {
+        if (!SpellBookItem.isSpellBook(stack)) {
             stack = player.getOffhandItem();
-            if (!stack.is(AMItems.SPELL_BOOK)) return;
+            if (!SpellBookItem.isSpellBook(stack)) return;
         }
         SpellBookItem.scroll(stack, backwards);
     }

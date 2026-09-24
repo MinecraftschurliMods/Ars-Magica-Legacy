@@ -52,7 +52,7 @@ public class SpellItem extends Item {
             player.startUsingItem(usedHand);
             return InteractionResult.CONSUME.heldItemTransformedTo(stack);
         }
-        SpellCastResult result = ArsMagicaApi.spellHelper().cast(spell, level, player, true, true);
+        SpellCastResult result = ArsMagicaApi.spellHelper().cast(spell, level, player, true, true, getManaMultiplier(stack), getStatMultiplier(stack));
         if (result.isSuccess()) {
             onSuccess(level, player, stack, result.getSpell());
             return InteractionResult.SUCCESS.heldItemTransformedTo(stack);
@@ -66,7 +66,7 @@ public class SpellItem extends Item {
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         Spell spell = stack.get(AMDataComponents.SPELL);
         if (spell == null || !spell.isContinuous()) return;
-        SpellCastResult result = ArsMagicaApi.spellHelper().cast(spell, level, livingEntity, true, true);
+        SpellCastResult result = ArsMagicaApi.spellHelper().cast(spell, level, livingEntity, true, true, getManaMultiplier(stack), getStatMultiplier(stack));
         if (result.isSuccess()) {
             onSuccess(level, livingEntity, stack, result.getSpell());
         } else if (livingEntity instanceof Player player) {
@@ -104,6 +104,14 @@ public class SpellItem extends Item {
     @Override
     public boolean isFoil(ItemStack stack) {
         return false;
+    }
+
+    private double getManaMultiplier(ItemStack stack) {
+        return stack.getOrDefault(AMDataComponents.BONUS_MANA_MULTIPLIER, 1.);
+    }
+
+    private double getStatMultiplier(ItemStack stack) {
+        return stack.getOrDefault(AMDataComponents.BONUS_STAT_MULTIPLIER, 1.);
     }
 
     private void onSuccess(Level level, LivingEntity entity, ItemStack stack, Spell spell) {

@@ -65,7 +65,7 @@ import java.util.Set;
 
 final class SpellHelperImpl implements SpellHelper {
     @Override
-    public SpellCastResult cast(Spell spell, Level level, @Nullable LivingEntity caster, boolean consume, boolean awardXp) {
+    public SpellCastResult cast(Spell spell, Level level, @Nullable LivingEntity caster, boolean consume, boolean awardXp, double innateManaMultiplier, double innateStatMultiplier) {
         if (spell.isMalformed()) return new SpellCastResult(spell).setMessage(AMTranslations.SPELL_FAIL_MALFORMED);
         if (caster != null && caster.hasEffect(AMMobEffects.SILENCE)) return new SpellCastResult(spell).setMessage(AMTranslations.SPELL_FAIL_SILENCED);
         ManaHelper manaHelper = ArsMagicaApi.manaHelper();
@@ -77,7 +77,7 @@ final class SpellHelperImpl implements SpellHelper {
             if (caster.hasEffect(AMMobEffects.CLARITY)) {
                 caster.removeEffect(AMMobEffects.CLARITY);
             } else {
-                double mana = spell.getManaCost(registryAccess);
+                double mana = spell.getManaCost(registryAccess) * innateManaMultiplier;
                 double burnout = spell.grammar().getBurnoutCost(registryAccess);
                 ManaBurnoutCostEvent event = NeoForge.EVENT_BUS.post(new ManaBurnoutCostEvent(caster, spell, mana, burnout));
                 manaCost = event.getMana();
@@ -93,7 +93,7 @@ final class SpellHelperImpl implements SpellHelper {
                 if (mana < manaCost + burnoutHelper.getBurnout(caster)) return new SpellCastResult(spell).setMessage(AMTranslations.SPELL_FAIL_BURNED_OUT);
             }
         }
-        SpellCastResult result = castPrimary(new SpellCastContext(spell, level, caster, consume, awardXp));
+        SpellCastResult result = castPrimary(new SpellCastContext(spell, level, caster, consume, awardXp, innateStatMultiplier));
         if (result.isSuccess()) {
             if (consume && caster != null && !(caster instanceof Player player && player.isCreative())) {
                 manaHelper.decreaseMana(caster, manaCost + burnoutCost);
@@ -206,8 +206,12 @@ final class SpellHelperImpl implements SpellHelper {
                 modified = modifier.getModifier(stat).modify(base, modified, context);
             }
         }
+        Map<SpellStat, SpellStatModifier> stats = SpellStat.genericModifiers(_ -> context.statMultiplier() - 1);
+        if (stats.containsKey(stat)) {
+            modified = stats.get(stat).modify(base, modified, context);
+        }
         if (context.caster() instanceof Player player && ArsMagicaApi.magicHelper().knows(player, player.registryAccess().getOrThrow(AMMagic.AUGMENTED_CASTING))) {
-            Map<SpellStat, SpellStatModifier> stats = SpellStat.genericModifiers(_ -> AMServerConfig.AUGMENTED_CASTING_MULTIPLIER.get());
+            stats = SpellStat.genericModifiers(_ -> AMServerConfig.AUGMENTED_CASTING_MULTIPLIER.get() - 1);
             if (stats.containsKey(stat)) {
                 modified = stats.get(stat).modify(base, modified, context);
             }
@@ -241,7 +245,7 @@ final class SpellHelperImpl implements SpellHelper {
     public void triggerContingency(LivingEntity entity, Identifier contingency) {
         ContingencyAttachment attachment = entity.getData(AMAttachments.CONTINGENCY);
         if (attachment.contingency().equals(contingency)) {
-            castGrammar(new SpellCastContext(attachment.spell(), entity.level(), entity, entity, new EntityHitResult(entity), true, true));
+            castGrammar(new SpellCastContext(attachment.spell(), entity.level(), entity, entity, new EntityHitResult(entity), true, true, 1));
         }
     }
 
