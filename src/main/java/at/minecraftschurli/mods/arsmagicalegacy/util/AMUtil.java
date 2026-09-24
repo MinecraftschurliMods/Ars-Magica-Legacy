@@ -332,18 +332,6 @@ public final class AMUtil {
         return Arrays.stream(blocks).anyMatch(state::is);
     }
 
-    public static boolean isInEquipmentSlot(LivingEntity entity, EquipmentSlot slot, Item item) {
-        return entity.getItemBySlot(slot).is(item);
-    }
-
-    public static boolean isInCurioSlot(LivingEntity entity, Item item) {
-        return ModList.get().isLoaded("curios") && AMCuriosHelper.hasItemEquipped(entity, item);
-    }
-
-    public static boolean isInEquipmentOrCurioSlot(LivingEntity entity, EquipmentSlot slot, Item item) {
-        return isInEquipmentSlot(entity, slot, item) || isInCurioSlot(entity, item);
-    }
-
     public static VoxelShape joinShapes(VoxelShape first, VoxelShape... others) {
         VoxelShape result = first;
         for (VoxelShape shape : others) {
