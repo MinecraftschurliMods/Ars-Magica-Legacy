@@ -98,3 +98,4 @@
 
 - `SpellCastContext`: Now has and requires an additional `statMultiplier` property
 - `SpellHelper#cast`: Now requires two additional parameters `innateManaMultiplier` and `innateStatMultiplier`
+- `SpellHelper#getIncorrectTagForToolTier`: Now requires an additional `ServerLevel` parameter
