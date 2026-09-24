@@ -1,0 +1,8 @@
+- Fix inlays (needs Neo changes)
+- Reduce sound volumes
+- Visuals
+  - Beam/Chain render pipelines
+  - Ender Boots flipping
+  - Curios renderers
+- Test With Sodium/Embeddium/Iris
+    - Altar Model & BER

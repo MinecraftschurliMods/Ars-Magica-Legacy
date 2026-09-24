@@ -3,7 +3,6 @@ package at.minecraftschurli.mods.arsmagicalegacy.client.layer;
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.client.AMClientConfig;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMDataComponents;
-import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMClientUtil;
 import net.minecraft.client.DeltaTracker;
@@ -26,9 +25,9 @@ public class SpellBookLayer implements GuiLayer {
         Player player = AMClientUtil.player();
         if (player == null || player.isSpectator()) return;
         ItemStack item = player.getMainHandItem();
-        if (!item.is(AMItems.SPELL_BOOK)) {
+        if (!SpellBookItem.isSpellBook(item)) {
             item = player.getOffhandItem();
-            if (!item.is(AMItems.SPELL_BOOK)) return;
+            if (!SpellBookItem.isSpellBook(item)) return;
         }
         int index = item.getOrDefault(AMDataComponents.SELECTED_INDEX, -1);
         if (index < 0 || index >= SpellBookItem.HOTBAR_SLOTS) return;

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "arsmagicalegacy:item/air_sled",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

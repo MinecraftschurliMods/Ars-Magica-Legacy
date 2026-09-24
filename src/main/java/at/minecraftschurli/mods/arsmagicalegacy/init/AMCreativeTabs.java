@@ -60,6 +60,16 @@ public interface AMCreativeTabs {
             output.accept(AMItems.MANA_CAKE);
             output.accept(AMItems.MANA_MARTINI);
             acceptVariants(display, output, AMItems.INFINITY_ORB, AMRegistries.Keys.SKILL_POINT, (stack, holder) -> stack.set(AMDataComponents.SKILL_POINT, holder));
+            output.accept(AMItems.WATER_ORBS);
+            output.accept(AMItems.FIRE_ANTENNAE);
+            output.accept(AMItems.EARTH_ARMOR);
+            output.accept(AMItems.AIR_SLED);
+            output.accept(AMItems.WINTERS_GRASP);
+            output.accept(AMItems.LIGHTNING_CHARM);
+            output.accept(AMItems.NATURE_SCYTHE);
+            output.accept(AMItems.LIFE_WARD);
+            output.accept(AMItems.ARCANE_SPELL_BOOK);
+            output.accept(AMItems.ENDER_BOOTS);
             acceptVariants(display, output, AMItems.AFFINITY_ESSENCE, AMRegistries.Keys.AFFINITY, (stack, holder) -> stack.set(AMDataComponents.AFFINITY, holder), Affinity.NONE);
             acceptVariants(display, output, AMItems.AFFINITY_TOME, AMRegistries.Keys.AFFINITY, (stack, holder) -> stack.set(AMDataComponents.AFFINITY, holder));
             output.accept(AMItems.BLANK_RUNE);

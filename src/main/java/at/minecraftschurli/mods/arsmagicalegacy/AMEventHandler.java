@@ -61,9 +61,13 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMMobEffects;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMRituals;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMSpells;
 import at.minecraftschurli.mods.arsmagicalegacy.item.CrystalPhylacteryItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.FireAntennaeItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.RuneBagItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellBookItem;
 import at.minecraftschurli.mods.arsmagicalegacy.item.SpellItem;
+import at.minecraftschurli.mods.arsmagicalegacy.item.WaterOrbsItem;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.AirSledMovementPacket;
+import at.minecraftschurli.mods.arsmagicalegacy.packet.EnderBootsJumpPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.ForgetSkillsPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableCreateSpellPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.InscriptionTableSyncPacket;
@@ -77,6 +81,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellBookScrollPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.SpellCustomizationPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.packet.TakeSpellRecipeFromLecternPacket;
 import at.minecraftschurli.mods.arsmagicalegacy.spell.ToolTiers;
+import at.minecraftschurli.mods.arsmagicalegacy.util.AMEquipmentUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.AMUtil;
 import at.minecraftschurli.mods.arsmagicalegacy.util.BossBar;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -88,12 +93,14 @@ import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Util;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
@@ -130,6 +137,8 @@ import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
+import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
@@ -294,6 +303,7 @@ final class AMEventHandler {
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(Capabilities.Item.ITEM, RuneBagItem::getItemHandler, AMItems.RUNE_BAG);
         event.registerItem(Capabilities.Item.ITEM, SpellBookItem::getItemHandler, AMItems.SPELL_BOOK);
+        event.registerItem(Capabilities.Item.ITEM, SpellBookItem::getItemHandler, AMItems.ARCANE_SPELL_BOOK);
         event.registerBlock(Capabilities.Item.BLOCK, ObeliskBlock::getItemHandler, AMBlocks.OBELISK.get());
         event.registerBlockEntity(AMCapabilities.BLOCK_ETHERIUM, AMBlockEntities.ALTAR_CORE.get(), (blockEntity, _) -> blockEntity);
         event.registerBlockEntity(AMCapabilities.BLOCK_ETHERIUM, AMBlockEntities.OBELISK.get(), (blockEntity, _) -> blockEntity);
@@ -307,6 +317,8 @@ final class AMEventHandler {
             .playToClient(OpenBookInLecternPacket.TYPE, OpenBookInLecternPacket.STREAM_CODEC, OpenBookInLecternPacket::handle)
             .playToClient(LecternSyncPacket.TYPE, LecternSyncPacket.STREAM_CODEC, LecternSyncPacket::handle)
             .playToClient(SetSpellRuneOwnerPacket.TYPE, SetSpellRuneOwnerPacket.STREAM_CODEC, SetSpellRuneOwnerPacket::handle)
+            .playToServer(AirSledMovementPacket.TYPE, AirSledMovementPacket.STREAM_CODEC, AirSledMovementPacket::handle)
+            .playToServer(EnderBootsJumpPacket.TYPE, EnderBootsJumpPacket.STREAM_CODEC, EnderBootsJumpPacket::handle)
             .playToServer(ForgetSkillsPacket.TYPE, ForgetSkillsPacket.STREAM_CODEC, ForgetSkillsPacket::handle)
             .playToServer(InscriptionTableCreateSpellPacket.TYPE, InscriptionTableCreateSpellPacket.STREAM_CODEC, InscriptionTableCreateSpellPacket::handle)
             .playToServer(InscriptionTableSyncPacket.TYPE, InscriptionTableSyncPacket.STREAM_CODEC, InscriptionTableSyncPacket::handle)
@@ -418,6 +430,20 @@ final class AMEventHandler {
             manaHelper.increaseMana(living, manaHelper.getManaRegeneration(living));
             BurnoutHelper burnoutHelper = ArsMagicaApi.burnoutHelper();
             burnoutHelper.decreaseBurnout(living, burnoutHelper.getBurnoutRegeneration(living));
+            FireAntennaeItem.tick(living);
+            AMEquipmentUtil.tickLightningCharm(living);
+            AMEquipmentUtil.tickLifeWard(living);
+            WaterOrbsItem.tick(living);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (!slot.isArmor()) continue;
+                ItemStack stack = living.getItemBySlot(slot);
+                if (!stack.isDamaged() || !stack.has(AMDataComponents.MANA_REPAIR_COST)) continue;
+                ManaHelper helper = ArsMagicaApi.manaHelper();
+                double cost = stack.getOrDefault(AMDataComponents.MANA_REPAIR_COST, 1.);
+                if (helper.getMana(living) <= cost) continue;
+                stack.setDamageValue(stack.getDamageValue() - 1);
+                helper.decreaseMana(living, cost);
+            }
             if (living.hasEffect(AMMobEffects.WATERY_GRAVE) && entity.isInWater()) {
                 entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
             }
@@ -444,6 +470,13 @@ final class AMEventHandler {
         Player player = event.getEntity();
         ArsMagicaApi.abilityHelper().getActiveAbilities(player).forEach(holder -> holder.value().effects().forEach(effect -> effect.tick(player, holder)));
         DryadKillsAttachment.tick(player);
+    }
+
+    @SubscribeEvent
+    private static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE) && event.getEntity() instanceof LivingEntity living && FireAntennaeItem.isEquipped(living)) {
+            event.setInvulnerable(true);
+        }
     }
 
     @SubscribeEvent
@@ -479,7 +512,9 @@ final class AMEventHandler {
         if (event.getSource().getEntity() instanceof Player player) {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.EXTRA_DAMAGE_EFFECT.get());
         }
-        if (event.getEntity() instanceof Player player) {
+        LivingEntity entity = event.getEntity();
+        event.setNewDamage(AMEquipmentUtil.lifeWardAttacked(entity, event.getSource(), event.getNewDamage()));
+        if (entity instanceof Player player) {
             abilityHelper.triggerEventEffect(event, player, AMAbilities.DAMAGE_MODIFIER_EFFECT.get());
         }
     }
@@ -547,6 +582,15 @@ final class AMEventHandler {
     }
 
     @SubscribeEvent
+    private static void entitySize(EntityEvent.Size event) {
+        Entity entity = event.getEntity();
+        if (!entity.isAddedToLevel()) return;
+        if (event.getPose() == Pose.CROUCHING && entity.isPassenger() && Objects.requireNonNull(entity.getVehicle()).is(AMEntities.AIR_SLED)) {
+            event.setNewSize(entity.getDimensions(Pose.STANDING));
+        }
+    }
+
+    @SubscribeEvent
     private static void livingJump(LivingEvent.LivingJumpEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         ArsMagicaApi.abilityHelper().triggerEventEffect(event, player, AMAbilities.JUMP_BOOST_EFFECT.get());
@@ -554,7 +598,11 @@ final class AMEventHandler {
 
     @SubscribeEvent
     private static void livingFall(LivingFallEvent event) {
-        ArsMagicaApi.spellHelper().triggerContingency(event.getEntity(), AMSpells.CONTINGENCY_FALL_ID);
+        LivingEntity entity = event.getEntity();
+        if (entity.getItemBySlot(EquipmentSlot.FEET).is(AMItems.ENDER_BOOTS)) {
+            event.setDamageMultiplier((float) (event.getDamageMultiplier() * AMServerConfig.ENDER_BOOTS_FALL_DAMAGE_MULTIPLIER.getAsDouble()));
+        }
+        ArsMagicaApi.spellHelper().triggerContingency(entity, AMSpells.CONTINGENCY_FALL_ID);
     }
 
     @SubscribeEvent

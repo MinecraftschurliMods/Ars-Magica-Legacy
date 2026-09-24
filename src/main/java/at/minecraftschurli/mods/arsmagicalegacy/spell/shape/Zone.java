@@ -37,6 +37,7 @@ public class Zone extends SecondarySpellShape {
         zone.setSpell(spell);
         zone.setConsume(context.consume());
         zone.setAwardXp(context.awardXp());
+        zone.setStatMultiplier((float) context.statMultiplier());
         SpellHelper helper = ArsMagicaApi.spellHelper();
         zone.setColor(helper.getColor(modifiers, spell, spell.activeShapeGroup()));
         zone.setTargetNonSolid(helper.getModifiedStat(0, AMSpells.TARGET_NON_SOLID_STAT, modifiers, context) > 0);

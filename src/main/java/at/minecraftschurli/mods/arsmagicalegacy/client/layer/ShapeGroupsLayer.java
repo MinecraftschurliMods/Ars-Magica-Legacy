@@ -58,7 +58,7 @@ public class ShapeGroupsLayer implements GuiLayer {
                     for (int k = 0; k < COLUMNS; k++) {
                         int index = j * COLUMNS + k;
                         if (index < shapeGroup.size()) {
-                            AMClientUtil.blit(graphics, SkillAtlasHolder.getSprite(AMRegistries.SPELL_PARTS.getKey(shapeGroup.get(index))), k * SIZE + X_PADDING, j * SIZE + Y_PADDING, SIZE, SIZE);
+                            AMClientUtil.blitSprite(graphics, SkillAtlasHolder.getSprite(AMRegistries.SPELL_PARTS.getKey(shapeGroup.get(index))), k * SIZE + X_PADDING, j * SIZE + Y_PADDING, SIZE, SIZE);
                         }
                     }
                 }

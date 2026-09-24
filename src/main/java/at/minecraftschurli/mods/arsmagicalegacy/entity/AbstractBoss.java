@@ -39,7 +39,7 @@ public abstract class AbstractBoss extends Monster implements GeoEntity, SpellCa
     protected final TagKey<DamageType> isImmuneTo;
     protected final TagKey<DamageType> isHealTo;
     private final BossEvent.BossBarColor color;
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int ticksInAction = 0;
     private Action action = Action.IDLE;
 
@@ -63,7 +63,7 @@ public abstract class AbstractBoss extends Monster implements GeoEntity, SpellCa
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return geoCache;
+        return cache;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class EnderTorrentGoal extends ExecuteBossSpellGoal<EnderGuardian> {
             caster.getLookControl().setLookAt(caster.getTarget(), 30, 30);
             Level level = caster.level();
             if (caster.getTicksInAction() % 2 == 0 && spell != null) {
-                ArsMagicaApi.spellHelper().cast(spell, level, caster, false, false);
+                ArsMagicaApi.spellHelper().cast(spell, level, caster, false, false, 1, 1);
             } else if (caster.getTicksInAction() == 10) {
                 level.playSound(null, caster, AMSounds.ENDER_GUARDIAN_ATTACK.value(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + caster.getRandom().nextDouble() * 0.5f));
             }
