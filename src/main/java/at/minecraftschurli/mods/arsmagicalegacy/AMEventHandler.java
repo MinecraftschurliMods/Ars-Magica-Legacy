@@ -260,7 +260,7 @@ final class AMEventHandler {
 
     @SubscribeEvent
     private static void addReloadListener(AddServerReloadListenersEvent event) {
-        event.addListener(ToolTiers.ID, ToolTiers.INSTANCE);
+        event.addRetainedListener(ToolTiers.KEY, new ToolTiers());
     }
 
     @SubscribeEvent

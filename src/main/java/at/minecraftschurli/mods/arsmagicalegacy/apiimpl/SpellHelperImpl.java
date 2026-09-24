@@ -45,6 +45,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -250,8 +251,12 @@ final class SpellHelperImpl implements SpellHelper {
     }
 
     @Override
-    public TagKey<Block> getIncorrectTagForToolTier(int toolTier) {
-        return ToolTiers.INSTANCE.get(toolTier);
+    public TagKey<Block> getIncorrectTagForToolTier(ServerLevel level, int toolTier) {
+        return level.getServer()
+            .getServerResources()
+            .managers()
+            .getListener(ToolTiers.KEY)
+            .get(toolTier);
     }
 
     @Override

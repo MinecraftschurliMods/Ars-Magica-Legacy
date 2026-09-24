@@ -17,6 +17,7 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.resource.ListenerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +27,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class ToolTiers extends SimplePreparableReloadListener<JsonObject> {
-    public static final Identifier ID = ArsMagicaApi.id("tool_tiers");
-    public static final ToolTiers INSTANCE = new ToolTiers();
-    public static final Identifier PATH = ArsMagicaApi.id("tool_tiers.json");
+    public static final ListenerKey<ToolTiers> KEY = ListenerKey.create(ArsMagicaApi.id("tool_tiers"));
+    private static final Identifier PATH = ArsMagicaApi.id("tool_tiers.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
     private static final Logger LOGGER = LoggerFactory.getLogger(ToolTiers.class);
     private final Int2ObjectMap<TagKey<Block>> contents = new Int2ObjectOpenHashMap<>();
-
-    private ToolTiers() {
-    }
 
     @Override
     protected JsonObject prepare(ResourceManager resourceManager, ProfilerFiller profiler) {

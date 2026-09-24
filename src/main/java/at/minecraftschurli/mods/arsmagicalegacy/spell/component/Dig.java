@@ -49,7 +49,7 @@ public class Dig extends SpellComponent.CastBlock {
         float hardness = state.getDestroySpeed(level, pos);
         if (hardness < 0) return SpellComponentCastResult.pass(spell);
         SpellHelper helper = ArsMagicaApi.spellHelper();
-        TagKey<Block> incorrectTag = helper.getIncorrectTagForToolTier((int) helper.getModifiedStat(AMServerConfig.DIG_TOOL_TIER.get(), AMSpells.MINING_POWER_STAT, modifiers, context));
+        TagKey<Block> incorrectTag = helper.getIncorrectTagForToolTier(level, (int) helper.getModifiedStat(AMServerConfig.DIG_TOOL_TIER.get(), AMSpells.MINING_POWER_STAT, modifiers, context));
         if (state.requiresCorrectToolForDrops() && state.is(incorrectTag)) return SpellComponentCastResult.pass(spell);
         LivingEntity caster = context.caster();
         ServerPlayer player = caster instanceof ServerPlayer p ? p : FakePlayerFactory.get(level, GAME_PROFILE);
