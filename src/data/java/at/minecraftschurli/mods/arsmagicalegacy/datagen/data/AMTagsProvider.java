@@ -54,6 +54,16 @@ public final class AMTagsProvider {
             tag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE).add(AMBlocks.SUNSTONE_BLOCK.get());
             tag(Tags.Blocks.ORES).addTags(AMTags.Blocks.ORES_CHIMERITE, AMTags.Blocks.ORES_TOPAZ, AMTags.Blocks.ORES_VINTEUM, AMTags.Blocks.ORES_MOONSTONE, AMTags.Blocks.ORES_SUNSTONE);
             tag(Tags.Blocks.STORAGE_BLOCKS).addTags(AMTags.Blocks.STORAGE_BLOCKS_CHIMERITE, AMTags.Blocks.STORAGE_BLOCKS_TOPAZ, AMTags.Blocks.STORAGE_BLOCKS_VINTEUM, AMTags.Blocks.STORAGE_BLOCKS_MOONSTONE, AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
+            tag(AMTags.Blocks.BLACK_AUREM_PILLAR).add(net.minecraft.world.level.block.Blocks.NETHER_BRICKS);
+            tag(AMTags.Blocks.BLACK_AUREM_CATALYST_1).addTag(AMTags.Blocks.STORAGE_BLOCKS_CHIMERITE);
+            tag(AMTags.Blocks.BLACK_AUREM_CATALYST_2).addTag(Tags.Blocks.STORAGE_BLOCKS_GOLD);
+            tag(AMTags.Blocks.BLACK_AUREM_CATALYST_3).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
+            tag(AMTags.Blocks.BLACK_AUREM_CATALYST_4).addTag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_PILLAR).add(net.minecraft.world.level.block.Blocks.QUARTZ_PILLAR);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_1).addTag(AMTags.Blocks.STORAGE_BLOCKS_CHIMERITE);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_2).addTag(Tags.Blocks.STORAGE_BLOCKS_GOLD);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_3).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_4).addTag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
             tag(AMTags.Blocks.WITCHWOOD_LOGS).add(AMBlocks.WITCHWOOD_LOG.get(), AMBlocks.WITCHWOOD_WOOD.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get(), AMBlocks.STRIPPED_WITCHWOOD_WOOD.get());
             tag(BlockTags.LOGS).addTag(AMTags.Blocks.WITCHWOOD_LOGS);
             tag(BlockTags.LEAVES).add(AMBlocks.WITCHWOOD_LEAVES.get());
@@ -82,6 +92,7 @@ public final class AMTagsProvider {
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get(), AMBlocks.CERUBLOSSOM.get(), AMBlocks.DESERT_NOVA.get(), AMBlocks.TARMA_ROOT.get(), AMBlocks.WAKEBLOOM.get());
             tag(BlockTags.FLOWER_POTS).add(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), AMBlocks.POTTED_AUM.get(), AMBlocks.POTTED_CERUBLOSSOM.get(), AMBlocks.POTTED_DESERT_NOVA.get(), AMBlocks.POTTED_TARMA_ROOT.get(), AMBlocks.POTTED_WAKEBLOOM.get());
             tag(BlockTags.CAULDRONS).add(AMBlocks.LIQUID_ETHERIUM_CAULDRON.get());
+            tag(AMTags.Blocks.CHALKS).add(AMBlocks.WIZARDS_CHALK.get());
             tag(AMTags.Blocks.ETHERIUM_PROVIDERS).add(AMBlocks.OBELISK.get(), AMBlocks.CELESTIAL_PRISM.get(), AMBlocks.BLACK_AUREM.get());
             tag(AMTags.Blocks.ETHERIUM_CONSUMERS).add(AMBlocks.ALTAR_CORE.get());
             tag(AMTags.Blocks.WIZARDS_AUTUMN_LEAVES).addTag(BlockTags.LEAVES);
