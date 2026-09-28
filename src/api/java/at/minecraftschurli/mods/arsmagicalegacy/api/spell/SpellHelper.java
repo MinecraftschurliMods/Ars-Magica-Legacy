@@ -2,6 +2,7 @@ package at.minecraftschurli.mods.arsmagicalegacy.api.spell;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -82,9 +83,10 @@ public interface SpellHelper {
     /// @param contingency The name of the contingency to trigger.
     void triggerContingency(LivingEntity entity, Identifier contingency);
 
+    /// @param level    The [ServerLevel] to use to access the tool tier manager.
     /// @param toolTier The tool tier to get the incorrect block tag for.
     /// @return A tag specifying which blocks are not breakable by the given tool tier.
-    TagKey<Block> getIncorrectTagForToolTier(int toolTier);
+    TagKey<Block> getIncorrectTagForToolTier(ServerLevel level, int toolTier);
 
     /// @param entity The [LivingEntity] to get the max summons for.
     /// @return The maximum amount of summoned minions for the given [LivingEntity].
