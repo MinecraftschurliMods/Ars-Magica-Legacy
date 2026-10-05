@@ -6,13 +6,11 @@
     }
   ],
   "type": "integrateddynamics:squeezer",
-  "item": "arsmagicalegacy:aum",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:pink_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:aum",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:pink_dye"
+    }
+  ]
 }

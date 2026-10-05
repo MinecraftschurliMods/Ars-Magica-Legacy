@@ -7,18 +7,16 @@
   ],
   "type": "integrateddynamics:mechanical_squeezer",
   "duration": 5,
-  "item": "arsmagicalegacy:tarma_root",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:brown_dye"
-      },
-      {
-        "chance": 0.5,
-        "count": 2,
-        "item": "minecraft:brown_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:tarma_root",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:brown_dye"
+    },
+    {
+      "chance": 0.5,
+      "count": 2,
+      "item": "minecraft:brown_dye"
+    }
+  ]
 }

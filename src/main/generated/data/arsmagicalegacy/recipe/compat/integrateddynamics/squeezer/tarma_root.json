@@ -6,13 +6,11 @@
     }
   ],
   "type": "integrateddynamics:squeezer",
-  "item": "arsmagicalegacy:tarma_root",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:brown_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:tarma_root",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:brown_dye"
+    }
+  ]
 }

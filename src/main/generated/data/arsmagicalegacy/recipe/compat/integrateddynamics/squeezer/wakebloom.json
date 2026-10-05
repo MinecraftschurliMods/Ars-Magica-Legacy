@@ -6,13 +6,11 @@
     }
   ],
   "type": "integrateddynamics:squeezer",
-  "item": "arsmagicalegacy:wakebloom",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:magenta_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:wakebloom",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:magenta_dye"
+    }
+  ]
 }
