@@ -34,7 +34,7 @@ public record ThornsAbilityEffect(double min, double max, Optional<HolderSet<Ent
 
     @Override
     public void apply(LivingDamageEvent.Post event, Player player, Holder<Ability> ability) {
-        if (!(event.getSource().getEntity() instanceof LivingEntity living) || !(living.level() instanceof ServerLevel level)) return;
+        if (!(event.getSource().getEntity() instanceof LivingEntity living) || living.dead || living.isDeadOrDying() || !(living.level() instanceof ServerLevel level)) return;
         living.hurtServer(level, level.damageSources().indirectMagic(player, null), (float) ArsMagicaApi.abilityHelper().scaleToDepth(player, ability.value(), min, max));
     }
 }

@@ -114,9 +114,10 @@ public class LifeGuardian extends AbstractBoss {
                 if (e.tickCount > 1200 || e.isRemoved()) {
                     e.remove(RemovalReason.KILLED);
                     toRemove.add(e);
-                }
-                if (e.isDeadOrDying() && !toRemove.contains(e)) {
+                } else if (e.isDeadOrDying() && !toRemove.contains(e)) {
                     hurtServer(level, damageSources().fellOutOfWorld(), e.getMaxHealth());
+                    toRemove.add(e);
+                } else if (e.dead) {
                     toRemove.add(e);
                 }
             }
