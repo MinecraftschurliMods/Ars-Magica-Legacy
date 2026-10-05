@@ -435,7 +435,7 @@ public final class AMServerConfig {
         FALLING_STAR_DAMAGE = builder
             .comment("The damage of the Falling Star component. May be amplified by spell modifiers.")
             .translation(AMTranslations.CONFIG_KEY + "falling_star_damage")
-            .defineInRange("falling_star_damage", 6., 1, 100);
+            .defineInRange("falling_star_damage", 18., 1, 100);
         FALLING_STAR_RANGE = builder
             .comment("The range of the Falling Star component. May be amplified by spell modifiers.")
             .translation(AMTranslations.CONFIG_KEY + "falling_star_range")

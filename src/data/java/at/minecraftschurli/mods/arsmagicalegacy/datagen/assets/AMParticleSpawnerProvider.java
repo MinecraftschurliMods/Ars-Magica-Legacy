@@ -57,9 +57,10 @@ public final class AMParticleSpawnerProvider extends ParticleSpawnerProvider {
             .gravity(1)
             .scale(0.5f)
             .alpha(0.6f);
-        builder(FallingStar.FALL_PARTICLES, AMParticles.EMBER.get(), 1, 5)
+        builder(FallingStar.FALL_PARTICLES, AMParticles.EMBER.get(), 3, 5)
+            .offset(0, 0, -0.25, -0.25, 0, 0)
             .controller(new ChangeSizeController());
-        builder(FallingStar.GROUND_PARTICLES, AMParticles.EMBER.get(), 24, 5)
+        builder(FallingStar.GROUND_PARTICLES, AMParticles.EMBER.get(), 72, 5)
             .offset(-0.25, 0.25, -0.25, 0.25, -0.25, 0.25)
             .controller(new ChangeSizeController());
         builder(AMSpells.FIRE_RAIN.getId(), AMParticles.EXPLOSION.get(), 20, 40)
