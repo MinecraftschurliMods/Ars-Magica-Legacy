@@ -1,0 +1,10 @@
+{
+  "remove": [
+    "arsmagicalegacy:magitech_goggles",
+    "arsmagicalegacy:water_orbs",
+    "arsmagicalegacy:fire_antennae",
+    "arsmagicalegacy:earth_armor",
+    "arsmagicalegacy:ender_boots"
+  ],
+  "values": []
+}
