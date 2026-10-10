@@ -5,5 +5,6 @@
 
 # Fixes
 
+- Fixed Life Ward texture animation stopping one frame too early
 - Fixed a crash when being hit by an exploding creeper while the Thorns ability is active
 - Fixed Integrated Dynamics compat recipes
