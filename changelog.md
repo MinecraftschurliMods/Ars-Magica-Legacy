@@ -2,6 +2,7 @@
 
 - Water Orbs, Fire Antennae, Earth Armor and Ender Boots can now no longer have trims applied to them
 - Falling Star damage and particle amounts have been tripled (existing instances need to adjust damage in the config)
+- Rune Bags are now crafted using one string, one leather and one rune, adjusting to the newer bundle recipe introduced in Minecraft 1.21.2
 
 # Fixes
 

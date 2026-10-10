@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rabbit_hide": {
+    "has_rune": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:rabbit_hide"
+            "items": "#arsmagicalegacy:runes"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_rabbit_hide"
+      "has_rune"
     ]
   ],
   "rewards": {
