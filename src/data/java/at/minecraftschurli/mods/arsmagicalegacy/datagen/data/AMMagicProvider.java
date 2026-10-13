@@ -1000,7 +1000,7 @@ public final class AMMagicProvider {
                 new DimensionRitualRequirement(Level.OVERWORLD),
                 new EnvironmentAttributeRitualRequirement<>(EnvironmentAttributes.MOON_PHASE, MoonPhase.NEW_MOON)));
         spawnRitual(bootstrap, AMEntities.ARCANE_GUARDIAN, AMMultiblocks.ARCANE_GUARDIAN_SPAWN_RITUAL,
-            new DroppedItemRitualTrigger(DataComponentIngredient.of(true, ArsMagicaApi.book())), List.of());
+            new DroppedItemRitualTrigger(DataComponentIngredient.of(false, ArsMagicaApi.book())), List.of());
         spawnRitual(bootstrap, AMEntities.ENDER_GUARDIAN, AMMultiblocks.ENDER_GUARDIAN_SPAWN_RITUAL,
             new DroppedItemRitualTrigger(Ingredient.of(Items.ENDER_EYE)),
             List.of(new DimensionRitualRequirement(Level.END)));

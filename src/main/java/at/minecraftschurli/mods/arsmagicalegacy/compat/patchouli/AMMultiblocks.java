@@ -266,7 +266,7 @@ public final class AMMultiblocks {
             '4', ironInlayNorthWest,
             'B', api.strictBlockMatcher(Blocks.BOOKSHELF),
             'L', api.stateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.EAST))
-        ).setSymmetrical(true));
+        ));
         api.registerMultiblock(ENDER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
             ENDER_GUARDIAN_SPAWN_RITUAL_STRUCTURE,
             'E', goldInlayEastWest,

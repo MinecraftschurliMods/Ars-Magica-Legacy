@@ -19,8 +19,7 @@
         "components": {
           "patchouli:book": "arsmagicalegacy:arcane_compendium"
         },
-        "items": "patchouli:guide_book",
-        "strict": true
+        "items": "patchouli:guide_book"
       }
     ]
   }
