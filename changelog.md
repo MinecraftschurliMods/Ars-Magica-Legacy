@@ -7,6 +7,7 @@
 # Fixes
 
 - Fixed Arcane Guardian summon ritual not working properly
+- Fixed Arcane Spell Books not being considered "spell books" in some contexts
 - Fixed Life Ward texture animation stopping one frame too early
 - Fixed a crash when being hit by an exploding creeper while the Thorns ability is active
 - Fixed Integrated Dynamics compat recipes

@@ -86,6 +86,7 @@ public interface AMTags {
         TagKey<Item> RUNES = tag("runes");
         TagKey<Item> SHOWS_BARS_LAYER = tag("shows_bars_layer");
         TagKey<Item> SHOWS_SPELL_VISUALS = tag("shows_spell_visuals");
+        TagKey<Item> SPELL_BOOKS = tag("spell_books");
         TagKey<Item> SPELLCRAFTING_START = tag("spellcrafting_start");
         TagKey<Item> SPELLCRAFTING_END = tag("spellcrafting_end");
 

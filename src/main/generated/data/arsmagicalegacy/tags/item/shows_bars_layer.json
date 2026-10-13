@@ -1,7 +1,6 @@
 {
   "values": [
     "arsmagicalegacy:spell",
-    "arsmagicalegacy:spell_book",
     "arsmagicalegacy:mage_helmet",
     "arsmagicalegacy:mage_chestplate",
     "arsmagicalegacy:mage_leggings",
@@ -9,6 +8,7 @@
     "arsmagicalegacy:battlemage_helmet",
     "arsmagicalegacy:battlemage_chestplate",
     "arsmagicalegacy:battlemage_leggings",
-    "arsmagicalegacy:battlemage_boots"
+    "arsmagicalegacy:battlemage_boots",
+    "#arsmagicalegacy:spell_books"
   ]
 }

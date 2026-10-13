@@ -327,6 +327,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTags.Items.RUNES, "Runes");
         add(AMTags.Items.SHOWS_BARS_LAYER, "Shows Bars Layer");
         add(AMTags.Items.SHOWS_SPELL_VISUALS, "Shows Spell Visuals");
+        add(AMTags.Items.SPELL_BOOKS, "Spell Books");
         add(AMTags.Items.SPELLCRAFTING_START, "Spellcrafting Start Items");
         add(AMTags.Items.SPELLCRAFTING_END, "Spellcrafting End Items");
         add(AMTags.EntityTypes.BLACK_AUREM_IMMUNE, "Immune to Black Aurem");
