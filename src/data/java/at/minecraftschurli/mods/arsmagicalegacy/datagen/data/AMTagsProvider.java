@@ -9,6 +9,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
@@ -22,6 +23,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagEntry;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -177,6 +179,7 @@ public final class AMTagsProvider {
             tag(CuriosTags.HEAD).add(AMItems.MAGITECH_GOGGLES.get(), AMItems.FIRE_ANTENNAE.get());
             tag(CuriosTags.BELT).add(AMItems.WATER_ORBS.get());
             tag(CuriosTags.CHARM).add(AMItems.LIGHTNING_CHARM.get(), AMItems.LIFE_WARD.get());
+            tag(TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("ftbultimine", "excluded_tools"))).add(AMItems.SPELL.get()).addTag(AMTags.Items.SPELL_BOOKS);
         }
     }
 
