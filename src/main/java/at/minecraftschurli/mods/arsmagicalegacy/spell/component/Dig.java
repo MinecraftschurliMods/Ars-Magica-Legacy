@@ -25,6 +25,7 @@ import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GameMasterBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
@@ -67,8 +68,9 @@ public class Dig extends SpellComponent.CastBlock {
         }
         ItemStack stack = AMUtil.getEnchantedSpell(modifiers, context, Map.of(Enchantments.FORTUNE, AMSpells.FORTUNE_STAT, Enchantments.SILK_TOUCH, AMSpells.SILK_TOUCH_STAT));
         stack.set(DataComponents.TOOL, new Tool(List.of(Tool.Rule.deniesDrops(level.registryAccess().getOrThrow(incorrectTag))), Float.MAX_VALUE, 0, true));
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (AMUtil.cancelDestroyBlock(level, pos, state, player, stack)) return SpellComponentCastResult.success(spell);
-        Block.dropResources(state, level, pos, level.getBlockEntity(pos), player, stack);
+        Block.dropResources(state, level, pos, blockEntity, player, stack);
         return SpellComponentCastResult.success(spell);
     }
 }
