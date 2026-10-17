@@ -128,7 +128,7 @@ public final class AMEquipmentUtil {
                 timeUntilHeal = -AMServerConfig.LIFE_WARD_INTERVAL.get();
             }
             entity.setData(AMAttachments.LIFE_WARD, new LifeWardAttachment(health, timeUntilHeal));
-        } else {
+        } else if (entity.hasData(AMAttachments.LIFE_WARD) && !entity.getData(AMAttachments.LIFE_WARD).isEmpty()) {
             entity.setData(AMAttachments.LIFE_WARD, LifeWardAttachment.EMPTY);
         }
     }
