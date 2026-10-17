@@ -672,6 +672,10 @@ public final class AMServerConfig {
         SPEC = builder.build();
     }
 
+    public static boolean isLoaded() {
+        return SPEC.isLoaded();
+    }
+
     private static boolean isValidIdentifierOrEmpty(@Nullable Object o) {
         if (o == null) return false;
         String s = o.toString();
