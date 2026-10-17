@@ -98,6 +98,7 @@ public record ItemSpellIngredient(Ingredient item, int count) implements SpellIn
     }
 
     private boolean consume(ItemStack stack) {
+        if (stack.isEmpty()) return false;
         ResourceHandler<ItemResource> handler = stack.getCapability(Capabilities.Item.ITEM, ItemAccess.forStack(stack));
         if (handler != null) {
             try (Transaction transaction = Transaction.openRoot()) {
