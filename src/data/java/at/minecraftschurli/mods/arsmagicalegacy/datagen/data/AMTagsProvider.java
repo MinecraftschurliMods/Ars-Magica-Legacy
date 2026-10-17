@@ -9,6 +9,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
@@ -22,6 +23,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagEntry;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -161,20 +163,23 @@ public final class AMTagsProvider {
             tag(ItemTags.CHEST_ARMOR).add(AMItems.MAGE_CHESTPLATE.get(), AMItems.BATTLEMAGE_CHESTPLATE.get(), AMItems.EARTH_ARMOR.get());
             tag(ItemTags.LEG_ARMOR).add(AMItems.MAGE_LEGGINGS.get(), AMItems.BATTLEMAGE_LEGGINGS.get(), AMItems.WATER_ORBS.get());
             tag(ItemTags.FOOT_ARMOR).add(AMItems.MAGE_BOOTS.get(), AMItems.BATTLEMAGE_BOOTS.get(), AMItems.ENDER_BOOTS.get());
-            tag(ItemTags.BOOKSHELF_BOOKS).add(AMItems.SPELL_BOOK.get(), AMItems.AFFINITY_TOME.get());
+            tag(ItemTags.TRIMMABLE_ARMOR).remove(AMItems.MAGITECH_GOGGLES.get(), AMItems.WATER_ORBS.get(), AMItems.FIRE_ANTENNAE.get(), AMItems.EARTH_ARMOR.get(), AMItems.ENDER_BOOTS.get());
+            tag(ItemTags.BOOKSHELF_BOOKS).add(AMItems.AFFINITY_TOME.get()).addTag(AMTags.Items.SPELL_BOOKS);
             tag(ItemTags.LECTERN_BOOKS).add(AMItems.SPELL_RECIPE.get());
             tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(AMItems.SPELL_BOOK.get());
             tag(AMTags.Items.ARCANE_COMPENDIUM_BOOKS).add(net.minecraft.world.item.Items.BOOK);
             tag(AMTags.Items.INSCRIPTION_TABLE_BOOKS).add(net.minecraft.world.item.Items.WRITABLE_BOOK, AMItems.SPELL_RECIPE.get());
             tag(AMTags.Items.OCCULUS_FORGET_ALL).addTag(AMTags.Items.STORAGE_BLOCKS_VINTEUM);
             tag(AMTags.Items.RUNES).add(AMItems.BLANK_RUNE.get(), AMItems.WHITE_RUNE.get(), AMItems.ORANGE_RUNE.get(), AMItems.MAGENTA_RUNE.get(), AMItems.LIGHT_BLUE_RUNE.get(), AMItems.YELLOW_RUNE.get(), AMItems.LIME_RUNE.get(), AMItems.PINK_RUNE.get(), AMItems.GRAY_RUNE.get(), AMItems.LIGHT_GRAY_RUNE.get(), AMItems.CYAN_RUNE.get(), AMItems.PURPLE_RUNE.get(), AMItems.BLUE_RUNE.get(), AMItems.BROWN_RUNE.get(), AMItems.GREEN_RUNE.get(), AMItems.RED_RUNE.get(), AMItems.BLACK_RUNE.get());
-            tag(AMTags.Items.SHOWS_BARS_LAYER).add(AMItems.SPELL.get(), AMItems.SPELL_BOOK.get(), AMItems.MAGE_HELMET.get(), AMItems.MAGE_CHESTPLATE.get(), AMItems.MAGE_LEGGINGS.get(), AMItems.MAGE_BOOTS.get(), AMItems.BATTLEMAGE_HELMET.get(), AMItems.BATTLEMAGE_CHESTPLATE.get(), AMItems.BATTLEMAGE_LEGGINGS.get(), AMItems.BATTLEMAGE_BOOTS.get());
-            tag(AMTags.Items.SHOWS_SPELL_VISUALS).add(AMItems.SPELL.get(), AMItems.SPELL_BOOK.get());
+            tag(AMTags.Items.SHOWS_BARS_LAYER).add(AMItems.SPELL.get(), AMItems.MAGE_HELMET.get(), AMItems.MAGE_CHESTPLATE.get(), AMItems.MAGE_LEGGINGS.get(), AMItems.MAGE_BOOTS.get(), AMItems.BATTLEMAGE_HELMET.get(), AMItems.BATTLEMAGE_CHESTPLATE.get(), AMItems.BATTLEMAGE_LEGGINGS.get(), AMItems.BATTLEMAGE_BOOTS.get()).addTag(AMTags.Items.SPELL_BOOKS);
+            tag(AMTags.Items.SHOWS_SPELL_VISUALS).add(AMItems.SPELL.get()).addTag(AMTags.Items.SPELL_BOOKS);
+            tag(AMTags.Items.SPELL_BOOKS).add(AMItems.SPELL_BOOK.get(), AMItems.ARCANE_SPELL_BOOK.get());
             tag(AMTags.Items.SPELLCRAFTING_START).add(AMItems.BLANK_RUNE.get());
             tag(AMTags.Items.SPELLCRAFTING_END).add(AMItems.SPELL_PARCHMENT.get());
             tag(CuriosTags.HEAD).add(AMItems.MAGITECH_GOGGLES.get(), AMItems.FIRE_ANTENNAE.get());
             tag(CuriosTags.BELT).add(AMItems.WATER_ORBS.get());
             tag(CuriosTags.CHARM).add(AMItems.LIGHTNING_CHARM.get(), AMItems.LIFE_WARD.get());
+            tag(TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("ftbultimine", "excluded_tools"))).add(AMItems.SPELL.get()).addTag(AMTags.Items.SPELL_BOOKS);
         }
     }
 

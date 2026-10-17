@@ -107,7 +107,7 @@ final class MagicHelperImpl implements MagicHelper {
 
     @Override
     public boolean knowsMagic(Player player) {
-        return getLevel(player) > 0 || AMServerConfig.MAGIC_ADVANCEMENT.get().isEmpty() || player.isCreative() || player.isSpectator();
+        return player.isCreative() || player.isSpectator() || getLevel(player) > 0 || AMServerConfig.MAGIC_ADVANCEMENT.get().isEmpty();
     }
 
     @Override

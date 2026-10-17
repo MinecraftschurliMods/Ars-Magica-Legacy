@@ -6,13 +6,11 @@
     }
   ],
   "type": "integrateddynamics:squeezer",
-  "item": "arsmagicalegacy:desert_nova",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:red_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:desert_nova",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:red_dye"
+    }
+  ]
 }

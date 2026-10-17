@@ -26,7 +26,7 @@ public record ApproachEntityController(boolean stopOtherControllers, boolean kil
 
     @Override
     public void tick(ParticleControllerInstance instance) {
-        if (!(instance.hitResult instanceof EntityHitResult result) || result.getEntity() instanceof LivingEntity living && living.isDeadOrDying() || instance.particle.horizontalDistanceTo(result.getEntity().position()) <= distance) {
+        if (!(instance.hitResult instanceof EntityHitResult result) || result.getEntity() instanceof LivingEntity living && (living.isDeadOrDying() || living.dead) || instance.particle.horizontalDistanceTo(result.getEntity().position()) <= distance) {
             instance.finish();
         }
     }

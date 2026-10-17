@@ -1,1 +1,1 @@
-New boss drop items; some fixes and QoL features
+Some minor changes and fixes

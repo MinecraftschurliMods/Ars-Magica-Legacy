@@ -489,13 +489,13 @@ public final class AMRecipeProvider extends RecipeProvider {
             .unlockedBy(getHasName(AMItems.BLANK_RUNE), has(AMItems.BLANK_RUNE.get()))
             .save(output);
         ShapedRecipeBuilder.shaped(items, RecipeCategory.TOOLS, AMItems.RUNE_BAG.get())
-            .pattern("SHS")
-            .pattern("HRH")
-            .pattern("HHH")
+            .pattern("S")
+            .pattern("L")
+            .pattern("R")
             .define('S', Tags.Items.STRINGS)
-            .define('H', Items.RABBIT_HIDE)
+            .define('L', Tags.Items.LEATHERS)
             .define('R', AMTags.Items.RUNES)
-            .unlockedBy(getHasName(Items.RABBIT_HIDE), has(Items.RABBIT_HIDE))
+            .unlockedBy("has_rune", has(AMTags.Items.RUNES))
             .save(output);
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, AMItems.RUNE_BAG.get())
             .requires(Items.BUNDLE)

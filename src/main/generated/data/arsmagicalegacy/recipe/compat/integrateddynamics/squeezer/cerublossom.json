@@ -6,13 +6,11 @@
     }
   ],
   "type": "integrateddynamics:squeezer",
-  "item": "arsmagicalegacy:cerublossom",
-  "result": {
-    "items": [
-      {
-        "count": 4,
-        "item": "minecraft:blue_dye"
-      }
-    ]
-  }
+  "input_item": "arsmagicalegacy:cerublossom",
+  "output_items": [
+    {
+      "count": 4,
+      "item": "minecraft:blue_dye"
+    }
+  ]
 }

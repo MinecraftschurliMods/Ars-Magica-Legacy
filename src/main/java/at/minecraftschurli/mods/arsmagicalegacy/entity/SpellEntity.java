@@ -92,7 +92,7 @@ public abstract class SpellEntity extends AbstractOwnableEntity {
     @SuppressWarnings("DataFlowIssue")
     protected boolean tryReflect(Entity e) {
         if (!(e instanceof LivingEntity living)) return true;
-        if (living.isDeadOrDying()) return false;
+        if (living.isDeadOrDying() || living.dead) return false;
         if (!living.hasEffect(AMMobEffects.REFLECT)) return true;
         MobEffectInstance reflect = living.getEffect(AMMobEffects.REFLECT);
         if (reflect.getAmplifier() == 0) {

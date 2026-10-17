@@ -63,7 +63,7 @@ public class Chain extends PrimarySpellShape {
         Entity current = initial;
         Entity next = null;
         Entity otherNext = null;
-        Predicate<Entity> predicate = e -> !list.contains(e) && !caster.getUUID().equals(e.getUUID()) && !(e instanceof LivingEntity living && living.isDeadOrDying());
+        Predicate<Entity> predicate = e -> !list.contains(e) && !caster.getUUID().equals(e.getUUID()) && !(e instanceof LivingEntity living && living.isDeadOrDying() && living.dead);
         for (int i = 0; i < AMServerConfig.CHAIN_EXTRA_TARGETS.get(); i++) {
             EntityType<?> currentType = current.getType();
             for (Entity e : initial.level().getEntities(current, new AABB(current.position().subtract(range), current.position().add(range)), predicate)) {
