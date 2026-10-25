@@ -24,9 +24,17 @@ public record SpellShapeGroup(List<SpellPart> parts, @Nullable PrimarySpellShape
     public static final Codec<SpellShapeGroup> CODEC = AMRegistries.SPELL_PARTS.byNameCodec().listOf(0, MAX_PARTS).fieldOf("parts").xmap(SpellShapeGroup::of, SpellShapeGroup::parts).codec();
     public static final StreamCodec<RegistryFriendlyByteBuf, SpellShapeGroup> STREAM_CODEC = ByteBufCodecs.registry(AMRegistries.Keys.SPELL_PART).apply(ByteBufCodecs.list()).map(SpellShapeGroup::of, SpellShapeGroup::parts);
 
-    /// @deprecated Use [SpellShapeGroup#of(List)] instead.
+    /// @deprecated Use [SpellShapeGroup#of(List)] or [SpellShapeGroup#of(SpellPart...)] instead.
     @Deprecated
     public SpellShapeGroup {
+    }
+
+    /// Validates the given [SpellPart]s and constructs a [SpellShapeGroup] from them.
+    ///
+    /// @param parts The [SpellPart]s.
+    /// @return A new [SpellShapeGroup], or [SpellShapeGroup#EMPTY] if validation failed.
+    public static SpellShapeGroup of(SpellPart... parts) {
+        return of(List.of(parts));
     }
 
     /// Validates the given [List] of [SpellPart]s and constructs a [SpellShapeGroup] from it.
