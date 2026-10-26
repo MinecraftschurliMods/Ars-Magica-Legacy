@@ -1,6 +1,7 @@
 package at.minecraftschurli.mods.arsmagicalegacy.gametest;
 
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
+import at.minecraftschurli.mods.arsmagicalegacy.block.CelestialPrismBlock;
 import at.minecraftschurli.mods.arsmagicalegacy.gametest.util.CustomGameTestHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMBlocks;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
@@ -47,7 +48,8 @@ public class ObeliskConversionRitualTest {
         .thenCastSpellAfter(4, helper.makeSpell(List.of(AMSpells.SELF.get()), List.of(AMSpells.LIGHT.get())))
         // check for celestial prism and item removal
         .thenExecuteAfter(10, () -> {
-            helper.assertBlock(center, block -> block == AMBlocks.CELESTIAL_PRISM.get(), _ -> Component.literal("Celestial Prism not found"));
+            helper.assertBlockState(center, AMBlocks.CELESTIAL_PRISM.get().defaultBlockState().setValue(CelestialPrismBlock.PART, CelestialPrismBlock.Part.LOWER));
+            helper.assertBlockState(center.above(), AMBlocks.CELESTIAL_PRISM.get().defaultBlockState().setValue(CelestialPrismBlock.PART, CelestialPrismBlock.Part.UPPER));
             helper.assertItemEntityCountIs(AMItems.MOONSTONE.get(), center, 4, 0);
         })
         .thenCleanup()
