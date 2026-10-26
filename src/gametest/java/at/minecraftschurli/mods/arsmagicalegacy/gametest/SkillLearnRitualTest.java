@@ -1,6 +1,5 @@
 package at.minecraftschurli.mods.arsmagicalegacy.gametest;
 
-
 import at.minecraftschurli.mods.arsmagicalegacy.api.ArsMagicaApi;
 import at.minecraftschurli.mods.arsmagicalegacy.api.constants.AMRegistries;
 import at.minecraftschurli.mods.arsmagicalegacy.api.spell.Spell;
