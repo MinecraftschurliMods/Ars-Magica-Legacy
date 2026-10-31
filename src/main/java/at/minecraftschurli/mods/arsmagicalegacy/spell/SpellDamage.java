@@ -4,6 +4,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.util.AMExtraCodecs;
 import at.minecraftschurli.mods.arsmagicalegacy.util.DamageSourceWithItemStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -26,8 +27,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public record SpellDamage(Map<Integer, Map<ResourceKey<DamageType>, Pair<Float, ItemStack>>> damage) {
+    private static final Codec<Pair<Float, ItemStack>> DAMAGE_ENTRY_CODEC = RecordCodecBuilder.create(inst -> inst.group(
+        Codec.FLOAT.fieldOf("amount").forGetter(Pair::getFirst),
+        ItemStack.OPTIONAL_CODEC.fieldOf("stack").forGetter(Pair::getSecond)
+    ).apply(inst, Pair::of));
     private static final Codec<Map<ResourceKey<DamageType>, Pair<Float, ItemStack>>> DAMAGE_CODEC =
-        Codec.unboundedMap(ResourceKey.codec(Registries.DAMAGE_TYPE), Codec.pair(Codec.FLOAT, ItemStack.CODEC));
+        Codec.unboundedMap(ResourceKey.codec(Registries.DAMAGE_TYPE), DAMAGE_ENTRY_CODEC);
     private static final StreamCodec<RegistryFriendlyByteBuf, Map<ResourceKey<DamageType>, Pair<Float, ItemStack>>> DAMAGE_STREAM_CODEC =
         AMExtraCodecs.mapStreamCodec(ResourceKey.streamCodec(Registries.DAMAGE_TYPE), AMExtraCodecs.pairStreamCodec(ByteBufCodecs.FLOAT, ItemStack.STREAM_CODEC));
     public static final Codec<SpellDamage> CODEC =
