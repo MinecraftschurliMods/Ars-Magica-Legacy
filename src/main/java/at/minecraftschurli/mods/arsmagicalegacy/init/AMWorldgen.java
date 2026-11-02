@@ -35,6 +35,10 @@ public interface AMWorldgen {
     ResourceKey<ConfiguredFeature<?, ?>> TARMA_ROOT_CONFIGURED_FEATURE           = configuredFeature("tarma_root");
     ResourceKey<ConfiguredFeature<?, ?>> WAKEBLOOM_CONFIGURED_FEATURE            = configuredFeature("wakebloom");
     ResourceKey<ConfiguredFeature<?, ?>> LIQUID_ETHERIUM_LAKE_CONFIGURED_FEATURE = configuredFeature("liquid_etherium_lake");
+    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_FOREST_TREES_CONFIGURED_FEATURE          = configuredFeature("witchwood_forest_trees");
+    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_FOREST_FLOWERS_CONFIGURED_FEATURE        = configuredFeature("witchwood_forest_flowers");
+    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_FOREST_FOREST_FLOWERS_CONFIGURED_FEATURE = configuredFeature("witchwood_forest_forest_flowers");
+    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_FOREST_GRASS_CONFIGURED_FEATURE          = configuredFeature("witchwood_forest_grass");
 
     ResourceKey<PlacedFeature> CHIMERITE_ORE_PLACED_FEATURE        = placedFeature("chimerite_ore");
     ResourceKey<PlacedFeature> TOPAZ_ORE_PLACED_FEATURE            = placedFeature("topaz_ore");
@@ -42,6 +46,7 @@ public interface AMWorldgen {
     ResourceKey<PlacedFeature> VINTEUM_ORE_PLACED_FEATURE          = placedFeature("vinteum_ore");
     ResourceKey<PlacedFeature> MOONSTONE_METEORITE_PLACED_FEATURE  = placedFeature("moonstone_meteorite");
     ResourceKey<PlacedFeature> SUNSTONE_ORE_PLACED_FEATURE         = placedFeature("sunstone_ore");
+    ResourceKey<PlacedFeature> WITCHWOOD_PLACED_FEATURE            = placedFeature("witchwood");
     ResourceKey<PlacedFeature> TREES_WITCHWOOD_PLACED_FEATURE      = placedFeature("trees_witchwood");
     ResourceKey<PlacedFeature> AUM_PLACED_FEATURE                  = placedFeature("aum");
     ResourceKey<PlacedFeature> CERUBLOSSOM_PLACED_FEATURE          = placedFeature("cerublossom");
@@ -49,6 +54,12 @@ public interface AMWorldgen {
     ResourceKey<PlacedFeature> TARMA_ROOT_PLACED_FEATURE           = placedFeature("tarma_root");
     ResourceKey<PlacedFeature> WAKEBLOOM_PLACED_FEATURE            = placedFeature("wakebloom");
     ResourceKey<PlacedFeature> LIQUID_ETHERIUM_LAKE_PLACED_FEATURE = placedFeature("liquid_etherium_lake");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_GEODES_PLACED_FEATURE         = placedFeature("witchwood_forest_geodes");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_METEORITES_PLACED_FEATURE     = placedFeature("witchwood_forest_meteorites");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_TREES_PLACED_FEATURE          = placedFeature("witchwood_forest_trees");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_FLOWERS_PLACED_FEATURE        = placedFeature("witchwood_forest_flowers");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_FOREST_FLOWERS_PLACED_FEATURE = placedFeature("witchwood_forest_forest_flowers");
+    ResourceKey<PlacedFeature> WITCHWOOD_FOREST_GRASS_PLACED_FEATURE          = placedFeature("witchwood_forest_grass");
 
     ResourceKey<Biome> WITCHWOOD_FOREST_BIOME = ResourceKey.create(Registries.BIOME, ArsMagicaApi.id("witchwood_forest"));
 

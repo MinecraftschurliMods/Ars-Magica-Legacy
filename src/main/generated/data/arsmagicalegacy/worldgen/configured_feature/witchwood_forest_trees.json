@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "arsmagicalegacy:witchwood",
+    "features": [
+      {
+        "chance": 0.25,
+        "feature": "minecraft:dark_forest_vegetation"
+      },
+      {
+        "chance": 0.25,
+        "feature": "minecraft:trees_flower_forest"
+      },
+      {
+        "chance": 0.25,
+        "feature": "minecraft:trees_birch_and_oak_leaf_litter"
+      }
+    ]
+  }
+}

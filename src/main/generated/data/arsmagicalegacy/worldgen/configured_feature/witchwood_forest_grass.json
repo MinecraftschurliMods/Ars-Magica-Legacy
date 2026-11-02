@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "minecraft:patch_grass_forest",
+    "features": [
+      {
+        "chance": 0.33,
+        "feature": "minecraft:patch_grass_badlands"
+      }
+    ]
+  }
+}
