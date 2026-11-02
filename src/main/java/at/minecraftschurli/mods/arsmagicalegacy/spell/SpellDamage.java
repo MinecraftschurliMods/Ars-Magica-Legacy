@@ -29,7 +29,7 @@ import java.util.Optional;
 public record SpellDamage(Map<Integer, Map<ResourceKey<DamageType>, Pair<Float, ItemStack>>> damage) {
     private static final Codec<Pair<Float, ItemStack>> DAMAGE_ENTRY_CODEC = RecordCodecBuilder.create(inst -> inst.group(
         Codec.FLOAT.fieldOf("amount").forGetter(Pair::getFirst),
-        ItemStack.OPTIONAL_CODEC.fieldOf("stack").forGetter(Pair::getSecond)
+        ItemStack.CODEC.fieldOf("stack").forGetter(Pair::getSecond)
     ).apply(inst, Pair::of));
     private static final Codec<Map<ResourceKey<DamageType>, Pair<Float, ItemStack>>> DAMAGE_CODEC =
         Codec.unboundedMap(ResourceKey.codec(Registries.DAMAGE_TYPE), DAMAGE_ENTRY_CODEC);
