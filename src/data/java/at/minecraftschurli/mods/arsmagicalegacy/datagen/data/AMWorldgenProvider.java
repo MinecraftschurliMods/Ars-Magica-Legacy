@@ -6,22 +6,30 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMWorldgen;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.HolderSets;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.MeteoriteFeature;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
@@ -111,6 +119,46 @@ public final class AMWorldgenProvider {
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()));
+    }
+
+    public static void addBiomes(BootstrapContext<Biome> bootstrap) {
+        HolderGetter<PlacedFeature> placedFeatures = bootstrap.lookup(Registries.PLACED_FEATURE);
+        HolderGetter<ConfiguredWorldCarver<?>> carvers = bootstrap.lookup(Registries.CONFIGURED_CARVER);
+        MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(mobs);
+        BiomeDefaultFeatures.commonSpawns(mobs);
+        BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder(placedFeatures, carvers);
+        BiomeDefaultFeatures.addDefaultCarversAndLakes(generation);
+        BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
+        BiomeDefaultFeatures.addDefaultMonsterRoom(generation);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
+        BiomeDefaultFeatures.addDefaultSprings(generation);
+        BiomeDefaultFeatures.addSurfaceFreezing(generation);
+        BiomeDefaultFeatures.addDefaultOres(generation);
+        BiomeDefaultFeatures.addDefaultSoftDisks(generation);
+        BiomeDefaultFeatures.addForestFlowers(generation);
+        BiomeDefaultFeatures.addDefaultFlowers(generation);
+        BiomeDefaultFeatures.addDefaultMushrooms(generation);
+        BiomeDefaultFeatures.addForestGrass(generation);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generation, true);
+
+        // Forest
+        BiomeDefaultFeatures.addOtherBirchTrees(generation);
+        BiomeDefaultFeatures.addBushes(generation);
+        // Dark Forest
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.DARK_FOREST_VEGETATION);
+        BiomeDefaultFeatures.addLeafLitterPatch(generation);
+
+        bootstrap.register(AMWorldgen.WITCHWOOD_FOREST_BIOME, new Biome.BiomeBuilder()
+            .hasPrecipitation(true)
+            .temperature(0.7f)
+            .downfall(0.8f)
+            .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_FOREST))
+            .setAttribute(EnvironmentAttributes.SKY_COLOR, 0x6699ff)
+            .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x0a2a72).foliageColorOverride(0xdbe6e5).grassColorOverride(0xdbe6e5).build())
+            .mobSpawnSettings(mobs.build())
+            .generationSettings(generation.build())
+            .build());
     }
 
     public static void addBiomeModifiers(BootstrapContext<BiomeModifier> bootstrap) {

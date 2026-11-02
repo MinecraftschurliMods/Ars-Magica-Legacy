@@ -7,6 +7,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.worldgen.MeteoriteFeature;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.SunstoneOreFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -48,6 +49,8 @@ public interface AMWorldgen {
     ResourceKey<PlacedFeature> TARMA_ROOT_PLACED_FEATURE           = placedFeature("tarma_root");
     ResourceKey<PlacedFeature> WAKEBLOOM_PLACED_FEATURE            = placedFeature("wakebloom");
     ResourceKey<PlacedFeature> LIQUID_ETHERIUM_LAKE_PLACED_FEATURE = placedFeature("liquid_etherium_lake");
+
+    ResourceKey<Biome> WITCHWOOD_FOREST_BIOME = ResourceKey.create(Registries.BIOME, ArsMagicaApi.id("witchwood_forest"));
 
     ResourceKey<BiomeModifier> OVERWORLD_BIOME_MODIFIER                    = biomeModifier("overworld");
     ResourceKey<BiomeModifier> NETHER_BIOME_MODIFIER                       = biomeModifier("nether");
