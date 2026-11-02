@@ -505,6 +505,7 @@
   "attribute.arsmagicalegacy.mana_regeneration": "Mana Regeneration",
   "attribute.arsmagicalegacy.max_burnout": "Max Burnout",
   "attribute.arsmagicalegacy.max_mana": "Max Mana",
+  "biome.arsmagicalegacy.witchwood_forest": "Witchwood Forest",
   "block.arsmagicalegacy.altar_core": "Altar Core",
   "block.arsmagicalegacy.aum": "Aum",
   "block.arsmagicalegacy.black_aurem": "Black Aurem",
@@ -1630,5 +1631,6 @@
   "tag.item.c.storage_blocks.sunstone": "Sunstone Storage Blocks",
   "tag.item.c.storage_blocks.topaz": "Topaz Storage Blocks",
   "tag.item.c.storage_blocks.vinteum": "Vinteum Storage Blocks",
-  "tag.worldgen.biome.arsmagicalegacy.can_summon_water_guardian": "Can Summon Water Guardian"
+  "tag.worldgen.biome.arsmagicalegacy.can_summon_water_guardian": "Can Summon Water Guardian",
+  "tag.worldgen.biome.arsmagicalegacy.primary_wood_type.witchwood": "Witchwood Primary Wood Type"
 }

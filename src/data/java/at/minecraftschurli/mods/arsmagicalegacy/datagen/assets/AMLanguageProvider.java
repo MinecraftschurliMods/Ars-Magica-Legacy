@@ -375,6 +375,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTags.DamageTypes.ENDER_GUARDIAN_IS_IMMUNE_TO, "Is immunity of the Ender Guardian");
         add(AMTags.DamageTypes.ENDER_GUARDIAN_IS_HEAL_TO, "Heals the Ender Guardian");
         add(AMTags.Biomes.CAN_SUMMON_WATER_GUARDIAN, "Can Summon Water Guardian");
+        add(AMTags.Biomes.PRIMARY_WOOD_TYPE_WITCHWOOD, "Witchwood Primary Wood Type");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_AMBIENT, "Arcane Guardian hisses");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_ATTACK, "Arcane Guardian attacks");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_DEATH, "Arcane Guardian dies");
@@ -766,6 +767,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("life_ward_y", "Vertical Position", "Vertical position of the life ward GUI layer.");
         configTranslation("life_ward_anchor_x", "Horizontal Anchor", "Horizontal anchor of the life ward GUI layer.");
         configTranslation("life_ward_anchor_y", "Vertical Anchor", "Vertical anchor of the life ward GUI layer.");
+        add("biome", "witchwood_forest", "Witchwood Forest");
         add("enchantment", "dismembering", "Dismembering");
         add("enchantment", "dismembering.desc", "Adds a drop chance for heads for certain mobs.");
         add("affinity", "none", "None");

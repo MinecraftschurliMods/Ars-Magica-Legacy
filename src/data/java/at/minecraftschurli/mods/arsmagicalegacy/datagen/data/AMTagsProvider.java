@@ -8,6 +8,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMEnchantments;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMFluids;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMItems;
+import at.minecraftschurli.mods.arsmagicalegacy.init.AMWorldgen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -17,6 +18,7 @@ import net.minecraft.data.tags.EnchantmentTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -295,7 +297,14 @@ public final class AMTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
+            tag(BiomeTags.IS_FOREST).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
+            tag(BiomeTags.STRONGHOLD_BIASED_TO).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
+            tag(Tags.Biomes.IS_TEMPERATE_OVERWORLD).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
+            tag(Tags.Biomes.IS_DENSE_VEGETATION_OVERWORLD).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
+            tag(Tags.Biomes.IS_DECIDUOUS_TREE).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
+            tag(Tags.Biomes.IS_MAGICAL).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
             tag(AMTags.Biomes.CAN_SUMMON_WATER_GUARDIAN).addTags(Tags.Biomes.IS_AQUATIC, Tags.Biomes.IS_BEACH, Tags.Biomes.IS_STONY_SHORES, Tags.Biomes.IS_SWAMP);
+            tag(AMTags.Biomes.PRIMARY_WOOD_TYPE_WITCHWOOD).add(AMWorldgen.WITCHWOOD_FOREST_BIOME);
         }
     }
 }
