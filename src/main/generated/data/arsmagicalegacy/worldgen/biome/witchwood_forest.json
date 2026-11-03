@@ -16,8 +16,8 @@
   ],
   "downfall": 0.8,
   "effects": {
-    "foliage_color": "#dbe6e5",
-    "grass_color": "#dbe6e5",
+    "foliage_color": "#b889cd",
+    "grass_color": "#b889cd",
     "water_color": "#0a2a72"
   },
   "features": [
@@ -75,7 +75,10 @@
     ],
     [
       "minecraft:glow_lichen",
+      "arsmagicalegacy:witchwood_forest/trees",
       "arsmagicalegacy:witchwood_forest/biome_flowers",
+      "arsmagicalegacy:witchwood_forest/flowers",
+      "arsmagicalegacy:witchwood_forest/grass",
       "minecraft:patch_bush",
       "minecraft:patch_leaf_litter",
       "minecraft:brown_mushroom_normal",

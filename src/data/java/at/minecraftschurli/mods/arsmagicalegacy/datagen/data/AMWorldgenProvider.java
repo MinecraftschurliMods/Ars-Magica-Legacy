@@ -16,7 +16,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -201,29 +200,27 @@ public final class AMWorldgenProvider {
             PlacementUtils.HEIGHTMAP,
             HeightRangePlacement.uniform(VerticalAnchor.absolute(56), VerticalAnchor.absolute(180)),
             BiomeFilter.biome()));
-        register(bootstrap, WitchwoodForest.TREES_PLACEMENT, WitchwoodForest.TREES_FEATURE, treePlacement(PlacementUtils.countExtra(8, 0.1f, 1)).build());
+        register(bootstrap, WitchwoodForest.TREES_PLACEMENT, WitchwoodForest.TREES_FEATURE, List.of(
+            PlacementUtils.countExtra(8, 0.1f, 1),
+            SurfaceWaterDepthFilter.forMaxDepth(0),
+            PlacementUtils.HEIGHTMAP_OCEAN_FLOOR));
         register(bootstrap, WitchwoodForest.BIOME_FLOWERS_PLACEMENT, WitchwoodForest.BIOME_FLOWERS_FEATURE, List.of(
             RarityFilter.onAverageOnceEvery(7),
-            InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
-            CountPlacement.of(ClampedInt.of(UniformInt.of(-1, 3), 0, 3)),
+            CountPlacement.of(ClampedInt.of(UniformInt.of(-2, 2), 0, 2)),
             BiomeFilter.biome()));
         register(bootstrap, WitchwoodForest.FLOWERS_PLACEMENT, WitchwoodForest.FLOWERS_FEATURE, List.of(
-            RarityFilter.onAverageOnceEvery(13),
-            InSquarePlacement.spread(),
+            RarityFilter.onAverageOnceEvery(2),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome(),
-            CountPlacement.of(24),
-            RandomOffsetPlacement.ofTriangle(6, 2),
-            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
-        ));
+            CountPlacement.of(48),
+            RandomOffsetPlacement.ofTriangle(3, 1),
+            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
         register(bootstrap, WitchwoodForest.GRASS_PLACEMENT, WitchwoodForest.GRASS_FEATURE, List.of(
-            InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome(),
             RandomOffsetPlacement.ofTriangle(7, 3),
-            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
-        ));
+            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
     }
 
     public static void addBiomes(BootstrapContext<Biome> bootstrap) {
@@ -258,7 +255,7 @@ public final class AMWorldgenProvider {
             .downfall(0.8f)
             .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_FOREST))
             .setAttribute(EnvironmentAttributes.SKY_COLOR, 0x6699ff)
-            .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x0a2a72).foliageColorOverride(0xdbe6e5).grassColorOverride(0xdbe6e5).build())
+            .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x0a2a72).foliageColorOverride(0xb889cd).grassColorOverride(0xb889cd).build())
             .mobSpawnSettings(mobs.build())
             .generationSettings(generation.build())
             .build());

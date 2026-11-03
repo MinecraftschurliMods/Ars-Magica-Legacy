@@ -6,9 +6,6 @@
       "chance": 7
     },
     {
-      "type": "minecraft:in_square"
-    },
-    {
       "type": "minecraft:heightmap",
       "heightmap": "MOTION_BLOCKING"
     },
@@ -16,12 +13,12 @@
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:clamped",
-        "max_inclusive": 3,
+        "max_inclusive": 2,
         "min_inclusive": 0,
         "source": {
           "type": "minecraft:uniform",
-          "max_inclusive": 3,
-          "min_inclusive": -1
+          "max_inclusive": 2,
+          "min_inclusive": -2
         }
       }
     },
