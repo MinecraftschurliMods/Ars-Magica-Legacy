@@ -7,7 +7,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.worldgen.MeteoriteFeature;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.SunstoneOreFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -22,33 +21,33 @@ import java.util.Optional;
 
 public interface AMWorldgen {
     // @formatter:off
-    ResourceKey<ConfiguredFeature<?, ?>> CHIMERITE_ORE_CONFIGURED_FEATURE        = configuredFeature("chimerite_ore");
-    ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_CONFIGURED_FEATURE            = configuredFeature("topaz_ore");
-    ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA_CONFIGURED_FEATURE      = configuredFeature("topaz_ore_extra");
-    ResourceKey<ConfiguredFeature<?, ?>> VINTEUM_ORE_CONFIGURED_FEATURE          = configuredFeature("vinteum_ore");
-    ResourceKey<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE_CONFIGURED_FEATURE  = configuredFeature("moonstone_meteorite");
-    ResourceKey<ConfiguredFeature<?, ?>> SUNSTONE_ORE_CONFIGURED_FEATURE         = configuredFeature("sunstone_ore");
-    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_TREE_CONFIGURED_FEATURE       = configuredFeature("witchwood_tree");
-    ResourceKey<ConfiguredFeature<?, ?>> AUM_CONFIGURED_FEATURE                  = configuredFeature("aum");
-    ResourceKey<ConfiguredFeature<?, ?>> CERUBLOSSOM_CONFIGURED_FEATURE          = configuredFeature("cerublossom");
-    ResourceKey<ConfiguredFeature<?, ?>> DESERT_NOVA_CONFIGURED_FEATURE          = configuredFeature("desert_nova");
-    ResourceKey<ConfiguredFeature<?, ?>> TARMA_ROOT_CONFIGURED_FEATURE           = configuredFeature("tarma_root");
-    ResourceKey<ConfiguredFeature<?, ?>> WAKEBLOOM_CONFIGURED_FEATURE            = configuredFeature("wakebloom");
-    ResourceKey<ConfiguredFeature<?, ?>> LIQUID_ETHERIUM_LAKE_CONFIGURED_FEATURE = configuredFeature("liquid_etherium_lake");
+    ResourceKey<ConfiguredFeature<?, ?>> CHIMERITE_ORE_FEATURE        = feature("chimerite_ore");
+    ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_FEATURE            = feature("topaz_ore");
+    ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA_FEATURE      = feature("topaz_ore_extra");
+    ResourceKey<ConfiguredFeature<?, ?>> VINTEUM_ORE_FEATURE          = feature("vinteum_ore");
+    ResourceKey<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE_FEATURE  = feature("moonstone_meteorite");
+    ResourceKey<ConfiguredFeature<?, ?>> SUNSTONE_ORE_FEATURE         = feature("sunstone_ore");
+    ResourceKey<ConfiguredFeature<?, ?>> WITCHWOOD_TREE_FEATURE       = feature("witchwood_tree");
+    ResourceKey<ConfiguredFeature<?, ?>> AUM_FEATURE                  = feature("aum");
+    ResourceKey<ConfiguredFeature<?, ?>> CERUBLOSSOM_FEATURE          = feature("cerublossom");
+    ResourceKey<ConfiguredFeature<?, ?>> DESERT_NOVA_FEATURE          = feature("desert_nova");
+    ResourceKey<ConfiguredFeature<?, ?>> TARMA_ROOT_FEATURE           = feature("tarma_root");
+    ResourceKey<ConfiguredFeature<?, ?>> WAKEBLOOM_FEATURE            = feature("wakebloom");
+    ResourceKey<ConfiguredFeature<?, ?>> LIQUID_ETHERIUM_LAKE_FEATURE = feature("liquid_etherium_lake");
 
-    ResourceKey<PlacedFeature> CHIMERITE_ORE_PLACED_FEATURE        = placedFeature("chimerite_ore");
-    ResourceKey<PlacedFeature> TOPAZ_ORE_PLACED_FEATURE            = placedFeature("topaz_ore");
-    ResourceKey<PlacedFeature> TOPAZ_ORE_EXTRA_PLACED_FEATURE      = placedFeature("topaz_ore_extra");
-    ResourceKey<PlacedFeature> VINTEUM_ORE_PLACED_FEATURE          = placedFeature("vinteum_ore");
-    ResourceKey<PlacedFeature> MOONSTONE_METEORITE_PLACED_FEATURE  = placedFeature("moonstone_meteorite");
-    ResourceKey<PlacedFeature> SUNSTONE_ORE_PLACED_FEATURE         = placedFeature("sunstone_ore");
-    ResourceKey<PlacedFeature> TREES_WITCHWOOD_PLACED_FEATURE      = placedFeature("trees_witchwood");
-    ResourceKey<PlacedFeature> AUM_PLACED_FEATURE                  = placedFeature("aum");
-    ResourceKey<PlacedFeature> CERUBLOSSOM_PLACED_FEATURE          = placedFeature("cerublossom");
-    ResourceKey<PlacedFeature> DESERT_NOVA_PLACED_FEATURE          = placedFeature("desert_nova");
-    ResourceKey<PlacedFeature> TARMA_ROOT_PLACED_FEATURE           = placedFeature("tarma_root");
-    ResourceKey<PlacedFeature> WAKEBLOOM_PLACED_FEATURE            = placedFeature("wakebloom");
-    ResourceKey<PlacedFeature> LIQUID_ETHERIUM_LAKE_PLACED_FEATURE = placedFeature("liquid_etherium_lake");
+    ResourceKey<PlacedFeature> CHIMERITE_ORE_PLACEMENT        = placement("chimerite_ore");
+    ResourceKey<PlacedFeature> TOPAZ_ORE_PLACEMENT            = placement("topaz_ore");
+    ResourceKey<PlacedFeature> TOPAZ_ORE_EXTRA_PLACEMENT      = placement("topaz_ore_extra");
+    ResourceKey<PlacedFeature> VINTEUM_ORE_PLACEMENT          = placement("vinteum_ore");
+    ResourceKey<PlacedFeature> MOONSTONE_METEORITE_PLACEMENT  = placement("moonstone_meteorite");
+    ResourceKey<PlacedFeature> SUNSTONE_ORE_PLACEMENT         = placement("sunstone_ore");
+    ResourceKey<PlacedFeature> TREES_WITCHWOOD_PLACEMENT      = placement("trees_witchwood");
+    ResourceKey<PlacedFeature> AUM_PLACEMENT                  = placement("aum");
+    ResourceKey<PlacedFeature> CERUBLOSSOM_PLACEMENT          = placement("cerublossom");
+    ResourceKey<PlacedFeature> DESERT_NOVA_PLACEMENT          = placement("desert_nova");
+    ResourceKey<PlacedFeature> TARMA_ROOT_PLACEMENT           = placement("tarma_root");
+    ResourceKey<PlacedFeature> WAKEBLOOM_PLACEMENT            = placement("wakebloom");
+    ResourceKey<PlacedFeature> LIQUID_ETHERIUM_LAKE_PLACEMENT = placement("liquid_etherium_lake");
 
     ResourceKey<BiomeModifier> OVERWORLD_BIOME_MODIFIER                    = biomeModifier("overworld");
     ResourceKey<BiomeModifier> NETHER_BIOME_MODIFIER                       = biomeModifier("nether");
@@ -64,7 +63,7 @@ public interface AMWorldgen {
     ResourceKey<BiomeModifier> SPAWN_MANA_CREEPERS_BIOME_MODIFIER          = biomeModifier("spawn_mana_creepers");
     // @formatter:on
 
-    TreeGrower WITCHWOOD_TREE_GROWER = new TreeGrower(ArsMagicaApi.MOD_ID + ":witchwood", Optional.of(WITCHWOOD_TREE_CONFIGURED_FEATURE), Optional.empty(), Optional.empty());
+    TreeGrower WITCHWOOD_TREE_GROWER = new TreeGrower(ArsMagicaApi.MOD_ID + ":witchwood", Optional.of(WITCHWOOD_TREE_FEATURE), Optional.empty(), Optional.empty());
 
     DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, ArsMagicaApi.MOD_ID);
     // @formatter:off
@@ -80,13 +79,13 @@ public interface AMWorldgen {
 
     /// @param name The name of the [ResourceKey].
     /// @return A [ResourceKey] for a [ConfiguredFeature].
-    private static ResourceKey<ConfiguredFeature<?, ?>> configuredFeature(String name) {
+    private static ResourceKey<ConfiguredFeature<?, ?>> feature(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ArsMagicaApi.id(name));
     }
 
     /// @param name The name of the [ResourceKey].
     /// @return A [ResourceKey] for a [PlacedFeature].
-    private static ResourceKey<PlacedFeature> placedFeature(String name) {
+    private static ResourceKey<PlacedFeature> placement(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ArsMagicaApi.id(name));
     }
 
