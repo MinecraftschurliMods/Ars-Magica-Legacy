@@ -11,11 +11,13 @@ public interface WitchwoodForest {
     ResourceKey<Biome> BIOME = ResourceKey.create(Registries.BIOME, ArsMagicaApi.id("witchwood_forest"));
 
     // @formatter:off
+    ResourceKey<ConfiguredFeature<?, ?>> MAGIC_FLOWERS_FEATURE = configuredFeature("magic_flowers");
     ResourceKey<ConfiguredFeature<?, ?>> TREES_FEATURE         = configuredFeature("trees");
-    ResourceKey<ConfiguredFeature<?, ?>> FLOWERS_FEATURE       = configuredFeature("flowers");
     ResourceKey<ConfiguredFeature<?, ?>> BIOME_FLOWERS_FEATURE = configuredFeature("biome_flowers");
+    ResourceKey<ConfiguredFeature<?, ?>> FLOWERS_FEATURE       = configuredFeature("flowers");
     ResourceKey<ConfiguredFeature<?, ?>> GRASS_FEATURE         = configuredFeature("grass");
 
+    ResourceKey<PlacedFeature> MAGIC_FLOWERS_PLACEMENT                   = placedFeature("magic_flowers");
     ResourceKey<PlacedFeature> WITCHWOOD_PLACEMENT                       = placedFeature("witchwood");
     ResourceKey<PlacedFeature> DARK_FOREST_VEGETATION_PLACEMENT          = placedFeature("dark_forest_vegetation");
     ResourceKey<PlacedFeature> TREES_FLOWER_FOREST_PLACEMENT             = placedFeature("trees_flower_forest");
@@ -29,8 +31,8 @@ public interface WitchwoodForest {
     ResourceKey<PlacedFeature> GEODES_PLACEMENT                          = placedFeature("geodes");
     ResourceKey<PlacedFeature> METEORITES_PLACEMENT                      = placedFeature("meteorites");
     ResourceKey<PlacedFeature> TREES_PLACEMENT                           = placedFeature("trees");
-    ResourceKey<PlacedFeature> FLOWERS_PLACEMENT                         = placedFeature("flowers");
     ResourceKey<PlacedFeature> BIOME_FLOWERS_PLACEMENT                   = placedFeature("biome_flowers");
+    ResourceKey<PlacedFeature> FLOWERS_PLACEMENT                         = placedFeature("flowers");
     ResourceKey<PlacedFeature> GRASS_PLACEMENT                           = placedFeature("grass");
     // @formatter:on
 

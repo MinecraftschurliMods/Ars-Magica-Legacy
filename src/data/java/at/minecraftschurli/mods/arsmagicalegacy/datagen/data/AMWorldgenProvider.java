@@ -21,6 +21,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.Weighted;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ClampedInt;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -49,6 +51,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
@@ -102,6 +105,12 @@ public final class AMWorldgenProvider {
         register(bootstrap, AMWorldgen.LIQUID_ETHERIUM_LAKE_CONFIGURED_FEATURE, Feature.LAKE, new LakeFeature.Configuration(
             BlockStateProvider.simple(AMBlocks.LIQUID_ETHERIUM.get()),
             BlockStateProvider.simple(Blocks.STONE)));
+        register(bootstrap, WitchwoodForest.MAGIC_FLOWERS_FEATURE, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(WeightedList.<BlockState>builder()
+            .add(AMBlocks.AUM.get().defaultBlockState())
+            .add(AMBlocks.CERUBLOSSOM.get().defaultBlockState())
+            .add(AMBlocks.DESERT_NOVA.get().defaultBlockState())
+            .add(AMBlocks.TARMA_ROOT.get().defaultBlockState())
+            .add(AMBlocks.WAKEBLOOM.get().defaultBlockState()))));
         register(bootstrap, WitchwoodForest.TREES_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.DARK_FOREST_VEGETATION_PLACEMENT), 0.25f),
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.TREES_FLOWER_FOREST_PLACEMENT), 0.25f),
@@ -110,11 +119,11 @@ public final class AMWorldgenProvider {
         register(bootstrap, WitchwoodForest.BIOME_FLOWERS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FOREST_FLOWERS_PLACEMENT), 0.5f),
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_FOREST_FLOWERS_PLACEMENT), 0.25f)
-        ), placements.getOrThrow(WitchwoodForest.FOREST_FLOWERS_PLACEMENT))); // TODO AM:L flowers
+        ), placements.getOrThrow(WitchwoodForest.MAGIC_FLOWERS_PLACEMENT)));
         register(bootstrap, WitchwoodForest.FLOWERS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_DEFAULT_PLACEMENT), 0.5f),
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_FLOWER_FOREST_PLACEMENT), 0.25f)
-        ), placements.getOrThrow(WitchwoodForest.FLOWER_DEFAULT_PLACEMENT))); // TODO AM:L flowers
+        ), placements.getOrThrow(WitchwoodForest.MAGIC_FLOWERS_PLACEMENT)));
         register(bootstrap, WitchwoodForest.GRASS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
             new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.PATCH_GRASS_BADLANDS_PLACEMENT), 0.33f)
         ), placements.getOrThrow(WitchwoodForest.PATCH_GRASS_FOREST_PLACEMENT)));
@@ -147,6 +156,11 @@ public final class AMWorldgenProvider {
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()));
+        register(bootstrap, WitchwoodForest.MAGIC_FLOWERS_PLACEMENT, WitchwoodForest.MAGIC_FLOWERS_FEATURE, List.of(
+            RarityFilter.onAverageOnceEvery(2),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP,
+            CountPlacement.of(96)));
         register(bootstrap, WitchwoodForest.WITCHWOOD_PLACEMENT, AMWorldgen.WITCHWOOD_TREE_CONFIGURED_FEATURE, treePlacement(PlacementUtils.countExtra(1, 0.1f, 1))
             .add(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(AMBlocks.WITCHWOOD_SAPLING.get().defaultBlockState(), BlockPos.ZERO)))
             .add(RarityFilter.onAverageOnceEvery(2))
@@ -229,7 +243,10 @@ public final class AMWorldgenProvider {
         MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.farmAnimals(mobs);
         BiomeDefaultFeatures.commonSpawns(mobs);
-        mobs.addSpawn(MobCategory.WATER_CREATURE, 10, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 4, 6));
+        mobs.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 3));
+        mobs.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 4, 4));
+        mobs.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 15, 25));
+        mobs.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(AMEntities.MANA_CREEPER.get(), 1, 4));
         BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder(placedFeatures, carvers);
         BiomeDefaultFeatures.addDefaultCarversAndLakes(generation);
         generation.addFeature(GenerationStep.Decoration.LAKES, AMWorldgen.LIQUID_ETHERIUM_LAKE_PLACED_FEATURE);

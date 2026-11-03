@@ -1,7 +1,7 @@
 {
   "type": "minecraft:random_selector",
   "config": {
-    "default": "arsmagicalegacy:witchwood_forest/forest_flowers",
+    "default": "arsmagicalegacy:witchwood_forest/magic_flowers",
     "features": [
       {
         "chance": 0.5,
