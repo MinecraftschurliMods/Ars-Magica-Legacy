@@ -30,7 +30,6 @@ public final class AMParticleDescriptionProvider extends ParticleDescriptionProv
         sprite(AMParticles.EMBER);
         spriteSet(AMParticles.EXPLOSION, 24);
         sprite(AMParticles.GHOST);
-        sprite(AMParticles.LEAF);
         spriteSet(AMParticles.LENS_FLARE, 13);
         spriteSet(AMParticles.LIGHTS, 8);
         spriteSet(AMParticles.PLANT, 13);
@@ -40,6 +39,7 @@ public final class AMParticleDescriptionProvider extends ParticleDescriptionProv
         sprite(AMParticles.STARDUST);
         sprite(AMParticles.WATER_BALL);
         spriteSet(AMParticles.WIND, 10);
+        sprite(AMParticles.LEAF);
         spriteSet(AMParticles.SYMBOLS, 28);
     }
 
