@@ -9,8 +9,10 @@
   "input_item": "arsmagicalegacy:cerublossom",
   "output_items": [
     {
-      "count": 4,
-      "item": "minecraft:blue_dye"
+      "item": {
+        "count": 4,
+        "item": "minecraft:blue_dye"
+      }
     }
   ]
 }

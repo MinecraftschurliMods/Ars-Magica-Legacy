@@ -9,8 +9,10 @@
   "input_item": "arsmagicalegacy:desert_nova",
   "output_items": [
     {
-      "count": 4,
-      "item": "minecraft:red_dye"
+      "item": {
+        "count": 4,
+        "item": "minecraft:red_dye"
+      }
     }
   ]
 }
