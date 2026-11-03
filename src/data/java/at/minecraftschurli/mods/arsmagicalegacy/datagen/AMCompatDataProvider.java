@@ -35,7 +35,7 @@ public final class AMCompatDataProvider extends CompatDataProvider {
         addFlowerProcessing(AMItems.DESERT_NOVA.get(), Items.RED_DYE, 1, ICompatHandler.itemId(Items.GREEN_DYE), 0.75f, ICompatHandler.itemId(Items.WHITE_DYE), 0.05f);
         addFlowerProcessing(AMItems.TARMA_ROOT.get(), Items.BROWN_DYE, 2, ICompatHandler.itemId(Items.BROWN_DYE), 0.5f);
         addFlowerProcessing(AMItems.WAKEBLOOM.get(), Items.MAGENTA_DYE, 2, ICompatHandler.itemId(Items.PINK_DYE), 0.5f);
-        addLogsProcessing(AMItems.WITCHWOOD_LOG.get(), AMItems.WITCHWOOD.get(), AMItems.STRIPPED_WITCHWOOD_LOG.get(), AMItems.STRIPPED_WITCHWOOD.get(), AMItems.WITCHWOOD_PLANKS.getId(), AMItems.WITCHWOOD_LEAVES.get(), AMItems.WITCHWOOD_SAPLING.get());
+        addLogsProcessing(AMItems.WITCHWOOD_LOG.get(), AMItems.WITCHWOOD_WOOD.get(), AMItems.STRIPPED_WITCHWOOD_LOG.get(), AMItems.STRIPPED_WITCHWOOD_WOOD.get(), AMItems.WITCHWOOD_PLANKS.getId(), AMItems.WITCHWOOD_LEAVES.get(), AMItems.WITCHWOOD_SAPLING.get());
         addWoodenProcessing(AMBlocks.WITCHWOOD_BLOCK_FAMILY.get(), AMTags.Items.WITCHWOOD_LOGS);
     }
 

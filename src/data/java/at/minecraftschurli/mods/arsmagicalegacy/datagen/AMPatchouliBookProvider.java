@@ -189,7 +189,7 @@ public final class AMPatchouliBookProvider extends PatchouliBookProvider {
             .build()
             .addEntry("witchwood", "Witchwood", new ItemStackTemplate(AMItems.WITCHWOOD_LOG))
             .addSimpleTextPage("Witchwood is a rare wood type with extraordinary magical properties, only found in Dark Forests or $(l:mechanics/witchwood_forest)Witchwood Forests$().$(br2)It can be manufactured into the usual wooden planks, slabs, stairs and other blocks.")
-            .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD.getId(), AMItems.STRIPPED_WITCHWOOD.getId())
+            .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_WOOD.getId(), AMItems.STRIPPED_WITCHWOOD_WOOD.getId())
             .addSimpleRecipePage("crafting", AMItems.WITCHWOOD_PLANKS.getId(), "Witchwood planks and stairs make a great structure material for the $(l:mechanics/crafting_altar)Crafting Altar$().")
             .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_SLAB.getId(), AMItems.WITCHWOOD_STAIRS.getId())
             .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_FENCE.getId(), AMItems.WITCHWOOD_FENCE_GATE.getId())
