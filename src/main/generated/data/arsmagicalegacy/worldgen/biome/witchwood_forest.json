@@ -28,8 +28,8 @@
       "arsmagicalegacy:liquid_etherium_lake"
     ],
     [
-      "arsmagicalegacy:witchwood_forest_meteorites",
-      "arsmagicalegacy:witchwood_forest_geodes"
+      "arsmagicalegacy:witchwood_forest/meteorites",
+      "arsmagicalegacy:witchwood_forest/geodes"
     ],
     [
       "minecraft:monster_room",
@@ -75,10 +75,7 @@
     ],
     [
       "minecraft:glow_lichen",
-      "arsmagicalegacy:witchwood_forest_trees",
-      "arsmagicalegacy:witchwood_forest_flowers",
-      "arsmagicalegacy:witchwood_forest_forest_flowers",
-      "arsmagicalegacy:witchwood_forest_grass",
+      "arsmagicalegacy:witchwood_forest/biome_flowers",
       "minecraft:patch_bush",
       "minecraft:patch_leaf_litter",
       "minecraft:brown_mushroom_normal",

@@ -1,5 +1,5 @@
 {
-  "feature": "arsmagicalegacy:witchwood_forest_grass",
+  "feature": "minecraft:grass",
   "placement": [
     {
       "type": "minecraft:in_square"
@@ -9,7 +9,8 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "minecraft:biome"
+      "type": "minecraft:count",
+      "count": 32
     },
     {
       "type": "minecraft:random_offset",

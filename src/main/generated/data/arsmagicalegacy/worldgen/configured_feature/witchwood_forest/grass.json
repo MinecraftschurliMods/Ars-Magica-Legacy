@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "arsmagicalegacy:witchwood_forest/patch_grass_forest",
+    "features": [
+      {
+        "chance": 0.33,
+        "feature": "arsmagicalegacy:witchwood_forest/patch_grass_badlands"
+      }
+    ]
+  }
+}

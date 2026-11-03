@@ -5,13 +5,16 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMEntities;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMWorldgen;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.HolderSets;
 import at.minecraftschurli.mods.arsmagicalegacy.worldgen.MeteoriteFeature;
+import at.minecraftschurli.mods.arsmagicalegacy.worldgen.WitchwoodForest;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
@@ -57,6 +60,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
@@ -70,7 +74,6 @@ import java.util.OptionalInt;
 public final class AMWorldgenProvider {
     @SuppressWarnings("deprecation")
     public static void addConfiguredFeatures(BootstrapContext<ConfiguredFeature<?, ?>> bootstrap) {
-        HolderGetter<ConfiguredFeature<?, ?>> features = bootstrap.lookup(Registries.CONFIGURED_FEATURE);
         HolderGetter<PlacedFeature> placements = bootstrap.lookup(Registries.PLACED_FEATURE);
         registerOre(bootstrap, AMWorldgen.CHIMERITE_ORE_CONFIGURED_FEATURE, AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0);
         registerOre(bootstrap, AMWorldgen.TOPAZ_ORE_CONFIGURED_FEATURE, AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5f);
@@ -100,22 +103,22 @@ public final class AMWorldgenProvider {
         register(bootstrap, AMWorldgen.LIQUID_ETHERIUM_LAKE_CONFIGURED_FEATURE, Feature.LAKE, new LakeFeature.Configuration(
             BlockStateProvider.simple(AMBlocks.LIQUID_ETHERIUM.get()),
             BlockStateProvider.simple(Blocks.STONE)));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_TREES_CONFIGURED_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.DARK_FOREST_VEGETATION), 0.25f),
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.TREES_FLOWER_FOREST), 0.25f),
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.TREES_BIRCH_AND_OAK_LEAF_LITTER), 0.25f)
-        ), placements.getOrThrow(AMWorldgen.WITCHWOOD_PLACED_FEATURE)));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_FOREST_FLOWERS_CONFIGURED_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.FOREST_FLOWERS), 0.5f),
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.FLOWER_FOREST_FLOWERS), 0.25f)
-        ), placements.getOrThrow(VegetationPlacements.FOREST_FLOWERS))); // TODO AM:L flowers
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_FLOWERS_CONFIGURED_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.FLOWER_DEFAULT), 0.5f),
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.FLOWER_FLOWER_FOREST), 0.25f)
-        ), placements.getOrThrow(VegetationPlacements.FLOWER_DEFAULT))); // TODO AM:L flowers
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_GRASS_CONFIGURED_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
-            new WeightedPlacedFeature(placements.getOrThrow(VegetationPlacements.PATCH_GRASS_BADLANDS), 0.33f)
-        ), placements.getOrThrow(VegetationPlacements.PATCH_GRASS_FOREST)));
+        register(bootstrap, WitchwoodForest.TREES_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.DARK_FOREST_VEGETATION_PLACEMENT), 0.25f),
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.TREES_FLOWER_FOREST_PLACEMENT), 0.25f),
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.TREES_BIRCH_AND_OAK_LEAF_LITTER_PLACEMENT), 0.25f)
+        ), placements.getOrThrow(WitchwoodForest.WITCHWOOD_PLACEMENT)));
+        register(bootstrap, WitchwoodForest.BIOME_FLOWERS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FOREST_FLOWERS_PLACEMENT), 0.5f),
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_FOREST_FLOWERS_PLACEMENT), 0.25f)
+        ), placements.getOrThrow(WitchwoodForest.FOREST_FLOWERS_PLACEMENT))); // TODO AM:L flowers
+        register(bootstrap, WitchwoodForest.FLOWERS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_DEFAULT_PLACEMENT), 0.5f),
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.FLOWER_FLOWER_FOREST_PLACEMENT), 0.25f)
+        ), placements.getOrThrow(WitchwoodForest.FLOWER_DEFAULT_PLACEMENT))); // TODO AM:L flowers
+        register(bootstrap, WitchwoodForest.GRASS_FEATURE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+            new WeightedPlacedFeature(placements.getOrThrow(WitchwoodForest.PATCH_GRASS_BADLANDS_PLACEMENT), 0.33f)
+        ), placements.getOrThrow(WitchwoodForest.PATCH_GRASS_FOREST_PLACEMENT)));
     }
 
     public static void addPlacedFeatures(BootstrapContext<PlacedFeature> bootstrap) {
@@ -130,13 +133,10 @@ public final class AMWorldgenProvider {
             HeightRangePlacement.uniform(VerticalAnchor.absolute(56), VerticalAnchor.absolute(180)),
             BiomeFilter.biome()));
         registerOre(bootstrap, AMWorldgen.SUNSTONE_ORE_PLACED_FEATURE, AMWorldgen.SUNSTONE_ORE_CONFIGURED_FEATURE, 32, HeightRangePlacement.uniform(VerticalAnchor.absolute(31), VerticalAnchor.absolute(33)));
-        register(bootstrap, AMWorldgen.TREES_WITCHWOOD_PLACED_FEATURE, AMWorldgen.WITCHWOOD_TREE_CONFIGURED_FEATURE, ImmutableList.<PlacementModifier>builder()
-            .addAll(VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.1f, 1), AMBlocks.WITCHWOOD_SAPLING.get()))
+        register(bootstrap, AMWorldgen.TREES_WITCHWOOD_PLACED_FEATURE, AMWorldgen.WITCHWOOD_TREE_CONFIGURED_FEATURE, treePlacement(PlacementUtils.countExtra(1, 0.1f, 1))
+            .add(BiomeFilter.biome())
+            .add(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(AMBlocks.WITCHWOOD_SAPLING.get().defaultBlockState(), BlockPos.ZERO)))
             .add(RarityFilter.onAverageOnceEvery(8))
-            .build());
-        register(bootstrap, AMWorldgen.WITCHWOOD_PLACED_FEATURE, AMWorldgen.WITCHWOOD_TREE_CONFIGURED_FEATURE, ImmutableList.<PlacementModifier>builder()
-            .addAll(VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.1f, 1), AMBlocks.WITCHWOOD_SAPLING.get()))
-            .add(RarityFilter.onAverageOnceEvery(2))
             .build());
         registerFlower(bootstrap, AMWorldgen.AUM_PLACED_FEATURE, AMWorldgen.AUM_CONFIGURED_FEATURE, 32, 96);
         registerFlower(bootstrap, AMWorldgen.CERUBLOSSOM_PLACED_FEATURE, AMWorldgen.CERUBLOSSOM_CONFIGURED_FEATURE, 32, 96);
@@ -148,25 +148,67 @@ public final class AMWorldgenProvider {
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_GEODES_PLACED_FEATURE, CaveFeatures.AMETHYST_GEODE, List.of(
+        register(bootstrap, WitchwoodForest.WITCHWOOD_PLACEMENT, AMWorldgen.WITCHWOOD_TREE_CONFIGURED_FEATURE, treePlacement(PlacementUtils.countExtra(1, 0.1f, 1))
+            .add(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(AMBlocks.WITCHWOOD_SAPLING.get().defaultBlockState(), BlockPos.ZERO)))
+            .add(RarityFilter.onAverageOnceEvery(2))
+            .build());
+        register(bootstrap, WitchwoodForest.DARK_FOREST_VEGETATION_PLACEMENT, VegetationFeatures.DARK_FOREST_VEGETATION, treePlacement(CountPlacement.of(16)).build());
+        register(bootstrap, WitchwoodForest.TREES_FLOWER_FOREST_PLACEMENT, VegetationFeatures.TREES_FLOWER_FOREST, treePlacement(PlacementUtils.countExtra(6, 0.1F, 1)).build());
+        register(bootstrap, WitchwoodForest.TREES_BIRCH_AND_OAK_LEAF_LITTER_PLACEMENT, VegetationFeatures.TREES_BIRCH_AND_OAK_LEAF_LITTER, treePlacement(PlacementUtils.countExtra(10, 0.1F, 1)).build());
+        register(bootstrap, WitchwoodForest.FOREST_FLOWERS_PLACEMENT, VegetationFeatures.FOREST_FLOWERS, List.of(
+            RarityFilter.onAverageOnceEvery(7),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP,
+            CountPlacement.of(ClampedInt.of(UniformInt.of(-1, 3), 0, 3))));
+        register(bootstrap, WitchwoodForest.FLOWER_FOREST_FLOWERS_PLACEMENT, VegetationFeatures.FOREST_FLOWERS, List.of(
+            RarityFilter.onAverageOnceEvery(7),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP,
+            CountPlacement.of(ClampedInt.of(UniformInt.of(-3, 1), 0, 1))));
+        register(bootstrap, WitchwoodForest.FLOWER_DEFAULT_PLACEMENT, VegetationFeatures.FLOWER_DEFAULT, List.of(
+            RarityFilter.onAverageOnceEvery(32),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP));
+        register(bootstrap, WitchwoodForest.FLOWER_FLOWER_FOREST_PLACEMENT, VegetationFeatures.FLOWER_FLOWER_FOREST, List.of(
+            CountPlacement.of(3),
+            RarityFilter.onAverageOnceEvery(2),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP,
+            CountPlacement.of(96),
+            RandomOffsetPlacement.ofTriangle(6, 2),
+            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+        register(bootstrap, WitchwoodForest.PATCH_GRASS_BADLANDS_PLACEMENT, VegetationFeatures.GRASS, List.of(
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+            CountPlacement.of(32),
+            RandomOffsetPlacement.ofTriangle(7, 3),
+            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+        register(bootstrap, WitchwoodForest.PATCH_GRASS_FOREST_PLACEMENT, VegetationFeatures.GRASS, List.of(
+            CountPlacement.of(2),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+            CountPlacement.of(32),
+            RandomOffsetPlacement.ofTriangle(7, 3),
+            BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+        register(bootstrap, WitchwoodForest.GEODES_PLACEMENT, CaveFeatures.AMETHYST_GEODE, List.of(
             RarityFilter.onAverageOnceEvery(8),
             InSquarePlacement.spread(),
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
             BiomeFilter.biome()));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_METEORITES_PLACED_FEATURE, AMWorldgen.MOONSTONE_METEORITE_CONFIGURED_FEATURE, List.of(
+        register(bootstrap, WitchwoodForest.METEORITES_PLACEMENT, AMWorldgen.MOONSTONE_METEORITE_CONFIGURED_FEATURE, List.of(
             RarityFilter.onAverageOnceEvery(200),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             HeightRangePlacement.uniform(VerticalAnchor.absolute(56), VerticalAnchor.absolute(180)),
             BiomeFilter.biome()));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_TREES_PLACED_FEATURE, AMWorldgen.WITCHWOOD_FOREST_TREES_CONFIGURED_FEATURE, VegetationPlacements.treePlacement(PlacementUtils.countExtra(8, 0.1f, 1)));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_FOREST_FLOWERS_PLACED_FEATURE, AMWorldgen.WITCHWOOD_FOREST_FOREST_FLOWERS_CONFIGURED_FEATURE, List.of(
+        register(bootstrap, WitchwoodForest.TREES_PLACEMENT, WitchwoodForest.TREES_FEATURE, treePlacement(PlacementUtils.countExtra(8, 0.1f, 1)).build());
+        register(bootstrap, WitchwoodForest.BIOME_FLOWERS_PLACEMENT, WitchwoodForest.BIOME_FLOWERS_FEATURE, List.of(
             RarityFilter.onAverageOnceEvery(7),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             CountPlacement.of(ClampedInt.of(UniformInt.of(-1, 3), 0, 3)),
             BiomeFilter.biome()));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_FLOWERS_PLACED_FEATURE, AMWorldgen.WITCHWOOD_FOREST_FLOWERS_CONFIGURED_FEATURE, List.of(
+        register(bootstrap, WitchwoodForest.FLOWERS_PLACEMENT, WitchwoodForest.FLOWERS_FEATURE, List.of(
             RarityFilter.onAverageOnceEvery(13),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
@@ -175,7 +217,7 @@ public final class AMWorldgenProvider {
             RandomOffsetPlacement.ofTriangle(6, 2),
             BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
-        register(bootstrap, AMWorldgen.WITCHWOOD_FOREST_GRASS_PLACED_FEATURE, AMWorldgen.WITCHWOOD_FOREST_GRASS_CONFIGURED_FEATURE, List.of(
+        register(bootstrap, WitchwoodForest.GRASS_PLACEMENT, WitchwoodForest.GRASS_FEATURE, List.of(
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome(),
@@ -194,23 +236,23 @@ public final class AMWorldgenProvider {
         BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder(placedFeatures, carvers);
         BiomeDefaultFeatures.addDefaultCarversAndLakes(generation);
         generation.addFeature(GenerationStep.Decoration.LAKES, AMWorldgen.LIQUID_ETHERIUM_LAKE_PLACED_FEATURE);
-        generation.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AMWorldgen.WITCHWOOD_FOREST_METEORITES_PLACED_FEATURE);
-        generation.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AMWorldgen.WITCHWOOD_FOREST_GEODES_PLACED_FEATURE);
+        generation.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, WitchwoodForest.METEORITES_PLACEMENT);
+        generation.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, WitchwoodForest.GEODES_PLACEMENT);
         BiomeDefaultFeatures.addDefaultMonsterRoom(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
         BiomeDefaultFeatures.addDefaultSprings(generation);
         BiomeDefaultFeatures.addSurfaceFreezing(generation);
         BiomeDefaultFeatures.addDefaultOres(generation);
         BiomeDefaultFeatures.addDefaultSoftDisks(generation);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMWorldgen.WITCHWOOD_FOREST_TREES_PLACED_FEATURE);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMWorldgen.WITCHWOOD_FOREST_FLOWERS_PLACED_FEATURE);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMWorldgen.WITCHWOOD_FOREST_FOREST_FLOWERS_PLACED_FEATURE);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMWorldgen.WITCHWOOD_FOREST_GRASS_PLACED_FEATURE);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.TREES_PLACEMENT);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.BIOME_FLOWERS_PLACEMENT);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.FLOWERS_PLACEMENT);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.GRASS_PLACEMENT);
         BiomeDefaultFeatures.addBushes(generation);
         BiomeDefaultFeatures.addLeafLitterPatch(generation);
         BiomeDefaultFeatures.addDefaultMushrooms(generation);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generation, true);
-        bootstrap.register(AMWorldgen.WITCHWOOD_FOREST_BIOME, new Biome.BiomeBuilder()
+        bootstrap.register(WitchwoodForest.BIOME, new Biome.BiomeBuilder()
             .hasPrecipitation(true)
             .temperature(0.7f)
             .downfall(0.8f)
@@ -281,6 +323,14 @@ public final class AMWorldgenProvider {
             HolderSets.and(HolderSets.biomeTag(bootstrap, Tags.Biomes.IS_OVERWORLD), HolderSets.not(HolderSets.biomeTag(bootstrap, Tags.Biomes.NO_DEFAULT_MONSTERS))),
             new Weighted<>(new MobSpawnSettings.SpawnerData(AMEntities.MANA_CREEPER.get(), 1, 4), 10)
         ));
+    }
+
+    private static ImmutableList.Builder<PlacementModifier> treePlacement(PlacementModifier frequency) {
+        return ImmutableList.<PlacementModifier>builder()
+            .add(frequency)
+            .add(InSquarePlacement.spread())
+            .add(SurfaceWaterDepthFilter.forMaxDepth(0))
+            .add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR);
     }
 
     /// Registers a [ConfiguredFeature].
