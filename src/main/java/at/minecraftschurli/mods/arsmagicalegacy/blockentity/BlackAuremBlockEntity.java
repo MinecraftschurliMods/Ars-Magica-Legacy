@@ -62,11 +62,11 @@ public class BlackAuremBlockEntity extends EtheriumGeneratorBlockEntity {
 
     @Override
     public int getTier(Level level, BlockPos pos) {
-        if (PILLARS_1.test(level, pos)) return 2;
-        if (PILLARS_2.test(level, pos)) return 3;
-        if (PILLARS_3.test(level, pos)) return 4;
-        if (PILLARS_4.test(level, pos)) return 5;
-        return CHALK.test(level, pos) ? 1 : 0;
+        if (PILLARS_1.test(level, pos.below())) return 2;
+        if (PILLARS_2.test(level, pos.below())) return 3;
+        if (PILLARS_3.test(level, pos.below())) return 4;
+        if (PILLARS_4.test(level, pos.below())) return 5;
+        return CHALK.test(level, pos.below()) ? 1 : 0;
     }
 
     @Override

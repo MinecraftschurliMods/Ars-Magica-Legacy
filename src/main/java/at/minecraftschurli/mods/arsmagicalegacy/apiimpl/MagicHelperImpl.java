@@ -22,12 +22,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.function.TriFunction;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-final class MagicHelperImpl implements MagicHelper {
+@VisibleForTesting
+public final class MagicHelperImpl implements MagicHelper {
     @Override
     public int getLevel(Player player) {
         return player.getData(AMAttachments.MAGIC).level();

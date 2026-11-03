@@ -62,10 +62,10 @@ public final class AMTagsProvider {
             tag(AMTags.Blocks.BLACK_AUREM_CATALYST_3).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
             tag(AMTags.Blocks.BLACK_AUREM_CATALYST_4).addTag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
             tag(AMTags.Blocks.CELESTIAL_PRISM_PILLAR).add(net.minecraft.world.level.block.Blocks.QUARTZ_PILLAR);
-            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_1).addTag(AMTags.Blocks.STORAGE_BLOCKS_CHIMERITE);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_1).addTag(Tags.Blocks.GLASS_BLOCKS_CHEAP);
             tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_2).addTag(Tags.Blocks.STORAGE_BLOCKS_GOLD);
             tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_3).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
-            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_4).addTag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
+            tag(AMTags.Blocks.CELESTIAL_PRISM_CATALYST_4).addTag(AMTags.Blocks.STORAGE_BLOCKS_MOONSTONE);
             tag(AMTags.Blocks.WITCHWOOD_LOGS).add(AMBlocks.WITCHWOOD_LOG.get(), AMBlocks.WITCHWOOD_WOOD.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get(), AMBlocks.STRIPPED_WITCHWOOD_WOOD.get());
             tag(BlockTags.LOGS).addTag(AMTags.Blocks.WITCHWOOD_LOGS);
             tag(BlockTags.LEAVES).add(AMBlocks.WITCHWOOD_LEAVES.get());

@@ -992,7 +992,7 @@ public final class AMMagicProvider {
                 new SetBlockRitualEffect(Blocks.AIR.defaultBlockState(), BlockPos.ZERO),
                 new SetBlockRitualEffect(Blocks.AIR.defaultBlockState(), new BlockPos(0, 1, 0)),
                 new SetBlockRitualEffect(Blocks.AIR.defaultBlockState(), new BlockPos(0, 2, 0))));
-        spawnRitual(bootstrap, AMEntities.LIGHTNING_GUARDIAN, AMMultiblocks.LIGHTNING_GUARDIAN_SPAWN_RITUAL, new BlockPos(0, -3, 0),
+        spawnRitual(bootstrap, AMEntities.LIGHTNING_GUARDIAN, AMMultiblocks.LIGHTNING_GUARDIAN_SPAWN_RITUAL, new BlockPos(0, -2, 0),
             new GameEventRitualTrigger(GameEvent.LIGHTNING_STRIKE), List.of(), List.of());
         spawnRitual(bootstrap, AMEntities.LIFE_GUARDIAN, AMMultiblocks.LIFE_GUARDIAN_SPAWN_RITUAL,
             new KillEntityRitualTrigger(EntityPredicate.Builder.entity().of(entityTypes, EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true)).build()),
