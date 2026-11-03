@@ -12,4 +12,5 @@
 
 # Fixes
 
+- Fix some pages in the Arcane Compendium that have not been updated to 26.1.2 properly
 - Fix affinity advancement not triggering

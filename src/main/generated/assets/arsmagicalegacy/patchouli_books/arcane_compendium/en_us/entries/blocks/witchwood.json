@@ -36,6 +36,16 @@
       "type": "patchouli:crafting",
       "recipe": "arsmagicalegacy:witchwood_button",
       "recipe2": "arsmagicalegacy:witchwood_pressure_plate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_sign",
+      "recipe2": "arsmagicalegacy:witchwood_hanging_sign"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_boat",
+      "recipe2": "arsmagicalegacy:witchwood_chest_boat"
     }
   ]
 }
