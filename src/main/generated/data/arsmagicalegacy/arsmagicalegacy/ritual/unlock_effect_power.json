@@ -10,10 +10,10 @@
     "type": "arsmagicalegacy:spell_cast",
     "parts": [
       "arsmagicalegacy:flight",
-      "arsmagicalegacy:swiftness",
       "arsmagicalegacy:reflect",
       "arsmagicalegacy:shrink",
       "arsmagicalegacy:swift_swim",
+      "arsmagicalegacy:swiftness",
       "arsmagicalegacy:temporal_anchor"
     ]
   }

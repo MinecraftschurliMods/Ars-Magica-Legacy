@@ -956,7 +956,7 @@ public final class AMMagicProvider {
         unlockRitual(bootstrap, AMSpells.BLIZZARD, AMSpells.FROST_DAMAGE, AMSpells.FROST, AMSpells.STORM);
         unlockRitual(bootstrap, AMSpells.DAYLIGHT, AMSpells.DIVINE_INTERVENTION, AMSpells.TRUE_SIGHT, AMSpells.SOLAR);
         unlockRitual(bootstrap, AMSpells.DISMEMBERING, AMSpells.PHYSICAL_DAMAGE, AMSpells.DAMAGE, AMSpells.HEALING, AMSpells.PIERCING);
-        unlockRitual(bootstrap, AMSpells.EFFECT_POWER, AMSpells.FLIGHT, AMSpells.SWIFTNESS, AMSpells.REFLECT, AMSpells.SHRINK, AMSpells.SWIFT_SWIM, AMSpells.TEMPORAL_ANCHOR);
+        unlockRitual(bootstrap, AMSpells.EFFECT_POWER, AMSpells.FLIGHT, AMSpells.REFLECT, AMSpells.SHRINK, AMSpells.SWIFT_SWIM, AMSpells.SWIFTNESS, AMSpells.TEMPORAL_ANCHOR);
         unlockRitual(bootstrap, AMSpells.FALLING_STAR, AMSpells.ASTRAL_DISTORTION, AMSpells.MAGIC_DAMAGE, AMSpells.GRAVITY);
         unlockRitual(bootstrap, AMSpells.FIRE_RAIN, AMSpells.FIRE_DAMAGE, AMSpells.IGNITION, AMSpells.STORM);
         unlockRitual(bootstrap, AMSpells.HEALTH_BOOST, AMSpells.LIFE_TAP, AMSpells.RESISTANCE);
