@@ -10,7 +10,7 @@
     "type": "arsmagicalegacy:spell_cast",
     "parts": [
       "arsmagicalegacy:flight",
-      "arsmagicalegacy:fury",
+      "arsmagicalegacy:swiftness",
       "arsmagicalegacy:reflect",
       "arsmagicalegacy:shrink",
       "arsmagicalegacy:swift_swim",
