@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_body",
+  "textures": {
+    "all": "arsmagicalegacy:block/witchwood_shelf",
+    "particle": "arsmagicalegacy:block/stripped_witchwood_log"
+  }
+}

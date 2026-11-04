@@ -190,6 +190,7 @@ public final class AMPatchouliBookProvider extends PatchouliBookProvider {
             .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_FENCE.getId(), AMItems.WITCHWOOD_FENCE_GATE.getId())
             .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_DOOR.getId(), AMItems.WITCHWOOD_TRAPDOOR.getId())
             .addSimpleDoubleRecipePage("crafting", AMItems.WITCHWOOD_BUTTON.getId(), AMItems.WITCHWOOD_PRESSURE_PLATE.getId())
+            .addSimpleRecipePage("crafting", AMItems.WITCHWOOD_SHELF.getId())
             .build()
             .addEntry("wizards_chalk", "Wizard's Chalk", new ItemStackTemplate(AMItems.WIZARDS_CHALK))
             .addSimpleTextPage("Sometimes, it is necessary to draw markings on the floor in order to perform or boost certain rituals. The Wizard's Chalk allows for exactly that.")
