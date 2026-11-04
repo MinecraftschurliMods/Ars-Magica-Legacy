@@ -96,7 +96,7 @@ public final class AMPatchouliBookProvider extends PatchouliBookProvider {
             .addSimpleTextPage("Bathing in Liquid Etherium grants the Mana Regeneration effect.$(br2)And as you should know by now, placing a book in a nearby item frame yields a copy of the very book you are reading this in.")
             .build()
             .addEntry("witchwood_forest", "Witchwood Forest", new ItemStackTemplate(AMItems.WITCHWOOD_SAPLING))
-            .addSimpleTextPage("The Witchwood Forest is a rare biome that can be found in the Overworld, where the foliage takes on a characteristical purple hue. $(l:blocks/witchwood)Witchwood$() trees are abundant here, clearly standing out among the Dark Oak, Oak and Birch trees.")
+            .addSimpleTextPage("The Witchwood Forest is a rare biome that can be found in the Overworld, where the trees take on a characteristical purple hue. $(l:blocks/witchwood)Witchwood$() trees are abundant here, clearly standing out among the Dark Oak, Oak and Birch trees.")
             .addSimpleTextPage("The forest is a very lively one. Bees, rabbits and wolves spawn here, in addition to the regular animals.$(br2)Many sorts of flowers, including all $(l:blocks/flowers)magic flowers$(), can be found here; although Desert Novas are rare due to the limited sand in the biome.")
             .addSimpleTextPage("Several other ingredients for magic are available here in higher amounts. The magic attracts $(l:entities/dryad)Dryads$() and $(l:entities/mana_creeper)Mana Creepers$(), who will spawn at double their normal rate.$(br2)$(l:mechanics/liquid_etherium)Liquid Etherium$() lakes can spawn here, and $(l:blocks/ores)Moonstone$() meteorites and underground amethyst geodes are more common.")
             .build()
