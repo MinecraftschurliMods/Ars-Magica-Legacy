@@ -263,8 +263,8 @@ public final class AMWorldgenProvider {
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.FLOWERS_PLACEMENT);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WitchwoodForest.GRASS_PLACEMENT);
         BiomeDefaultFeatures.addBushes(generation);
-        BiomeDefaultFeatures.addLeafLitterPatch(generation);
         BiomeDefaultFeatures.addDefaultMushrooms(generation);
+        BiomeDefaultFeatures.addLeafLitterPatch(generation);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generation, true);
         bootstrap.register(WitchwoodForest.BIOME, new Biome.BiomeBuilder()
             .hasPrecipitation(true)
