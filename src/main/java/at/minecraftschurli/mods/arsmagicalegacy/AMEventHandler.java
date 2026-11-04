@@ -34,6 +34,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.command.MagicXpCommand;
 import at.minecraftschurli.mods.arsmagicalegacy.command.SkillCommand;
 import at.minecraftschurli.mods.arsmagicalegacy.command.SkillPointCommand;
 import at.minecraftschurli.mods.arsmagicalegacy.compat.patchouli.AMMultiblocks;
+import at.minecraftschurli.mods.arsmagicalegacy.worldgen.AMOverworldRegion;
 import at.minecraftschurli.mods.arsmagicalegacy.effect.AMMobEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.AirGuardian;
 import at.minecraftschurli.mods.arsmagicalegacy.entity.ArcaneGuardian;
@@ -189,6 +190,7 @@ final class AMEventHandler {
             flowerPot.addPlant(AMBlocks.TARMA_ROOT.getId(), AMBlocks.POTTED_TARMA_ROOT);
             flowerPot.addPlant(AMBlocks.WAKEBLOOM.getId(), AMBlocks.POTTED_WAKEBLOOM);
             AMMultiblocks.init();
+            AMOverworldRegion.register();
         });
     }
 

@@ -113,9 +113,9 @@ public interface AMCreativeTabs {
             output.accept(AMItems.ARCANE_ASH);
             output.accept(AMItems.PURIFIED_VINTEUM_DUST);
             output.accept(AMItems.WITCHWOOD_LOG);
-            output.accept(AMItems.WITCHWOOD);
+            output.accept(AMItems.WITCHWOOD_WOOD);
             output.accept(AMItems.STRIPPED_WITCHWOOD_LOG);
-            output.accept(AMItems.STRIPPED_WITCHWOOD);
+            output.accept(AMItems.STRIPPED_WITCHWOOD_WOOD);
             output.accept(AMItems.WITCHWOOD_LEAVES);
             output.accept(AMItems.WITCHWOOD_SAPLING);
             output.accept(AMItems.WITCHWOOD_PLANKS);
