@@ -272,7 +272,7 @@ public final class AMWorldgenProvider {
             .downfall(0.8f)
             .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_FOREST))
             .setAttribute(EnvironmentAttributes.SKY_COLOR, 0x6699ff)
-            .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x0a2a72).foliageColorOverride(0xb889cd).grassColorOverride(0xb889cd).build())
+            .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x0a2a72).foliageColorOverride(0xb889cd).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST).build())
             .mobSpawnSettings(mobs.build())
             .generationSettings(generation.build())
             .build());
