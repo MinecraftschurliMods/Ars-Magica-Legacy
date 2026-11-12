@@ -99,7 +99,7 @@ public final class AMMultiblocks {
         {"BLB", "1N2", "E0E", "3N4"}};
     private static final String[][] ENDER_GUARDIAN_SPAWN_RITUAL_STRUCTURE = new String[][]{
         {"  F  ", " 1N2 ", "FE0EF", " 3N4 ", "  F  "},
-        {"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}};
+        {"OOOOO", "OOOOO", "OOOOO", "OOOOO", "OOOOO"}};
 
     private AMMultiblocks() {
     }
@@ -275,7 +275,7 @@ public final class AMMultiblocks {
             '2', goldInlayNorthEast,
             '3', goldInlaySouthWest,
             '4', goldInlayNorthWest,
-            'C', api.strictBlockMatcher(Blocks.COAL_BLOCK),
+            'O', api.strictBlockMatcher(Blocks.OBSIDIAN),
             'F', api.strictBlockMatcher(Blocks.FIRE),
             '0', blackAurem
         ).setSymmetrical(true));
