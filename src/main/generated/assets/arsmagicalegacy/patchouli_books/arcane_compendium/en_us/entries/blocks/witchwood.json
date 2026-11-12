@@ -46,6 +46,10 @@
       "type": "patchouli:crafting",
       "recipe": "arsmagicalegacy:witchwood_boat",
       "recipe2": "arsmagicalegacy:witchwood_chest_boat"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_shelf"
     }
   ]
 }

@@ -154,6 +154,7 @@ public interface AMItems {
     DeferredItem<BlockItem>                             WITCHWOOD_PRESSURE_PLATE         = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
     DeferredItem<BlockItem>                             WITCHWOOD_SIGN                   = ITEMS.registerItem("witchwood_sign", p -> new SignItem(AMBlocks.WITCHWOOD_SIGN.get(), AMBlocks.WITCHWOOD_WALL_SIGN.get(), p.stacksTo(16)));
     DeferredItem<BlockItem>                             WITCHWOOD_HANGING_SIGN           = ITEMS.registerItem("witchwood_hanging_sign", p -> new HangingSignItem(AMBlocks.WITCHWOOD_HANGING_SIGN.get(), AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get(), p.stacksTo(16)));
+    DeferredItem<BlockItem>                             WITCHWOOD_SHELF                  = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_SHELF);
     DeferredItem<BoatItem>                              WITCHWOOD_BOAT                   = ITEMS.registerItem("witchwood_boat", p -> new BoatItem(AMEntities.WITCHWOOD_BOAT.get(), p));
     DeferredItem<BoatItem>                              WITCHWOOD_CHEST_BOAT             = ITEMS.registerItem("witchwood_chest_boat", p -> new BoatItem(AMEntities.WITCHWOOD_CHEST_BOAT.get(), p));
     DeferredItem<BlockItem>                             AUM                              = ITEMS.registerSimpleBlockItem(AMBlocks.AUM);

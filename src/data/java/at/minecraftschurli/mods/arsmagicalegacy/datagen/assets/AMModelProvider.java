@@ -145,6 +145,7 @@ public final class AMModelProvider extends AbstractModelProvider {
         blockModels.createHangingSign(AMBlocks.STRIPPED_WITCHWOOD_LOG.get(), AMBlocks.WITCHWOOD_HANGING_SIGN.get(), AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get());
         blockModels.createPlantWithDefaultItem(AMBlocks.WITCHWOOD_SAPLING.get(), AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
         blockModels.createTrivialCube(AMBlocks.WITCHWOOD_LEAVES.get());
+        blockModels.createShelf(AMBlocks.WITCHWOOD_SHELF.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get());
         blockModels.createPlantWithDefaultItem(AMBlocks.AUM.get(), AMBlocks.POTTED_AUM.get(), BlockModelGenerators.PlantType.NOT_TINTED);
         blockModels.createPlantWithDefaultItem(AMBlocks.CERUBLOSSOM.get(), AMBlocks.POTTED_CERUBLOSSOM.get(), BlockModelGenerators.PlantType.NOT_TINTED);
         blockModels.createPlantWithDefaultItem(AMBlocks.DESERT_NOVA.get(), AMBlocks.POTTED_DESERT_NOVA.get(), BlockModelGenerators.PlantType.NOT_TINTED);
