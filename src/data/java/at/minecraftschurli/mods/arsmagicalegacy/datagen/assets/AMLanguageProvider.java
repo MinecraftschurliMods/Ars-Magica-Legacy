@@ -184,6 +184,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         blockIdTranslation(AMBlocks.WITCHWOOD_SIGN);
         blockIdTranslation(AMBlocks.WITCHWOOD_HANGING_SIGN);
+        blockIdTranslation(AMBlocks.WITCHWOOD_SHELF);
         itemIdTranslation(AMItems.WITCHWOOD_SIGN);
         itemIdTranslation(AMItems.WITCHWOOD_HANGING_SIGN);
         itemIdTranslation(AMItems.WITCHWOOD_BOAT);
