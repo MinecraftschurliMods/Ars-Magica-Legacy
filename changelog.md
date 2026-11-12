@@ -12,3 +12,4 @@
 - Fix affinity advancement not triggering
 - Fix the Effect Power unlock ritual needing more altar power than any altar can have
 - Fix a server crash when all effects are removed from an entity with Fury
+- Fix Integrated Dynamics compat recipes missing their count
