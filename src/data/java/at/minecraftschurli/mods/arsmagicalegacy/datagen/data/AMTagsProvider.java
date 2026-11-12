@@ -85,6 +85,7 @@ public final class AMTagsProvider {
             tag(BlockTags.WALL_SIGNS).add(AMBlocks.WITCHWOOD_WALL_SIGN.get());
             tag(BlockTags.CEILING_HANGING_SIGNS).add(AMBlocks.WITCHWOOD_HANGING_SIGN.get());
             tag(BlockTags.WALL_HANGING_SIGNS).add(AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get());
+            tag(BlockTags.WOODEN_SHELVES).add(AMBlocks.WITCHWOOD_SHELF.get());
             tag(AMTags.Blocks.AUM_PLANTABLE_ON).addTag(BlockTags.SUBSTRATE_OVERWORLD);
             tag(AMTags.Blocks.CERUBLOSSOM_PLANTABLE_ON).addTag(BlockTags.SUBSTRATE_OVERWORLD);
             tag(AMTags.Blocks.DESERT_NOVA_PLANTABLE_ON).addTag(BlockTags.SAND);
@@ -152,6 +153,7 @@ public final class AMTagsProvider {
             tag(ItemTags.WOODEN_PRESSURE_PLATES).add(AMItems.WITCHWOOD_PRESSURE_PLATE.get());
             tag(ItemTags.SIGNS).add(AMItems.WITCHWOOD_SIGN.get());
             tag(ItemTags.HANGING_SIGNS).add(AMItems.WITCHWOOD_HANGING_SIGN.get());
+            tag(ItemTags.WOODEN_SHELVES).add(AMItems.WITCHWOOD_SHELF.get());
             tag(ItemTags.BOATS).add(AMItems.WITCHWOOD_BOAT.get());
             tag(ItemTags.CHEST_BOATS).add(AMItems.WITCHWOOD_CHEST_BOAT.get());
             tag(ItemTags.SMALL_FLOWERS).add(AMItems.AUM.get(), AMItems.CERUBLOSSOM.get(), AMItems.DESERT_NOVA.get(), AMItems.TARMA_ROOT.get(), AMItems.WAKEBLOOM.get());
