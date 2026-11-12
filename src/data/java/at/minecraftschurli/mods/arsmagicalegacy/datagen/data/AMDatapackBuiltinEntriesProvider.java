@@ -104,11 +104,15 @@ public final class AMDatapackBuiltinEntriesProvider {
         altarMaterial(bootstrap, BlockFamilies.MANGROVE_PLANKS, 1);
         altarMaterial(bootstrap, BlockFamilies.BAMBOO_PLANKS, 1);
         altarMaterial(bootstrap, BlockFamilies.CHERRY_PLANKS, 1);
+        altarMaterial(bootstrap, BlockFamilies.PALE_OAK_PLANKS, 1);
+        altarMaterial(bootstrap, BlockFamilies.BAMBOO_MOSAIC, 1);
         altarMaterial(bootstrap, BlockFamilies.COBBLESTONE, 2);
         altarMaterial(bootstrap, BlockFamilies.STONE, 2);
         altarMaterial(bootstrap, BlockFamilies.MUD_BRICKS, 2);
+        altarMaterial(bootstrap, BlockFamilies.RESIN_BRICKS, 2);
         altarMaterial(bootstrap, BlockFamilies.MOSSY_COBBLESTONE, 2);
         altarMaterial(bootstrap, BlockFamilies.COBBLED_DEEPSLATE, 2);
+        altarMaterial(bootstrap, BlockFamilies.TUFF, 2);
         altarMaterial(bootstrap, BlockFamilies.ANDESITE, 2);
         altarMaterial(bootstrap, BlockFamilies.DIORITE, 2);
         altarMaterial(bootstrap, BlockFamilies.GRANITE, 2);
@@ -120,6 +124,8 @@ public final class AMDatapackBuiltinEntriesProvider {
         altarMaterial(bootstrap, BlockFamilies.POLISHED_DEEPSLATE, 3);
         altarMaterial(bootstrap, BlockFamilies.DEEPSLATE_BRICKS, 3);
         altarMaterial(bootstrap, BlockFamilies.DEEPSLATE_TILES, 3);
+        altarMaterial(bootstrap, BlockFamilies.POLISHED_TUFF, 3);
+        altarMaterial(bootstrap, BlockFamilies.TUFF_BRICKS, 3);
         altarMaterial(bootstrap, BlockFamilies.POLISHED_ANDESITE, 3);
         altarMaterial(bootstrap, BlockFamilies.POLISHED_DIORITE, 3);
         altarMaterial(bootstrap, BlockFamilies.POLISHED_GRANITE, 3);
