@@ -72,6 +72,7 @@ public final class AMMultiblocks {
         {"     ", "     ", "     ", "  1  ", "     ", "     ", "     "},
         {" W W ", "WCWCW", "W   W", " W0W ", "W   W", "WCWCW", " W W "}};
     private static final String[][] BLACK_AUREM_CHALK_STRUCTURE = new String[][]{
+        {"   ", " 1 ", "   "},
         {"WWW", "W0W", "WWW"}};
     private static final String[][] WATER_GUARDIAN_SPAWN_RITUAL_STRUCTURE = new String[][]{
         {"1N2", "E0E", "3N4"}};
@@ -180,12 +181,12 @@ public final class AMMultiblocks {
             '2', obeliskUpper));
         api.registerMultiblock(BLACK_AUREM_CHALK, api.makeMultiblock(BLACK_AUREM_CHALK_STRUCTURE,
             'W', chalk,
-            '0', blackAurem
+            '1', blackAurem
         ).setSymmetrical(true));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_1, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_1)));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_2, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_2)));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_3, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_3)));
-        api.registerMultiblock(BLACK_AUREM_PILLARS_4, makePillarsMultiblock(api, blackAurem, air, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_4)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_1, makePillarsMultiblock(api, air, blackAurem, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_1)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_2, makePillarsMultiblock(api, air, blackAurem, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_2)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_3, makePillarsMultiblock(api, air, blackAurem, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_3)));
+        api.registerMultiblock(BLACK_AUREM_PILLARS_4, makePillarsMultiblock(api, air, blackAurem, air, chalk, blackAuremPillar, api.tagMatcher(AMTags.Blocks.BLACK_AUREM_CATALYST_4)));
         api.registerMultiblock(WATER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
             WATER_GUARDIAN_SPAWN_RITUAL_STRUCTURE,
             'E', redstoneInlayEastWest,
@@ -275,8 +276,8 @@ public final class AMMultiblocks {
             '2', goldInlayNorthEast,
             '3', goldInlaySouthWest,
             '4', goldInlayNorthWest,
-            'C', api.strictBlockMatcher(Blocks.COAL_BLOCK),
-            'F', api.strictBlockMatcher(Blocks.FIRE),
+            'C', api.tagMatcher(Tags.Blocks.STORAGE_BLOCKS_COAL),
+            'F', api.looseBlockMatcher(Blocks.FIRE),
             '0', blackAurem
         ).setSymmetrical(true));
     }

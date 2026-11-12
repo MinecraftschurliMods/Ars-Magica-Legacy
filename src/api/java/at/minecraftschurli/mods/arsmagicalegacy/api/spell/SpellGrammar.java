@@ -29,10 +29,18 @@ public record SpellGrammar(List<SpellPart> parts, List<Pair<SpellComponent, List
     public static final Codec<SpellGrammar> CODEC = AMRegistries.SPELL_PARTS.byNameCodec().listOf(0, MAX_PARTS).fieldOf("parts").xmap(SpellGrammar::of, SpellGrammar::parts).codec();
     public static final StreamCodec<RegistryFriendlyByteBuf, SpellGrammar> STREAM_CODEC = ByteBufCodecs.registry(AMRegistries.Keys.SPELL_PART).apply(ByteBufCodecs.list()).map(SpellGrammar::of, SpellGrammar::parts);
 
-    /// @deprecated Use [SpellGrammar#of(List)] instead.
+    /// @deprecated Use [SpellGrammar#of(List)] or [SpellGrammar#of(SpellPart...)] instead.
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     public SpellGrammar {
+    }
+
+    /// Validates the given [SpellPart]s and constructs a [SpellGrammar] from them.
+    ///
+    /// @param parts The [SpellPart]s.
+    /// @return A new [SpellGrammar], or [SpellGrammar#EMPTY] if validation failed.
+    public static SpellGrammar of(SpellPart... parts) {
+        return of(List.of(parts));
     }
 
     /// Validates the given [List] of [SpellPart]s and constructs a [SpellGrammar] from it.
