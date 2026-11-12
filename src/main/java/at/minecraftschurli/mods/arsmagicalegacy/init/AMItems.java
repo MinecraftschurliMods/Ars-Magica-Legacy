@@ -138,9 +138,9 @@ public interface AMItems {
     DeferredItem<Item>                                  ARCANE_ASH                       = ITEMS.registerSimpleItem("arcane_ash");
     DeferredItem<Item>                                  PURIFIED_VINTEUM_DUST            = ITEMS.registerSimpleItem("purified_vinteum_dust");
     DeferredItem<BlockItem>                             WITCHWOOD_LOG                    = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_LOG);
-    DeferredItem<BlockItem>                             WITCHWOOD                        = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_WOOD);
+    DeferredItem<BlockItem>                             WITCHWOOD_WOOD                   = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_WOOD);
     DeferredItem<BlockItem>                             STRIPPED_WITCHWOOD_LOG           = ITEMS.registerSimpleBlockItem(AMBlocks.STRIPPED_WITCHWOOD_LOG);
-    DeferredItem<BlockItem>                             STRIPPED_WITCHWOOD               = ITEMS.registerSimpleBlockItem(AMBlocks.STRIPPED_WITCHWOOD_WOOD);
+    DeferredItem<BlockItem>                             STRIPPED_WITCHWOOD_WOOD          = ITEMS.registerSimpleBlockItem(AMBlocks.STRIPPED_WITCHWOOD_WOOD);
     DeferredItem<BlockItem>                             WITCHWOOD_LEAVES                 = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_LEAVES);
     DeferredItem<BlockItem>                             WITCHWOOD_SAPLING                = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_SAPLING);
     DeferredItem<BlockItem>                             WITCHWOOD_PLANKS                 = ITEMS.registerSimpleBlockItem(AMBlocks.WITCHWOOD_PLANKS);
