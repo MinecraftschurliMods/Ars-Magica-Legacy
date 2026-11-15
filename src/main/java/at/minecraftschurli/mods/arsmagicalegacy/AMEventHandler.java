@@ -147,7 +147,6 @@ import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -589,12 +588,6 @@ final class AMEventHandler {
         if (event.getPose() == Pose.CROUCHING && entity.isPassenger() && Objects.requireNonNull(entity.getVehicle()).is(AMEntities.AIR_SLED)) {
             event.setNewSize(entity.getDimensions(Pose.STANDING));
         }
-    }
-
-    @SubscribeEvent
-    private static void livingJump(LivingEvent.LivingJumpEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        ArsMagicaApi.abilityHelper().triggerEventEffect(event, player, AMAbilities.JUMP_BOOST_EFFECT.get());
     }
 
     @SubscribeEvent

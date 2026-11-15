@@ -10,7 +10,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.ability.ExtraDamageAbilityEffect
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FirePunchAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FrostPunchAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FrostWalkerAbilityEffect;
-import at.minecraftschurli.mods.arsmagicalegacy.ability.JumpBoostAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.KillEffectAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.LightHealthModifierAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.NetherDamageAbilityEffect;
@@ -39,7 +38,6 @@ public interface AMAbilities {
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<FirePunchAbilityEffect>>           FIRE_PUNCH_EFFECT            = ABILITY_EFFECTS.register("fire_punch",            () -> FirePunchAbilityEffect.CODEC);
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<FrostPunchAbilityEffect>>          FROST_PUNCH_EFFECT           = ABILITY_EFFECTS.register("frost_punch",           () -> FrostPunchAbilityEffect.CODEC);
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<FrostWalkerAbilityEffect>>         FROST_WALKER_EFFECT          = ABILITY_EFFECTS.register("frost_walker",          () -> FrostWalkerAbilityEffect.CODEC);
-    DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<JumpBoostAbilityEffect>>           JUMP_BOOST_EFFECT            = ABILITY_EFFECTS.register("jump_boost",            () -> JumpBoostAbilityEffect.CODEC);
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<KillEffectAbilityEffect>>          KILL_EFFECT_EFFECT           = ABILITY_EFFECTS.register("kill_effect",           () -> KillEffectAbilityEffect.CODEC);
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<LightHealthModifierAbilityEffect>> LIGHT_HEALTH_MODIFIER_EFFECT = ABILITY_EFFECTS.register("light_health_modifier", () -> LightHealthModifierAbilityEffect.CODEC);
     DeferredHolder<MapCodec<? extends AbilityEffect>, MapCodec<BurnoutCostModifierAbilityEffect>> BURNOUT_COST_MODIFIER_EFFECT = ABILITY_EFFECTS.register("burnout_cost_modifier", () -> BurnoutCostModifierAbilityEffect.CODEC);
