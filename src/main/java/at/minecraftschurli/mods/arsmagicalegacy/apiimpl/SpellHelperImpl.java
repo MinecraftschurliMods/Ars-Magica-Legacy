@@ -56,6 +56,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.NeoForge;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -64,7 +65,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-final class SpellHelperImpl implements SpellHelper {
+@VisibleForTesting
+public final class SpellHelperImpl implements SpellHelper {
     @Override
     public SpellCastResult cast(Spell spell, Level level, @Nullable LivingEntity caster, boolean consume, boolean awardXp, double innateManaMultiplier, double innateStatMultiplier) {
         if (spell.isMalformed()) return new SpellCastResult(spell).setMessage(AMTranslations.SPELL_FAIL_MALFORMED);

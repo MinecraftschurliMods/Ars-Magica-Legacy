@@ -12,9 +12,11 @@ import at.minecraftschurli.mods.arsmagicalegacy.init.AMMagic;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.VisibleForTesting;
 
 @SuppressWarnings("DataFlowIssue")
-final class ManaHelperImpl implements ManaHelper {
+@VisibleForTesting
+public final class ManaHelperImpl implements ManaHelper {
     @Override
     public double getManaBase() {
         return AMServerConfig.MANA_BASE.get();

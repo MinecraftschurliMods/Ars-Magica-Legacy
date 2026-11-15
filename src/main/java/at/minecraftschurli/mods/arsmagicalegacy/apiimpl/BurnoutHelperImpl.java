@@ -5,9 +5,11 @@ import at.minecraftschurli.mods.arsmagicalegacy.api.magic.BurnoutHelper;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMAttachments;
 import at.minecraftschurli.mods.arsmagicalegacy.init.AMAttributes;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.VisibleForTesting;
 
 @SuppressWarnings("DataFlowIssue")
-final class BurnoutHelperImpl implements BurnoutHelper {
+@VisibleForTesting
+public final class BurnoutHelperImpl implements BurnoutHelper {
     @Override
     public double getBurnoutBase() {
         return AMServerConfig.BURNOUT_BASE.get();
