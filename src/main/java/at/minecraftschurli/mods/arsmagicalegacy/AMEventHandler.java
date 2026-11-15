@@ -231,6 +231,7 @@ final class AMEventHandler {
     private static void addBlockEntities(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.SIGN, AMBlocks.WITCHWOOD_SIGN.get(), AMBlocks.WITCHWOOD_WALL_SIGN.get());
         event.modify(BlockEntityType.HANGING_SIGN, AMBlocks.WITCHWOOD_HANGING_SIGN.get(), AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get());
+        event.modify(BlockEntityType.SHELF, AMBlocks.WITCHWOOD_SHELF.get());
     }
 
     @SubscribeEvent

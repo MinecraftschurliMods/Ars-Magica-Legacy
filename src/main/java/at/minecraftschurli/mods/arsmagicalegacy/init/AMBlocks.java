@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -127,6 +128,7 @@ public interface AMBlocks {
     DeferredBlock<WallSignBlock>               WITCHWOOD_WALL_SIGN         = register("witchwood_wall_sign",         p -> new WallSignBlock(WITCHWOOD_WOOD_TYPE, p), copyProperties(Blocks.OAK_WALL_SIGN, p -> p.mapColor(MapColor.TERRACOTTA_LIGHT_BLUE).overrideDescription(WITCHWOOD_SIGN.get().getDescriptionId()).overrideLootTable(WITCHWOOD_SIGN.get().getLootTable())));
     DeferredBlock<CeilingHangingSignBlock>     WITCHWOOD_HANGING_SIGN      = register("witchwood_hanging_sign",      p -> new CeilingHangingSignBlock(WITCHWOOD_WOOD_TYPE, p), copyProperties(Blocks.OAK_HANGING_SIGN, p -> p.mapColor(MapColor.TERRACOTTA_LIGHT_BLUE)));
     DeferredBlock<WallHangingSignBlock>        WITCHWOOD_WALL_HANGING_SIGN = register("witchwood_wall_hanging_sign", p -> new WallHangingSignBlock(WITCHWOOD_WOOD_TYPE, p), copyProperties(Blocks.OAK_WALL_HANGING_SIGN, p -> p.mapColor(MapColor.TERRACOTTA_LIGHT_BLUE).overrideDescription(WITCHWOOD_HANGING_SIGN.get().getDescriptionId()).overrideLootTable(WITCHWOOD_HANGING_SIGN.get().getLootTable())));
+    DeferredBlock<ShelfBlock>                  WITCHWOOD_SHELF             = register("witchwood_shelf",             ShelfBlock::new, copyProperties(Blocks.OAK_SHELF, p -> p.mapColor(MapColor.TERRACOTTA_LIGHT_BLUE)));
     DeferredBlock<AMFlowerBlock>               AUM                         = register("aum",                         p -> new AMFlowerBlock(AMMobEffects.MANA_REGENERATION, 7, AMTags.Blocks.AUM_PLANTABLE_ON, p), copyProperties(Blocks.POPPY));
     DeferredBlock<FlowerPotBlock>              POTTED_AUM                  = register("potted_aum",                  p -> flowerPot(AUM, p).get(), copyProperties(Blocks.FLOWER_POT));
     DeferredBlock<AMFlowerBlock>               CERUBLOSSOM                 = register("cerublossom",                 p -> new AMFlowerBlock(MobEffects.LEVITATION, 7, AMTags.Blocks.CERUBLOSSOM_PLANTABLE_ON, p), copyProperties(Blocks.POPPY));

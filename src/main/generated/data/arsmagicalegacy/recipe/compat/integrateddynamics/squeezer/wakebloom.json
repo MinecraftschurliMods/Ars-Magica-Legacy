@@ -9,8 +9,10 @@
   "input_item": "arsmagicalegacy:wakebloom",
   "output_items": [
     {
-      "count": 4,
-      "item": "minecraft:magenta_dye"
+      "item": {
+        "count": 4,
+        "item": "minecraft:magenta_dye"
+      }
     }
   ]
 }

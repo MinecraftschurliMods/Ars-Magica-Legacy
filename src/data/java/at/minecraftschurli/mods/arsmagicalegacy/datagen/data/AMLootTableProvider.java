@@ -130,6 +130,7 @@ public final class AMLootTableProvider extends LootTableProvider {
             dropOther(AMBlocks.WITCHWOOD_WALL_SIGN.get(), AMBlocks.WITCHWOOD_SIGN.get());
             dropSelf(AMBlocks.WITCHWOOD_HANGING_SIGN.get());
             dropOther(AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get(), AMBlocks.WITCHWOOD_HANGING_SIGN.get());
+            dropSelf(AMBlocks.WITCHWOOD_SHELF.get());
             dropSelf(AMBlocks.AUM.get());
             dropPottedContents(AMBlocks.POTTED_AUM.get());
             dropSelf(AMBlocks.CERUBLOSSOM.get());

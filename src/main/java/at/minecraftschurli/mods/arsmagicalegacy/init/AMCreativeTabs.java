@@ -129,6 +129,7 @@ public interface AMCreativeTabs {
             output.accept(AMItems.WITCHWOOD_PRESSURE_PLATE);
             output.accept(AMItems.WITCHWOOD_SIGN);
             output.accept(AMItems.WITCHWOOD_HANGING_SIGN);
+            output.accept(AMItems.WITCHWOOD_SHELF);
             output.accept(AMItems.WITCHWOOD_BOAT);
             output.accept(AMItems.WITCHWOOD_CHEST_BOAT);
             output.accept(AMItems.AUM);
