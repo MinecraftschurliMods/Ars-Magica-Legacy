@@ -453,6 +453,8 @@
   "arsmagicalegacy.configuration.wave_speed.tooltip": "The speed used by the Wave shape. May be amplified by spell modifiers.",
   "arsmagicalegacy.configuration.wave_tick_interval": "Wave Tick Interval",
   "arsmagicalegacy.configuration.wave_tick_interval.tooltip": "The tick interval used by the Wave shape.",
+  "arsmagicalegacy.configuration.witchwood_forest_weight": "Witchwood Forest Weight",
+  "arsmagicalegacy.configuration.witchwood_forest_weight.tooltip": "The spawn weight of the Witchwood Forest biome. Higher value means more common.",
   "arsmagicalegacy.configuration.wizards_autumn_range": "Wizard's Autumn Range",
   "arsmagicalegacy.configuration.wizards_autumn_range.tooltip": "The range used by the Wizard's Autumn component. May be amplified by spell modifiers.",
   "arsmagicalegacy.configuration.zone_duration": "Zone Duration",

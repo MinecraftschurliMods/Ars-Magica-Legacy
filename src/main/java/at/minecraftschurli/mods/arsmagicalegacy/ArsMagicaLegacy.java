@@ -31,6 +31,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 @Mod(ArsMagicaApi.MOD_ID)
 public final class ArsMagicaLegacy {
     public ArsMagicaLegacy(ModContainer container, IEventBus bus) {
+        container.registerConfig(ModConfig.Type.COMMON, AMCommonConfig.SPEC);
         container.registerConfig(ModConfig.Type.SERVER, AMServerConfig.SPEC);
         register(bus);
     }
