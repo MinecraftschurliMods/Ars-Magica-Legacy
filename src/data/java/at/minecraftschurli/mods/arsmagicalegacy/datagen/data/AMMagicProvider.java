@@ -10,7 +10,6 @@ import at.minecraftschurli.mods.arsmagicalegacy.ability.ExtraDamageAbilityEffect
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FirePunchAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FrostPunchAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.FrostWalkerAbilityEffect;
-import at.minecraftschurli.mods.arsmagicalegacy.ability.JumpBoostAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.KillEffectAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.LightHealthModifierAbilityEffect;
 import at.minecraftschurli.mods.arsmagicalegacy.ability.NetherDamageAbilityEffect;
@@ -167,7 +166,7 @@ public final class AMMagicProvider {
         ability(bootstrap, AMAbilities.RESISTANCE,             AMMagic.EARTH,     MinMaxBounds.Doubles.between(0.01, 1), new DamageModifierAbilityEffect(damageTypes.getOrThrow(AMTags.DamageTypes.AFFECTED_BY_RESISTANCE_ABILITY), 1, 0.5));
         ability(bootstrap, AMAbilities.HASTE,                  AMMagic.EARTH,     MinMaxBounds.Doubles.between(0.01, 1), new AttributeAbilityEffect(Map.of(Attributes.ATTACK_SPEED, new LinearAttributeModifier(AMAbilities.HASTE.identifier(), 0, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), Attributes.BLOCK_BREAK_SPEED, new LinearAttributeModifier(AMAbilities.HASTE.identifier(), 0, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))));
         ability(bootstrap, AMAbilities.FALL_DAMAGE,            AMMagic.EARTH,     MinMaxBounds.Doubles.between(0.5, 1), true, new DamageModifierAbilityEffect(damageTypes.getOrThrow(AMTags.DamageTypes.AFFECTED_BY_FALL_DAMAGE_ABILITY), 1, 1.5));
-        ability(bootstrap, AMAbilities.JUMP_BOOST,             AMMagic.AIR,       MinMaxBounds.Doubles.between(0.01, 1), new JumpBoostAbilityEffect(0, 0.5));
+        ability(bootstrap, AMAbilities.JUMP_BOOST,             AMMagic.AIR,       MinMaxBounds.Doubles.between(0.01, 1), new AttributeAbilityEffect(Map.of(Attributes.JUMP_STRENGTH, new LinearAttributeModifier(AMAbilities.JUMP_BOOST.identifier(), 0, 0.5, AttributeModifier.Operation.ADD_VALUE))));
         ability(bootstrap, AMAbilities.FEATHER_FALLING,        AMMagic.AIR,       MinMaxBounds.Doubles.between(0.01, 1), new DamageModifierAbilityEffect(damageTypes.getOrThrow(AMTags.DamageTypes.AFFECTED_BY_FEATHER_FALLING_ABILITY), 1, 0.5));
         ability(bootstrap, AMAbilities.GRAVITY,                AMMagic.AIR,       MinMaxBounds.Doubles.between(0.5, 1), true, new AttributeAbilityEffect(Map.of(Attributes.GRAVITY, new LinearAttributeModifier(AMAbilities.GRAVITY.identifier(), 0, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))));
         ability(bootstrap, AMAbilities.FROST_PUNCH,            AMMagic.ICE,       MinMaxBounds.Doubles.between(0.01, 1), new FrostPunchAbilityEffect(0, 100));
