@@ -76,26 +76,26 @@ public class BossSpawnTest {
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":fire_guardian_spawn_test", required = false)//TODO nether
-    @TestHolder(description = "Test that the fire guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Fire Guardian spawns after its spawn ritual has been performed")
     public static void testFireGuardianSpawnRitual(CustomGameTestHelper helper) {
         ItemStack essence = new ItemStack(AMItems.AFFINITY_ESSENCE, 1, DataComponentPatch.builder().set(AMDataComponents.AFFINITY.get(), helper.getHolder(AMMagic.WATER)).build());
         testRitual(helper, AMEntities.FIRE_GUARDIAN.get(), new BlockPos(1, 2, 1), essence);
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":earth_guardian_spawn_test")
-    @TestHolder(description = "Test that the earth guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Earth Guardian spawns after its spawn ritual has been performed")
     public static void testEarthGuardianSpawnRitual(CustomGameTestHelper helper) {
         testRitual(helper, AMEntities.EARTH_GUARDIAN.get(), new BlockPos(2, 2, 2), new ItemStack(Items.EMERALD), new ItemStack(AMItems.CHIMERITE.get()), new ItemStack(AMItems.TOPAZ.get()));
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":air_guardian_spawn_test", required = false)//TODO y > 127
-    @TestHolder(description = "Test that the air guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Air Guardian spawns after its spawn ritual has been performed")
     public static void testAirGuardianSpawnRitual(CustomGameTestHelper helper) {
         testRitual(helper, AMEntities.AIR_GUARDIAN.get(), new BlockPos(1, 2, 1), new ItemStack(AMItems.TARMA_ROOT.get()));
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":ice_guardian_spawn_test")
-    @TestHolder(description = "Test that the ice guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Ice Guardian spawns after its spawn ritual has been performed")
     public static void testIceGuardianSpawnRitual(CustomGameTestHelper helper) {
         helper.setBiome(Biomes.ICE_SPIKES);
         testRitual(helper, AMEntities.ICE_GUARDIAN.get(), new BlockPos(2, 2, 1), player -> {
@@ -108,13 +108,13 @@ public class BossSpawnTest {
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":lightning_guardian_spawn_test", skyAccess = true)
-    @TestHolder(description = "Test that the lightning guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Lightning Guardian spawns after its spawn ritual has been performed")
     public static void testLightningGuardianSpawnRitual(CustomGameTestHelper helper) {
         testRitual(helper, AMEntities.LIGHTNING_GUARDIAN.get(), new BlockPos(2, 1, 2), _ -> helper.spawn(EntityType.LIGHTNING_BOLT, new BlockPos(1, 3, 1)));
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":life_guardian_spawn_test")
-    @TestHolder(description = "Test that the life guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Life Guardian spawns after its spawn ritual has been performed")
     public static void testLifeGuardianSpawnRitual(CustomGameTestHelper helper) {
         helper.setMoonPhase(MoonPhase.NEW_MOON);
         helper.setNight();
@@ -126,13 +126,13 @@ public class BossSpawnTest {
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":arcane_guardian_spawn_test", required = false)//TODO fix detection (fails often because of the guardian's teleport spell)
-    @TestHolder(description = "Test that the arcane guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Arcane Guardian spawns after its spawn ritual has been performed")
     public static void testArcaneGuardianSpawnRitual(CustomGameTestHelper helper) {
         testRitual(helper, AMEntities.ARCANE_GUARDIAN.get(), new BlockPos(2, 2, 1), ArsMagicaApi.book().create());
     }
 
     @GameTest(template = ArsMagicaApi.MOD_ID + ":ender_guardian_spawn_test", required = false)//TODO end
-    @TestHolder(description = "Test that the ender guardian spawns after its spawn ritual has ben performed")
+    @TestHolder(description = "Test that the Ender Guardian spawns after its spawn ritual has been performed")
     public static void testEnderGuardianSpawnRitual(CustomGameTestHelper helper) {
         testRitual(helper, AMEntities.ENDER_GUARDIAN.get(), new BlockPos(2, 2, 2), new ItemStack(Items.ENDER_EYE));
     }
