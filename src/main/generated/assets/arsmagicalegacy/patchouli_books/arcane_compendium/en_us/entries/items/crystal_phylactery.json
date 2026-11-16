@@ -1,0 +1,16 @@
+{
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:crystal_phylactery",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.crystal_phylactery.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.crystal_phylactery.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:crystal_phylactery",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.crystal_phylactery.page1.text"
+    }
+  ]
+}
