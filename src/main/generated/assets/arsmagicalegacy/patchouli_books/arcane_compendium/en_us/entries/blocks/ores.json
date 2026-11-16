@@ -29,7 +29,7 @@
       "type": "patchouli:spotlight",
       "anchor": "moonstone",
       "item": "arsmagicalegacy:moonstone_ore",
-      "text": "Rarely found in meteorites that crashed upon the world a long time ago, Moonstone is a celestial material with extraordinary magical powers."
+      "text": "Rarely found in meteorites that crashed upon the world a long time ago, Moonstone is a celestial material with extraordinary magical powers.$(br2)While meteorites can be found all across the Overworld, they are more common in $(l:mechanics/witchwood_forest)Witchwood Forests$()."
     },
     {
       "type": "patchouli:spotlight",

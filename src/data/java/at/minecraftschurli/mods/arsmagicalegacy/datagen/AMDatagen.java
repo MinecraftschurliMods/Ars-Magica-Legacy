@@ -58,6 +58,7 @@ public final class AMDatagen {
                 .add(AMRegistries.Keys.PLANT, AMDatapackBuiltinEntriesProvider::addPlants)
                 .add(Registries.CONFIGURED_FEATURE, AMWorldgenProvider::addConfiguredFeatures)
                 .add(Registries.PLACED_FEATURE, AMWorldgenProvider::addPlacedFeatures)
+                .add(Registries.BIOME, AMWorldgenProvider::addBiomes)
                 .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, AMWorldgenProvider::addBiomeModifiers)
                 .add(AMRegistries.Keys.AFFINITY, AMMagicProvider::addAffinities)
                 .add(AMRegistries.Keys.ABILITY, AMMagicProvider::addAbilities)

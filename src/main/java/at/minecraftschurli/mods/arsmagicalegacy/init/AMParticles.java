@@ -26,7 +26,6 @@ public interface AMParticles {
     DeferredHolder<ParticleType<?>, SimpleParticleType> EMBER          = register("ember");
     DeferredHolder<ParticleType<?>, SimpleParticleType> EXPLOSION      = register("explosion");
     DeferredHolder<ParticleType<?>, SimpleParticleType> GHOST          = register("ghost");
-    DeferredHolder<ParticleType<?>, SimpleParticleType> LEAF           = register("leaf");
     DeferredHolder<ParticleType<?>, SimpleParticleType> LENS_FLARE     = register("lens_flare");
     DeferredHolder<ParticleType<?>, SimpleParticleType> LIGHTS         = register("lights");
     DeferredHolder<ParticleType<?>, SimpleParticleType> PLANT          = register("plant");
@@ -36,6 +35,7 @@ public interface AMParticles {
     DeferredHolder<ParticleType<?>, SimpleParticleType> STARDUST       = register("stardust");
     DeferredHolder<ParticleType<?>, SimpleParticleType> WATER_BALL     = register("water_ball");
     DeferredHolder<ParticleType<?>, SimpleParticleType> WIND           = register("wind");
+    DeferredHolder<ParticleType<?>, SimpleParticleType> LEAF           = register("leaf");
     DeferredHolder<ParticleType<?>, SimpleParticleType> SYMBOLS        = register("symbols");
     // @formatter:on
 

@@ -40,6 +40,7 @@ import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.CrystalWrenchA
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.DataComponentOverridesModel;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.EtheriumTypeItemTintSource;
 import at.minecraftschurli.mods.arsmagicalegacy.client.model.item.SpellItemModel;
+import at.minecraftschurli.mods.arsmagicalegacy.client.particle.LeafParticleProvider;
 import at.minecraftschurli.mods.arsmagicalegacy.client.particle.ParticleSpawnerManager;
 import at.minecraftschurli.mods.arsmagicalegacy.client.particle.SimpleParticleProvider;
 import at.minecraftschurli.mods.arsmagicalegacy.client.particle.SymbolsParticleProvider;
@@ -322,7 +323,6 @@ final class AMClientEventHandler {
         event.registerSpriteSet(AMParticles.EMBER.get(),          SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.EXPLOSION.get(),      SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.GHOST.get(),          SimpleParticleProvider::new);
-        event.registerSpriteSet(AMParticles.LEAF.get(),           SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.LENS_FLARE.get(),     SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.LIGHTS.get(),         SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.PLANT.get(),          SimpleParticleProvider::new);
@@ -332,6 +332,7 @@ final class AMClientEventHandler {
         event.registerSpriteSet(AMParticles.STARDUST.get(),       SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.WATER_BALL.get(),     SimpleParticleProvider::new);
         event.registerSpriteSet(AMParticles.WIND.get(),           SimpleParticleProvider::new);
+        event.registerSpriteSet(AMParticles.LEAF.get(),           LeafParticleProvider::new);
         event.registerSpriteSet(AMParticles.SYMBOLS.get(),        SymbolsParticleProvider::new);
         // @formatter:on
     }

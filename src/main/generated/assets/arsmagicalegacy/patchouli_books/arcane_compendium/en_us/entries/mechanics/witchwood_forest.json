@@ -1,0 +1,19 @@
+{
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "arsmagicalegacy:witchwood_sapling",
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.witchwood_forest.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.witchwood_forest.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.witchwood_forest.page1.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.witchwood_forest.page2.text"
+    }
+  ]
+}

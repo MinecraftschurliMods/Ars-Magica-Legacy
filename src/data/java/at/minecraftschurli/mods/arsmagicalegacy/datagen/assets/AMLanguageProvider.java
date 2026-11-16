@@ -376,6 +376,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         add(AMTags.DamageTypes.ENDER_GUARDIAN_IS_IMMUNE_TO, "Is immunity of the Ender Guardian");
         add(AMTags.DamageTypes.ENDER_GUARDIAN_IS_HEAL_TO, "Heals the Ender Guardian");
         add(AMTags.Biomes.CAN_SUMMON_WATER_GUARDIAN, "Can Summon Water Guardian");
+        add(AMTags.Biomes.PRIMARY_WOOD_TYPE_WITCHWOOD, "Witchwood Primary Wood Type");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_AMBIENT, "Arcane Guardian hisses");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_ATTACK, "Arcane Guardian attacks");
         subtitleTranslation(AMSounds.ARCANE_GUARDIAN_DEATH, "Arcane Guardian dies");
@@ -607,6 +608,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         abilityTranslation(AMAbilities.ENDERMAN_PUMPKIN, "Enderman Pumpkin", "Becoming one with the end, endermen will treat you as one of their own and not attack you anymore when staring into their eyes.$(br2)Affinity: Ender$(br)Range: 100 %%");
         abilityTranslation(AMAbilities.LIGHT_HEALTH_REDUCTION, "Light Health Reduction", "Toying around with ender magic consumes your life in light. When in direct sunlight, your maximum health decreases.$(br2)Affinity: Ender$(br)Range: 50 - 100 %%$(br)There have been rumors among the villagers of true ender mages that managed to nullify this effect...");
         abilityTranslation(AMAbilities.WATER_HEALTH_REDUCTION, "Water Health Reduction", "Toying around with ender magic consumes your life in water. When in water, your maximum health decreases.$(br2)Affinity: Ender$(br)Range: 50 - 100 %%$(br)There have been rumors among the villagers of true ender mages that managed to nullify this effect...");
+        configTranslation("witchwood_forest_weight", "Witchwood Forest Weight", "The spawn weight of the Witchwood Forest biome. Higher value means more common.");
         configTranslation("magic_advancement", "Magic Advancement", "Completing this advancement will unlock magic for the player. Leave empty to not require an advancement and have magic unlocked from the start.");
         configTranslation("mana_to_burnout_ratio", "Mana : Burnout Ratio", "The default mana to burnout ratio, used in calculating spell costs.");
         configTranslation("blocks", "Blocks", "Configuration for the various blocks.");
@@ -767,6 +769,7 @@ public final class AMLanguageProvider extends LanguageProvider {
         configTranslation("life_ward_y", "Vertical Position", "Vertical position of the life ward GUI layer.");
         configTranslation("life_ward_anchor_x", "Horizontal Anchor", "Horizontal anchor of the life ward GUI layer.");
         configTranslation("life_ward_anchor_y", "Vertical Anchor", "Vertical anchor of the life ward GUI layer.");
+        add("biome", "witchwood_forest", "Witchwood Forest");
         add("enchantment", "dismembering", "Dismembering");
         add("enchantment", "dismembering.desc", "Adds a drop chance for heads for certain mobs.");
         add("affinity", "none", "None");

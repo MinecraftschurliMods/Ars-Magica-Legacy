@@ -549,8 +549,8 @@ public final class AMRecipeProvider extends RecipeProvider {
         generateRecipes(AMBlocks.WITCHWOOD_BLOCK_FAMILY.get(), FeatureFlagSet.of(FeatureFlags.VANILLA));
         hangingSign(AMItems.WITCHWOOD_HANGING_SIGN, AMItems.STRIPPED_WITCHWOOD_LOG);
         planksFromLogs(AMItems.WITCHWOOD_PLANKS, AMTags.Items.WITCHWOOD_LOGS, 4);
-        woodFromLogs(AMItems.WITCHWOOD, AMItems.WITCHWOOD_LOG);
-        woodFromLogs(AMItems.STRIPPED_WITCHWOOD, AMItems.STRIPPED_WITCHWOOD_LOG);
+        woodFromLogs(AMItems.WITCHWOOD_WOOD, AMItems.WITCHWOOD_LOG);
+        woodFromLogs(AMItems.STRIPPED_WITCHWOOD_WOOD, AMItems.STRIPPED_WITCHWOOD_LOG);
         shelf(AMItems.WITCHWOOD_SHELF, AMItems.STRIPPED_WITCHWOOD_LOG);
         woodenBoat(AMItems.WITCHWOOD_BOAT, AMItems.WITCHWOOD_PLANKS);
         chestBoat(AMItems.WITCHWOOD_CHEST_BOAT, AMItems.WITCHWOOD_BOAT);

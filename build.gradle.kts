@@ -61,6 +61,11 @@ repositories {
         }
     }
     maven {
+        // Terrablender
+        name = "Forge"
+        url = uri("https://maven.minecraftforge.net")
+    }
+    maven {
         // EasyDatagenLib
         name = "Minecraftschurli Maven"
         url = uri("https://maven.minecraftschurli.at/maven-public")
@@ -117,6 +122,13 @@ dependencies {
     runtimeOnly(patchouliDep)
     testRuntimeOnly(patchouliDep)
     "dataRuntimeOnly"(patchouliDep)
+
+    // terrablender for adding biomes
+    val terrablenderDep = helper.minecraftVersion.map { mc -> "com.github.glitchfiend:TerraBlender-neoforge:${mc}-${project.properties["dependency.terrablender.version"]}" }
+    compileOnly(terrablenderDep)
+    runtimeOnly(terrablenderDep)
+    testRuntimeOnly(terrablenderDep)
+    "dataRuntimeOnly"(terrablenderDep)
 
     if (!helper.runningInCI.getOrElse(false)) {
         runtimeOnly(curiosDep)

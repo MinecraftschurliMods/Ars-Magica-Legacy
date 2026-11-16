@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "arsmagicalegacy:aum"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "arsmagicalegacy:cerublossom"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "arsmagicalegacy:desert_nova"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "arsmagicalegacy:tarma_root"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "arsmagicalegacy:wakebloom"
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

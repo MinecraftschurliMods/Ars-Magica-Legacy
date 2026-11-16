@@ -1,0 +1,16 @@
+{
+  "category": "arsmagicalegacy:entities",
+  "icon": "arsmagicalegacy:dryad_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.entities.dryad.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.entities.dryad.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:dryad",
+      "text": "Dryads drop nothing when killed."
+    }
+  ]
+}

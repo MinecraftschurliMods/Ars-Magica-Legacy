@@ -162,6 +162,7 @@ public interface AMTags {
     @ApiStatus.NonExtendable
     interface Biomes {
         TagKey<Biome> CAN_SUMMON_WATER_GUARDIAN = tag("can_summon_water_guardian");
+        TagKey<Biome> PRIMARY_WOOD_TYPE_WITCHWOOD = tag("primary_wood_type/witchwood");
 
         @SuppressWarnings("SameParameterValue")
         private static TagKey<Biome> tag(String name) {
